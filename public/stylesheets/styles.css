@@ -424,11 +424,10 @@ header {
   user-select: none;
 }
 header #nav-logo {
-  width: 120px;
   height: 150px;
   position: absolute;
-  top: 30px;
-  right: 0px;
+  top: 10px;
+  left: -20px;
   opacity: 0.75;
   filter: alpha(opacity=75);
 }
@@ -437,10 +436,17 @@ header #nav-logo a {
   padding: 0;
 }
 header #nav-logo img {
-  float: right;
+  position: absolute;
+  right: 0px;
   display: block;
   width: 94px;
   height: 94px;
+}
+.partscreen header {
+  margin-left: 120px;
+}
+.partscreen header #nav-logo {
+  left: 100px;
 }
 h1 {
   font-size: 38px;
@@ -495,6 +501,7 @@ button {
   -o-user-select: none;
   user-select: none;
   text-align: left;
+  margin-right: 5px;
 }
 button.back:before,
 button[value=back]:before {
@@ -512,6 +519,8 @@ button[value=back] {
 button[value=next] {
   position: absolute;
   right: 0;
+  margin-right: 0;
+  margin-left: 5px;
 }
 button[value=next]:after {
   content: ' »';
@@ -519,6 +528,9 @@ button[value=next]:after {
   font-size: 17px;
   font-weight: 200;
   line-height: 13px;
+}
+button[value=next]:active {
+  position: absolute;
 }
 button:hover {
   background-color: #277c97;
@@ -734,7 +746,7 @@ table:not(.no-style) td {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   border-radius: 3px;
 }
-#modal #modal-content {
+#modal .modal-content {
   padding: 0px 20px;
   -webkit-user-select: text;
   -moz-user-select: text;

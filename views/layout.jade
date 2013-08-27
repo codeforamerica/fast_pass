@@ -19,6 +19,7 @@ html.no-js(ng-app)
 		script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js')
 		script(src='js/vendor/modernizr-2.6.2.min.js')
 
+		script(src='http://api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.js')
 		link(rel='stylesheet', href='http://api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.css')
 		//if lte IE 8
 			link(rel='stylesheet', href='http://api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.ie.css')
@@ -30,6 +31,7 @@ html.no-js(ng-app)
 
 		block content
 
+		include modal
 
 		#map
 

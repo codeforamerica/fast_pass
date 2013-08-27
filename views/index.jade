@@ -4,11 +4,7 @@ block content
 	#main.fullscreen
 		.container
 
-			header(role='banner')
-				h1 Development<br>Opportunity<br>Finder<sub>Demo</sub>
-				#nav-logo
-					a(href='http://lasvegasnevada.gov', target='_blank')
-						img(src='img/clv-seal.png', alt='City of Las Vegas')
+			include header
 
 			.content(role='main')
 
@@ -18,24 +14,52 @@ block content
 
 					p.lede Am I zoned for my barbershop?  Is this a great spot for my bar?  Where should I open my boutique hat store? The City of Las Vegas's development opportunity finder tool is here to help you find the best property, or learn more about the property you already have, to help improve your permitting and licensing process with the City.
 
-					h3 Overview: What you'll need
-
-					p This is a twelve-step application. We'll ask you for the following information:
+					h3 What you'll need
 
 					ul
 						li What is your business?
 						li Are there aspects of your business that could affect your location?
 						li Do you have a space or neighborhood in mind already?
 
-					p We'll show you all the information you need to do decide if this property works with the City of Las Vegas regulations, and let you know about your next steps to help you get started.
-
 					.section-navigation
 						button(type='button', value='next') Let's get started!
 
 
-				footer
-					.disclaimer
-						p The information provided on this site is not guaranteed to be accurate or up-to-date, although we'll try our best.  Things we don't know could affect the results of this application.  Please speak to your friendly neighborhood redevelopment agency staff for more information.
-					#pi
-						a(href='https://github.com/codeforamerica/lv-dof/', target='_blank')
-							img(alt='CfA flag', src='img/cfa-flagtag.svg')
+
+				section#section10.section-full
+
+					h2 Find your primary business category
+
+					p.lede Select from this drop-down list to help categorize your business.
+						a.modal(href='', data-title='Information about describing your primary business type') (Help me do this.)
+
+					p
+						#primary-business-form.form(ng-controller='TypeaheadCtrl')
+							input#primary-business-input(type='text', name='primary-business', ng-model='primaryBusiness', typeahead='state for state in states | filter:$viewValue | limitTo:8', placeholder='Write some words')
+
+					p
+						small Note: This is a simple type-ahead dropdown feature for current business categories, but other strategies may be used here.
+
+					.section-navigation
+						button(type='button', value='back') Go back
+						button(type='button', value='skip', data-section='section30') Skip business classification
+						button(type='button', value='next', id='primary-business-next') Next
+
+
+				section#section40.section-map
+
+					h2 Enter the address of your space
+
+					p.lede Please type in an address, or click a location on the map.
+
+					p
+						#property-address-form.form
+							input#property-address-input(type='text', name='address', placeholder='example: 495 S. Main Street')
+
+					.section-navigation
+						button(type='button', value='back', data-section='section30') Go back
+						button(type='button', value='next', id='property-address-next', data-section='section50') Next
+
+					
+
+			include footer

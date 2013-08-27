@@ -195,6 +195,7 @@ $(document).ready(function () {
 		_changeSection(this)
 	})
 
+/*
 	$('#property-address-form').on('keyup', function (e) {
 		propertyAddress = $('#property-address-input').val()
 		if (propertyAddress != '') {
@@ -216,7 +217,7 @@ $(document).ready(function () {
 			$('#primary-business-next').prop('disabled', true)
 		}
 	})
-
+*/
 
 	$('.leaflet-popup-pane').on('click', '#marker-more-info', function (e) {
 		e.preventDefault()
@@ -235,8 +236,8 @@ $(document).ready(function () {
 	$('a.modal').on('click', function (e) {
 		e.preventDefault()
 		$('#modal').fadeIn(200)
-		$('#modal-title').text($(this).data('title'))
-		$('#modal-text').text($(this).data('content'))
+		$('.modal-title').text($(this).data('title'))
+		$('.modal-text').text($(this).data('content'))
 	})
 
 	// Various ways of closing it

@@ -105,21 +105,27 @@ html, body {
 header {
 	.user-select(none);
 	#nav-logo {
-		width: 120px;
 		height: 150px;
 		position: absolute;
-		top: 30px;
-		right: 0px;
+		top: 10px;
+		left: -20px;
 		.opacity(0.75);
 		a {
 			.overrideExternalLinkStyle;
 		}
 		img {
-			float: right;
+			position: absolute;
+			right: 0px;
 			display: block;
 			width: 94px;
 			height: 94px;
 		}
+	}
+}
+.partscreen header {
+	margin-left: 120px;
+	#nav-logo {
+		left: 100px;
 	}
 }
 
@@ -176,6 +182,7 @@ button {
 	padding: 10px 20px;
 	.user-select(none);
 	text-align: left;
+	margin-right: 5px;
 	&.back, &[value=back] {
 		&:before {
 			content: '« ';
@@ -196,13 +203,18 @@ button {
 	&[value=next] {
 		position: absolute;
 		right: 0;
+		margin-right: 0;
+		margin-left: 5px;
 		&:after {
 			content: ' »';
 			margin-left: 10px;
 			font-size: 17px;
 			font-weight: 200;
 			line-height: 13px;
-		}		
+		}
+		&:active {
+			position: absolute;
+		}
 	}
 	&:hover {
 		background-color: lighten(@color-scheme, 6%);
@@ -435,9 +447,13 @@ table:not(.no-style) {
 		.box-shadow(0 0 10px rgba(0,0,0,0.25));
 		border-radius: 3px;		
 	}
-	#modal-content {
+	.modal-content {
 		padding: 0px 20px;
 		.user-select(text);
+		.modal-title {			
+		}
+		.modal-text {
+		}
 	}
 }
 .modal-close, .popup-action {
