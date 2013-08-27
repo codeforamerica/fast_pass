@@ -1,5 +1,41 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+	#main.fullscreen
+		.container
+
+			header(role='banner')
+				h1 Development<br>Opportunity<br>Finder<sub>Demo</sub>
+				#nav-logo
+					a(href='http://lasvegasnevada.gov', target='_blank')
+						img(src='img/clv-seal.png', alt='City of Las Vegas')
+
+			.content(role='main')
+
+				section#start.section-full.section-start
+
+					h2 Find the best property for your business.
+
+					p.lede Am I zoned for my barbershop?  Is this a great spot for my bar?  Where should I open my boutique hat store? The City of Las Vegas's development opportunity finder tool is here to help you find the best property, or learn more about the property you already have, to help improve your permitting and licensing process with the City.
+
+					h3 Overview: What you'll need
+
+					p This is a twelve-step application. We'll ask you for the following information:
+
+					ul
+						li What is your business?
+						li Are there aspects of your business that could affect your location?
+						li Do you have a space or neighborhood in mind already?
+
+					p We'll show you all the information you need to do decide if this property works with the City of Las Vegas regulations, and let you know about your next steps to help you get started.
+
+					.section-navigation
+						button(type='button', value='next') Let's get started!
+
+
+				footer
+					.disclaimer
+						p The information provided on this site is not guaranteed to be accurate or up-to-date, although we'll try our best.  Things we don't know could affect the results of this application.  Please speak to your friendly neighborhood redevelopment agency staff for more information.
+					#pi
+						a(href='https://github.com/codeforamerica/lv-dof/', target='_blank')
+							img(alt='CfA flag', src='img/cfa-flagtag.svg')
