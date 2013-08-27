@@ -75,8 +75,8 @@ html, body {
 	#gradient > .radial(@innerColor: lighten(@background, 10%), @outerColor: darken(@background, 4%));
 	&.partscreen {
 		width: @section-part-width;
-		border-right: 1px solid #a1a1a1;
-		.box-shadow(4px 0 8px rgba(0,0,0,0.20));
+		border-right: 1px solid @lightgray;
+		.box-shadow(3px 0 6px rgba(0,0,0,0.10));
 		.container {
 			width: 100%;
 			.content {
@@ -444,7 +444,7 @@ table:not(.no-style) {
 		top: 30%;
 		margin-left: -250px;
 		background-color: @background;
-		.box-shadow(0 0 10px rgba(0,0,0,0.25));
+		.box-shadow(0 0 10px rgba(0,0,0,0.20));
 		border-radius: 3px;		
 	}
 	.modal-content {
@@ -471,7 +471,7 @@ table:not(.no-style) {
 footer {
 	width: @section-width;
 	margin: 40px auto 20px 0;
-	border-top: 1px solid #ccc;
+	border-top: 1px solid @lightgray;
 	font-size: 10px;
 	color: #999;
 	position: relative;

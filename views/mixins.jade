@@ -1,0 +1,60 @@
+mixin nav-button(section, value)
+	if attributes.class
+		button(type='button', value='#{value}', data-section='#{section}', class='#{attributes.class}')
+			block
+	else
+		button(type='button', value='#{value}', data-section='#{section}')
+			block
+
+mixin nav-back(section)
+	if section
+		button(type='button', value='back', data-section='#{section}')
+			if block
+				block
+			else
+				| Back
+	else
+		button(type='button', value='back')
+			if block
+				block
+			else
+				| Back
+
+mixin nav-next(section)
+	if section
+		button(type='button', value='next', data-section='#{section}')
+			if block
+				block
+			else
+				| Next
+	else
+		button(type='button', value='next')
+			if block
+				block
+			else
+				| Next
+
+mixin radio-button(section)
+	p
+		button(type='button', data-section='#{section}')
+			block
+
+mixin link-modal(title)
+	//- Keep a space between link and preceding text
+	&nbsp;
+	a.modal(href='', data-title='#{title}')
+		block
+
+
+mixin checkbox(id)
+	input(type='checkbox', name='additional-business', value='1', id='#{id}')
+	label(for='#{id}')
+		block
+
+	a.small.help.modal(href='', data-title='#{id}')
+	br
+
+
+mixin loading
+	.loading
+		img(src='img/loading-lite.gif')

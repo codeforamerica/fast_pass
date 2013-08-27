@@ -30,6 +30,7 @@ var hash = window.location.hash;
 hash = hash.split('#/')[1]
 
 
+
 String.prototype.endsWith = function(suffix) {
 	return this.indexOf(suffix, this.length - suffix.length) !== -1;
 }
@@ -159,6 +160,9 @@ map.markerLayer.setGeoJSON({
 // ***********************************************************************/
 
 
+var SECTION_TRANSITION_OUT_TIME = 175,
+	SECTION_TRANSITION_IN_TIME = 350
+
 var ZONE_URL = 'data/zones.json'
 var ZONE_DATA
 
@@ -222,10 +226,10 @@ $(document).ready(function () {
 	$('.leaflet-popup-pane').on('click', '#marker-more-info', function (e) {
 		e.preventDefault()
 		if ($('#section40').is(':visible') || $('#section45').is(':visible')) {
-			$('#section40').fadeOut(200)
-			$('#section45').fadeOut(200)
-			$('#section50').fadeOut(200)
-			$('#section50').fadeIn(400)
+			$('#section40').fadeOut(SECTION_TRANSITION_OUT_TIME)
+			$('#section45').fadeOut(SECTION_TRANSITION_OUT_TIME)
+			$('#section50').fadeOut(SECTION_TRANSITION_OUT_TIME)
+			$('#section50').fadeIn(SECTION_TRANSITION_IN_TIME)
 			window.location.hash = '/section50'
 		}
 	})
@@ -235,7 +239,7 @@ $(document).ready(function () {
 	// Opens modal
 	$('a.modal').on('click', function (e) {
 		e.preventDefault()
-		$('#modal').fadeIn(200)
+		$('#modal').show()
 		$('.modal-title').text($(this).data('title'))
 		$('.modal-text').text($(this).data('content'))
 	})
@@ -308,7 +312,7 @@ function _changeSection (clicked) {
 	}
 
 	if ($targetSection) {
-		$thisSection.fadeOut(200, function () {
+		$thisSection.fadeOut(SECTION_TRANSITION_OUT_TIME, function () {
 
 			// change screen
 			if ($targetSection.attr('class').endsWith('-map')) {
@@ -318,7 +322,7 @@ function _changeSection (clicked) {
 				$('#main').removeClass('partscreen').addClass('fullscreen').delay(800)
 			}
 
-			$targetSection.fadeIn(400)
+			$targetSection.fadeIn(SECTION_TRANSITION_IN_TIME)
 			
 			// auto forward loading screens
 			if ($targetSection.find('.loading').length > 0) {
@@ -347,7 +351,7 @@ function _initSection () {
 
 function _closeModal() {
 	if ($('#modal').is(':visible')) {
-		$('#modal').fadeOut(200)
+		$('#modal').hide()
 	}
 }
 
