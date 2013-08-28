@@ -5,14 +5,20 @@ section#section45.section-map
 	ul
 		li Your business category: 
 			strong
-				+link-modal('Automotive Services Business Category Definition') {primaryBusiness}
+				+modal-link('Automotive Services Business Category Definition') {{primaryBusiness}}
 
 	p.lede Zones in which you're qualified to be in will be shown on the map to the left. Select individual parcels to learn more.
 
 	p Based on the information we've collected so far, these zones are most likely approved for your business.
 
 	ul.comfy.no-bullets
-		li
+		+zone('green', 'DCP-0', 'Downtown Centennial Plan')
+
+	p These zones may require additional conditions for approval.
+
+	ul.comfy.no-bullets
+		+zone('orange', 'CM-1', 'Light Industrial')
+		+zone('yellow', 'CM-2', 'Medium Industrial')
 
 	.section-navigation
 		+nav-back('section30')

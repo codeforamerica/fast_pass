@@ -290,7 +290,7 @@ function _changeSection (clicked) {
 
 	if ($(clicked).data('externalLink')) {
 		var externalLink = $(clicked).data('externalLink')
-		if ($(clicked).attr('id') == 'pre-app') {
+		if ($(clicked).attr('id') == 'external-pre-app') {
 			externalLink = encodeURI(externalLink + '?ProjectAddress=' + propertyAddress + '&Parcel=002-02-119&Ward=(unknown)&ProposedUse=' + businessType +'')
 			window.open(externalLink, '_blank')
 			return true

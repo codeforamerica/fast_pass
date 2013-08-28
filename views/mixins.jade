@@ -39,11 +39,20 @@ mixin radio-button(section)
 		button(type='button', data-section='#{section}')
 			block
 
-mixin link-modal(title)
+mixin external-link-button(id, link)
+	p
+		button(type='button', id='external-#{id}', data-external-link='#{link}')
+			block
+
+mixin modal-link(header)
 	//- Keep a space between link and preceding text
 	&nbsp;
-	a.modal(href='', data-title='#{title}')
-		block
+	if attributes.title
+		a.modal(href='', data-title='#{header}', title='#{attributes.title}')
+			block
+	else 
+		a.modal(href='', data-title='#{header}')
+			block
 
 
 mixin checkbox(id)
@@ -58,3 +67,15 @@ mixin checkbox(id)
 mixin loading
 	.loading
 		img(src='img/loading-lite.gif')
+
+
+//- DISPLAY SPECIFIC
+
+
+mixin zone(color, zone_id, zone_name)
+	li
+		strong
+			span(class='clickable #{color} pill')= zone_id
+			+modal-link('#{zone_id} #{zone_name} Zone Definition')(title='click to highlight zone on map')= zone_name
+
+
