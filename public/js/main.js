@@ -1,4 +1,4 @@
-// LAS VEGAS FOOD TRUCKS MAP - main application Javascript
+// DOF
 
 /*************************************************************************
 // 

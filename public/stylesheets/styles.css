@@ -375,7 +375,6 @@ body {
   z-index: 4000;
   background-color: #fcfcfc;
   padding: 30px;
-  box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-transition: width 0.8s;

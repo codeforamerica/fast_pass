@@ -5,6 +5,7 @@
 
 var express = require('express')
   , routes = require('./routes')
+  , print = require('./routes/print')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
@@ -35,6 +36,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
+app.get('/print', print.view);
 app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
