@@ -22,12 +22,14 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(app.router);
-/*
 app.use(lessMiddleware({
     src: __dirname + '/views/stylesheets',
-    dest: __dirname + '/public/stylesheets'
+    dest: __dirname + '/public/stylesheets',
+    prefix: '/stylesheets',
+    once: true,
+    compress: true,
+    debug: true
 }));
-*/
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
