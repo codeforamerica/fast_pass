@@ -38,7 +38,6 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-//app.get('/section/:sectionId', routes.index);
 //app.get('/print', print.view);
 //app.get('/users', user.list);
 
