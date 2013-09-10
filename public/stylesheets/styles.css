@@ -69,7 +69,7 @@ a.no-color{color:inherit}
 a.help:after{content:'?';display:inline-block;position:relative;top:-1px;width:10px;height:10px;border-radius:6px;border:1px solid #757575;margin-left:4px;margin-right:4px;text-align:center;color:#757575;line-height:10px;font-size:10px}
 .hidden{display:none}
 small{font-size:11px;color:#888}
-.content{width:740px;position:relative}.content section{display:none}.content section.section-start{display:block}
+.content{width:740px;position:relative}.content section.section-start{display:block}
 .content section.section-large{margin-top:40px}
 .content section.section-hidden{display:none}
 .content section.section-map{width:500px;position:relative;right:0}
