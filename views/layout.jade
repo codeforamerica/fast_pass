@@ -5,7 +5,7 @@ doctype 5
 	html(class='no-js lt-ie9 lt-ie8')
 //if IE 8
 	html(class='no-js lt-ie9 lt-ie8', ng-app)
-html.no-js(ng-app)
+html.no-js(ng-app='dof')
 	head
 		meta(charset='utf-8')
 		meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
@@ -16,14 +16,7 @@ html.no-js(ng-app)
 		link(rel='stylesheet', style='text/css', href='/stylesheets/styles.css')
 		link(rel='icon', type='image/png', href='favicon.png')
 
-		script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js')
-		script(src='js/vendor/modernizr-2.6.2.min.js')
-
-		script(src='http://api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.js')
-		link(rel='stylesheet', href='http://api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.css')
-		//if lte IE 8
-			link(rel='stylesheet', href='http://api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.ie.css')
-		script(src='http://api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.js')
+		include _scripts-head.html
 		
 	body
 
@@ -31,12 +24,8 @@ html.no-js(ng-app)
 
 		block content
 
-		include modal
-
 		#map
 
-		script(src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
-		script(src='//balupton.github.io/jquery-scrollto/lib/jquery-scrollto.js')
+		include modal
 
-		script(type='text/javascript', src='js/vendor/typeahead.min.js')
-		script(type='text/javascript', src='js/main.js')
+		include _scripts-foot.html

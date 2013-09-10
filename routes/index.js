@@ -4,5 +4,5 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Las Vegas DOF Work-in-Progress' });
+  res.render('index', { title: 'City of Las Vegas Development Opportunity Finder' });
 };

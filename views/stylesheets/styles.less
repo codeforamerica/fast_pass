@@ -241,7 +241,7 @@ a {
 		text-decoration: underline;
 	}
 	&[href^='http://'], &[href^='ftp://'], &[href^='https://'] {
-		background: url('../img/extlink.gif') center right no-repeat;
+		background: url('/img/extlink.gif') center right no-repeat;
 		padding-right: 14px;
 	}
 	&.small {
@@ -436,14 +436,14 @@ table:not(.no-style) {
 		position: fixed;		
 	}
 	.modal-box {
-		width: 500px;
 		position: fixed;
+		width: 500px;
 		left: 50%;
 		top: 30%;
 		margin-left: -250px;
 		background-color: @background;
-		.box-shadow(0 0 10px rgba(0,0,0,0.20));
-		border-radius: 3px;		
+		.box-shadow(0 0 8px rgba(0,0,0,0.25));
+		border-radius: 3px;
 	}
 	.modal-content {
 		padding: 0px 20px;
@@ -451,6 +451,8 @@ table:not(.no-style) {
 		.modal-title {			
 		}
 		.modal-text {
+			max-height: 500px;
+			overflow-y: auto;
 		}
 	}
 }

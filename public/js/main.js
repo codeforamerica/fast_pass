@@ -1,4 +1,5 @@
 // DOF
+'use strict'
 
 /*************************************************************************
 // 
@@ -25,6 +26,8 @@ var DEBUG_ALLOW         = true
 //
 // ***********************************************************************/
 
+/*
+Eventually remove all of this and let Angular do all of it
 var hash = window.location.hash;
 
 hash = hash.split('#/')[1]
@@ -45,6 +48,7 @@ if (hash) {
 		$('#main').removeClass('fullscreen').addClass('partscreen')
 	}
 }
+*/
 
 var propertyAddress = '495 S. Main Street',
 	businessType = 'Beer Garden'
@@ -163,7 +167,7 @@ map.markerLayer.setGeoJSON({
 var SECTION_TRANSITION_OUT_TIME = 175,
 	SECTION_TRANSITION_IN_TIME = 350
 
-var ZONE_URL = 'data/zones.json'
+var ZONE_URL = '/data/zones.json'
 var ZONE_DATA
 
 $.when( $.ajax({
@@ -230,7 +234,7 @@ $(document).ready(function () {
 			$('#section45').fadeOut(SECTION_TRANSITION_OUT_TIME)
 			$('#section50').fadeOut(SECTION_TRANSITION_OUT_TIME)
 			$('#section50').fadeIn(SECTION_TRANSITION_IN_TIME)
-			window.location.hash = '/section50'
+			//window.location.hash = '/section50'
 		}
 	})
 
@@ -344,8 +348,12 @@ function _initSection () {
 
 	// focus on first input, textarea, or select if it exists
 	$section.find('input[type=text],textarea,select').filter(':visible:first').focus()
+	if ($('#primary-business-input').is(':visible')) {
+		$('#primary-business-input').focus()
+	}
 
-	window.location.hash = '/' + $section.attr('id')
+//	REMOVE FOR ANGULAR
+//	window.location.hash = '/' + $section.attr('id')
 
 }
 
