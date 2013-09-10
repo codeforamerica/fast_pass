@@ -1,12 +1,11 @@
 'use strict';
 
-alert('fuck!')
 // Declare app level module which depends on filters, and services
 angular.module('dof', ['dof.controllers']).
 	config(['$routeProvider', function($routeProvider) {
 		$routeProvider.
-			when('/',                    {templateUrl: '/partials/start.html',    controller: 'sectionStart'}).
-			when('section',  {templateUrl: '/partials/section.html',  controller: 'sectionGo'}).
+			when('/',        {templateUrl: '/partials/start.html',    controller: 'sectionStart'}).
+			when('/section/:sectionId', {templateUrl: '/partials/section.html',  controller: 'sectionGo'}).
 			otherwise({redirectTo: '/'});
   }]);
 
