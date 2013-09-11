@@ -173,7 +173,7 @@ h5 {
 	line-height: 175%;
 }
 
-button {
+button, a.button {
 	background-color: @color-scheme;
 	color: white;
 	border: 0;
@@ -181,6 +181,8 @@ button {
 	.user-select(none);
 	text-align: left;
 	margin-right: 5px;
+	display: inline-block;
+	height: 36px;
 	&.back, &[value=back] {
 		&:before {
 			content: '« ';
@@ -190,7 +192,7 @@ button {
 			line-height: 13px;
 		}		
 	} 
-	&[value=back] {
+	&.back, &[value=back] {
 		left: 0;
 		right: auto;
 		background-color: desaturate(lighten(@color-scheme, 20%),30%);
@@ -198,7 +200,7 @@ button {
 //			background-color: @color-scheme;
 		}
 	}
-	&[value=next] {
+	&.next, &[value=next] {
 		position: absolute;
 		right: 0;
 		margin-right: 0;
@@ -216,6 +218,7 @@ button {
 	}
 	&:hover {
 		background-color: lighten(@color-scheme, 6%);
+		text-decoration: none;
 	}
 	&:active {
 		position: relative;
@@ -310,7 +313,7 @@ small {
 		position: relative;
 		width: 100%;
 		margin-top: 30px;
-		height: 30px;
+		height: 36px;
 		margin-bottom: 30px;
 		.user-select(none);
 	}
@@ -322,9 +325,13 @@ small {
 			height: 45px;
 			position: relative;
 		}
-		button {
+		button, a.button {
 			font-weight: 200;
 			position: absolute;
+		}
+		a.button {
+			height: 40px;
+			line-height: 20px;
 		}
 	}
 	.form {
@@ -475,11 +482,12 @@ footer {
 	color: #999;
 	position: relative;
 	.disclaimer {
+		width: @section-width - 70px;
 	}
 	#pi {
 		position: absolute;
-		bottom: -30px;
 		right: 0;
+		bottom: 0;
 		.opacity(.25);
 		a {
 			.overrideExternalLinkStyle;

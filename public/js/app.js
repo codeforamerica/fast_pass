@@ -4,8 +4,8 @@
 angular.module('dof', ['dof.controllers']).
 	config(['$routeProvider', function($routeProvider) {
 		$routeProvider.
-			when('/',                   {templateUrl: '/partials/start.html',  controller: 'sectionStart'}).
-			when('/section/:sectionId', {templateUrl: _getSectionTemplate,   controller: 'sectionGo'}).
+			when('/',                   {templateUrl: '/partials/start.html', controller: 'sectionStart'}).
+			when('/section/:sectionId', {templateUrl: _getSectionTemplate,    controller: 'sectionGo'}).
 			otherwise({redirectTo: '/'});
   }]);
 
@@ -14,30 +14,12 @@ function _getSectionTemplate($routeParams) {
 }
 
 function sectionStart($scope) {
+	// Nothing
 }
 
 function sectionGo($scope, $routeParams) {
-
 	$scope.sectionId = $routeParams.sectionId
-
-
-
-/*					include sections/12
-					include sections/15
-					include sections/20
-					include sections/30
-					include sections/31
-					include sections/39
-					include sections/39b
-					include sections/40
-					include sections/41
-					include sections/45
-					include sections/50
-					include sections/70
-*/
-
 }
-
 
  
 

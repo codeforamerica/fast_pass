@@ -26,6 +26,9 @@ var DEBUG_ALLOW         = true
 //
 // ***********************************************************************/
 
+var SECTION_ORDER = ['start', '10', '12', '15', '20', '30', '31', '39', '39b', '40', '41', '45', '50', '70']
+
+
 /*
 Eventually remove all of this and let Angular do all of it
 var hash = window.location.hash;
@@ -197,12 +200,13 @@ $.when( $.ajax({
 $(document).ready(function () {
 
 	_initSection()
-
-	$('button').on('click', function (e) {
+/*
+	// This won't work anymore because jQuery relies on the object existing before the on-click handler will work
+	$('button[data-section]').on('click', function (e) {
 		e.preventDefault()
 		_changeSection(this)
 	})
-
+*/
 /*
 	$('#property-address-form').on('keyup', function (e) {
 		propertyAddress = $('#property-address-input').val()
@@ -288,10 +292,16 @@ $(document).ready(function () {
 // ***********************************************************************/
 
 function _changeSection (clicked) {
+	alert('this is done')
+
+	var the_section = window.location.href.split('section/')[1]
+
+	alert(the_section)
 
 	var $thisSection = $(clicked).parents('section'),
 		$targetSection
 
+	// TODO: External links are a different type of function
 	if ($(clicked).data('externalLink')) {
 		var externalLink = $(clicked).data('externalLink')
 		if ($(clicked).attr('id') == 'external-pre-app') {
@@ -302,6 +312,8 @@ function _changeSection (clicked) {
 		window.open(externalLink, '_blank')
 		return true
 	}
+
+	//
 
 	if ($(clicked).val() == 'next') {
 		$targetSection = $thisSection.next('section')
