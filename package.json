@@ -14,6 +14,6 @@
     "express": "3.2.6",
     "pg": "2.2.0",
     "jade": "*",
-    "less": "1.4.x"
+    "less-middleware": "0.1.x"
   }
 }

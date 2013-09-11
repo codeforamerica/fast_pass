@@ -1,0 +1,25 @@
+<section id='section10' class='section-full'>
+
+	<h2>Find your primary business category</h2>
+	
+	<p class='lede'>
+		Select from this drop-down list to help categorize your business.
+		<a href='' data-title='How to find your primary business type' class='modal'>(Help me do this.)</a>
+	</p>
+	
+	<div id='primary-business-form' ng-controller='TypeaheadCtrl' class='form'>
+			<input id='primary-business-input' type='text' name='primary-business' typeahead='state for state in states | filter:$viewValue | limitTo:8' placeholder='Write some words'>
+			<input type='hidden' ng-model='primaryBusiness' value='test'>
+	</div>
+
+	<p>
+		<small>Note: This is a simple type-ahead dropdown feature for current business categories, but other strategies may be used here.</small>
+	</p>
+	
+	<div class='section-navigation'>
+		<a class='back button' href='/'>Back</a>
+		<a class='skip button' href='/#/section/30'>Skip business classification</a>
+		<a class='next button' href='/#/section/12'>Next</a>
+	</div>
+
+</section>

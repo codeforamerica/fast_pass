@@ -5,9 +5,11 @@
 
 var express = require('express')
   , routes = require('./routes')
+  , print = require('./routes/print')
   , user = require('./routes/user')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , lessMiddleware = require('less-middleware');
 
 var app = express();
 
@@ -20,6 +22,14 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(app.router);
+app.use(lessMiddleware({
+    src: __dirname + '/views/stylesheets',
+    dest: __dirname + '/public/stylesheets',
+    prefix: '/stylesheets',
+    once: true,
+    compress: true,
+    debug: true
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
@@ -28,7 +38,8 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/users', user.list);
+//app.get('/print', print.view);
+//app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

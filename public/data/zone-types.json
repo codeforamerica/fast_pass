@@ -1,0 +1,200 @@
+[
+    {
+        "designation": "U",
+        "name": "Undeveloped",
+        "page_reference": "page 69",
+        "type": "residential"
+    },
+    {
+        "designation": "R-E",
+        "name": "Residential Estates",
+        "page_reference": "page 73",
+        "type": "residential"
+    },
+    {
+        "designation": "R-1",
+        "name": "Single Family Residential",
+        "page_reference": "page 77",
+        "type": "residential"
+    },
+    {
+        "designation": "R-CL",
+        "name": "Single Family Compact-Lot",
+        "page_reference": "page 81",
+        "type": "residential"
+    },
+    {
+        "designation": "R-TH",
+        "name": "Single Family Attached",
+        "page_reference": "page 87",
+        "type": "residential"
+    },
+    {
+        "designation": "R-2",
+        "name": "Medium-Low Density Residential",
+        "page_reference": "page 91",
+        "type": "residential"
+    },
+    {
+        "designation": "R-3",
+        "name": "Medium Density Residential",
+        "page_reference": "page 95",
+        "type": "residential"
+    },
+    {
+        "designation": "R-4",
+        "name": "High Density Residential",
+        "page_reference": "page 99",
+        "type": "residential"
+    },
+    {
+        "designation": "R-MH",
+        "name": "Mobile/Manufactured Home Residential",
+        "page_reference": "page 105",
+        "type": "residential"
+    },
+    {
+        "designation": "P-O",
+        "name": "Professional Office",
+        "page_reference": "page 153",
+        "type": "commercial"
+    },
+    {
+        "designation": "O",
+        "name": "Office",
+        "page_reference": "page 157",
+        "type": "commercial"
+    },
+    {
+        "designation": "C-1",
+        "name": "Limited Commercial",
+        "page_reference": "page 161",
+        "type": "commercial"
+    },
+    {
+        "designation": "C-2",
+        "name": "General Commercial",
+        "page_reference": "page 165",
+        "type": "commercial"
+    },
+    {
+        "designation": "C-PB",
+        "name": "Planned Business Park",
+        "page_reference": "page 169",
+        "type": "commercial"
+    },
+    {
+        "designation": "C-M",
+        "name": "Commercial/Industrial",
+        "page_reference": "page 173",
+        "type": "commercial"
+    },
+    {
+        "designation": "M",
+        "name": "Industrial",
+        "page_reference": "page 177",
+        "type": "commercial"
+    },
+    {
+        "designation": "C-V",
+        "name": "Civic",
+        "page_reference": "page 225",
+        "type": "special"
+    },
+    {
+        "designation": "P-C",
+        "name": "Planned Community",
+        "page_reference": "page 229",
+        "type": "special"
+    },
+    {
+        "designation": "PD",
+        "name": "Planned Development",
+        "page_reference": "page 233",
+        "type": "special"
+    },
+    {
+        "designation": "R-PD",
+        "name": "Residential Planned Development",
+        "page_reference": "page 237",
+        "type": "special"
+    },
+    {
+        "designation": "T-C",
+        "name": "Town Center",
+        "page_reference": "page 239",
+        "type": "special"
+    },
+    {
+        "designation": "T-D",
+        "name": "Traditional Development",
+        "page_reference": "page 243",
+        "type": "special"
+    },
+    {
+        "designation": "A-O",
+        "name": "Airport Overlay",
+        "page_reference": "page 247",
+        "type": "overlay"
+    },
+    {
+        "designation": "CD-O",
+        "name": "Designed Commercial Overlay",
+        "page_reference": "page 251",
+        "type": "overlay"
+    },
+    {
+        "designation": "DC-O",
+        "name": "Downtown Casino Overlay",
+        "page_reference": "page 253",
+        "type": "overlay"
+    },
+    {
+        "designation": "DCP-O",
+        "name": "Downtown Centennial Plan Overlay",
+        "page_reference": "page 261",
+        "type": "overlay"
+    },
+    {
+        "designation": "DE-O",
+        "name": "Downtown Entertainment Overlay",
+        "page_reference": "page 263",
+        "type": "overlay"
+    },
+    {
+        "designation": "G-O",
+        "name": "Gaming Overlay",
+        "page_reference": "page 265",
+        "type": "overlay"
+    },
+    {
+        "designation": "HS-O",
+        "name": "Hillside Development Overlay",
+        "page_reference": "page 267",
+        "type": "overlay"
+    },
+    {
+        "designation": "HD-O",
+        "name": "Historic Designation Overlay",
+        "page_reference": "page 279",
+        "type": "overlay"
+    },
+    {
+        "designation": "SB-O",
+        "name": "Las Vegas Boulevard Scenic Byway Overlay",
+        "page_reference": "page 293",
+        "type": "overlay"
+    },
+    {
+        "designation": "LW-O",
+        "name": "Live/Work Overlay",
+        "page_reference": "page 295",
+        "type": "overlay"
+    },
+    {
+        "designation": "RP-O",
+        "name": "Rural Preservation Overlay",
+        "page_reference": "page 297",
+        "type": "overlay"
+    }
+]
