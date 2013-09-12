@@ -7,7 +7,7 @@ angular.module('dof', ['dof.controllers']).
 			when('/',                   {templateUrl: '/partials/start.html', controller: 'sectionStart'}).
 			when('/section/:sectionId', {templateUrl: _getSectionTemplate,    controller: 'sectionGo'}).
 			otherwise({redirectTo: '/'});
-  }]);
+	}]);
 
 function _getSectionTemplate($routeParams) {
 	return '/partials/sections/' + $routeParams.sectionId + '.html'
