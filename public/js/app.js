@@ -1,6 +1,9 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
+
+angular.module('dof', ['ui.ie-shiv'])
+
 angular.module('dof', ['dof.controllers']).
 	config(['$routeProvider', function($routeProvider) {
 		$routeProvider.
@@ -15,6 +18,7 @@ function _getSectionTemplate($routeParams) {
 
 function sectionStart($scope) {
 	// Nothing
+	alert('section start called')
 }
 
 function sectionGo($scope, $routeParams) {
