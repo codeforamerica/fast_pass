@@ -1,11 +1,11 @@
 doctype 5
 //if lt IE 8
-	html(class='no-js lt-ie9 lt-ie8 lt-ie7')
+	html(xmlns:ng='http://http://angularjs.org', id='ng-app', class='no-js lt-ie9 lt-ie8 lt-ie7', ng-app='dof')
 //if IE 7
-	html(class='no-js lt-ie9 lt-ie8')
+	html(xmlns:ng='http://http://angularjs.org', id='ng-app', class='no-js lt-ie9 lt-ie8', ng-app='dof')
 //if IE 8
-	html(class='no-js lt-ie9 lt-ie8', ng-app)
-html(xmlns:ng='http://angularjs.org', class='ng-app:dof no-js', id='ng-app', ng-app='dof')
+	html(xmlns:ng='http://http://angularjs.org', id='ng-app', class='no-js lt-ie9 lt-ie8', ng-app='dof')
+html(ng-app='dof')
 	head
 		meta(charset='utf-8')
 		meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')

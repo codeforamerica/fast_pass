@@ -7,8 +7,7 @@ angular.module('dof', ['ui.ie-shiv'])
 angular.module('dof', ['dof.controllers']).
 	config(['$routeProvider', function($routeProvider) {
 		$routeProvider.
-			when('/',                   {template: '<div>hi</div>',           controller: 'sectionStart'}).
-//			when('/',                   {templateUrl: '/partials/start.html', controller: 'sectionStart'}).
+			when('/',                   {templateUrl: '/partials/start.html', controller: 'sectionStart'}).
 			when('/section/:sectionId', {templateUrl: _getSectionTemplate,    controller: 'sectionGo'}).
 			otherwise({redirectTo: '/'});
 	}]);
@@ -19,7 +18,6 @@ function _getSectionTemplate($routeParams) {
 
 function sectionStart($scope) {
 	// Nothing
-	alert('section start called')
 }
 
 function sectionGo($scope, $routeParams) {
