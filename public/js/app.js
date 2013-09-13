@@ -15,7 +15,10 @@ function _getSectionTemplate($routeParams) {
 }
 
 function sectionStart($scope) {
-	// Nothing
+
+	// Ensure that main element is set to fullscreen class (useful if starting over from partscreen view)
+	document.getElementById('main').className = 'fullscreen'
+
 }
 
 function sectionGo($scope, $routeParams) {
@@ -23,22 +26,23 @@ function sectionGo($scope, $routeParams) {
 	$scope.sectionId = $routeParams.sectionId
 
 	// DOM id for jQuery
-	var sectionId = '#section' + $scope.sectionId
+	var sectionId = '#section' + $scope.sectionId,
+		$section = $(sectionId)
 
-	// Alternate way of finding it
-	var $section = $('section').filter(':visible')
+	// Note: this DOM manipulation after the template has loaded may not be the most Angular-friendly way of
+	// doing this and may not even work in IE8
 
 	// Change width of screen based on class
-	if ($(sectionId).attr('class') == 'section-map') {
-		$('#main').removeClass('fullscreen').addClass('partscreen')
+	if ($section.attr('class') == 'section-map') {
+		document.getElementById('main').className = 'partscreen'
 	} else {
-		$('#main').removeClass('partscreen').addClass('fullscreen')
+		document.getElementById('main').className = 'fullscreen'
 	}
 
 	// Auto forward loading screens (FOR DEMO PURPOSES ONLY)
-	if ($(sectionId).find('.loading').length > 0) {
-		var spinnerNext = window.setTimeout(function() {
-			window.location.href = window.location.origin + $(sectionId).find('a.next').attr('href')
+	if ($section.find('.loading').length > 0) {
+		var spinner = window.setTimeout(function() {
+			window.location.href = window.location.origin + $section.find('a.next').attr('href')
 		}, 800)
 	}
 

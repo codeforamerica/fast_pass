@@ -681,7 +681,8 @@ small {
   width: 100%;
   text-align: center;
   margin-top: 80px;
-  height: 80px;
+  height: 160px;
+  color: gray;
 }
 ul {
   padding: 0;
