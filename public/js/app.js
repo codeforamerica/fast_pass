@@ -32,5 +32,12 @@ function sectionGo($scope, $routeParams) {
 		$('#main').removeClass('partscreen').addClass('fullscreen')
 	}
 
-	// _initSection()
+	// Auto forward loading screens (FOR DEMO PURPOSES ONLY)
+	if ($(sectionId).find('.loading').length > 0) {
+		var spinnerNext = window.setTimeout(function() {
+			window.location.href = window.location.origin + $(sectionId).find('a.next').attr('href')
+		}, 800)
+	}
+
+	_initSection()
 }

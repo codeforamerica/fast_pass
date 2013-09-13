@@ -331,13 +331,6 @@ function _changeSection (clicked) {
 
 
 			$targetSection.fadeIn(SECTION_TRANSITION_IN_TIME)
-			
-			// auto forward loading screens
-			if ($targetSection.find('.loading').length > 0) {
-				var spinnerNext = window.setTimeout(function() {
-					$targetSection.find('button[value=next]').trigger('click')
-				}, 800)
-			}
 
 			_initSection()
 		})
@@ -355,9 +348,6 @@ function _initSection () {
 	if ($('#primary-business-input').is(':visible')) {
 		$('#primary-business-input').focus()
 	}
-
-//	REMOVE FOR ANGULAR
-//	window.location.hash = '/' + $section.attr('id')
 
 }
 
