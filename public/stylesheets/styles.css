@@ -816,6 +816,9 @@ footer #pi {
   opacity: 0.25;
   filter: alpha(opacity=25);
 }
+.lt-ie9 footer #pi {
+  display: none;
+}
 footer #pi a {
   background: none;
   padding: 0;
@@ -890,6 +893,10 @@ footer #pi img {
   margin-top: 0;
   padding: 5px 20px;
   border-bottom: 1px solid lightgray;
+}
+.chromeframe a {
+  background: none;
+  padding: 0;
 }
 .twitter-typeahead {
   width: 100%;
