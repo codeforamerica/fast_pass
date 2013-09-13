@@ -2,8 +2,6 @@
 
 // Declare app level module which depends on filters, and services
 
-angular.module('dof', ['ui.ie-shiv'])
-
 angular.module('dof', ['dof.controllers']).
 	config(['$routeProvider', function($routeProvider) {
 		$routeProvider.
@@ -21,37 +19,18 @@ function sectionStart($scope) {
 }
 
 function sectionGo($scope, $routeParams) {
+	
 	$scope.sectionId = $routeParams.sectionId
-}
 
- 
+	// DOM id for jQuery
+	var sectionId = '#section' + $scope.sectionId
 
-AppCntl.$inject = ['$scope', '$route']
-function AppCntl($scope, $route) {
- $scope.$route = $route;
- 
- // initialize the model to something useful
- $scope.person = {
-  name:'anonymous',
-  contacts:[{type:'email', url:'anonymous@example.com'}]
- };
-}
- 
-function WelcomeCntl($scope) {
- $scope.greet = function() {
-  alert("Hello " + $scope.person.name);
- };
-}
- 
-function SettingsCntl($scope, $location) {
- $scope.cancel = function() {
-  $scope.form = angular.copy($scope.person);
- };
- 
- $scope.save = function() {
-  angular.copy($scope.form, $scope.person);
-  $location.path('/welcome');
- };
- 
- $scope.cancel();
+	// Change width of screen based on class
+	if ($(sectionId).attr('class') == 'section-map') {
+		$('#main').removeClass('fullscreen').addClass('partscreen')
+	} else {
+		$('#main').removeClass('partscreen').addClass('fullscreen')
+	}
+
+	// _initSection()
 }

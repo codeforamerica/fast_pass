@@ -200,13 +200,7 @@ $.when( $.ajax({
 $(document).ready(function () {
 
 	_initSection()
-/*
-	// This won't work anymore because jQuery relies on the object existing before the on-click handler will work
-	$('button[data-section]').on('click', function (e) {
-		e.preventDefault()
-		_changeSection(this)
-	})
-*/
+
 /*
 	$('#property-address-form').on('keyup', function (e) {
 		propertyAddress = $('#property-address-input').val()
@@ -242,10 +236,21 @@ $(document).ready(function () {
 		}
 	})
 
+	// BUTTONS
+	// External links - the rest should be in angular
+	$('#main').on('click', 'button', function (e) {
+		e.preventDefault()
+
+//		var url = $(this).data('externalLink')
+
+//		if (url) {
+//			_openExternalLink(url)
+//		}
+	})
 
 	// MODAL
 	// Opens modal
-	$('a.modal').on('click', function (e) {
+	$('#main').on('click', 'a.modal', function (e) {
 		e.preventDefault()
 		$('#modal').show()
 		$('.modal-title').text($(this).data('title'))
@@ -291,27 +296,21 @@ $(document).ready(function () {
 //
 // ***********************************************************************/
 
-function _changeSection (clicked) {
-	alert('this is done')
+function _openExternalLink (url) {
 
-	var the_section = window.location.href.split('section/')[1]
-
-	alert(the_section)
-
-	var $thisSection = $(clicked).parents('section'),
-		$targetSection
-
-	// TODO: External links are a different type of function
-	if ($(clicked).data('externalLink')) {
-		var externalLink = $(clicked).data('externalLink')
-		if ($(clicked).attr('id') == 'external-pre-app') {
-			externalLink = encodeURI(externalLink + '?ProjectAddress=' + propertyAddress + '&Parcel=002-02-119&Ward=(unknown)&ProposedUse=' + businessType +'')
-			window.open(externalLink, '_blank')
-			return true
-		}
-		window.open(externalLink, '_blank')
+/*	if ($(clicked).attr('id') == 'external-pre-app') {
+		url = encodeURI(url + '?ProjectAddress=' + propertyAddress + '&Parcel=002-02-119&Ward=(unknown)&ProposedUse=' + businessType +'')
+		window.open(url, '_blank')
 		return true
 	}
+*/
+	window.open(url, '_blank')
+	return true
+
+}
+
+function _changeSection (clicked) {
+
 
 	//
 
@@ -330,13 +329,6 @@ function _changeSection (clicked) {
 	if ($targetSection) {
 		$thisSection.fadeOut(SECTION_TRANSITION_OUT_TIME, function () {
 
-			// change screen
-			if ($targetSection.attr('class').endsWith('-map')) {
-				$('#main').removeClass('fullscreen').addClass('partscreen')
-			}
-			if (!$targetSection.attr('class').endsWith('-map')) {
-				$('#main').removeClass('partscreen').addClass('fullscreen').delay(800)
-			}
 
 			$targetSection.fadeIn(SECTION_TRANSITION_IN_TIME)
 			
