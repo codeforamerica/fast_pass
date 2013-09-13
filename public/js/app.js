@@ -25,6 +25,9 @@ function sectionGo($scope, $routeParams) {
 	// DOM id for jQuery
 	var sectionId = '#section' + $scope.sectionId
 
+	// Alternate way of finding it
+	var $section = $('section').filter(':visible')
+
 	// Change width of screen based on class
 	if ($(sectionId).attr('class') == 'section-map') {
 		$('#main').removeClass('fullscreen').addClass('partscreen')
@@ -39,5 +42,12 @@ function sectionGo($scope, $routeParams) {
 		}, 800)
 	}
 
-	_initSection()
+	// Focus on first form input, textarea, or select, if it exists
+	$section.find('input[type=text],textarea,select').filter(':visible:first').focus()
+
+	// Special needs input box
+	if ($('#primary-business-input').is(':visible')) {
+		$('#primary-business-input').focus()
+	}
+
 }

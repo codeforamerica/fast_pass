@@ -199,8 +199,6 @@ $.when( $.ajax({
 
 $(document).ready(function () {
 
-	_initSection()
-
 /*
 	$('#property-address-form').on('keyup', function (e) {
 		propertyAddress = $('#property-address-input').val()
@@ -311,9 +309,6 @@ function _openExternalLink (url) {
 
 function _changeSection (clicked) {
 
-
-	//
-
 	if ($(clicked).val() == 'next') {
 		$targetSection = $thisSection.next('section')
 	}
@@ -329,27 +324,12 @@ function _changeSection (clicked) {
 	if ($targetSection) {
 		$thisSection.fadeOut(SECTION_TRANSITION_OUT_TIME, function () {
 
-
 			$targetSection.fadeIn(SECTION_TRANSITION_IN_TIME)
 
-			_initSection()
 		})
 	}
 }
 
-function _initSection () {
-
-	// Actions to be performed when a section is displayed
-
-	var $section = $('section').filter(':visible')
-
-	// focus on first input, textarea, or select if it exists
-	$section.find('input[type=text],textarea,select').filter(':visible:first').focus()
-	if ($('#primary-business-input').is(':visible')) {
-		$('#primary-business-input').focus()
-	}
-
-}
 
 function _closeModal() {
 	if ($('#modal').is(':visible')) {
