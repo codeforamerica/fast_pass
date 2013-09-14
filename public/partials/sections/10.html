@@ -1,25 +1,49 @@
-<section id='section10' class='section-full' ng-controller='ModalDemoCtrl'>
+<section id='section10' class='section-full'>
 
-	<h2>Find your primary business category</h2>
+	<h2>What is your activity or business?</h2>
 	
-	<p class='lede'>
-		Select from this drop-down list to help categorize your business.
-		<a href='' data-title='How to find your primary business type' class='modal'>(Help me do this.)</a>
-	</p>
-	
-	<div id='primary-business-form' ng-controller='TypeaheadCtrl' class='form'>
-			<input id='primary-business-input' type='text' name='primary-business' typeahead='state for state in states | filter:$viewValue | limitTo:8' placeholder='Write some words'>
-			<input type='hidden' ng-model='primaryBusiness' value='test'>
+	<div class='row'>
+		
+		<div id='primary-business-form' class='col-4'>
+			<p class='lede'>
+				Type in some keywords about your business.
+				<!--a href='' data-title='How to find your primary business type' class='modal'>(Help me do this.)</a-->
+			</p>
+
+			<form name='primary-business-form'>
+				<div class='row'>
+					<input id='primary-business-input' type='text' name='primary-business' ng-model='primaryBusiness' typeahead='state for state in states | filter:$viewValue | limitTo:8' placeholder='e.g. rice farming' required class='col-3'>
+					<input type='submit' value='Search'>
+				</div>
+			</form>
+
+			<div class='loading-small' style='margin: 30px 0; display: none;'><img src='img/loading-lite.gif'></div>
+			<div id='search-results' style='margin: 20px 0; display: none;'>
+			</div>
+
+			<p>
+				<a href='/#/section/11'>Or try choosing your business type by category instead.</a>
+			</p>
+		</div>
+
+		<div id='primary-business-results' class='inset-box col-2' style='display: none; margin-left: 7px'>
+			<!-- space for displaying results -->
+			<h3>Your selected business categories</h3>
+
+			<p>
+				{{primaryBusiness}}
+				<!-- Nothing is selected yet. Your chosen business types will appear here. -->
+			</p>
+			<div class='row section-navigation'>
+				<a class='next button' href='/#/section/12'>Next</a>
+			</div>
+		</div>
+
 	</div>
-
-	<p>
-		<small>Note: This is a simple type-ahead dropdown feature for current business categories, but other strategies may be used here.</small>
-	</p>
 	
 	<div class='section-navigation'>
 		<a class='back button' href='/'>Back</a>
-		<a class='skip button' href='/#/section/30'>Skip business classification</a>
-		<a class='next button' href='/#/section/12'>Next</a>
+		<a href='/#/section/30' style='position: absolute; bottom: 0; right: 0'>Skip business classification &raquo;</a>
 	</div>
 
 </section>

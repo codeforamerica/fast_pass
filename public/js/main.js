@@ -246,6 +246,58 @@ $(document).ready(function () {
 //		}
 	})
 
+
+	// SECTION 10: Business search related jQueries
+	$('#main').on('submit', '#primary-business-form', function (e) {
+
+		// Show loader and clear search results area
+		$('#search-results').text('')
+		$('#search-results').show()
+		$('.loading-small').show()
+
+		// Do a search
+		var searchAPI   = 'http://api.naics.us/v0/s?year=2012&limit=10&terms='
+		var searchTerms = $('#primary-business-input').val()
+
+		var searchURL   = searchAPI + encodeURIComponent(searchTerms)
+
+		var searchResults
+
+		var naicsXHR = $.get(searchURL, function(data) {
+
+			searchResults = data
+
+		}).done( function () {
+
+			// Hide loader
+			$('.loading-small').hide()
+
+			if (searchResults.length == 0) {
+				// no results
+				$('#search-results').text('Nothing found for those search terms.')
+			}
+
+			// Format data
+			for (var i = 0; i < searchResults.length; i++) {
+				searchResults[i].id = searchResults[i].code
+				$('#search-results').append('<br>' + searchResults[i].title)
+			}
+
+		}).fail( function () {
+
+			$('#search-results').text('Error performing search for NAICS business categories')
+		
+		})
+
+		// $('#primary-business-results').show()
+
+
+	})
+
+
+
+
+
 	// MODAL
 	// Opens modal
 	$('#main').on('click', 'a.modal', function (e) {
@@ -272,6 +324,7 @@ $(document).ready(function () {
 		}
 	})
 
+	// PILLS
 	$('.clickable.pill').on('click', function (e) {
 		var link = $(this).parents().filter(function() {
 			return $(this).css("display") === "block";
