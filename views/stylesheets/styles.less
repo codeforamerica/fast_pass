@@ -9,7 +9,7 @@
 @lightgray:             #c1c1c1;
 @black:                 black;    // Boilerplate sets it to #222
 
-@background:            #fcfcfc;
+@background:            #fafafa;
 @clv-type:              #3f3f3f;
 @ui-index:              4000;
 
@@ -67,7 +67,6 @@ html, body {
 	.transition(width .8s);
 	background-color: @background;
 	position: relative;
-//	#gradient > .radial(@innerColor: lighten(@background, 10%), @outerColor: darken(@background, 4%));
 	overflow-x: hidden;
 	overflow-y: auto;
 	&.partscreen {
@@ -340,7 +339,7 @@ small {
 		position: absolute;
 		right: 0;
 		top: 4px;
-		background-color: rgba(0,0,0,0.10);
+		background-color: @color-gray;
 		padding: 3px 10px;
 		color: @color-scheme;
 		&:hover {
@@ -356,11 +355,13 @@ small {
 
 // FORMS & INPUT
 
+/*
 .form, form {
 	font-size: 18px;
 	padding: 0;
 	margin: 0;
 }
+*/
 
 input {
 	display: inline-block;
@@ -369,6 +370,7 @@ input {
 input[type=text], textarea {
 	padding: 9px;
 	border: 1px solid #aaa;
+	font-size: 18px;
 }
 
 textarea {
@@ -378,6 +380,10 @@ textarea {
 
 input[type=checkbox] {
 	margin-right: 8px;
+}
+
+input[type=text] + input[type=submit] {
+	font-size: 18px;
 }
 
 button, a.button, input[type=button], input[type=submit] {

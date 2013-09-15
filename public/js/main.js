@@ -26,9 +26,6 @@ var DEBUG_ALLOW         = true
 //
 // ***********************************************************************/
 
-var SECTION_ORDER = ['start', '10', '12', '15', '20', '30', '31', '39', '39b', '40', '41', '45', '50', '70']
-
-
 var propertyAddress = '495 S. Main Street',
 	businessType = 'Beer Garden'
 
@@ -176,29 +173,6 @@ $.when( $.ajax({
 $(document).ready(function () {
 
 /*
-	$('#property-address-form').on('keyup', function (e) {
-		propertyAddress = $('#property-address-input').val()
-		if (propertyAddress != '') {
-			$('.property-address').text(propertyAddress)
-			$('#property-address-next').prop('disabled', false)
-		}
-		if (propertyAddress == '') {
-			$('#property-address-next').prop('disabled', true)
-		}
-	})
-
-	$('#primary-business-next').on('click', function (e) {
-		businessType = $('#primary-business-input').val()
-		if (businessType != '') {
-			$('.primary-business').text(businessType)
-			$('#primary-business-next').prop('disabled', false)
-		}
-		if (businessType == '') {
-			$('#primary-business-next').prop('disabled', true)
-		}
-	})
-*/
-
 	$('.leaflet-popup-pane').on('click', '#marker-more-info', function (e) {
 		e.preventDefault()
 		if ($('#section40').is(':visible') || $('#section45').is(':visible')) {
@@ -206,20 +180,19 @@ $(document).ready(function () {
 			$('#section45').fadeOut(SECTION_TRANSITION_OUT_TIME)
 			$('#section50').fadeOut(SECTION_TRANSITION_OUT_TIME)
 			$('#section50').fadeIn(SECTION_TRANSITION_IN_TIME)
-			//window.location.hash = '/section50'
 		}
 	})
-
+*/
 	// BUTTONS
 	// External links - the rest should be in angular
 	$('#main').on('click', 'button', function (e) {
 		e.preventDefault()
 
-//		var url = $(this).data('externalLink')
+		var url = $(this).data('externalLink')
 
-//		if (url) {
-//			_openExternalLink(url)
-//		}
+		if (url) {
+			_openExternalLink(url)
+		}
 	})
 
 	$('#main').on('click', 'a.disabled', function (e) {
@@ -236,6 +209,16 @@ $(document).ready(function () {
 		$('#primary-business-results p.replace').text($(this).parent().find('span').text())
 		$('#primary-business-results a.next').removeClass('disabled')
 	})
+
+
+	// SECTION 40: Address search related jQueries
+	$('#main').on('submit', '#property-address-form', function (e) {
+
+		// Really should be sending this event to an Angular thing
+		window.location.hash = encodeURIComponent('/section/50')
+
+	})
+
 
 	// Scrollfixed elements
 	var scrollTemp
@@ -290,12 +273,6 @@ $(document).ready(function () {
  		link.click()
 	})
 
-	// TYPEAHEAD
-	$('#primary-business-input').typeahead({
-		name: 'business-types',
-		valueKey: 'name',
-		prefetch: 'data/business-types.json'
-	});
 });
 
 

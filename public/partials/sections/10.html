@@ -4,15 +4,15 @@
 	
 	<div class='row'>
 		
-		<div id='primary-business-form' class='col-4'>
+		<div class='col-4'>
 			<p class='lede'>
 				Type in some keywords about your business.
 				<!--a href='' data-title='How to find your primary business type' class='modal'>(Help me do this.)</a-->
 			</p>
 
-			<form name='primary-business-form'>
+			<form name='primary-business-form' id='primary-business-form'>
 				<div class='row'>
-					<input id='primary-business-input' type='text' name='primary-business' ng-model='primaryBusiness' typeahead='state for state in states | filter:$viewValue | limitTo:8' placeholder='e.g. rice farming' required class='col-3' style='margin-right: 6px' autofocus>
+					<input id='primary-business-input' type='text' name='primary-business' placeholder='e.g. rice farming' class='col-3' style='margin-right: 6px' ng-model='primaryBusiness' required autofocus>
 					<input type='submit' value='Search' class='col-1'>
 				</div>
 			</form>
