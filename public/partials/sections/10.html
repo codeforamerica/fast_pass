@@ -22,18 +22,18 @@
 			</div>
 
 			<p>
-				<a href='/#/section/11'>Or try choosing your business type by category instead.</a>
+				<!--<a href='/#/section/11'>Or try choosing your business type by category instead.</a>-->
+				<!-- (enter NAICS code if you know it?) -->
 			</p>
 		</div>
 
-		<div id='primary-business-results' class='inset-box col-2' style='display: none; margin-left: 7px'>
-			<!-- space for displaying results -->
+		<div id='primary-business-results' class='inset-box col-2 scrollfix' style='display: none; margin-left: 7px'>
 			<h3>Your selected business categories</h3>
 
-			<p>
-				{{primaryBusiness}}
-				<!-- Nothing is selected yet. Your chosen business types will appear here. -->
+			<p class='replace'>
+				Nothing is selected yet. Your chosen business types will appear here.
 			</p>
+
 			<div class='row section-navigation'>
 				<a class='next button' href='/#/section/12'>Next</a>
 			</div>
@@ -45,5 +45,14 @@
 		<a class='back button' href='/'>Back</a>
 		<a href='/#/section/30' style='position: absolute; bottom: 0; right: 0'>Skip business classification &raquo;</a>
 	</div>
+
+	<script>
+	$(window).scroll(function () {
+	    if ($(window).scrollTop() > 100) {
+	        $('.scrollfix').css('top', $(window).scrollTop());
+	    }
+	});
+
+	</script>
 
 </section>

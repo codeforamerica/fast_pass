@@ -640,6 +640,29 @@ small {
   height: 160px;
   color: gray;
 }
+.naics-result {
+  border-top: 1px solid #ccc;
+  padding: 6px 80px 6px 0;
+  position: relative;
+}
+.naics-result:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.naics-result button {
+  position: absolute;
+  right: 0;
+  top: 4px;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 3px 10px;
+  color: #21687f;
+}
+.naics-result button:hover {
+  color: #ffffff;
+}
+.naics-result button:active {
+  position: absolute !important;
+  top: 4px !important;
+}
 .form,
 form {
   font-size: 18px;

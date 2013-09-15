@@ -328,6 +328,31 @@ small {
 
 // FORMATTING
 
+.naics-result {
+	border-top: 1px solid #ccc;
+	padding: 6px 80px 6px 0;
+	position: relative;
+	&:hover {
+		background-color: rgba(0,0,0,.05);
+	}
+	button {
+		position: absolute;
+		right: 0;
+		top: 4px;
+		background-color: rgba(0,0,0,0.10);
+		padding: 3px 10px;
+		color: @color-scheme;
+		&:hover {
+			color: white
+		}
+		&:active {
+			// override typical button down behavior
+			position: absolute !important;
+			top: 4px !important;
+		}
+	}
+}
+
 // FORMS & INPUT
 
 .form, form {

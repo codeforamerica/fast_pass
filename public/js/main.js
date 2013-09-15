@@ -249,49 +249,10 @@ $(document).ready(function () {
 
 	// SECTION 10: Business search related jQueries
 	$('#main').on('submit', '#primary-business-form', function (e) {
-
-		// Show loader and clear search results area
-		$('#search-results').text('')
-		$('#search-results').show()
-		$('.loading-small').show()
-
-		// Do a search
-		var searchAPI   = 'http://api.naics.us/v0/s?year=2012&limit=10&terms='
-		var searchTerms = $('#primary-business-input').val()
-
-		var searchURL   = searchAPI + encodeURIComponent(searchTerms)
-
-		var searchResults
-
-		var naicsXHR = $.get(searchURL, function(data) {
-
-			searchResults = data
-
-		}).done( function () {
-
-			// Hide loader
-			$('.loading-small').hide()
-
-			if (searchResults.length == 0) {
-				// no results
-				$('#search-results').text('Nothing found for those search terms.')
-			}
-
-			// Format data
-			for (var i = 0; i < searchResults.length; i++) {
-				searchResults[i].id = searchResults[i].code
-				$('#search-results').append('<br>' + searchResults[i].title)
-			}
-
-		}).fail( function () {
-
-			$('#search-results').text('Error performing search for NAICS business categories')
-		
-		})
-
-		// $('#primary-business-results').show()
-
-
+		_doNAICSSearch()
+	})
+	$('#main').on('click', '.naics-result button', function (e) {
+		$('#primary-business-results p.replace').text($())
 	})
 
 
@@ -383,14 +344,51 @@ function _changeSection (clicked) {
 	}
 }
 
-
 function _closeModal() {
 	if ($('#modal').is(':visible')) {
 		$('#modal').hide()
 	}
 }
 
-function TypeaheadCtrl ($scope) {
-	$scope.selected = undefined;
-	$scope.states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Dakota', 'North Carolina', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
+function _doNAICSSearch () {
+	// Show loader and clear search results area
+	$('#search-results').text('')
+	$('#search-results').show()
+	$('.loading-small').show()
+
+	// Do a search
+	var searchAPI   = 'http://api.naics.us/v0/s?year=2012&collapse=1&terms='
+	var searchTerms = $('#primary-business-input').val()
+	var searchURL   = searchAPI + encodeURIComponent(searchTerms)
+	var searchResults
+
+	var naicsXHR = $.get(searchURL, function(data) {
+		searchResults = data
+	}).done( function () {
+
+		// Hide loader
+		$('.loading-small').hide()
+
+		// Message for no results
+		if (searchResults.length == 0) {
+			$('#search-results').text('Nothing found for those search terms.')
+			return
+		}
+
+		// Format data & display
+		for (var i = 0; i < searchResults.length; i++) {
+			searchResults[i].id = searchResults[i].code
+			$('#search-results').append('<div class=\'naics-result\'><span>' + searchResults[i].title + '</span><button>Add</button></div>')
+		}
+
+		// Show selection box
+		$('#primary-business-results').show()
+
+	}).fail( function () {
+
+		$('#search-results').text('Error performing search for NAICS business categories')
+	
+	})
 }
+
+
