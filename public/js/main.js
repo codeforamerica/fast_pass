@@ -29,30 +29,6 @@ var DEBUG_ALLOW         = true
 var SECTION_ORDER = ['start', '10', '12', '15', '20', '30', '31', '39', '39b', '40', '41', '45', '50', '70']
 
 
-/*
-Eventually remove all of this and let Angular do all of it
-var hash = window.location.hash;
-
-hash = hash.split('#/')[1]
-
-
-
-String.prototype.endsWith = function(suffix) {
-	return this.indexOf(suffix, this.length - suffix.length) !== -1;
-}
-
-// Hacky, but takes us to the section we were on
-if (hash) {
-	
-	$('#start').hide()
-	$('#' + hash).show()
-
-	if ($('section:visible').attr('class').endsWith('-map')) {
-		$('#main').removeClass('fullscreen').addClass('partscreen')
-	}
-}
-*/
-
 var propertyAddress = '495 S. Main Street',
 	businessType = 'Beer Garden'
 
@@ -265,13 +241,18 @@ $(document).ready(function () {
 	var scrollTemp
 	$(window).scroll(function () {
 
-		if (document.body.scrollTop > $('.scrollfix').offset().top - 40) {
-			scrollTemp = $('.scrollfix').offset().top - 40
-	        $('.scrollfix').css('position', 'fixed').css('top', '40px').css('margin-left', '10px');
+		var $fixedEl = $('.scrollfix')
+
+		if ($fixedEl.length > 0 ) {
+			if ($(window).scrollTop() > $fixedEl.offset().top - 40) {
+				scrollTemp = $fixedEl.offset().top - 40
+		        $fixedEl.css('position', 'fixed').css('top', '40px').css('margin-left', '10px');
+			}
+			else if ($(window).scrollTop() < scrollTemp) {
+				$fixedEl.css('position', 'relative').css('top', '0').css('margin-left', '7px');
+			}
 		}
-		else if (document.body.scrollTop < scrollTemp) {
-			$('.scrollfix').css('position', 'relative').css('top', '0').css('margin-left', '7px');
-		}
+	
 	});
 
 

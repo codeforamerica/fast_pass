@@ -14,11 +14,25 @@ function _getSectionTemplate($routeParams) {
 	return '/partials/sections/' + $routeParams.sectionId + '.html'
 }
 
+function _initFullscreenSection() {
+	document.getElementById('main').className = 'fullscreen'
+
+	// Deactivates map so it doesn't interfere with other things on the page (.e.g. scrollfix)
+	document.getElementById('map').style.display = 'none'
+}
+
+function _initPartscreenSection() {
+	document.getElementById('main').className = 'partscreen'
+
+	// Activate map
+	document.getElementById('map').style.display = 'block'
+	map.invalidateSize()
+}
+
 function sectionStart($scope) {
 
 	// Ensure that main element is set to fullscreen class (useful if starting over from partscreen view)
-	document.getElementById('main').className = 'fullscreen'
-
+	_initFullscreenSection()
 }
 
 function sectionGo($scope, $routeParams) {
@@ -34,9 +48,9 @@ function sectionGo($scope, $routeParams) {
 
 	// Change width of screen based on class
 	if ($section.attr('class') == 'section-map') {
-		document.getElementById('main').className = 'partscreen'
+		_initPartscreenSection()
 	} else {
-		document.getElementById('main').className = 'fullscreen'
+		_initFullscreenSection()
 	}
 
 	// Auto forward loading screens (FOR DEMO PURPOSES ONLY)
