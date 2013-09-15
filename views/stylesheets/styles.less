@@ -53,25 +53,19 @@
 html, body {
 	padding: 0;
 	margin: 0;
-	background-color: white;
+	height: 100%;
+	background-color: @background;
 	font-family: @body-font;
 	font-size: 13px;
 	color: @black;
+	#gradient > .radial(@innerColor: lighten(@background, 10%), @outerColor: darken(@background, 4%));
 }
 
 #main {
-	height: 100%;
-	position: absolute;
-	top: 0;
-	left: 0;
+	min-height: 100%;
 	z-index: @ui-index;
-	background-color: @background;
 	padding: 30px;
-	overflow-x: hidden;
-	overflow-y: auto;
-//	overflow: hidden;
 	.transition(width .8s);
-	#gradient > .radial(@innerColor: lighten(@background, 10%), @outerColor: darken(@background, 4%));
 	&.partscreen {
 		width: @section-part-width;
 		border-right: 1px solid @lightgray;
@@ -91,7 +85,6 @@ html, body {
 	}
 	&.fullscreen {
 		width: 100%;
-		bottom: 0;
 	}
 }
 
@@ -330,11 +323,11 @@ small {
 // FORMATTING
 
 .naics-result {
-	border-top: 1px solid #ccc;
+	border-top: 1px solid #ddd;
 	padding: 6px 80px 6px 0;
 	position: relative;
 	&:last-of-type {
-		border-bottom: 1px solid #ccc;
+		border-bottom: 1px solid #ddd;
 	}
 	&:hover {
 		background-color: rgba(0,0,0,.05);
@@ -610,12 +603,12 @@ footer {
 
 
 #map {
-	height: 100%;
-	position: absolute;
+//	height: 100%;
+	position: fixed;
 	top: 0;
 	left: @section-part-width;
 	right: 0;
-	z-index: @ui-index - 100;
+	z-index: @ui-index - 1000;
 }
 
 

@@ -360,31 +360,26 @@ html,
 body {
   padding: 0;
   margin: 0;
-  background-color: white;
+  height: 100%;
+  background-color: #fcfcfc;
   font-family: 'Lato', 'Helvetica Neue', sans-serif;
   font-size: 13px;
   color: #000000;
-}
-#main {
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 4000;
-  background-color: #fcfcfc;
-  padding: 30px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-transition: width 0.8s;
-  -moz-transition: width 0.8s;
-  -o-transition: width 0.8s;
-  transition: width 0.8s;
   background-color: #f2f2f2;
   background-image: -webkit-gradient(radial, center center, 0, center center, 460, from(#ffffff), to(#f2f2f2));
   background-image: -webkit-radial-gradient(circle, #ffffff, #f2f2f2);
   background-image: -moz-radial-gradient(circle, #ffffff, #f2f2f2);
   background-image: -o-radial-gradient(circle, #ffffff, #f2f2f2);
   background-repeat: no-repeat;
+}
+#main {
+  min-height: 100%;
+  z-index: 4000;
+  padding: 30px;
+  -webkit-transition: width 0.8s;
+  -moz-transition: width 0.8s;
+  -o-transition: width 0.8s;
+  transition: width 0.8s;
 }
 #main.partscreen {
   width: 560px;
@@ -406,7 +401,6 @@ body {
 }
 #main.fullscreen {
   width: 100%;
-  bottom: 0;
 }
 .container {
   position: relative;
@@ -641,12 +635,12 @@ small {
   color: gray;
 }
 .naics-result {
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #ddd;
   padding: 6px 80px 6px 0;
   position: relative;
 }
 .naics-result:last-of-type {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #ddd;
 }
 .naics-result:hover {
   background-color: rgba(0, 0, 0, 0.05);
@@ -979,12 +973,11 @@ footer #pi img {
   margin: 0 3px;
 }
 #map {
-  height: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 560px;
   right: 0;
-  z-index: 3900;
+  z-index: 3000;
 }
 .popup-content {
   padding: 10px 16px 0;

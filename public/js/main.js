@@ -261,13 +261,16 @@ $(document).ready(function () {
 		$('#primary-business-results a.next').removeClass('disabled')
 	})
 
+	// Scrollfixed elements
+	var scrollTemp
 	$(window).scroll(function () {
 
-//		if ($('.scrollfix').offset().top < 40) {
-		if ($(window).scrollTop() > 140) {
-			console.log('go')
-	        $('.scrollfix').css('top', $(window).scrollTop() + 40);
-		//	$('.scrollfix').offset().top = 40
+		if (document.body.scrollTop > $('.scrollfix').offset().top - 40) {
+			scrollTemp = $('.scrollfix').offset().top - 40
+	        $('.scrollfix').css('position', 'fixed').css('top', '40px').css('margin-left', '10px');
+		}
+		else if (document.body.scrollTop < scrollTemp) {
+			$('.scrollfix').css('position', 'relative').css('top', '0').css('margin-left', '7px');
 		}
 	});
 
