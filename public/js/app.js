@@ -60,12 +60,7 @@ function sectionGo($scope, $routeParams) {
 		}, 800)
 	}
 
-	// Focus on first form input, textarea, or select, if it exists
-	$section.find('input[type=text],textarea,select').filter(':visible:first').focus()
-
-	// Special needs input box
-	if ($('#primary-business-input').is(':visible')) {
-		$('#primary-business-input').focus()
-	}
+	// Manually focus on autofocus form elements
+	$('[autofocus]').focus()
 
 }
