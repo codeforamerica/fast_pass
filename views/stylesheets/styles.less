@@ -5,6 +5,7 @@
 // CONSTANTS
 
 @color-scheme:          #21687f;
+@color-gray:			desaturate(lighten(@color-scheme, 60%), 50%);
 @lightgray:             #c1c1c1;
 @black:                 black;    // Boilerplate sets it to #222
 
@@ -332,6 +333,9 @@ small {
 	border-top: 1px solid #ccc;
 	padding: 6px 80px 6px 0;
 	position: relative;
+	&:last-of-type {
+		border-bottom: 1px solid #ccc;
+	}
 	&:hover {
 		background-color: rgba(0,0,0,.05);
 	}
@@ -440,7 +444,7 @@ button, a.button, input[type=button], input[type=submit] {
 		position: relative;
 		top: 2px;
 	}
-	&[disabled] {
+	&.disabled, &[disabled] {
 		background-color: @lightgray;
 		color: darken(@lightgray, 20%);
 		&:hover {
@@ -448,6 +452,7 @@ button, a.button, input[type=button], input[type=submit] {
 		}
 		&:active {
 			margin-top: 0;
+			top: 0;
 		}
 	}
 }
@@ -522,7 +527,7 @@ table:not(.no-style) {
 }
 
 .inset-box {
-	background-color: desaturate(lighten(@color-scheme, 60%), 50%);
+	background-color: @color-gray;
 	padding: 20px;
 }
 
@@ -624,6 +629,9 @@ footer {
 	}
 }
 
+.scrollfix {
+	position: relative;
+}
 
 // LEAFLET OVERRIDES
 

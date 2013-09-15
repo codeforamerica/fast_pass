@@ -246,17 +246,30 @@ $(document).ready(function () {
 //		}
 	})
 
+	$('#main').on('click', 'a.disabled', function (e) {
+		// Disabled 'a' tags should behave like a disabled button
+		e.preventDefault()
+	})
 
 	// SECTION 10: Business search related jQueries
 	$('#main').on('submit', '#primary-business-form', function (e) {
 		_doNAICSSearch()
 	})
 	$('#main').on('click', '.naics-result button', function (e) {
-		$('#primary-business-results p.replace').text($())
+		// Select a business from the list
+		$('#primary-business-results p.replace').text($(this).parent().find('span').text())
+		$('#primary-business-results a.next').removeClass('disabled')
 	})
 
+	$(window).scroll(function () {
 
-
+//		if ($('.scrollfix').offset().top < 40) {
+		if ($(window).scrollTop() > 140) {
+			console.log('go')
+	        $('.scrollfix').css('top', $(window).scrollTop() + 40);
+		//	$('.scrollfix').offset().top = 40
+		}
+	});
 
 
 	// MODAL
@@ -378,7 +391,7 @@ function _doNAICSSearch () {
 		// Format data & display
 		for (var i = 0; i < searchResults.length; i++) {
 			searchResults[i].id = searchResults[i].code
-			$('#search-results').append('<div class=\'naics-result\'><span>' + searchResults[i].title + '</span><button>Add</button></div>')
+			$('#search-results').append('<div class=\'naics-result\'><span>' + searchResults[i].title + '</span><button>Select</button></div>')
 		}
 
 		// Show selection box

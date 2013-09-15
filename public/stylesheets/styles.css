@@ -645,6 +645,9 @@ small {
   padding: 6px 80px 6px 0;
   position: relative;
 }
+.naics-result:last-of-type {
+  border-bottom: 1px solid #ccc;
+}
 .naics-result:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
@@ -792,6 +795,10 @@ input[type=submit]:active {
   position: relative;
   top: 2px;
 }
+button.disabled,
+a.button.disabled,
+input[type=button].disabled,
+input[type=submit].disabled,
 button[disabled],
 a.button[disabled],
 input[type=button][disabled],
@@ -799,17 +806,26 @@ input[type=submit][disabled] {
   background-color: #c1c1c1;
   color: #8e8e8e;
 }
+button.disabled:hover,
+a.button.disabled:hover,
+input[type=button].disabled:hover,
+input[type=submit].disabled:hover,
 button[disabled]:hover,
 a.button[disabled]:hover,
 input[type=button][disabled]:hover,
 input[type=submit][disabled]:hover {
   background-color: #c1c1c1;
 }
+button.disabled:active,
+a.button.disabled:active,
+input[type=button].disabled:active,
+input[type=submit].disabled:active,
 button[disabled]:active,
 a.button[disabled]:active,
 input[type=button][disabled]:active,
 input[type=submit][disabled]:active {
   margin-top: 0;
+  top: 0;
 }
 a.button {
   height: 36px;
@@ -978,6 +994,9 @@ footer #pi img {
 .popup-content h5 {
   margin: 0;
   padding: 0;
+}
+.scrollfix {
+  position: relative;
 }
 .leaflet-top,
 .leaflet-bottom {
