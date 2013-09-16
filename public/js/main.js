@@ -340,9 +340,6 @@ function _doNAICSSearch () {
 		searchResults = data
 	}).done( function () {
 
-		// Hide loader
-		$('.loading-small').hide()
-
 		// Message for no results
 		if (searchResults.length == 0) {
 			$('#search-results').text('Nothing found for those search terms.')
@@ -359,9 +356,12 @@ function _doNAICSSearch () {
 		$('#primary-business-results').show()
 
 	}).fail( function () {
-
+		// Error message
 		$('#search-results').text('Error performing search for NAICS business categories')
 	
+	}).always( function () {
+		// Hide loader
+		$('.loading-small').hide()
 	})
 }
 
