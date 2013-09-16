@@ -637,6 +637,9 @@ small {
   padding: 6px 80px 6px 0;
   position: relative;
 }
+.naics-result.selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
 .naics-result:last-of-type {
   border-bottom: 1px solid #ddd;
 }
@@ -657,6 +660,10 @@ small {
 .naics-result button:active {
   position: absolute !important;
   top: 4px !important;
+}
+.naics-result button.selected {
+  background-color: #21687f;
+  color: white;
 }
 /*
 .form, form {
@@ -886,6 +893,10 @@ table:not(.no-style) td {
 .inset-box {
   background-color: #e7eaeb;
   padding: 20px;
+}
+.error {
+  color: red;
+  font-weight: bold;
 }
 #modal {
   display: none;

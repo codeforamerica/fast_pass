@@ -329,6 +329,9 @@ small {
 	border-top: 1px solid #ddd;
 	padding: 6px 80px 6px 0;
 	position: relative;
+	&.selected {
+		background-color: rgba(0,0,0,.10);
+	}
 	&:last-of-type {
 		border-bottom: 1px solid #ddd;
 	}
@@ -349,6 +352,10 @@ small {
 			// override typical button down behavior
 			position: absolute !important;
 			top: 4px !important;
+		}
+		&.selected {
+			background-color: @color-scheme;
+			color: white;
 		}
 	}
 }
@@ -532,6 +539,11 @@ table:not(.no-style) {
 .inset-box {
 	background-color: @color-gray;
 	padding: 20px;
+}
+
+.error {
+	color: red;
+	font-weight: bold;
 }
 
 // SECONDARY LAYOUT THINGS
