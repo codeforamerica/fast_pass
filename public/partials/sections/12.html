@@ -1,10 +1,10 @@
-<section id='section12' class='section-full'>
+<section id='section12' class='section-full' ng-controller='BusinessCategoryConfirmCtrl'>
 
 	<h2>Confirm your business category</h2>
 
 	<p class='lede'>
-		Based on your selections, your business category in Las Vegas appears to be {{primaryBusiness}}.
-		<a href='' data-title='Automotive Services Business Category Definition' class='modal'>(Learn more about this category.)</a>
+		Based on your selections, your business category in Las Vegas appears to be <span class='pill'>{{primaryBusiness.code}}</span> <strong>{{primaryBusiness.name}}</strong>.
+		<a href='' data-title='{{primaryBusiness.name}} Definition' class='modal'>(Learn more about this category.)</a>
 	</p>
 
 	<p class='lede'>

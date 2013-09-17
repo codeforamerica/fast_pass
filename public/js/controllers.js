@@ -2,21 +2,39 @@
 
 /* Controllers */
 
-angular.module('dof.controllers', []).
-	controller('ehhh', [function ($scope) {
+angular.module('dof.controllers', [])
 
+	// SECTION 12 - CONFIRM BUSINESS CATEGORY
+	.controller('BusinessCategoryConfirmCtrl', function ($scope, $http) {
 
-	}])
-	.controller('MyCtrl2', [function() {
+		var dataURL = '/data/business-types.json';
 
-	}]);
+		// Get a matched business type
+		$http.get(dataURL).success( function (data) {
 
+			// DEMO - grab a random business type from the array.
+			$scope.primaryBusiness = data[Math.floor(Math.random() * data.length)];
 
-var AdditionalBusinessCtrl = function ($scope, $http) {
-	$http.get('/data/additional-business.json').success( function (data) {
-		$scope.additionalBusiness = data;
+		});
+
+	})
+
+	// SECTION 20 - ADDITIONAL BUSINESS
+	.controller('AdditionalBusinessCtrl', function ($scope, $http) {
+
+		var dataURL = '/data/additional-business.json'
+
+		// Display additional businesses
+		$http.get(dataURL).success( function (data) {
+			$scope.additionalBusiness = data;
+		});
+	
+	})
+
+	.controller('MyCtrl2', function() {
+
 	});
-}
+
 
 var ModalDemoCtrl = function ($scope, $modal, $log) {
 
