@@ -7,7 +7,9 @@ angular.module('dof.controllers', [])
 	// SECTION 12 - CONFIRM BUSINESS CATEGORY
 	.controller('BusinessCategoryConfirmCtrl', function ($scope, $http) {
 
-		var dataURL = '/data/business-types.json';
+		var dataURL = '/data/business-types-desc.json';
+//		var dataURL = '/data/business-types.json';
+//		Note: these are coming from different sources, and seems to have different categories. Need to confirm.
 
 		// Get a matched business type
 		$http.get(dataURL).success( function (data) {
@@ -35,6 +37,10 @@ angular.module('dof.controllers', [])
 
 	});
 
+
+function CollapseDemoCtrl($scope) {
+  $scope.isCollapsed = false;
+}
 
 var ModalDemoCtrl = function ($scope, $modal, $log) {
 

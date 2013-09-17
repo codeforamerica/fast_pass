@@ -167,6 +167,10 @@ h5 {
 	font-size: 16px;
 }
 
+.nobr {
+	white-space: nowrap;
+}
+
 .lede {
 	font-size: 18px;
 	font-weight: 200;
@@ -480,12 +484,19 @@ ul {
 
 span {
 	&.pill {
-		background-color: gray;
-		color: white;
 		padding: 2px 4px;
-		border-radius: 3px;
+		border-radius: 4px;
 		margin-right: 4px;
 		margin-left: 4px;
+		color: gray;
+		border: 1px solid gray;
+	}
+	&.gray, &.green, &.orange, &.red {
+		color: white;
+		border: 0;		
+	}
+	&.gray {
+		background-color: gray;
 	}
 	&.green {
 		background-color: green;
@@ -499,6 +510,7 @@ span {
 	&.yellow {
 		background-color: yellow;
 		color: black;
+		border: 0;
 	}
 	&.clickable {
 		cursor: pointer;		
@@ -530,6 +542,12 @@ table:not(.no-style) {
 .inset-box {
 	background-color: @color-gray;
 	padding: 20px;
+}
+
+.info-box {
+	background-color: @color-gray;
+	padding: 10px 20px;
+	margin-bottom: 20px;
 }
 
 .error {

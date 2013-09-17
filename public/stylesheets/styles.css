@@ -480,6 +480,9 @@ h4 {
 h5 {
   font-size: 16px;
 }
+.nobr {
+  white-space: nowrap;
+}
 .lede {
   font-size: 18px;
   font-weight: 200;
@@ -840,12 +843,22 @@ ul.no-bullets {
   margin-left: 0;
 }
 span.pill {
-  background-color: gray;
-  color: white;
   padding: 2px 4px;
-  border-radius: 3px;
+  border-radius: 4px;
   margin-right: 4px;
   margin-left: 4px;
+  color: gray;
+  border: 1px solid gray;
+}
+span.gray,
+span.green,
+span.orange,
+span.red {
+  color: white;
+  border: 0;
+}
+span.gray {
+  background-color: gray;
 }
 span.green {
   background-color: green;
@@ -859,6 +872,7 @@ span.red {
 span.yellow {
   background-color: yellow;
   color: black;
+  border: 0;
 }
 span.clickable {
   cursor: pointer;
@@ -885,6 +899,11 @@ table:not(.no-style) td {
 .inset-box {
   background-color: #e7eaeb;
   padding: 20px;
+}
+.info-box {
+  background-color: #e7eaeb;
+  padding: 10px 20px;
+  margin-bottom: 20px;
 }
 .error {
   color: red;
