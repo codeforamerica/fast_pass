@@ -3,13 +3,20 @@
 /* Controllers */
 
 angular.module('dof.controllers', []).
-	controller('MyCtrl1', [function() {
+	controller('ehhh', [function ($scope) {
+
 
 	}])
 	.controller('MyCtrl2', [function() {
 
 	}]);
 
+
+var AdditionalBusinessCtrl = function ($scope, $http) {
+	$http.get('/data/additional-business.json').success( function (data) {
+		$scope.additionalBusiness = data;
+	});
+}
 
 var ModalDemoCtrl = function ($scope, $modal, $log) {
 
