@@ -33,14 +33,13 @@ angular.module('dof.controllers', [])
 	
 	})
 
-	.controller('MyCtrl2', function() {
-
+  // UI.BOOTSTRAP - COLLAPSE
+	.controller('CollapseCtrl', function($scope) {
+    $scope.isCollapsed = true;
 	});
 
 
-function CollapseDemoCtrl($scope) {
-  $scope.isCollapsed = false;
-}
+
 
 var ModalDemoCtrl = function ($scope, $modal, $log) {
 
