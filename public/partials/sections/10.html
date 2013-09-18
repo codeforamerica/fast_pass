@@ -2,23 +2,20 @@
 
 	<h2>What is your activity or business?</h2>
 	
-	<div class='row'>
-		
-		<div class='col-6' style='margin: 20px 0;'>
-			<p class='lede'>
-				Type in some keywords about your business.
-				<!--a href='' data-title='How to find your primary business type' class='modal'>(Help me do this.)</a-->
-			</p>
+	<p class='lede'>
+		Type in some keywords about your business.
+		<!--a href='' data-title='How to find your primary business type' class='modal'>(Help me do this.)</a-->
+	</p>
 
-			<form name='primary-business-form' id='primary-business-form'>
-				<div class='row'>
-					<input id='primary-business-input' type='text' name='primary-business' placeholder='e.g. rice farming' class='col-5' style='margin-right: 6px' ng-model='primaryBusiness' required autofocus>
-					<input type='submit' value='Search' class='col-1'>
-				</div>
-			</form>
-
+	<form name='primary-business-form' id='primary-business-form'>
+		<div class='row'>
+			<input id='primary-business-input' type='text' name='primary-business' placeholder='e.g. rice farming' class='col-5' style='margin-right: 6px' ng-model='primaryBusiness' required autofocus>
+			<input type='submit' value='Search' class='col-1'>
 		</div>
+	</form>
 
+	<div class='row' style='margin-top: 20px'>
+		
 		<div class='col-4'>
 
 			<div class='loading-small' style='margin: 30px 0; display: none;'><img src='img/loading-lite.gif'></div>

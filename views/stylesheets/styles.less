@@ -175,7 +175,6 @@ h5 {
 	font-size: 18px;
 	font-weight: 200;
 	line-height: 175%;
-	margin-top: 0;
 }
 
 .row {
@@ -484,7 +483,7 @@ ul {
 
 span {
 	&.pill {
-		padding: 2px 4px;
+		padding: 1px 3px;
 		border-radius: 4px;
 		margin-right: 4px;
 		margin-left: 4px;
@@ -492,8 +491,9 @@ span {
 		border: 1px solid gray;
 	}
 	&.gray, &.green, &.orange, &.red {
+		padding: 2px 4px;
 		color: white;
-		border: 0;		
+		border: 0;
 	}
 	&.gray {
 		background-color: gray;
@@ -509,6 +509,7 @@ span {
 	}
 	&.yellow {
 		background-color: yellow;
+		padding: 2px 4px;
 		color: black;
 		border: 0;
 	}
@@ -546,8 +547,7 @@ table:not(.no-style) {
 
 .info-box {
 	background-color: @color-gray;
-	padding: 10px 20px;
-	margin-bottom: 20px;
+	padding: 0 20px;
 }
 
 .error {
@@ -718,13 +718,10 @@ footer {
 // BOOTSTRAP
 
 .collapse {
-  position: relative;
-  height: 0;
-  overflow: hidden;
-  -webkit-transition: height 0.35s ease;
-  -moz-transition: height 0.35s ease;
-  -o-transition: height 0.35s ease;
-  transition: height 0.35s ease;
+	position: relative;
+	height: 0;
+	overflow: hidden;
+	.transition(height 0.35s ease);
 }
 
 // TYPEAHEAD.JS
