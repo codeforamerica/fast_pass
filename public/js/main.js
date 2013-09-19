@@ -340,7 +340,7 @@ function _doNAICSSearch () {
 	$('span.error').hide()
 
 	// Do a search
-	var searchAPI   = 'http://api.naics.us/v0/s?year=2012&collapse=1&terms='
+	var searchAPI   = '/categories/search?q='
 	var searchTerms = $('#primary-business-input').val()
 	var searchURL   = searchAPI + encodeURIComponent(searchTerms)
 	var searchResults

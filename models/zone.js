@@ -1,4 +1,4 @@
-var utils = require( process.cwd() + '/utils')
+var utils = require( process.cwd() + '/lib/utils')
 
 var ATTRIBUTES = [ 'name', 'description', 'geom' ]
 
