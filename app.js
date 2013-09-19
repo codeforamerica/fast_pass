@@ -1,12 +1,10 @@
-
 /**
  * Module dependencies.
  */
 
 var express = require('express')
   , routes = require('./routes')
-  , print = require('./routes/print')
-  , user = require('./routes/user')
+  , category = require('./routes/category')
   , http = require('http')
   , path = require('path')
   , lessMiddleware = require('less-middleware');
@@ -38,8 +36,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-//app.get('/print', print.view);
-//app.get('/users', user.list);
+app.get('/categories/search', category.search)
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
