@@ -2,7 +2,7 @@
 
 // Declare app level module which depends on filters, and services
 
-angular.module('dof', ['dof.controllers', 'ui.bootstrap']).
+angular.module('dof', ['dof.controllers', 'dof.ui.modal', 'dof.ui.collapse']).
 	config(['$routeProvider', function($routeProvider) {
 		$routeProvider.
 			when('/',                   {templateUrl: '/partials/start.html', controller: 'sectionStart'}).
