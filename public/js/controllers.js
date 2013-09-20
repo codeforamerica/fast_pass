@@ -4,8 +4,15 @@
 
 angular.module('dof.controllers', [])
 
+	// SECTION 10 - NAICS Business Category search
+	.controller('10Ctrl', function ($scope, $http, Data) {
+		$scope.data = Data
+
+
+	})
+
 	// SECTION 12 - CONFIRM BUSINESS CATEGORY
-	.controller('BusinessCategoryConfirmCtrl', function ($scope, $http, Data) {
+	.controller('12Ctrl', function ($scope, $http, Data) {
 
 		$scope.data = Data
 
@@ -17,7 +24,7 @@ angular.module('dof.controllers', [])
 		$http.get(dataURL).success( function (stuff) {
 
 			// DEMO - grab a random business type from the array.
-			$scope.data.primaryBusinessType = stuff[Math.floor(Math.random() * stuff.length)];
+			$scope.data.businessCategory = stuff[Math.floor(Math.random() * stuff.length)];
 
 		});
 
@@ -26,9 +33,14 @@ angular.module('dof.controllers', [])
 
 	})
 
-	// SECTION 20 - ADDITIONAL BUSINESS
-	.controller('AdditionalBusinessCtrl', function ($scope, $http, Data) {
+	.controller('15Ctrl', function ($scope, Data) {
 
+		$scope.data = Data
+
+	})
+
+	// SECTION 20 - ADDITIONAL BUSINESS
+	.controller('20Ctrl', function ($scope, $http, Data) {
 		$scope.data = Data
 
 		var dataURL = '/data/additional-business.json'
@@ -37,12 +49,11 @@ angular.module('dof.controllers', [])
 		$http.get(dataURL).success( function (data) {
 			$scope.additionalBusiness = data;
 		});
-	
 	})
 
 
 	// SECTION 40 - Enter a location
-	.controller('AddressInputCtrl', function ($scope) {
+	.controller('40Ctrl', function ($scope) {
 
 //		$scope.map = {controller: 'MapAddressInputCtrl'}
 

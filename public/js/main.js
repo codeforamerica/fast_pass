@@ -292,12 +292,6 @@ $(document).ready(function () {
 
 function _openExternalLink (url) {
 
-/*	if ($(clicked).attr('id') == 'external-pre-app') {
-		url = encodeURI(url + '?ProjectAddress=' + propertyAddress + '&Parcel=002-02-119&Ward=(unknown)&ProposedUse=' + businessType +'')
-		window.open(url, '_blank')
-		return true
-	}
-*/
 	window.open(url, '_blank')
 	return true
 

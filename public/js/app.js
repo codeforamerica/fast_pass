@@ -13,7 +13,22 @@ app.config(['$routeProvider', function($routeProvider) {
 
 app.factory('Data', function () {
 	return { 
-		primaryBusinessType: null
+		businessCategory: {
+			code: null,
+			name: null,
+			description: null
+		},
+		businessDescription: null,
+		naics: {
+			input: null,
+			code: null,
+			year: '2012'
+		},
+		property: {
+			parcelNumber: null,
+			address: null,
+			ward: null
+		}
 	}
 })
 
