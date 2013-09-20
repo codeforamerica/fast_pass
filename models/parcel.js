@@ -3,16 +3,15 @@ var Model = require('./model');
 var Parcel = Model.extend({
 
   attributes: {
+    'id': undefined,
     'code': undefined,
-    'zone_codes': undefined
-  },
-
-  equal: function (other) {
-    return this.get('code')  == other.get('code');
+    'zone_ids': undefined
   }
 
 }, {
+
   table: 'parcels'
+
 });
 
 

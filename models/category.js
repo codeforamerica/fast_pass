@@ -1,18 +1,24 @@
 var Model = require('./model');
 
-var BusinessCategory = Model.extend({
+var Category = Model.extend({
 
   attributes: {
+    'id': undefined,
     'code': undefined,
     'title': undefined,
     'description': undefined,
-    'type': undefined
+    'type': undefined,
+    'related_category_ids': undefined
   },
 
   equal: function (other) {
     return other.get('code') == this.get('code');
   }
 
+}, {
+
+  table: 'categories'
+
 })
 
-module.exports = BusinessCategory
+module.exports = Category

@@ -1,11 +1,18 @@
 var Model = require('./model')
 
 var Session = Model.extend({
+
   attributes: {
-    'business_category_codes': undefined,
+    'id': undefined,
+    'category_ids': undefined,
     'use_modifier_ids': undefined,
-    'parcel_code': undefined
+    'parcel_id': undefined
   }
+
+}, {
+
+  table: 'sessions'
+
 })
 
 module.exports = Parcel

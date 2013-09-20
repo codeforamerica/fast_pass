@@ -2,7 +2,7 @@ var pg = require('pg')
 var Database = function () {}
 
 var host = 'localhost'
-var name = 'dof'
+var name = 'fast_track'
 
 Database.config = {
   host: host,
