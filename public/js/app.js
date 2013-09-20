@@ -32,7 +32,10 @@ app.factory('Data', function () {
 	}
 })
 
-app.directive('showMap', function () {
+var directives = {}
+app.directive(directives)
+
+directives.showMap = function () {
 	return function (scope, element) {
 		// Actions to be done when loading a part-screen section with map
 
@@ -54,9 +57,9 @@ app.directive('showMap', function () {
 		}
 
 	}
-});
+}
 
-app.directive('hideMap', function () {
+directives.hideMap = function () {
 	return function () {
 		// Actions to be done when loading a full-screen section with map
 
@@ -73,9 +76,9 @@ app.directive('hideMap', function () {
 			document.getElementById('map').style.display = 'none'
 		}
 	}
-});
+}
 
-app.directive('scrollfix', function () {
+directives.scrollfix = function () {
 	return {
 		restrict: 'C',
 		link: function (scope, element, $window) {
@@ -97,9 +100,9 @@ app.directive('scrollfix', function () {
 
 		}
 	}
-});
+}
 
-app.directive('externalLink', function () {
+directives.externalLink = function () {
 	return function (scope, element, attrs) {
 
 		var $el = angular.element(element[0])
@@ -112,16 +115,18 @@ app.directive('externalLink', function () {
 		})
 
 	}
-})
+}
 
+var controllers = {}
+app.controller(controllers)
 
-function sectionStart($scope) {
+controllers.sectionStart = function ($scope) {
 
 	// Ensure that main element is set to fullscreen class (useful if starting over from partscreen view)
 //	_initFullscreenSection()
 }
 
-function sectionGo($scope, $routeParams) {
+controllers.sectionGo = function ($scope, $routeParams) {
 	
 	$scope.sectionId = $routeParams.sectionId
 

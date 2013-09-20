@@ -7,7 +7,7 @@
 		<!--a href='' data-title='How to find your primary business type' class='modal'>(Help me do this.)</a-->
 	</p>
 
-	<form name='primary-business-form' id='primary-business-form'>
+	<form name='primary-business-form' id='primary-business-form' ng-submit='searchBusiness()'>
 		<div class='row'>
 			<input id='primary-business-input' type='text' name='primary-business' placeholder='e.g. rice farming' class='col-5' style='margin-right: 6px' ng-model='data.naics.input' required autofocus>
 			<input type='submit' value='Search' class='col-1'>

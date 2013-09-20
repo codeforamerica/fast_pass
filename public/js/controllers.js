@@ -8,6 +8,17 @@ angular.module('dof.controllers', [])
 	.controller('10Ctrl', function ($scope, $http, Data) {
 		$scope.data = Data
 
+		$scope.searchBusiness = function () {
+			_doNAICSSearch()
+		}
+
+		$scope.selectBusiness = function () {
+
+			// Highlights the selected row
+			// Adds the selection to the selection thing & turns on the next button
+
+		}
+
 
 	})
 
@@ -56,6 +67,17 @@ angular.module('dof.controllers', [])
 	.controller('40Ctrl', function ($scope) {
 
 //		$scope.map = {controller: 'MapAddressInputCtrl'}
+		$scope.findAddress = function () {
+			// Temporarily forward this interaction directly.
+			window.location.hash = encodeURIComponent('/section/50')
+		
+			// In the future this needs to do actual work.
+			// It will send information to an endpoint and retrieve address / parcel data.
+
+			// Errors to return:
+			// -  This address could not be found in Las Vegas.
+			// -  Did you mean.... (keep on this screen?)
+		}
 
 	})
 	.controller('MapCtrl', function ($scope) {

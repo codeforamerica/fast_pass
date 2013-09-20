@@ -6,7 +6,7 @@
 		Please type in an address, or click a location on the map.
 	</p>
 	
-	<form name='property-address-form' id='property-address-form'>
+	<form name='property-address-form' id='property-address-form' ng-submit='findAddress()'>
 		<div class='row'>
 			<input id='property-address-input' type='text' name='address' placeholder='e.g. 495 S. Main Street' autofocus required ng-model='test' style='width: 100%'>
 		</div>

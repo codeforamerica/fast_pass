@@ -191,9 +191,6 @@ $(document).ready(function () {
 	})
 
 	// SECTION 10: Business search related jQueries
-	$('#main').on('submit', '#primary-business-form', function (e) {
-		_doNAICSSearch()
-	})
 	$('#main').on('click', '.naics-result button', function (e) {
 		// Select a business from the list
 		$('#primary-business-results p.replace').text($(this).parent().find('span').text())
@@ -208,14 +205,6 @@ $(document).ready(function () {
 		$(this).parent().addClass('selected')
 	})
 
-
-	// SECTION 40: Address search related jQueries
-	$('#main').on('submit', '#property-address-form', function (e) {
-
-		// Really should be sending this event to an Angular thing
-		window.location.hash = encodeURIComponent('/section/50')
-
-	})
 
 
 	// Scrollfixed elements
