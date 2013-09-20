@@ -1,8 +1,7 @@
 var Model = require('./model')
 var naics = require( process.cwd() + '/data/naics-2012.json' );
-var utils = require( process.cwd() + '/lib/utils' )
 
-var Category = Model.extend({
+var NAICSCategory = Model.extend({
   attributes: {
     title: undefined,
     description: undefined,
@@ -10,4 +9,4 @@ var Category = Model.extend({
   }
 })
 
-module.exports = Category;
+module.exports = NAICSCategory;
