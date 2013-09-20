@@ -184,19 +184,9 @@ $(document).ready(function () {
 	})
 */
 	// BUTTONS
-	// External links - the rest should be in angular
-	$('#main').on('click', 'button', function (e) {
-		e.preventDefault()
 
-		var url = $(this).data('externalLink')
-
-		if (url) {
-			_openExternalLink(url)
-		}
-	})
-
+	// Disabled 'a' tags should behave like a disabled button
 	$('#main').on('click', 'a.disabled', function (e) {
-		// Disabled 'a' tags should behave like a disabled button
 		e.preventDefault()
 	})
 
@@ -229,6 +219,7 @@ $(document).ready(function () {
 
 
 	// Scrollfixed elements
+	/*
 	var scrollTemp
 	$(window).scroll(function () {
 
@@ -245,7 +236,7 @@ $(document).ready(function () {
 		}
 	
 	});
-
+	*/
 
 	// MODAL
 	// Opens modal
@@ -290,12 +281,6 @@ $(document).ready(function () {
 //
 // ***********************************************************************/
 
-function _openExternalLink (url) {
-
-	window.open(url, '_blank')
-	return true
-
-}
 
 function _changeSection (clicked) {
 
@@ -348,6 +333,8 @@ function _doNAICSSearch () {
 			$('span.error').show().text('Nothing found for those search terms.')
 			return
 		}
+
+		$('#search-results').append('<p><strong>Please choose one from the list below.</strong></p>')
 
 		// Format data & display
 		for (var i = 0; i < searchResults.length; i++) {
