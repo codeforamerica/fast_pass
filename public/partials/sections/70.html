@@ -1,11 +1,15 @@
-<section id='section70' show-map>
+<section id='section70' ng-controller='70Ctrl' show-map>
 
 	<h2>Next steps with this property</h2>
 	
 	<h3>Quick review</h3>
 	
 	<ul>
-		<li>Your business category is <span class='pill'>A11</span> <strong class='ng-binding'></strong>.</li>
+		<li>
+			Your business category is
+			<span class='pill'>{{data.primaryBusinessType.code}}</span>
+			<strong><a href='' data-title='{{data.primaryBusinessType.name}}' class='modal ng-binding'>{{data.primaryBusinessType.name}}</a></strong>.
+		</li>
 		<li>The zoning classification for your property is <span class='green pill'>C-2</span> <strong>General Commercial</strong>.</li>
 		<li>Your parcel number is <strong>13934311021</strong>.</li>
 		<li>The master address on record for this parcel is <strong><span class='property-address'>150 N. Las Vegas Blvd</span></strong>.</li>

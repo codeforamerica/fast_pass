@@ -1,16 +1,16 @@
-<section id='section12' ng-controller='BusinessCategoryConfirmCtrl' hide-map>
+<section id='section12' ng-controller='BusinessCategoryConfirmCtrl as app' hide-map>
 
 	<h2>Confirm your business category</h2>
 
 	<p class='lede'>
-		Based on your selection, we've matched your business to a Las Vegas business category of <span class='nobr'><span class='pill'>{{primaryBusiness.code}}</span> <strong>{{primaryBusiness.name}}</strong></span>.
+		Based on your selection, we've matched your business to a Las Vegas business category of <span class='nobr'><span class='pill'>{{data.primaryBusinessType.code}}</span> <strong>{{data.primaryBusinessType.name}}</strong></span>.
 		<a href='' ng-click="isCollapsed = !isCollapsed">(Learn more about this category.)</a>
 	</p>
 
 	<div class='info-box' collapse="isCollapsed">
-		<p>{{primaryBusiness.description}}</p>
+		<p>{{data.primaryBusinessType.description}}</p>
 
-		<p><a href='http://www5.lasvegasnevada.gov/LCAT/Bus_Lic_Instructions.aspx?Category={{primaryBusiness.code}}&CategoryName={{primaryBusiness.name}}' target='_blank'>View complete licensing procedure from Las Vegas Business Licensing.</a></p>
+		<p><a href='http://www5.lasvegasnevada.gov/LCAT/Bus_Lic_Instructions.aspx?Category={{data.primaryBusinessType.code}}&CategoryName={{data.primaryBusinessType.name}}' target='_blank'>View complete licensing procedure from Las Vegas Business Licensing.</a></p>
 	</div>
 
 	<p class='lede'>

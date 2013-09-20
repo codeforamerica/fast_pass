@@ -5,17 +5,19 @@
 angular.module('dof.controllers', [])
 
 	// SECTION 12 - CONFIRM BUSINESS CATEGORY
-	.controller('BusinessCategoryConfirmCtrl', function ($scope, $http) {
+	.controller('BusinessCategoryConfirmCtrl', function ($scope, $http, Data) {
+
+		$scope.data = Data
 
 		var dataURL = '/data/business-types-desc.json';
 //		var dataURL = '/data/business-types.json';
 //		Note: these are coming from different sources, and seems to have different categories. Need to confirm.
 
 		// Get a matched business type
-		$http.get(dataURL).success( function (data) {
+		$http.get(dataURL).success( function (stuff) {
 
 			// DEMO - grab a random business type from the array.
-			$scope.primaryBusiness = data[Math.floor(Math.random() * data.length)];
+			$scope.data.primaryBusinessType = stuff[Math.floor(Math.random() * stuff.length)];
 
 		});
 
@@ -25,7 +27,9 @@ angular.module('dof.controllers', [])
 	})
 
 	// SECTION 20 - ADDITIONAL BUSINESS
-	.controller('AdditionalBusinessCtrl', function ($scope, $http) {
+	.controller('AdditionalBusinessCtrl', function ($scope, $http, Data) {
+
+		$scope.data = Data
 
 		var dataURL = '/data/additional-business.json'
 
@@ -49,9 +53,19 @@ angular.module('dof.controllers', [])
 			alert('hey')
 		})
 
+	})
+
+	.controller('45Ctrl', function ($scope, Data) {
+
+		$scope.data = Data
+
+	})
+
+	.controller('70Ctrl', function ($scope, Data) {
+
+		$scope.data = Data
+
 	});
-
-
 
 /*******************************************************************************************/
 /* Copied from ui.bootstrap */

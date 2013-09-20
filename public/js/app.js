@@ -11,6 +11,12 @@ app.config(['$routeProvider', function($routeProvider) {
 		otherwise({redirectTo: '/'});
 }]);
 
+app.factory('Data', function () {
+	return { 
+		primaryBusinessType: null
+	}
+})
+
 app.directive('showMap', function () {
 	return {
 		restrict: 'A',
