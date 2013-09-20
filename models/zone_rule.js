@@ -5,9 +5,9 @@ var BusinessCategory = require('./models/business_category');
 var ZoneRule = Model.extend({
 
   attributes: {
-    business_category_code: undefined,
-    zone_code: undefined,
-    operator: undefined
+    'business_category_code': undefined,
+    'zone_code': undefined,
+    'operator': undefined
   },
 
   getBusinessCategory: function () {
@@ -31,6 +31,8 @@ var ZoneRule = Model.extend({
     }
   }
 
+}, {
+  table: 'zone_rules'
 })
 
 module.exports = ZoneRule

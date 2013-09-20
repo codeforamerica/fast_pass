@@ -3,10 +3,10 @@ var Model = require('./model');
 var BusinessCategory = Model.extend({
 
   attributes: {
-    code: undefined,
-    title: undefined,
-    description: undefined,
-    type: undefined
+    'code': undefined,
+    'title': undefined,
+    'description': undefined,
+    'type': undefined
   },
 
   equal: function (other) {

@@ -4,7 +4,8 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , category = require('./routes/category')
+  , naics_category = require('./routes/naics_category')
+  , parcel = require('./routes/parcel')
   , http = require('http')
   , path = require('path')
   , lessMiddleware = require('less-middleware');
@@ -36,7 +37,14 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/categories/search', category.search)
+app.get('/naics_categories/search', naics_category.search);
+
+//
+// Parcel Routes
+//
+app.get('/parcels', parcel.index);
+app.get('/parcels/search', parcel.search);
+app.get('/parcels/:id', parcel.find)
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

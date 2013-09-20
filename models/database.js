@@ -25,7 +25,7 @@ Database.query = function (q, v, cb) {
           console.log(err);
           cb([]);
         } else {
-          console.log(result.rows);
+          cb(result.rows);
         }
         client.end();
       });

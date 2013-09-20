@@ -1,4 +1,4 @@
-var Category = require( process.cwd() + '/models/category' )
+var NAICSCategory = require( process.cwd() + '/models/naics_category' )
 
 exports.search = function (req, res) {
   var query = req.query.q;

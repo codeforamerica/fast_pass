@@ -3,10 +3,10 @@ var Model = require('./model')
 var Zone = Model.extend({
 
   attributes: {
-    name: undefined,
-    description: undefined,
-    geom: undefined,
-    code: undefined
+    'name': undefined,
+    'description': undefined,
+    'geom': undefined,
+    'code': undefined
   },
 
   equal: function (other) {
