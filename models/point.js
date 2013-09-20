@@ -1,19 +1,7 @@
-var utils = require( process.cwd() + '/lib/utils')
+var Model = require('./model')
 
-var ATTRIBUTES = []
+var Point = Model.extend({
 
-var Point = function (attributes) {
-
-  if (typeof(attributes) !== 'undefined' && typeof(attributes) !== 'object') {
-    throw("'attributes' must be an instance of 'object'") 
-  }
-
-  for (key in attributes) {
-    if (utils.includes.call(ATTRIBUTES, key)) {
-      this[key] = attributes[key]
-    }
-  }
-
-}
+})
 
 module.exports = Point

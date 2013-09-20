@@ -1,19 +1,13 @@
-var utils = require( process.cwd() + '/lib/utils')
+var Model = require('./model')
 
-var ATTRIBUTES = [ 'name', 'description', 'geom' ]
+var Zone = Model.extend({
 
-var Zone = function (attributes) {
-
-  if (typeof(attributes) !== 'undefined' && typeof(attributes) !== 'object') {
-    throw("'attributes' must be an instance of 'object'") 
+  attributes: {
+    name: undefined,
+    description: undefined,
+    geom: undefined
   }
 
-  for (key in attributes) {
-    if (utils.includes.call(ATTRIBUTES, key)) {
-      this[key] = attributes[key]
-    }
-  }
-
-}
+})
 
 module.exports = Zone
