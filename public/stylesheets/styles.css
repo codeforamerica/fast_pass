@@ -579,9 +579,6 @@ small {
   position: relative;
   margin-bottom: 30px;
 }
-.content section.section-start {
-  display: block;
-}
 .content section.section-large {
   margin-top: 40px;
 }
@@ -590,8 +587,6 @@ small {
 }
 .content section.section-map {
   width: 500px;
-  position: relative;
-  right: 0;
 }
 .content .section-navigation {
   position: relative;

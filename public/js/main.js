@@ -98,7 +98,7 @@ map.on('click', function (e) {
 
     // add a marker on the point someone just clicked
 
-    var markerHTML = document.getElementById('markerHTML').innerHTML
+    // var markerHTML = document.getElementById('markerHTML').innerHTML
 
 	if (popupOpen == true) {
 //		propertyMarker.closePopup()
@@ -374,4 +374,6 @@ function _doNAICSSearch () {
 	})
 }
 
+function _getLatLng () {
 
+}
