@@ -15,8 +15,7 @@ app.config(['$routeProvider', function($routeProvider) {
 			controller: 'sectionGo'
 		}).
 		when('/print', {
-			templateUrl: '/partials/print.html',
-			controller: 'PrintView'
+			templateUrl: '/partials/print.html'
 		}).
 		otherwise({
 			// redirectTo: '/'

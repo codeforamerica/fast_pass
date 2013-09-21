@@ -199,7 +199,13 @@ appCtrls.controller('PrintView', function ($scope, UserData) {
 	$scope.userdata = UserData
 
 	// Open print dialog box
-	window.print()
+	// Dumb hack to activate print dialog only after CSS transitions are done
+	// Also prevents the dialog from opening before Angular is ready (but there should be a better fix for this...)
+	var timeout = window.setTimeout(print, 800);
+
+	function print() {
+		window.print()
+	}
 })
 
 /*******************************************************************************************/
