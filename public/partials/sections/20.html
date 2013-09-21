@@ -1,30 +1,20 @@
-<section id='section20' class='section-full'>
+<section id='section20' ng-controller='20Ctrl as app' hide-map ng-cloak>
 
 	<h2>Additional information about your business</h2>
 
 	<p class='lede'>Now let’s see if there are any additional activities your business includes which might affect your zoning status. Check all that apply.</p>
 
-	<div id='additional-business-form' class='form'>
-		
-		<input type='checkbox' name='additional-business' value='1' id='alcohol'>
-		<label for='alcohol'>Alcoholic beverages served or sold</label>
-		<a href='' data-title='alcohol' class='small help modal'></a>		
-		<br>
+	<!-- Priveleged licenses -->
 
-		<input type='checkbox' name='additional-business' value='1' id='childcare'>
-		<label for='childcare'>Childcare services provided</label>
-		<a href='' data-title='childcare' class='small help modal'></a>
-		<br>
+	<div id='additional-business-form' class='form' ng-model='userdata.additionalBusiness'>
 
-		<input type='checkbox' name='additional-business' value='1' id='gambling'>
-		<label for='gambling'>Gambling</label>
-		<a href='' data-title='gambling' class='small help modal'></a>
-		<br>
-
-		<input type='checkbox' name='additional-business' value='1' id='jukebox'>
-		<label for='jukebox'>Jukebox operation</label>
-		<a href='' data-title='jukebox' class='small help modal'></a>
-		<br>
+		<div ng-repeat='item in additionalBusiness | orderBy: "official_name"'>
+			<input type='checkbox' name='additional-business' value='{{item.id}}' id='{{item.id}}'>
+			<label for='{{item.id}}' ng-show='item.name'>{{item.name}}</label>
+			<label for='{{item.id}}' ng-hide='item.name'>{{item.official_name}}</label>
+			<a href='' data-title='{{item.official_name}}' class='small help modal'></a>
+			<br>
+		</div>
 
 	</div>
 

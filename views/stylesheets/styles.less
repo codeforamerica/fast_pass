@@ -5,10 +5,11 @@
 // CONSTANTS
 
 @color-scheme:          #21687f;
+@color-gray:			desaturate(lighten(@color-scheme, 60%), 50%);
 @lightgray:             #c1c1c1;
 @black:                 black;    // Boilerplate sets it to #222
 
-@background:            #fcfcfc;
+@background:            #fafafa;
 @clv-type:              #3f3f3f;
 @ui-index:              4000;
 
@@ -52,25 +53,22 @@
 html, body {
 	padding: 0;
 	margin: 0;
-	background-color: white;
+	height: 100%;
+	background-color: @background;
 	font-family: @body-font;
 	font-size: 13px;
 	color: @black;
 }
 
 #main {
-	height: 100%;
-	position: absolute;
-	top: 0;
-	left: 0;
+	min-height: 100%;
 	z-index: @ui-index;
-	background-color: @background;
 	padding: 30px;
+	.transition(width .8s);
+	background-color: @background;
+	position: relative;
 	overflow-x: hidden;
 	overflow-y: auto;
-//	overflow: hidden;
-	.transition(width .8s);
-	#gradient > .radial(@innerColor: lighten(@background, 10%), @outerColor: darken(@background, 4%));
 	&.partscreen {
 		width: @section-part-width;
 		border-right: 1px solid @lightgray;
@@ -90,7 +88,6 @@ html, body {
 	}
 	&.fullscreen {
 		width: 100%;
-		bottom: 0;
 	}
 }
 
@@ -145,6 +142,9 @@ h1 {
 
 h2, h3, h4, h5, h6 {
 	color: @color-scheme;
+	.inset-box & {
+		margin-top: 0;
+	}
 }
 
 h2 {
@@ -153,7 +153,7 @@ h2 {
 }
 
 h3 {
-	text-transform: uppercase;
+//	text-transform: uppercase;
 	font-weight: bold;
 	font-size: 16px;
 }
@@ -167,74 +167,50 @@ h5 {
 	font-size: 16px;
 }
 
+.nobr {
+	white-space: nowrap;
+}
+
 .lede {
 	font-size: 18px;
 	font-weight: 200;
 	line-height: 175%;
 }
 
-button, a.button {
-	background-color: @color-scheme;
-	color: white;
-	border: 0;
-	padding: 10px 20px;
-	.user-select(none);
-	text-align: left;
-	margin-right: 5px;
+.row {
+	position: relative;
+	width: 100%;
+}
+
+.col-1, .col-2, .col-3, .col-4, .col-5, .col-6 {
 	display: inline-block;
-	height: 36px;
-	&.back, &[value=back] {
-		&:before {
-			content: '« ';
-			margin-right: 10px;
-			font-size: 17px;
-			font-weight: 200;
-			line-height: 13px;
-		}		
-	} 
-	&.back, &[value=back] {
-		left: 0;
-		right: auto;
-		background-color: desaturate(lighten(@color-scheme, 20%),30%);
-		&:hover {
-//			background-color: @color-scheme;
-		}
-	}
-	&.next, &[value=next] {
-		position: absolute;
-		right: 0;
+	position: relative;
+	vertical-align: top;
+	margin-right: 10px;
+	&:last-child {
 		margin-right: 0;
-		margin-left: 5px;
-		&:after {
-			content: ' »';
-			margin-left: 10px;
-			font-size: 17px;
-			font-weight: 200;
-			line-height: 13px;
-		}
-		&:active {
-			position: absolute;
-		}
-	}
-	&:hover {
-		background-color: lighten(@color-scheme, 6%);
-		text-decoration: none;
-	}
-	&:active {
-		position: relative;
-		top: 2px;
-	}
-	&[disabled] {
-		background-color: @lightgray;
-		color: darken(@lightgray, 20%);
-		&:hover {
-			background-color: @lightgray;
-		}
-		&:active {
-			margin-top: 0;
-		}
 	}
 }
+.col-1 {
+	width: @container-width / 6 - 10px;
+}
+.col-2 {
+	width: @container-width / 3 - 10px;
+}
+.col-3 {
+	width: @container-width / 2 - 10px;
+}
+.col-4 {
+	width: (@container-width / 3) * 2 - 10px;
+}
+.col-5 {
+	width: (@container-width / 6) * 5 - 10px;
+}
+.col-6 {
+	width: @container-width;
+}
+
+
 
 // LINKS
 a {
@@ -294,9 +270,8 @@ small {
 	width: @section-width;
 	position: relative;
 	section {
-		&.section-start {
-			display: block;
-		}
+		position: relative;
+		margin-bottom: 30px;
 		&.section-large {
 			margin-top: 40px;
 		}
@@ -305,8 +280,6 @@ small {
 		}
 		&.section-map {
 			width: @section-part-width - (30 * 2);
-			position: relative;
-			right: 0;
 		}
 	}
 	.section-navigation {
@@ -314,7 +287,6 @@ small {
 		width: 100%;
 		margin-top: 30px;
 		height: 36px;
-		margin-bottom: 30px;
 		.user-select(none);
 	}
 	.radio-select {
@@ -334,24 +306,13 @@ small {
 			line-height: 20px;
 		}
 	}
-	.form {
-		font-size: 18px;
-		padding: 0;
-		margin: 0;
-		input, textarea {
-			width: 100%;
-			padding: 10px;
-			border: 1px solid #aaa;
-		}
-		textarea {
-			height: 140px;
-		}
-		input[type=checkbox] {
-			display: inline-block;
-			width: 30px;
-		}
+	.loading-small {
+		width: 100%;
+		text-align: center;
+		color: gray;
 	}
 	.loading {
+		// should be extending .loading-small
 		width: 100%;
 		text-align: center;
 		margin-top: 80px;
@@ -361,6 +322,144 @@ small {
 }
 
 // FORMATTING
+
+.naics-result {
+	border-top: 1px solid #ddd;
+	padding: 6px 80px 6px 0;
+	position: relative;
+	&.selected {
+		background-color: rgba(0,0,0,.10);
+	}
+	&:last-of-type {
+		border-bottom: 1px solid #ddd;
+	}
+	&:hover {
+		background-color: rgba(0,0,0,.05);
+	}
+	button {
+		position: absolute;
+		right: 0;
+		top: 4px;
+		background-color: @color-gray;
+		padding: 3px 10px;
+		color: @color-scheme;
+		&:hover {
+			color: white
+		}
+		&:active {
+			// override typical button down behavior
+			position: absolute !important;
+			top: 4px !important;
+		}
+		&.selected {
+			background-color: @color-scheme;
+			color: white;
+		}
+	}
+}
+
+// FORMS & INPUT
+
+input {
+	display: inline-block;
+}
+
+input[type=text], textarea {
+	padding: 9px;
+	border: 1px solid #aaa;
+	font-size: 18px;
+}
+
+textarea {
+	height: 140px;
+	width: 100%
+}
+
+input[type=checkbox] {
+	margin-right: 8px;
+}
+
+input[type=text] + input[type=submit] {
+	font-size: 18px;
+}
+
+button, a.button, input[type=button], input[type=submit] {
+	background-color: @color-scheme;
+	color: white;
+	border: 0;
+	padding: 10px 20px;
+	.user-select(none);
+//	text-align: left;
+	text-align: center;
+//	margin-right: 5px;
+	display: inline-block;
+	&.back, &[value=back] {
+		&:before {
+			content: '« ';
+			margin-right: 10px;
+			font-size: 17px;
+			font-weight: 200;
+			line-height: 13px;
+		}		
+	} 
+	&.back, &[value=back] {
+		left: 0;
+		right: auto;
+		background-color: desaturate(lighten(@color-scheme, 20%),30%);
+		&:hover {
+//			background-color: @color-scheme;
+		}
+	}
+	&.right {
+		position: absolute;
+		right: 0;
+		margin-right: 0;
+		margin-left: 5px;
+		&:active {
+			position: absolute;
+		}
+	}
+	&.next, &[value=next] {
+		// should be extends .right
+		position: absolute;
+		right: 0;
+		margin-right: 0;
+		margin-left: 5px;		
+		&:after {
+			content: ' »';
+			margin-left: 10px;
+			font-size: 17px;
+			font-weight: 200;
+			line-height: 13px;
+		}
+		&:active {
+			position: absolute;
+		}
+	}
+	&:hover {
+		background-color: lighten(@color-scheme, 6%);
+		text-decoration: none;
+	}
+	&:active {
+		position: relative;
+		top: 2px;
+	}
+	&.disabled, &[disabled] {
+		background-color: @lightgray;
+		color: darken(@lightgray, 20%);
+		&:hover {
+			background-color: @lightgray;
+		}
+		&:active {
+			margin-top: 0;
+			top: 0;
+		}
+	}
+}
+
+a.button {
+	height: 36px;
+}
 
 ul {
 	padding: 0;
@@ -379,13 +478,20 @@ ul {
 
 span {
 	&.pill {
-		background-color: gray;
-		color: white;
-		padding: 2px 4px;
-		border-radius: 3px;
+		padding: 1px 3px;
+		border-radius: 4px;
 		margin-right: 4px;
 		margin-left: 4px;
-		font-size: 12px;
+		color: gray;
+		border: 1px solid gray;
+	}
+	&.gray, &.green, &.orange, &.red {
+		padding: 2px 4px;
+		color: white;
+		border: 0;
+	}
+	&.gray {
+		background-color: gray;
 	}
 	&.green {
 		background-color: green;
@@ -398,7 +504,9 @@ span {
 	}
 	&.yellow {
 		background-color: yellow;
+		padding: 2px 4px;
 		color: black;
+		border: 0;
 	}
 	&.clickable {
 		cursor: pointer;		
@@ -427,6 +535,25 @@ table:not(.no-style) {
 	}
 }
 
+.inset-box {
+	background-color: @color-gray;
+	padding: 20px;
+}
+
+.info-box {
+	background-color: @color-gray;
+	padding: 0 20px;
+}
+
+.error {
+	color: red;
+	font-weight: bold;
+}
+
+.message {
+	font-weight: bold;
+}
+
 // SECONDARY LAYOUT THINGS
 
 #modal {
@@ -440,7 +567,7 @@ table:not(.no-style) {
 		background-color: rgba(255,255,255,.75);
 		width: 100%;
 		height: 100%;
-		position: fixed;		
+		position: fixed;
 	}
 	.modal-box {
 		position: fixed;
@@ -490,6 +617,9 @@ footer {
 		right: 0;
 		bottom: 0;
 		.opacity(.25);
+		.lt-ie9 & {
+			display: none;
+		}
 		a {
 			.overrideExternalLinkStyle;
 		}
@@ -504,11 +634,12 @@ footer {
 
 #map {
 	height: 100%;
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: @section-part-width;
 	right: 0;
-	z-index: @ui-index - 100;
+	z-index: @ui-index - 1000;
+	display: none;
 }
 
 
@@ -522,6 +653,9 @@ footer {
 	}
 }
 
+.scrollfix {
+	position: relative;
+}
 
 // LEAFLET OVERRIDES
 
@@ -575,8 +709,19 @@ footer {
 	margin-top: 0;
 	padding: 5px 20px;
 	border-bottom: 1px solid lightgray;
+	a {
+		.overrideExternalLinkStyle;
+	}
 }
 
+// BOOTSTRAP
+
+.collapse {
+	position: relative;
+	height: 0;
+	overflow: hidden;
+	.transition(height 0.35s ease);
+}
 
 // TYPEAHEAD.JS
 

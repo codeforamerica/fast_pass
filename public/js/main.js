@@ -26,33 +26,6 @@ var DEBUG_ALLOW         = true
 //
 // ***********************************************************************/
 
-var SECTION_ORDER = ['start', '10', '12', '15', '20', '30', '31', '39', '39b', '40', '41', '45', '50', '70']
-
-
-/*
-Eventually remove all of this and let Angular do all of it
-var hash = window.location.hash;
-
-hash = hash.split('#/')[1]
-
-
-
-String.prototype.endsWith = function(suffix) {
-	return this.indexOf(suffix, this.length - suffix.length) !== -1;
-}
-
-// Hacky, but takes us to the section we were on
-if (hash) {
-	
-	$('#start').hide()
-	$('#' + hash).show()
-
-	if ($('section:visible').attr('class').endsWith('-map')) {
-		$('#main').removeClass('fullscreen').addClass('partscreen')
-	}
-}
-*/
-
 var propertyAddress = '495 S. Main Street',
 	businessType = 'Beer Garden'
 
@@ -125,7 +98,7 @@ map.on('click', function (e) {
 
     // add a marker on the point someone just clicked
 
-    var markerHTML = document.getElementById('markerHTML').innerHTML
+    // var markerHTML = document.getElementById('markerHTML').innerHTML
 
 	if (popupOpen == true) {
 //		propertyMarker.closePopup()
@@ -200,29 +173,6 @@ $.when( $.ajax({
 $(document).ready(function () {
 
 /*
-	$('#property-address-form').on('keyup', function (e) {
-		propertyAddress = $('#property-address-input').val()
-		if (propertyAddress != '') {
-			$('.property-address').text(propertyAddress)
-			$('#property-address-next').prop('disabled', false)
-		}
-		if (propertyAddress == '') {
-			$('#property-address-next').prop('disabled', true)
-		}
-	})
-
-	$('#primary-business-next').on('click', function (e) {
-		businessType = $('#primary-business-input').val()
-		if (businessType != '') {
-			$('.primary-business').text(businessType)
-			$('#primary-business-next').prop('disabled', false)
-		}
-		if (businessType == '') {
-			$('#primary-business-next').prop('disabled', true)
-		}
-	})
-*/
-
 	$('.leaflet-popup-pane').on('click', '#marker-more-info', function (e) {
 		e.preventDefault()
 		if ($('#section40').is(':visible') || $('#section45').is(':visible')) {
@@ -230,21 +180,47 @@ $(document).ready(function () {
 			$('#section45').fadeOut(SECTION_TRANSITION_OUT_TIME)
 			$('#section50').fadeOut(SECTION_TRANSITION_OUT_TIME)
 			$('#section50').fadeIn(SECTION_TRANSITION_IN_TIME)
-			//window.location.hash = '/section50'
 		}
 	})
-
+*/
 	// BUTTONS
-	// External links - the rest should be in angular
-	$('#main').on('click', 'button', function (e) {
+
+	// Disabled 'a' tags should behave like a disabled button
+	$('#main').on('click', 'a.disabled', function (e) {
 		e.preventDefault()
-
-//		var url = $(this).data('externalLink')
-
-//		if (url) {
-//			_openExternalLink(url)
-//		}
 	})
+
+	// SECTION 10: Business search related jQueries
+	/*
+	$('#main').on('click', '.naics-result button', function (e) {
+		// Select a business from the list
+		$('#primary-business-results p.replace').text($(this).parent().find('span').text())
+		$('#primary-business-results a.next').removeClass('disabled')
+
+	})
+	*/
+
+
+
+	// Scrollfixed elements
+	/*
+	var scrollTemp
+	$(window).scroll(function () {
+
+		var $fixedEl = $('.scrollfix')
+
+		if ($fixedEl.length > 0 ) {
+			if ($(window).scrollTop() > $fixedEl.offset().top - 40) {
+				scrollTemp = $fixedEl.offset().top - 40
+		        $fixedEl.css('position', 'fixed').css('top', '40px').css('margin-left', '10px');
+			}
+			else if ($(window).scrollTop() < scrollTemp) {
+				$fixedEl.css('position', 'relative').css('top', '0').css('margin-left', '7px');
+			}
+		}
+	
+	});
+	*/
 
 	// MODAL
 	// Opens modal
@@ -272,6 +248,7 @@ $(document).ready(function () {
 		}
 	})
 
+	// PILLS
 	$('.clickable.pill').on('click', function (e) {
 		var link = $(this).parents().filter(function() {
 			return $(this).css("display") === "block";
@@ -279,12 +256,6 @@ $(document).ready(function () {
  		link.click()
 	})
 
-	// TYPEAHEAD
-	$('#primary-business-input').typeahead({
-		name: 'business-types',
-		valueKey: 'name',
-		prefetch: 'data/business-types.json'
-	});
 });
 
 
@@ -294,18 +265,6 @@ $(document).ready(function () {
 //
 // ***********************************************************************/
 
-function _openExternalLink (url) {
-
-/*	if ($(clicked).attr('id') == 'external-pre-app') {
-		url = encodeURI(url + '?ProjectAddress=' + propertyAddress + '&Parcel=002-02-119&Ward=(unknown)&ProposedUse=' + businessType +'')
-		window.open(url, '_blank')
-		return true
-	}
-*/
-	window.open(url, '_blank')
-	return true
-
-}
 
 function _changeSection (clicked) {
 
@@ -330,14 +289,13 @@ function _changeSection (clicked) {
 	}
 }
 
-
 function _closeModal() {
 	if ($('#modal').is(':visible')) {
 		$('#modal').hide()
 	}
 }
 
-function TypeaheadCtrl ($scope) {
-	$scope.selected = undefined;
-	$scope.states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Dakota', 'North Carolina', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
+
+function _getLatLng () {
+
 }

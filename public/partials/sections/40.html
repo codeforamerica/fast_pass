@@ -1,4 +1,4 @@
-<section id='section40' class='section-map'>
+<section id='section40' ng-controller='40Ctrl as app' show-map>
 
 	<h2>Enter the address of your space</h2>
 	
@@ -6,13 +6,15 @@
 		Please type in an address, or click a location on the map.
 	</p>
 	
-	<div id='property-address-form' class='form'>
-		<input id='property-address-input' type='text' name='address' placeholder='example: 495 S. Main Street'>
-	</div>
-	
-	<div class='section-navigation'>
-		<a class='back button' href='/#/section/30'>Back</a>
-		<a class='next button' href='/#/section/50'>Next</a>
-	</div>
+	<form name='property-address-form' id='property-address-form' ng-submit='findAddress()'>
+		<div class='row'>
+			<input id='property-address-input' type='text' name='address' placeholder='e.g. 495 S. Main Street' autofocus required ng-model='test' style='width: 100%'>
+		</div>
+		
+		<div class='section-navigation'>
+			<a class='back button' href='/#/section/30'>Back</a>
+			<input type='submit' value='Find this address' class='next button' href='/#/section/50'>
+		</div>
+	</form>
 
 </section>
