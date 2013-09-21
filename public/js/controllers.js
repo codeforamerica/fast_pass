@@ -5,27 +5,75 @@
 angular.module('dof.controllers', [])
 
 	// SECTION 10 - NAICS Business Category search
-	.controller('10Ctrl', function ($scope, $http, Data) {
-		$scope.data = Data
+	.controller('10Ctrl', function ($scope, $http, UserData) {
+
+		// This is the endpoint URL.
+		// NOTE: For future reference, it should probably not be dependent on the extenal API.
+		var searchAPI   = 'http://api.naics.us/v0/s?year=2012&collapse=1&terms='
+
+		// Attach global UserData to this controller.
+		$scope.userdata = UserData
+
+		// Set defaults for scope variables
+		$scope.searchInput = ''
+		$scope.searchResults = false
+		$scope.searchLoading = false
+		$scope.searchErrorMsg = ''
+		$scope.searchPerformed = false
 
 		$scope.searchBusiness = function () {
-			_doNAICSSearch()
+
+			// Assemble search endpoint URL based on user input
+			var searchURL   = searchAPI + encodeURIComponent($scope.searchInput)
+
+			// Reset display
+			$scope.searchErrorMsg = ''
+			$scope.searchResults  = false
+
+			// Display loading icon
+			$scope.searchLoading  = true			
+
+			// Get search results
+			$http.get(searchURL).
+				success( function (results) {
+
+					$scope.searchLoading = false
+
+					// Message for no results
+					if (results.length == 0) {
+						$scope.searchErrorMsg = 'Nothing found for the terms ‘' + $scope.searchInput + '’.'
+					} else {
+						$scope.searchResults = results
+						$scope.searchPerformed = true					
+						$scope.userdata.naics.input = $scope.searchInput
+					}
+
+				}).
+				error( function () {
+
+					$scope.searchLoading = false
+					$scope.searchErrorMsg = 'Error performing search for NAICS business categories.'
+
+				});
+
 		}
 
-		$scope.selectBusiness = function () {
+		$scope.selectResult = function () {
 
 			// Highlights the selected row
 			// Adds the selection to the selection thing & turns on the next button
-
+			alert('you clicked select')
+//			$scope.userdata.naics.title
+//			$scope.userdata.naics.code
 		}
 
 
 	})
 
 	// SECTION 12 - CONFIRM BUSINESS CATEGORY
-	.controller('12Ctrl', function ($scope, $http, Data) {
+	.controller('12Ctrl', function ($scope, $http, UserData) {
 
-		$scope.data = Data
+		$scope.userdata = UserData
 
 		var dataURL = '/data/business-types-desc.json';
 //		var dataURL = '/data/business-types.json';
@@ -35,7 +83,7 @@ angular.module('dof.controllers', [])
 		$http.get(dataURL).success( function (stuff) {
 
 			// DEMO - grab a random business type from the array.
-			$scope.data.businessCategory = stuff[Math.floor(Math.random() * stuff.length)];
+			$scope.userdata.businessCategory = stuff[Math.floor(Math.random() * stuff.length)];
 
 		});
 
@@ -44,15 +92,15 @@ angular.module('dof.controllers', [])
 
 	})
 
-	.controller('15Ctrl', function ($scope, Data) {
+	.controller('15Ctrl', function ($scope, UserData) {
 
-		$scope.data = Data
+		$scope.userdata = UserData
 
 	})
 
 	// SECTION 20 - ADDITIONAL BUSINESS
-	.controller('20Ctrl', function ($scope, $http, Data) {
-		$scope.data = Data
+	.controller('20Ctrl', function ($scope, $http, UserData) {
+		$scope.userdata = UserData
 
 		var dataURL = '/data/additional-business.json'
 
@@ -88,15 +136,15 @@ angular.module('dof.controllers', [])
 
 	})
 
-	.controller('45Ctrl', function ($scope, Data) {
+	.controller('45Ctrl', function ($scope, UserData) {
 
-		$scope.data = Data
+		$scope.userdata = UserData
 
 	})
 
-	.controller('70Ctrl', function ($scope, Data) {
+	.controller('70Ctrl', function ($scope, UserData) {
 
-		$scope.data = Data
+		$scope.userdata = UserData
 
 	});
 

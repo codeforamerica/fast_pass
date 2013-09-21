@@ -11,7 +11,7 @@ app.config(['$routeProvider', function($routeProvider) {
 		otherwise({redirectTo: '/'});
 }]);
 
-app.factory('Data', function () {
+app.factory('UserData', function () {
 	return { 
 		businessCategory: {
 			code: null,
@@ -19,9 +19,11 @@ app.factory('Data', function () {
 			description: null
 		},
 		businessDescription: null,
+		additionalBusiness: null,
 		naics: {
 			input: null,
 			code: null,
+			title: null,
 			year: '2012'
 		},
 		property: {

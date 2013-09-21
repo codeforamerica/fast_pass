@@ -191,6 +191,7 @@ $(document).ready(function () {
 	})
 
 	// SECTION 10: Business search related jQueries
+	/*
 	$('#main').on('click', '.naics-result button', function (e) {
 		// Select a business from the list
 		$('#primary-business-results p.replace').text($(this).parent().find('span').text())
@@ -204,6 +205,7 @@ $(document).ready(function () {
 		$(this).addClass('selected')
 		$(this).parent().addClass('selected')
 	})
+	*/
 
 
 
@@ -300,49 +302,6 @@ function _closeModal() {
 	}
 }
 
-function _doNAICSSearch () {
-	// Show loader and clear search results area
-	$('#search-results').text('')
-	$('#search-results').show()
-	$('.loading-small').show()
-	$('span.error').hide()
-
-	// Do a search
-	var searchAPI   = 'http://api.naics.us/v0/s?year=2012&collapse=1&terms='
-	var searchTerms = $('#primary-business-input').val()
-	var searchURL   = searchAPI + encodeURIComponent(searchTerms)
-	var searchResults
-
-	var naicsXHR = $.get(searchURL, function(data) {
-		searchResults = data
-	}).done( function () {
-
-		// Message for no results
-		if (searchResults.length == 0) {
-			$('span.error').show().text('Nothing found for those search terms.')
-			return
-		}
-
-		$('#search-results').append('<p><strong>Please choose one from the list below.</strong></p>')
-
-		// Format data & display
-		for (var i = 0; i < searchResults.length; i++) {
-			searchResults[i].id = searchResults[i].code
-			$('#search-results').append('<div class=\'naics-result\'><span>' + searchResults[i].title + '</span><button>Select</button></div>')
-		}
-
-		// Show selection box
-		$('#primary-business-results').show()
-
-	}).fail( function () {
-		// Error message
-		$('span.error').show().text('Error performing search for NAICS business categories')
-	
-	}).always( function () {
-		// Hide loader
-		$('.loading-small').hide()
-	})
-}
 
 function _getLatLng () {
 

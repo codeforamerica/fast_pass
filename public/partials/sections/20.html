@@ -6,10 +6,10 @@
 
 	<!-- Priveleged licenses -->
 
-	<div id='additional-business-form' class='form' ng-model='additionalBusiness'>
+	<div id='additional-business-form' class='form' ng-model='userdata.additionalBusiness'>
 
 		<div ng-repeat='item in additionalBusiness | orderBy: "official_name"'>
-			<input type='checkbox' name='additional-business' value='{{item.id}}'>
+			<input type='checkbox' name='additional-business' value='{{item.id}}' id='{{item.id}}'>
 			<label for='{{item.id}}' ng-show='item.name'>{{item.name}}</label>
 			<label for='{{item.id}}' ng-hide='item.name'>{{item.official_name}}</label>
 			<a href='' data-title='{{item.official_name}}' class='small help modal'></a>

@@ -7,9 +7,10 @@
 	<ul>
 		<li>
 			Your business category is
-			<span class='pill'>{{data.businessCategory.code}}</span>
-			<strong><a href='' data-title='{{data.businessCategory.name}}' class='modal ng-binding'>{{data.businessCategory.name}}</a></strong>.
+			<span class='pill'>{{userdata.businessCategory.code}}</span>
+			<strong><a href='' data-title='{{userdata.businessCategory.name}}' class='modal ng-binding'>{{userdata.businessCategory.name}}</a></strong>.
 		</li>
+		<li>{{userdata.additionalBusiness}}</li>
 		<li>The zoning classification for your property is <span class='green pill'>C-2</span> <strong>General Commercial</strong>.</li>
 		<li>Your parcel number is <strong>13934311021</strong>.</li>
 		<li>The master address on record for this parcel is <strong><span class='property-address'>150 N. Las Vegas Blvd</span></strong>.</li>
@@ -24,7 +25,7 @@
 	
 	<div class='radio-select'>
 		<p><button type='button' id='external-biz-lic' data-external-link='http://www.lasvegasnevada.gov/Government/25522.htm'>Apply for a business license</button></p>
-		<p><button type='button' id='external-pre-app' data-external-link='demo/eplans/preapplication.html?ProjectAddress={{data.property.address}}&Parcel={{data.property.parcelNumber}}&ProjectDesc={{data.businessDescription}}&Ward={{data.property.ward}}&ProposedUse={{data.businessCategory.name}}'>Request a planning pre-application conference</button></p>
+		<p><button type='button' id='external-pre-app' data-external-link='demo/eplans/preapplication.html?ProjectAddress={{userdata.property.address}}&Parcel={{userdata.property.parcelNumber}}&ProjectDesc={{userdata.businessDescription}}&Ward={{userdata.property.ward}}&ProposedUse={{userdata.businessCategory.name}}'>Request a planning pre-application conference</button></p>
 
 	</div>
 	
