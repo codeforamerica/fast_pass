@@ -8,6 +8,7 @@ app.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.
 		when('/',                   {templateUrl: '/partials/start.html', controller: 'sectionStart'}).
 		when('/section/:sectionId', {templateUrl: _getSectionTemplate,    controller: 'sectionGo'}).
+		when('/print',              {templateUrl: '/partials/print.html', controller: 'PrintView'}).
 		otherwise({redirectTo: '/'});
 }]);
 
@@ -23,7 +24,6 @@ app.factory('UserData', function () {
 		businessDescription: null,
 		additionalBusiness: null,
 		naics: {
-			input: null,
 			code: null,
 			title: null,
 			year: '2012'
@@ -32,6 +32,13 @@ app.factory('UserData', function () {
 			parcelNumber: null,
 			address: null,
 			ward: null
+		},
+		rawInputs: {
+			businessSearch: [],
+			addressSearch: []
+		},
+		nav: {
+			prev: null
 		}
 	}
 })
@@ -86,7 +93,7 @@ directives.modal = function () {
 	// Make a modal
 	return {
 		restrict: 'A',
-		templateUrl: 'modal',
+		templateUrl: '/partials/_modal.html',
 		link: function (scope, element, attrs) {
 
 		}		
@@ -204,9 +211,12 @@ controllers.sectionStart = function ($scope) {
 	// Nothing
 }
 
-controllers.sectionGo = function ($scope, $routeParams) {
+controllers.sectionGo = function ($scope, $routeParams, UserData) {
 	
 	$scope.sectionId = $routeParams.sectionId
+	$scope.userdata = UserData
+
+	// Somewhere in here should be the logic for saving to LocalStorage or retrieving it
 
 	// DOM id for jQuery
 	var sectionId = '#section' + $scope.sectionId,

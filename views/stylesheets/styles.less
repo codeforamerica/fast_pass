@@ -104,7 +104,7 @@ header {
 		position: absolute;
 		top: 10px;
 		left: -20px;
-		.opacity(0.75);
+		.opacity(0.50);
 		a {
 			.overrideExternalLinkStyle;
 		}
@@ -642,7 +642,6 @@ footer {
 	display: none;
 }
 
-
 .popup-content {
 	padding: 10px 16px 0;
 	text-align: left;
@@ -655,6 +654,49 @@ footer {
 
 .scrollfix {
 	position: relative;
+}
+
+// PRINT STYLES
+
+#print {
+}
+@media print {
+	#print {
+		width: 670px;
+		max-width: 100%;
+	}
+	#nav-logo {
+		.opacity(1);
+		left: 100px;
+	}
+	header {
+		position: relative;
+		margin-left: 120px;
+	}
+	header a:after {
+		content: '' !important;
+	}
+	header img {
+		background-color: white;
+	}
+	.pill {
+		color: black !important;
+		border: 1px solid black !important;
+		background-color: transparent !important;
+	}
+	tr, td, th {
+		page-break-inside: avoid;
+	}
+	// Things to hide from print view
+	.section-navigation,
+	#pi {
+		display: none;
+	}
+	a.help:after,
+	a[href^='mailto:']:after, {
+		content: '';
+		border: 0;
+	}
 }
 
 // LEAFLET OVERRIDES

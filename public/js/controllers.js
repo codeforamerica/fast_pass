@@ -2,152 +2,205 @@
 
 /* Controllers */
 
-angular.module('dof.controllers', [])
+var appCtrls = angular.module('dof.controllers', []);
 
-	// SECTION 10 - NAICS Business Category search
-	.controller('10Ctrl', function ($scope, $http, UserData) {
+// SECTION 10 - NAICS Business Category search
+appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 
-		// This is the endpoint URL.
-		// NOTE: For future reference, it should probably not be dependent on the extenal API.
-		var searchAPI   = 'http://api.naics.us/v0/s?year=2012&collapse=1&terms='
+	// This is the endpoint URL.
+	// NOTE: For future reference, it should probably not be dependent on the extenal API.
+	var searchAPI   = 'http://api.naics.us/v0/s?year=2012&collapse=1&terms='
 
-		// Attach global UserData to this controller.
-		$scope.userdata = UserData
+	// Attach global UserData to this controller.
+	$scope.userdata = UserData
 
-		// Set defaults for scope variables
-		$scope.searchInput = ''
-		$scope.searchResults = false
-		$scope.searchLoading = false
+	// Set defaults for scope variables
+	$scope.searchInput = ''
+	$scope.searchResults = false
+	$scope.searchLoading = false
+	$scope.searchErrorMsg = ''
+	$scope.searchPerformed = false
+	$scope.selectedResult = null
+
+	$scope.searchBusiness = function (input) {
+
+		// Assemble search endpoint URL based on user input
+		var searchURL   = searchAPI + encodeURIComponent(input)
+
+		// Reset display
 		$scope.searchErrorMsg = ''
-		$scope.searchPerformed = false
-		$scope.selectedResult = null
+		$scope.searchResults  = false
 
-		$scope.searchBusiness = function (input) {
+		// Display loading icon
+		$scope.searchLoading  = true			
 
-			// Assemble search endpoint URL based on user input
-			var searchURL   = searchAPI + encodeURIComponent(input)
+		// Get search results
+		$http.get(searchURL).
+			success( function (results) {
 
-			// Reset display
-			$scope.searchErrorMsg = ''
-			$scope.searchResults  = false
+				$scope.searchLoading = false
 
-			// Display loading icon
-			$scope.searchLoading  = true			
+				// Message for no results
+				if (results.length == 0) {
+					$scope.searchErrorMsg = 'Nothing found for the terms ‘' + input + '’.'
+				} else {
+					$scope.searchResults = results
+					$scope.searchPerformed = true			
+				}
 
-			// Get search results
-			$http.get(searchURL).
-				success( function (results) {
+				// Store raw search inputs for future analysis
+				$scope.userdata.rawInputs.businessSearch.push(input)
 
-					$scope.searchLoading = false
+			}).
+			error( function () {
 
-					// Message for no results
-					if (results.length == 0) {
-						$scope.searchErrorMsg = 'Nothing found for the terms ‘' + input + '’.'
-					} else {
-						$scope.searchResults = results
-						$scope.searchPerformed = true					
-						$scope.userdata.naics.input = $scope.searchInput
-					}
+				$scope.searchLoading = false
+				$scope.searchErrorMsg = 'Error performing search for NAICS business categories.'
 
-				}).
-				error( function () {
+			});
 
-					$scope.searchLoading = false
-					$scope.searchErrorMsg = 'Error performing search for NAICS business categories.'
+	}
 
-				});
+	$scope.selectResult = function (code, title) {
+		// Set the selected stuff to global UserData so it's available elsewhere
+		$scope.userdata.naics.code  = code
+		$scope.userdata.naics.title = title
 
-		}
-
-		$scope.selectResult = function (code, title) {
-			// Set the selected stuff to global UserData so it's available elsewhere
-			$scope.userdata.naics.code  = code
-			$scope.userdata.naics.title = title
-
-			// Add selected title to the selection box
-			$scope.selectedResult = $scope.userdata.naics.title
-		}
+		// Add selected title to the selection box
+		$scope.selectedResult = $scope.userdata.naics.title
+	}
 
 
-	})
+})
 
-	// SECTION 12 - CONFIRM BUSINESS CATEGORY
-	.controller('12Ctrl', function ($scope, $http, UserData) {
+// SECTION 12 - CONFIRM BUSINESS CATEGORY
+appCtrls.controller('12Ctrl', function ($scope, $http, UserData) {
 
-		$scope.userdata = UserData
+	$scope.userdata = UserData
 
-		var dataURL = '/data/business-types-desc.json';
+	var dataURL = '/data/business-types-desc.json';
 //		var dataURL = '/data/business-types.json';
 //		Note: these are coming from different sources, and seems to have different categories. Need to confirm.
 
-		// Get a matched business type
-		$http.get(dataURL).success( function (stuff) {
+	// Get a matched business type
+	$http.get(dataURL).success( function (stuff) {
 
-			// DEMO - grab a random business type from the array.
-			$scope.userdata.businessCategory = stuff[Math.floor(Math.random() * stuff.length)];
-
-		});
-
-		// UI.Bootstrap collapse
-		$scope.isCollapsed = true;
-
-	})
-
-	.controller('15Ctrl', function ($scope, UserData) {
-
-		$scope.userdata = UserData
-
-	})
-
-	// SECTION 20 - ADDITIONAL BUSINESS
-	.controller('20Ctrl', function ($scope, $http, UserData) {
-		$scope.userdata = UserData
-
-		var dataURL = '/data/additional-business.json'
-
-		// Display additional businesses
-		$http.get(dataURL).success( function (data) {
-			$scope.additionalBusiness = data;
-		});
-	})
-
-
-	// SECTION 40 - Enter a location
-	.controller('40Ctrl', function ($scope) {
-
-//		$scope.map = {controller: 'MapAddressInputCtrl'}
-		$scope.findAddress = function () {
-			// Temporarily forward this interaction directly.
-			window.location.hash = encodeURIComponent('/section/50')
-		
-			// In the future this needs to do actual work.
-			// It will send information to an endpoint and retrieve address / parcel data.
-
-			// Errors to return:
-			// -  This address could not be found in Las Vegas.
-			// -  Did you mean.... (keep on this screen?)
-		}
-
-	})
-	.controller('MapCtrl', function ($scope) {
-
-		map.on('click', function () {
-			alert('hey')
-		})
-
-	})
-
-	.controller('45Ctrl', function ($scope, UserData) {
-
-		$scope.userdata = UserData
-
-	})
-
-	.controller('70Ctrl', function ($scope, UserData) {
-
-		$scope.userdata = UserData
+		// DEMO - grab a random business type from the array.
+		$scope.userdata.businessCategory = stuff[Math.floor(Math.random() * stuff.length)];
 
 	});
+
+	// UI.Bootstrap collapse
+	$scope.isCollapsed = true;
+
+})
+
+appCtrls.controller('15Ctrl', function ($scope, UserData) {
+
+	$scope.userdata = UserData
+
+})
+
+// SECTION 20 - ADDITIONAL BUSINESS
+appCtrls.controller('20Ctrl', function ($scope, $http, UserData) {
+	$scope.userdata = UserData
+
+	var dataURL = '/data/additional-business.json'
+
+	// Display additional businesses
+	$http.get(dataURL).success( function (data) {
+		$scope.additionalBusiness = data;
+	});
+
+	$scope.selectedBusiness = function () {
+		return $filter('filter') ($scope.additionalBusiness, {checked: true});
+	};
+})
+
+
+// SECTION 40 - Enter a location
+appCtrls.controller('40Ctrl', function ($scope, UserData) {
+	$scope.userdata = UserData
+	$scope.userdata.nav.pathTo50 = 40    // Remember the current section to preserve path in the future
+
+//		$scope.map = {controller: 'MapAddressInputCtrl'}
+	this.findAddress = function (input) {
+		// Store raw search inputs for future analysis
+		$scope.userdata.rawInputs.addressSearch.push(input)
+
+		// Temporarily forward this interaction directly.
+		// This breaks forward/back I think.
+		$scope.userdata.property.address = input
+		window.location.hash = encodeURIComponent('/section/50')
+	
+		// In the future this needs to do actual work.
+		// It will send information to an endpoint and retrieve address / parcel data.
+
+		// Errors to return:
+		// -  This address could not be found in Las Vegas.
+		// -  Did you mean.... (keep on this screen?)
+
+	}
+
+	// Experiment with alternative controller organization. See here: http://egghead.io/lessons/angularjs-an-alternative-approach-to-controllers
+	return $scope['40Ctrl'] = this
+
+})
+
+appCtrls.controller('MapCtrl', function ($scope) {
+
+	map.on('click', function () {
+		alert('hey')
+	})
+
+})
+
+appCtrls.controller('45Ctrl', function ($scope, UserData) {
+	$scope.userdata = UserData
+	$scope.userdata.nav.pathTo50 = 45    // Remember the current section to preserve path in the future
+
+})
+
+// SECTION 50 - PARCEL VIEW
+appCtrls.controller('50Ctrl', function ($scope, UserData) {
+	$scope.userdata = UserData
+
+	// Switch back navigation based on user's path
+	if ($scope.userdata.nav.pathTo50 == 45) {
+		$scope.previousIsZoningOverview = true
+		$scope.previousIsAddressSearch = false
+	} else {
+		// Assume address search is the default condition.
+		$scope.previousIsZoningOverview = false
+		$scope.previousIsAddressSearch = true
+	}
+
+	// Load dummy parcel information
+	$scope.parcel = {
+		number:          '292-299-29',
+		address:         $scope.userdata.property.address,
+		master_address:  $scope.userdata.property.address,
+		record_adresses: [
+			'123 Main Street',
+			'145 Main Street',
+			'168 Chuck Testa'
+		]
+	}
+
+})
+
+appCtrls.controller('70Ctrl', function ($scope, UserData) {
+
+	$scope.userdata = UserData
+
+})
+
+appCtrls.controller('PrintView', function ($scope, UserData) {
+	$scope.userdata = UserData
+
+	// Open print dialog box
+	window.print()
+})
 
 /*******************************************************************************************/
 /* Copied from ui.bootstrap */
