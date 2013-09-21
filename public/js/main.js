@@ -196,14 +196,7 @@ $(document).ready(function () {
 		// Select a business from the list
 		$('#primary-business-results p.replace').text($(this).parent().find('span').text())
 		$('#primary-business-results a.next').removeClass('disabled')
-		// Feedback
-		// Step 1. Clear all previous rows
-		$('.naics-result button').text('Select').removeClass('selected')
-		$('.naics-result').removeClass('selected')
-		// Step 2. Highlight selected row.
-		$(this).text('Selected')
-		$(this).addClass('selected')
-		$(this).parent().addClass('selected')
+
 	})
 	*/
 

@@ -20,11 +20,12 @@ angular.module('dof.controllers', [])
 		$scope.searchLoading = false
 		$scope.searchErrorMsg = ''
 		$scope.searchPerformed = false
+		$scope.selectedResult = null
 
-		$scope.searchBusiness = function () {
+		$scope.searchBusiness = function (input) {
 
 			// Assemble search endpoint URL based on user input
-			var searchURL   = searchAPI + encodeURIComponent($scope.searchInput)
+			var searchURL   = searchAPI + encodeURIComponent(input)
 
 			// Reset display
 			$scope.searchErrorMsg = ''
@@ -41,7 +42,7 @@ angular.module('dof.controllers', [])
 
 					// Message for no results
 					if (results.length == 0) {
-						$scope.searchErrorMsg = 'Nothing found for the terms ‘' + $scope.searchInput + '’.'
+						$scope.searchErrorMsg = 'Nothing found for the terms ‘' + input + '’.'
 					} else {
 						$scope.searchResults = results
 						$scope.searchPerformed = true					
@@ -58,13 +59,13 @@ angular.module('dof.controllers', [])
 
 		}
 
-		$scope.selectResult = function () {
+		$scope.selectResult = function (code, title) {
+			// Set the selected stuff to global UserData so it's available elsewhere
+			$scope.userdata.naics.code  = code
+			$scope.userdata.naics.title = title
 
-			// Highlights the selected row
-			// Adds the selection to the selection thing & turns on the next button
-			alert('you clicked select')
-//			$scope.userdata.naics.title
-//			$scope.userdata.naics.code
+			// Add selected title to the selection box
+			$scope.selectedResult = $scope.userdata.naics.title
 		}
 
 

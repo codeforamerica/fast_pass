@@ -43,7 +43,6 @@ directives.showMap = function () {
 
 		// Retrieve elements and wrap as jQLite
 		var $mainEl = angular.element(document.getElementById('main'))
-		var $el     = angular.element(element[0])
 
 		// Check to make sure it's not already part-screen
 		// .hasClass is used because other classes might be on the element
@@ -51,7 +50,7 @@ directives.showMap = function () {
 
 			// Set the appropriate CSS classes
 			$mainEl.addClass('partscreen').removeClass('fullscreen')
-			$el.addClass('section-map')
+			element.addClass('section-map')
 	
 			// Activate map
 			document.getElementById('map').style.display = 'block'
@@ -77,6 +76,53 @@ directives.hideMap = function () {
 			// Deactivates map so it doesn't interfere with other things on the page (.e.g. scrollfix)
 			document.getElementById('map').style.display = 'none'
 		}
+	}
+}
+
+directives.buttonDisable = function () {
+	// Use with an a.button element where it needs to be given the class 
+	// 'disabled' until some condition is true
+	return function (scope, element, attrs) {
+
+		scope.$watch(attrs.buttonDisable, function (value) {
+			if (value) {
+				element.removeClass('disabled')
+			} else {
+				element.addClass('disabled')				
+			}
+		})
+	}
+}
+
+directives.radioSelect = function () {
+	// Currently only used on Step 10 (NAICS search results)
+	return function (scope, element, attrs) {
+
+		var isSelected = false
+
+		// This directive allows for custom text to be displayed when it is clicked,
+		// provided in the form of a 'selected-text' attribute.
+		// If custom text is not provided, it will default to 'Selected'
+		var text = attrs.selectedText
+		if (!text) {
+			text = 'Selected'
+		}
+
+		// Store the original text of the button
+		var originalText = element.text()
+
+		// Action to perform when the button is clicked
+		element.bind('click', function () {
+
+			// Clear all previous select boxes
+			element.parent().parent().children().find('button').text(originalText).removeClass('selected')
+			element.parent().parent().children().removeClass('selected')
+
+			// Set current select box to Selected
+			element.text(text).addClass('selected')
+			element.parent().addClass('selected')
+		})
+
 	}
 }
 
@@ -107,10 +153,9 @@ directives.scrollfix = function () {
 directives.externalLink = function () {
 	return function (scope, element, attrs) {
 
-		var $el = angular.element(element[0])
 		var url = attrs.externalLink
 
-		$el.bind('mouseup', function () {
+		element.bind('mouseup', function () {
 			if (url) {
 				window.open(url, '_blank')
 			}			

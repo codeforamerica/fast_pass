@@ -3,12 +3,11 @@
 	<h2>What is your activity or business?</h2>
 	
 	<p class='lede'>
-		Type in some keywords about your business.
-		<!--a href='' data-title='How to find your primary business type' class='modal'>(Help me do this.)</a-->
+		Type in some keywords about your business, then press the Search button.
 	</p>
 
-	<form name='primary-business-form' id='primary-business-form' ng-submit='searchBusiness()'>
-		<div class='row'>
+	<form name='primary-business-form' id='primary-business-form' ng-submit='searchBusiness(searchInput)'>
+		<div class='row' style='white-space: nowrap;'>
 			<input id='primary-business-input' type='text' name='primary-business' placeholder='e.g. rice farming' class='col-5' ng-model='searchInput' required autofocus>
 			<input type='submit' value='Search' class='col-1'>
 		</div>
@@ -22,17 +21,17 @@
 				<img src='img/loading-lite.gif'>
 			</div>
 			
-			<div id='search-message' ng-show='searchErrorMsg'>
+			<div ng-show='searchErrorMsg'>
 				<span class='error'>{{searchErrorMsg}}</span>
 			</div>
 			
-			<div id='search-results' ng-show='searchResults'>
-				<p class='message'>
+			<div ng-show='searchResults'>
+				<h3>
 					Please choose a business category from the list below.
-				</p>
+				</h3>
 				<div class='naics-result' ng-repeat='item in searchResults'>
 					<span>{{item.title}}</span>
-					<button ng-click='selectResult'>Select</button>
+					<button ng-click='selectResult(item.code, item.title)' radio-select='isSelected' data-selected-text='Selected'>Select</button>
 				</div>
 			</div>
 
@@ -57,12 +56,12 @@
 			<h3>Your selected business category</h3>
 
 			<p style='font-size: 120%;'>
-				<span ng-show='selected'>{{selected}}</span>
-				<span ng-show='!selected'>Nothing is selected yet. Your chosen business type will appear here.</span>
+				<span ng-show='selectedResult'>{{selectedResult}}</span>
+				<span ng-show='!selectedResult'>Nothing is selected yet. Your chosen business type will appear here.</span>
 			</p>
 
 			<div class='row section-navigation'>
-				<a class='next button disabled' href='/#/section/12'>Next</a>
+				<a class='next button' href='/#/section/12' button-disable='selectedResult'>Next</a>
 			</div>
 		</div>
 
@@ -72,14 +71,5 @@
 		<a class='back button' href='/'>Back</a>
 		<a href='/#/section/30' style='position: absolute; bottom: 0; right: 0'>Skip business classification &raquo;</a>
 	</div>
-
-	<script>
-	$(window).scroll(function () {
-	    if ($(window).scrollTop() > 100) {
-	        $('.scrollfix').css('top', $(window).scrollTop());
-	    }
-	});
-
-	</script>
 
 </section>
