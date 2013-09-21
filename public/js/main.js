@@ -190,38 +190,6 @@ $(document).ready(function () {
 		e.preventDefault()
 	})
 
-	// SECTION 10: Business search related jQueries
-	/*
-	$('#main').on('click', '.naics-result button', function (e) {
-		// Select a business from the list
-		$('#primary-business-results p.replace').text($(this).parent().find('span').text())
-		$('#primary-business-results a.next').removeClass('disabled')
-
-	})
-	*/
-
-
-
-	// Scrollfixed elements
-	/*
-	var scrollTemp
-	$(window).scroll(function () {
-
-		var $fixedEl = $('.scrollfix')
-
-		if ($fixedEl.length > 0 ) {
-			if ($(window).scrollTop() > $fixedEl.offset().top - 40) {
-				scrollTemp = $fixedEl.offset().top - 40
-		        $fixedEl.css('position', 'fixed').css('top', '40px').css('margin-left', '10px');
-			}
-			else if ($(window).scrollTop() < scrollTemp) {
-				$fixedEl.css('position', 'relative').css('top', '0').css('margin-left', '7px');
-			}
-		}
-	
-	});
-	*/
-
 	// MODAL
 	// Opens modal
 	$('#main').on('click', 'a.modal', function (e) {

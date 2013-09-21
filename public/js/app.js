@@ -82,6 +82,18 @@ directives.hideMap = function () {
 	}
 }
 
+directives.modal = function () {
+	// Make a modal
+	return {
+		restrict: 'A',
+		templateUrl: 'modal',
+		link: function (scope, element, attrs) {
+
+		}		
+	}
+}
+
+
 directives.buttonDisable = function () {
 	// Use with an a.button element where it needs to be given the class 
 	// 'disabled' until some condition is true
@@ -138,18 +150,22 @@ directives.scrollfix = function () {
 		restrict: 'C',
 		link: function (scope, element, $window) {
 
-			var $el   = angular.element(element[0])
 			var $page = angular.element(window)
-			var scrollTemp
+			var $el   = element[0]
+			var elScrollTopOriginal = $($el).offset().top - 40
 
 			$page.bind('scroll', function () {
 
-				if ( $page.pageYOffset > $el.offsetTop - 40) {
-					scrollTemp = $el.offsetTop - 40
-			        $el.css('position', 'fixed').css('top', '40px').css('margin-left', '10px');
+				var windowScrollTop = $page[0].pageYOffset
+				var elScrollTop     = $($el).offset().top
+				// FUCK YEAH JQUERY
+
+				if ( windowScrollTop > elScrollTop - 40) {
+					elScrollTopOriginal = elScrollTop - 40
+			        element.css('position', 'fixed').css('top', '40px').css('margin-left', '3px');
 				}
-				else if ( $page.pageYOffset < scrollTemp) {
-					$el.css('position', 'relative').css('top', '0').css('margin-left', '7px');
+				else if ( windowScrollTop < elScrollTopOriginal) {
+					element.css('position', 'relative').css('top', '0').css('margin-left', '0');
 				}
 			})
 
