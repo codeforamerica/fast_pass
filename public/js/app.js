@@ -1,9 +1,9 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-
 var app = angular.module('dof', ['dof.controllers', 'ui.bootstrap']);
 
+// Set up application routes
 app.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.
 		when('/',                   {templateUrl: '/partials/start.html', controller: 'sectionStart'}).
@@ -11,6 +11,8 @@ app.config(['$routeProvider', function($routeProvider) {
 		otherwise({redirectTo: '/'});
 }]);
 
+// This sets up a global 'UserData' object so that information collected by
+// user input can be carried across the application
 app.factory('UserData', function () {
 	return { 
 		businessCategory: {
@@ -34,12 +36,13 @@ app.factory('UserData', function () {
 	}
 })
 
+// Alternate way of declaring directives (and controllers, below). See: http://egghead.io/lessons/angularjs-thinking-differently-about-organization
 var directives = {}
 app.directive(directives)
 
 directives.showMap = function () {
+	// Actions to be done when loading a part-screen section with map
 	return function (scope, element) {
-		// Actions to be done when loading a part-screen section with map
 
 		// Retrieve elements and wrap as jQLite
 		var $mainEl = angular.element(document.getElementById('main'))
@@ -61,8 +64,8 @@ directives.showMap = function () {
 }
 
 directives.hideMap = function () {
+	// Actions to be done when loading a full-screen section with map
 	return function () {
-		// Actions to be done when loading a full-screen section with map
 
 		// Retrieve elements and wrap as jQLite
 		var $mainEl = angular.element(document.getElementById('main'))
@@ -115,6 +118,7 @@ directives.radioSelect = function () {
 		element.bind('click', function () {
 
 			// Clear all previous select boxes
+			// This is super messy, as it relies on DOM traversal to succeed
 			element.parent().parent().children().find('button').text(originalText).removeClass('selected')
 			element.parent().parent().children().removeClass('selected')
 
@@ -127,6 +131,9 @@ directives.radioSelect = function () {
 }
 
 directives.scrollfix = function () {
+	// Elements with 'scrollfix' directive (placed on the class, for additional CSS)
+	// will be fixed in place in the window once its top scrolls to a certain point
+	// in the window.
 	return {
 		restrict: 'C',
 		link: function (scope, element, $window) {
@@ -151,6 +158,8 @@ directives.scrollfix = function () {
 }
 
 directives.externalLink = function () {
+	// Buttons with 'data-external-link' attribute will go to the provided
+	// URL when clicked.
 	return function (scope, element, attrs) {
 
 		var url = attrs.externalLink
@@ -164,13 +173,19 @@ directives.externalLink = function () {
 	}
 }
 
+/* // Might not actually be needed
+directives.autofocus = function () {
+	return function (scope, element, attrs) {
+		// element.focus()
+	}
+}
+*/
+
 var controllers = {}
 app.controller(controllers)
 
 controllers.sectionStart = function ($scope) {
-
-	// Ensure that main element is set to fullscreen class (useful if starting over from partscreen view)
-//	_initFullscreenSection()
+	// Nothing
 }
 
 controllers.sectionGo = function ($scope, $routeParams) {
@@ -190,10 +205,6 @@ controllers.sectionGo = function ($scope, $routeParams) {
 			window.location.href = window.location.origin + $section.find('a.next').attr('href')
 		}, 800)
 	}
-
-	// Manually focus on autofocus form elements
-	$('[autofocus]').focus()
-
 }
 
 // Dynamically fetch the section template from the URL
