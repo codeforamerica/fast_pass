@@ -1,18 +1,24 @@
-<section id='section12' class='section-full'>
+<section id='section12' ng-controller='12Ctrl as app' hide-map>
 
 	<h2>Confirm your business category</h2>
 
 	<p class='lede'>
-		It looks like your business is {{primaryBusiness}}.
-		<a href='' data-title='Automotive Services Business Category Definition' class='modal'>(Learn more about this category.)</a>
+		Based on your selection, we've matched your business to a Las Vegas business category of <span class='nobr'><span class='pill'>{{userdata.businessCategory.code}}</span> <strong>{{userdata.businessCategory.name}}</strong></span>.
+		<a href='' ng-click="isCollapsed = !isCollapsed">(Learn more about this category.)</a>
 	</p>
+
+	<div class='info-box' collapse="isCollapsed">
+		<p>{{userdata.businessCategory.description}}</p>
+
+		<p><a href='http://www5.lasvegasnevada.gov/LCAT/Bus_Lic_Instructions.aspx?Category={{userdata.businessCategory.code}}&CategoryName={{userdata.businessCategory.name}}' target='_blank'>View complete licensing procedure from Las Vegas Business Licensing.</a></p>
+	</div>
 
 	<p class='lede'>
 		Does this look correct to you?
 	</p>
 
 	<div class='section-navigation'>
-		<a class='back button' href='/#/section/10'>No, go back and edit</a>
+		<a class='back button' href='/#/section/10'>No, go back and choose another</a>
 		<a class='next button' href='/#/section/15'>Looks good. Let’s keep going</a>
 	</div>
 

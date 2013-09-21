@@ -1,0 +1,100 @@
+[
+	{
+		"id": "alcohol",
+		"name": "Alcoholic beverages served or sold",
+		"official_name": "Alcohol Sales or Service",
+		"description": ""
+	},
+	{
+		"id": "martialarts",
+		"name": "",
+		"official_name": "Martial arts instruction",
+		"description": ""
+	},
+	{
+		"id": "auctioneer",
+		"name": "",
+		"official_name": "Auctioneer",
+		"description": ""
+	},
+	{
+		"id": "massage",
+		"name": "",
+		"official_name": "Massage establishment",
+		"description": ""
+	},
+	{
+		"id": "burglar",
+		"name": "",
+		"official_name": "Burglar alarm",
+		"description": ""
+	},
+	{
+		"id": "mobilefood",
+		"name": "",
+		"official_name": "Mobile food vendor",
+		"description": ""
+	},
+	{
+		"id": "escort",
+		"name": "",
+		"official_name": "Escort bureau",
+		"description": ""
+	},
+	{
+		"id": "pawn",
+		"name": "",
+		"official_name": "Pawn",
+		"description": ""
+	},
+	{
+		"id": "gaming",
+		"name": "",
+		"official_name": "Gaming",
+		"description": ""
+	},
+	{
+		"id": "reflexology",
+		"name": "",
+		"official_name": "Reflexology establishment",
+		"description": ""
+	},
+	{
+		"id": "handgun",
+		"name": "",
+		"official_name": "Handgun sales",
+		"description": ""
+	},
+	{
+		"id": "teendance",
+		"name": "",
+		"official_name": "Teenage dance club",
+		"description": ""
+	},
+	{
+		"id": "icecream",
+		"name": "Ice cream truck",
+		"official_name": "Ice Cream Truck",
+		"description": ""
+	},
+	{
+		"id": "usedmerch",
+		"name": "",
+		"official_name": "Used merchandise sales (other than trade-in)",
+		"description": ""
+	},
+	{
+		"id": "locksmith",
+		"name": "",
+		"official_name": "Locksmith",
+		"description": ""
+	},
+	{
+		"id": "wedding",
+		"name": "Wedding chapel",
+		"official_name": "Wedding Chapel",
+		"description": ""
+	}
+]
+
+                                 

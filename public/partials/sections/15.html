@@ -1,11 +1,11 @@
-<section id='section15' class='section-full'>
+<section id='section15' ng-controller='15Ctrl as app' hide-map>
 
 	<h2>Describe your business</h2>
 	
-	<p class='lede'>We'd like to know some more about your business, so that our permit technicians can serve you better. Please describe your business in one or two paragraphs.</p>
+	<p class='lede'>Please describe your business in more depth by writing one or two paragraphs.</p>
 	
 	<div id='business-description-form' class='form'>
-		<textarea id='business-description' name='business-description'></textarea>
+			<textarea id='business-description' name='business-description' autofocus ng-model='userdata.businessDescription'></textarea>
 	</div>
 	
 	<div class='section-navigation'>

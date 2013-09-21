@@ -1,0 +1,917 @@
+[
+    {
+        "code": "A01",
+        "name": "Administrative Office Space",
+        "description": "An office location in which specific administrative functions of a business are conducted apart from the primary business location."
+    },
+    {
+        "code": "A02",
+        "name": "Advertising or Marketing Service",
+        "description": "Any business engaged in the act of designing, producing and disseminating information to the general public, including public relations activities on behalf of persons or businesses."
+    },
+    {
+        "code": "A03",
+        "name": "Coupon Book Sales Licenses",
+        "description": "Any business selling, marketing or distributing coupon books which may be redeemed or exchanged in whole or in part for discounts, bonuses, gifts, services, tickets, admissions, goods, wares, merchandise, food, drinks or other items of value."
+    },
+    {
+        "code": "A04",
+        "name": "Advertising Space Leasing or Selling",
+        "description": "A person engaged in any form of leasing or selling outdoor advertising space, whether the space is at a fixed or mobile location."
+    },
+    {
+        "code": "A06",
+        "name": "Amusement Park",
+        "description": "A business premises which has one or more buildings or structures, is operated on a permanent basis, and is designed to provide amusement, pleasure or relaxation and promotes some theme, motif or concept, including a location that provides lifts, tramways, monorails, elevators, or escalators or other conveyances or rides or roller coasters for entertainment or amusement of the public, together with any incidental sale of refreshments, food, gifts or novelties."
+    },
+    {
+        "code": "A07",
+        "name": "Apartment House",
+        "description": "A structure which contains five or more apartment dwelling units and which does not qualify as a townhouse dwelling, residence hotel, condominium, or multiple-unit structure that is owned cooperatively or in common."
+    },
+    {
+        "code": "A14",
+        "name": "Auto Broker",
+        "description": "Any person who, for a fee or any other consideration, offers to provide to another person the service of arranging, negotiating or assisting in the purchase of a new or used vehicle which has not been registered by the broker."
+    },
+    {
+        "code": "A17",
+        "name": "Armored Car Service",
+        "description": "A business that provides for hire the transportation of money, currency, bank notes, money orders, bonds, notes, gaming chips and other valuable property, instruments or documents."
+    },
+    {
+        "code": "A19",
+        "name": "Rental Car Agency",
+        "description": "A business which engages in the renting automobiles on a daily basis."
+    },
+    {
+        "code": "A23",
+        "name": "Bookkeeper",
+        "description": "Any business or person, other than a certified public accountant or public accountant, engaged in providing the service of recording the accounts, transactions or preparation of tax returns on behalf of another business or person."
+    },
+    {
+        "code": "A28",
+        "name": "Automobile Leasing",
+        "description": "Any business that leases automobiles or any other kind of motor vehicle that is required to be licensed by the Department of Motor Vehicles and Public Safety."
+    },
+    {
+        "code": "A29",
+        "name": "Automobile Towing Service",
+        "description": "Any business engaged in towing motor vehicles. The category does not include any service station or garage which, as incidental to providing repairs, tows automobiles to its place of business to make such repairs."
+    },
+    {
+        "code": "A32",
+        "name": "Adult Book Store",
+        "description": "An establishment where thirty-five percent or more of its gross revenue is derived from the sales of books, magazines, films, videotapes, discs, and other periodicals which are distinguished or characterized by their emphasis on matter depicting, describing or relating to specified sexual activities or specified anatomical areas."
+    },
+    {
+        "code": "A36",
+        "name": "Arcade",
+        "description": "Any separate room or enclosed area used for the primary purpose of providing access to a minimum of twenty-five coin-operated amusement machine devices not intended or played for gambling purposes."
+    },
+    {
+        "code": "A40",
+        "name": "Adult Day Care Facility",
+        "description": "An establishment operated and maintained to provide care, for not more that twelve hours at a time, on a temporary or permanent basis for aged or infirm persons."
+    },
+    {
+        "code": "A42",
+        "name": "Special Event Medical Service",
+        "description": "Please contact Business Licensing at (702) 229-6281 for additional information."
+    },
+    {
+        "code": "A43",
+        "name": "Non Medical Supervised Patient Transfer Service",
+        "description": "Please contact Business Licensing at (702) 229-6281 for additional information."
+    },
+    {
+        "code": "A44",
+        "name": "Auto Sales-Limited",
+        "description": "Automobile Dealer - maximum of two vehicles with no retail sales."
+    },
+    {
+        "code": "A45",
+        "name": "Automobile Detailing",
+        "description": "Any mobile business engaged in the washing, waxing, cleaning or detailing motor vehicles by means of human effort rather than by mechanical means."
+    },
+    {
+        "code": "A46",
+        "name": "Appraiser",
+        "description": "Any person, other than real estate appraiser, who estimates the worth or features of an item of personal property."
+    },
+    {
+        "code": "A47",
+        "name": "Artist",
+        "description": "Any person who produces art for profit.  The category does not include contractors, designers, and painters (those who paint signs or others structures)."
+    },
+    {
+        "code": "A48",
+        "name": "Art Gallery-Retail",
+        "description": "A business establishment where the general public is invited to view artistic exhibitions, presentations and performances."
+    },
+    {
+        "code": "A50",
+        "name": "Affiliate Company Software Developer",
+        "description": "A business that provides information technology services and/or a technology platform for its corporate affiliates."
+    },
+    {
+        "code": "A55",
+        "name": "Automotive Garage/Service Station (Minor)",
+        "description": "A facility for the performance of minor maintenance and service on vehicles of ten thousand pounds gross weight or less.  Such services are limited to electronic tune-ups, brakes, air conditioning, generator, tires and includes parts and gasoline sales and other similar activities."
+    },
+    {
+        "code": "A60",
+        "name": "Automotive Garage (Major)",
+        "description": "Auto body repair, painting, maintenance, reconditioning of vehicles and automotive service for vehicles.  Vehicles serviced may exceed 10,000 pounds.  Includes all services of Minor Automotive Service Station/Garage."
+    },
+    {
+        "code": "A65",
+        "name": "Automotive Sales w/ Minor Repair",
+        "description": "A facility or area for the display and sale of automobiles and motorcycles and related sales of merchandise and Minor Automotive Service. Does not include auto body, engine rebuilding, or other Major Automotive Services."
+    },
+    {
+        "code": "B01",
+        "name": "Bail Bond Agency",
+        "description": "An establishment that makes available to the public undertakings of bail in connection with judicial proceedings."
+    },
+    {
+        "code": "B03",
+        "name": "Bank, Commercial Bank or Banking Corporation",
+        "description": "Any establishment, whether chartered by the State or Federal government, conducting the business of receiving money as demand deposits or otherwise carrying on banking or banking trust business.  The fee shall be charged to each principal facility and branch facility thereof."
+    },
+    {
+        "code": "B04",
+        "name": "Barber Shop",
+        "description": "A  barbershop establishment that is licensed or required to be licensed pursuant to the provisions of NRS 643 and that offers barber services to the general public.  "
+    },
+    {
+        "code": "B05",
+        "name": "Cosmetological  Establishment",
+        "description": "Establishment that is licensed or required to be licensed by the State pursuant to the provisions of NRS Chapter 644 and that provides cosmetology services to the general public."
+    },
+    {
+        "code": "B07",
+        "name": "Bowling Center",
+        "description": "A business providing a place to engage in the sport of bowling."
+    },
+    {
+        "code": "B09",
+        "name": "Commodity or Securities Broker or Dealer",
+        "description": "Any person engaged in the business of effecting transactions in commodity options or securities transactions."
+    },
+    {
+        "code": "B18",
+        "name": "Bail Agent / Enforcement Agent",
+        "description": "Bail agent or bail enforcement agent is authorized, employed or contracted by a surety or bail agent to solicit transactions; execute or countersign undertakings of bail; pledge currency, money orders or cashier's checks as security for a bail bond in connection with judicial proceedings and receive or be promised money or other things of value; enforce the terms and conditions of a defendant's release from custody on bail in a criminal proceeding; locate, apprehend, or surrender a a defendant to custody."
+    },
+    {
+        "code": "B20",
+        "name": "Business Support Service",
+        "description": "Any business that performs for one or more other businesses a service that is generally performed internally to a business, including without limitation billing, mailing, printing, customer service evaluations, the processing of claims or other paperwork, resident agent, holding company or other miscellaneous support services."
+    },
+    {
+        "code": "B21",
+        "name": "Body Piercing",
+        "description": "Any business that pierces the skin for the purpose of inserting rings, loops, studs or other implements, or which engages in the sale of those items for use in connection with body piercing.  "
+    },
+    {
+        "code": "B23",
+        "name": "Banquet or Event Establishment",
+        "description": "Any business establishment which is rented by individuals or groups to accommodate private functions such as banquets, weddings, anniversaries, and other similar celebrations. Such establishment may or may not include: (1)   Kitchen facilities for the preparation or catering of food. (2)   Outdoor gardens or reception facilities."
+    },
+    {
+        "code": "B50",
+        "name": "Building, Plant Nursery & Hardware Supplies",
+        "description": "A business which sells or home, lawn, garden, plant supplies, construction materials including brick, lumber and other  similar materials.  May also rent general equipment of a like nature."
+    },
+    {
+        "code": "C02",
+        "name": "Car Wash",
+        "description": "Stationary business that offers services to clean cars by either coin operation or direct payment, whether or not it is operated in conjunction with another business.  The services offered may include the washing, waxing, cleaning and detailing of motor vehicles by human effort."
+    },
+    {
+        "code": "C05",
+        "name": "Tobacco Dealer",
+        "description": "Any person licensed pursuant to NRS Chapter 370 to sell tobacco.  The fee amount shall be charged for each sales location, whether a machine, retail location, or warehouse facility."
+    },
+    {
+        "code": "C08",
+        "name": "Coin Amusement Machine",
+        "description": "The operation of any coin-operated amusement machine (not including gaming machines) upon a business premise whether the machine is owned by the business or someone else. "
+    },
+    {
+        "code": "C09",
+        "name": "Convention Operator with Exhibitors",
+        "description": "Please contact Business Licensing at (702) 229-6281 for additional information."
+    },
+    {
+        "code": "C10",
+        "name": "Collection Agency",
+        "description": "Any business that is licensed or required to be licensed as a collection agency under NRS Chapter 649."
+    },
+    {
+        "code": "C13",
+        "name": "Credit Reporting Agency",
+        "description": "A person who, for fees, dues or on a cooperative nonprofit basis, regularly engages in whole or in part in the business of assembling or evaluating information regarding the credit of or other information regarding consumers to furnish consumer reports to third parties, regardless of the means or facility of commerce used to prepare or furnish the consumer reports."
+    },
+    {
+        "code": "C15",
+        "name": "Convenience Store",
+        "description": "Business located in a building or portion thereof, which is separated from the rest of the building, selling prepackaged food products, household items and other goods commonly associated with those items at retail and having not less than 1,200 sq. ft. nor more than 5,000 sq. ft. of floor space devoted to retail sales display, not including warehouse and office space."
+    },
+    {
+        "code": "C18",
+        "name": "Credit Union",
+        "description": "Means a cooperative, nonprofit corporation, organized for the purposes of promoting thrift among its members and creating a source of credit for such members at a fair and reasonable rate of interest."
+    },
+    {
+        "code": "C19",
+        "name": "Contract Labor Service",
+        "description": "Any person who, by contract, supplies employees to perform temporary labor services (and only temporary labor services) for another under circumstances in which the individuals performing the labor do not become employees of the recipient of the services."
+    },
+    {
+        "code": "C23",
+        "name": "Check Cashing Service Limited",
+        "description": "Any person who offers the service of cashing checks for a fee, service charge or other consideration as a service that is supplemental to a retail business that otherwise does not provide services normally associated with a financial institution.  The term does not include a general financial institution, specified financial institution, or any business that provides any kind of loan, cash advance, or deferred deposit service."
+    },
+    {
+        "code": "C24",
+        "name": "Corporate Administrative Office Space",
+        "description": "An office location in which centralized administrative functions are conducted on behalf of affiliated business entities, whether the business operations of those entities are conducted at that location or elsewhere."
+    },
+    {
+        "code": "C25",
+        "name": "Contractor",
+        "description": "Any person who is licensed or required to be licensed as a contractor under NRS Chapter 624, whether or not the contractor maintains a business location within the corporate limits of the City."
+    },
+    {
+        "code": "C26",
+        "name": "Commercial Rental and Leasing",
+        "description": "Commercial Rental and Leasing is any person engaged in the business of renting or leasing commercial property not utilized for residential use. This license category does not include a property management company or mini-warehouse."
+    },
+    {
+        "code": "C40",
+        "name": "Concrete Pumping",
+        "description": "Any business that provides to construction projects equipment that is used to pump or disperse concrete products."
+    },
+    {
+        "code": "C41",
+        "name": "Construction Cleanup",
+        "description": "Any business that removes construction materials from construction sites for transportation to a disposal site. For purposes of this category, “construction materials” includes without limitation wood, plaster, metals, asphaltic substances, brick, block, concrete, excavation dirt, rock, stone and gravel."
+    },
+    {
+        "code": "C55",
+        "name": "Clinic or Laboratory",
+        "description": "A facility, other than a hospital, that conducts general or scientific research, investigation, or testing and development of products including imaging, photography or medical/dental products, or provides related services to the public on an emergency basis or without appointment."
+    },
+    {
+        "code": "D06",
+        "name": "Designer-Decorator",
+        "description": "Any person who specializes in the planning or execution of the layout, decorations or furnishing for any interior structure, including advice related to or sales of decorator items, window and wall coverings or furnishings."
+    },
+    {
+        "code": "D11",
+        "name": "Drug Store",
+        "description": "A business establishment which occupies whole or part of a building and where a State licensed pharmacist is present for the purpose of compounding or dispensing (or both) drugs and medicines.  Allows associated general retail sales."
+    },
+    {
+        "code": "D15",
+        "name": "Draftsman",
+        "description": "Any person who prepares drawings or sketches of structures, but who is not acting as an architect under NRS Chapter 623."
+    },
+    {
+        "code": "D17",
+        "name": "Bankrupt, Damaged, or Assigned",
+        "description": "Any person who sells, whether by assignment, consignment or otherwise, any bankrupt or damaged stock of merchandise or other items of value."
+    },
+    {
+        "code": "D19",
+        "name": "Night Club",
+        "description": "An establishment, other than a teen dance center or an adult nightclub, that is operated as a place of entertainment, characterized by any or all of the following as a principal or ancillary use: (1) Live, recorded, or televised entertainment, including but not limited to performance by magicians, musicians or comedians. (2) Dancing."
+    },
+    {
+        "code": "D50",
+        "name": "Dry Cleaning/Laundry Facility & Services",
+        "description": "A facility or area used to provide coin or professionally operated cleaning or laundering of items such as clothing and linens.  May include rental, public counter, delivery services and includes the facility whether the plant operation is located on or off-site."
+    },
+    {
+        "code": "E01",
+        "name": "Employment Agency",
+        "description": "Any person who, for a fee, commission or charge: (a) Furnishes information to a person seeking employment enabling or tending to enable him to secure employment; (b) Furnishes information to a person seeking employees enabling or tending to enable him to obtain employees; or (c) Maintains a record of persons seeking employment or employees."
+    },
+    {
+        "code": "E03",
+        "name": "Express or Delivery Service",
+        "description": "A person who transports property, equipment, animals, or food products, other than currency, from one point to another.  An applicant for this license may be required by the Director to furnish a state license or certificate, if applicable, or written verification that such license or certificate is not required."
+    },
+    {
+        "code": "E10",
+        "name": "Environmental Analysis",
+        "description": "Any business that tests or analyzes the quality or content of soil, water, atmosphere, or other elements related to the environment."
+    },
+    {
+        "code": "F02",
+        "name": "Finance Company",
+        "description": "Any person other than a bank, mortgage company, savings and loan, credit union, trust company or pawnbroker, who is licensed or required to be licensed under NRS Chapter 675 in order to lend money to others for profit or to hold himself out to the general public as such."
+    },
+    {
+        "code": "F05",
+        "name": "Funeral Home & Cemetery",
+        "description": "Cemetery means property and facilities used for interring of the dead. Funeral Home means a facility in which one or both of the following activities occur: (1) Dead bodies are prepared for burial or cremation. (2) Funeral services are conducted."
+    },
+    {
+        "code": "F15",
+        "name": "Farmers Market Promoter",
+        "description": "Any person who (A) Promotes a farmers' market by marketing, advertising & soliciting vendors (B) Operates a farmers market by negotiating vending space, managing & controlling market operations or (C) Both promotes and operates a farmer' market."
+    },
+    {
+        "code": "F16",
+        "name": "Farmers Market Promoter 2nd Location",
+        "description": "Any person who (A) Promotes a farmers' market by marketing, advertising & soliciting vendors (B) Operates a farmers market by negotiating vending space, managing & controlling market operations or (C) Both promotes and operates a farmer' market."
+    },
+    {
+        "code": "F17",
+        "name": "Non-farm Product Vendor",
+        "description": "Any person located in a farmers market who sells, offers for sale, displays or takes orders for future delivery of products not defined as farm products."
+    },
+    {
+        "code": "F20",
+        "name": "Fulfillment Center",
+        "description": "A business whose services include without limitation the fulfillment of orders placed directly by a customer or by an affiliate company, whether such orders are place by means of mail, fax, email, telephone, or an internet transaction."
+    },
+    {
+        "code": "F50",
+        "name": "Food Specialty Store",
+        "description": "Food Specialty Store: A business selling specialty foods, food supplements and/vitamins. Under 5000 square feet."
+    },
+    {
+        "code": "G09",
+        "name": "Small Game Room",
+        "description": "A separate room or enclosed area used for the primary purpose of providing access to less than 25 coin-operated amusement machines or devices not intended or played for gambling purposes."
+    },
+    {
+        "code": "G50",
+        "name": "General Retail Sales",
+        "description": "A retail establishment engaged in the sale of merchandise of a general nature and allows minor vending, rental and service of the same.  Including clothing, office, general household, personal & health supplies, vending and audio/video equipment."
+    },
+    {
+        "code": "G55",
+        "name": "General Services (Counter / Office)",
+        "description": "Any business offering general or production services from a counter, office or out of the city jurisdiction for rentals, drop-off, remote services, or personal/office support services, including internet access.  Allows related general sales of related merchandise.  (Business Support Services, remote counter location, entertainers, audio/video production etc.) No adult oriented businesses."
+    },
+    {
+        "code": "G60",
+        "name": "Grocery/Mega Store",
+        "description": "A business which has in excess of 5000 square feet devoted to grocery and food meant for human consumption and may have additional floor space devoted to multiple line products including electronics, pharmaceuticals, home products, clothing, gasoline and similar items. "
+    },
+    {
+        "code": "H01",
+        "name": "Hypnotherapy",
+        "description": "The type of business selected requires a regulated or privilege business license.  A regulated or privilege business license applies to those businesses which are found by the City Council to require a higher degree of supervision and which more seriously affect the economic, social and moral well-being of the city and its residents.  For more information or to schedule an appointment, please call (702) 229-6281."
+    },
+    {
+        "code": "H02",
+        "name": "Handbill and Oral Solicitation",
+        "description": "Any person engaged in the business of a billposter for hire or as a handbill distributor for hire or gain.  Also includes any verbal, oral or spoken communication which directs attention to any business or other activity for the purpose of either directly or indirectly promoting their interest by sales."
+    },
+    {
+        "code": "H04",
+        "name": "Hospital",
+        "description": "An institution, designed within an integrated campus setting for the diagnosis, care, and treatment of human illness, including surgery & primary treatment."
+    },
+    {
+        "code": "H05",
+        "name": "Hotel - 199 rooms or less",
+        "description": "A building or group of buildings whose main function is to provide rooms for temporary lodging where entrance to each room is gained from a completely enclosed area. A hotel may also contain restaurants, conference rooms & personal service shops."
+    },
+    {
+        "code": "H06",
+        "name": "Resort Hotel - 200 rooms or more",
+        "description": "A building or group of buildings whose main function is to provide rooms for temporary lodging where entrance to each room is gained from a completely enclosed area. A hotel may also contain restaurants, conference rooms & personal service shops."
+    },
+    {
+        "code": "H08",
+        "name": "Health and Fitness Club",
+        "description": "Any business that is open to the general public and that provides the use of equipment or facilities for the maintenance or development of physical fitness or the control of weight."
+    },
+    {
+        "code": "H11",
+        "name": "Residence Hotel",
+        "description": "A multi-dwelling unit for extended stay lodging consisting of efficiency units or suites with a complete kitchen suitable for long term occupancy; customary hotel services such as linen, maid service, telephone and upkeep of furniture; and optional resident and guest amenities such as meeting rooms, club house and recreation facilities."
+    },
+    {
+        "code": "H12",
+        "name": "Animal Drawn Vehicle",
+        "description": "A business which operates an animal-drawn vehicle for hire."
+    },
+    {
+        "code": "H14",
+        "name": "Residential Home Care Provider",
+        "description": "Any person who provides or contracts to provide medical supervision, general care, nursing, or housekeeping services to the sick, injured or dependent within a home setting, whether on a temporary or permanent basis."
+    },
+    {
+        "code": "H15",
+        "name": "Residence Hostel Single Room",
+        "description": "A residential facility in which furnished rooms are rented on a weekly or monthly basis and which provides common facilities and services for laundry, cleaning, and meals.  "
+    },
+    {
+        "code": "H16",
+        "name": "Managed Health Care Organization",
+        "description": "Any person who provides, arranges, pays for, or reimburses for the provision of any element of health care services and who controls the amounts to be paid to health care providers by a managed care program."
+    },
+    {
+        "code": "H19",
+        "name": "Health Maintenance Organization-Insurance Company",
+        "description": "Any person who, whether or not for profit, has been granted or is required to be granted a certificate of authority under NRS Chapter 695 C; provides or arranges for the provision of one or more health care services; is organized and operated by an insurance company; and is responsible for the availability and accessibility of such services to its enrollees."
+    },
+    {
+        "code": "I03",
+        "name": "Insurance Adjuster",
+        "description": "Any person who is licensed or required to be licensed as an adjuster under NRS Chapter 684A and who receives compensation for acting as an adjuster, whether acting as an owner, officer, associate, member or employee of a business."
+    },
+    {
+        "code": "I09",
+        "name": "Internet Entertainer",
+        "description": "A person who is hired for the purpose of being viewed over the internet via camera from a permanent location.  "
+    },
+    {
+        "code": "I10",
+        "name": "Adult Internet Sales",
+        "description": "Adult oriented product sales made via the internet.   "
+    },
+    {
+        "code": "I11",
+        "name": "Internet Adult Entertainment",
+        "description": "Adult internet entertainment business which is sexually oriented in nature and subject to zoning restrictions."
+    },
+    {
+        "code": "I12",
+        "name": "Interactive Entertainment Center",
+        "description": "Any establishment whose primary purpose is to provide technology enabled interactive entertainment, including, but not limited to, motion simulation, networked multi-site multi-player games, multi-media, and virtual reality based games for use by patrons of the establishment. Any other type of business to be conducted on the premises, including any separate-leased area of the premises, must be separately licensed and is subject to any background investigation applicable."
+    },
+    {
+        "code": "I14",
+        "name": "Insurance Agency",
+        "description": "Is a business whose agents, brokers, or adjusters transact insurance subject to the regulations of NRS 679A.  The license fee for this category includes the first agent, broker or adjuster who otherwise would be required to pay a license fee as a sales or service agent or representative."
+    },
+    {
+        "code": "I16",
+        "name": "Internet Retailer",
+        "description": "A business that sells tangible personal property, digital goods, or services primarily over the Internet, and has no walk-in retail sales or services."
+    },
+    {
+        "code": "I50",
+        "name": "Instruction Services",
+        "description": "Any business that provides recreational or educational instruction or lessons to the general public."
+    },
+    {
+        "code": "L33",
+        "name": "Lawn & Landscape Maintenance",
+        "description": "Any business that provides lawn or landscape maintenance but is not required to have a State contractor's license."
+    },
+    {
+        "code": "M05",
+        "name": "Manufacturing",
+        "description": "Any business engaged in the fabrication or production of products for resale or commercial consumption."
+    },
+    {
+        "code": "M08",
+        "name": "Motel",
+        "description": "Means a building or group of buildings whose main function is to provide rooms for temporary lodging, rooms which are directly accessible from an outdoor parking area. The phrase temporary lodging refers to a rental period with a normal duration of no more than one week."
+    },
+    {
+        "code": "M12",
+        "name": "Independent Massage Therapist",
+        "description": "Any massage therapist who is not an employee of a massage establishment, is a sole practitioner, and hires no employees."
+    },
+    {
+        "code": "M14",
+        "name": "Membership Club",
+        "description": "Any person or business that charges a membership fee for the right to use or purchase equipment or services or to obtain discount privileges."
+    },
+    {
+        "code": "M18",
+        "name": "Management or Consulting Service",
+        "description": "Any person or firm that conducts budgeting, management counseling, consulting service or promoting for another."
+    },
+    {
+        "code": "M21",
+        "name": "Merchandise Broker",
+        "description": "Any person who acts as an agent for others in negotiating contracts, purchases, the sale of goods, wares or services  and who does not take possession of the merchandise."
+    },
+    {
+        "code": "M25",
+        "name": "Mobile Food Vendor",
+        "description": "Any person who offers for sale or sells food items by means of a vehicle. Vehicle means a motorized vehicle as well as a trailer or other portable unit that is drawn by a motorized vehicle and is intended for use in vending."
+    },
+    {
+        "code": "M27",
+        "name": "Motor Transportation Service",
+        "description": "Any person who provides passenger transportation service for hire, excluding a taxi service. An applicant for this license must furnish a certificate of public convenience and necessity from the Nevada Transportation Authority in accordance with NRS Chapter 706, or evidence of exemption from the certificate requirement."
+    },
+    {
+        "code": "M28",
+        "name": "Remote Motor Vehicle Rental",
+        "description": "Any automobile ticket rental agency or transportation rental agency location with no vehicles on site."
+    },
+    {
+        "code": "M50",
+        "name": "Manufacturing, Light Assembly and Fabrication",
+        "description": "A business specializing in making, finishing, assembling of small items and component parts,wood, textiles, plastics, furniture cabinets, metal, electronic components, and gaming devices; the servicing machines or reproduction or printing or paper; or machine shop where material is processed by machinery, cutting, grinding or similar processes."
+    },
+    {
+        "code": "M55",
+        "name": "Manufacturing (Heavy)",
+        "description": "The manufacturing of products for wholesale or industrial manufacturing including, food, canning, bottling, general goods, durable goods including automotive, manufactured homes, paints, oils, stone, clay, metal or concrete, pharmeceuticals, cosmetics and chemical products."
+    },
+    {
+        "code": "N02",
+        "name": "Non-Depository Lender",
+        "description": "Any person who is licensed or required to be licensed under NRS Chapter 604A to operate a check-cashing service, deferred deposit loan service, high-interest loan service, or title loan service."
+    },
+    {
+        "code": "N31",
+        "name": "NP COMMUNITY SERVICES",
+        "description": "NON PROFIT SOCIAL SERVICES GENERAL- (no state license required)"
+    },
+    {
+        "code": "N33",
+        "name": "NP MEDICAL",
+        "description": "NON-PROFIT COUNSELING"
+    },
+    {
+        "code": "N35",
+        "name": "NP DRUG/ALCOHOL COUNSELING",
+        "description": "A Non-Profit Organization that counsels alcohol and drug abusers- which means the application of counseling to reduce or eliminate the habitual use of alcohol or other drugs"
+    },
+    {
+        "code": "N36",
+        "name": "NP THRIFT STORE",
+        "description": "A shop that is operated by a non-profit organization and that sells donated and used merchandise only."
+    },
+    {
+        "code": "N38",
+        "name": "NP Homeless Shelter/Rescue Mission",
+        "description": "NP Homeless Shelter/Rescue Mission"
+    },
+    {
+        "code": "O07",
+        "name": "Open Air Vending",
+        "description": "An establishment designed for selling prepared foods for off-premise consumption that is not part of a physical structure or facility."
+    },
+    {
+        "code": "O08",
+        "name": "Outdoor Sports Center and Activities Related ",
+        "description": "An outdoor facility or area for sport, entertainment, games of skill, or recreation that is open to use by the general public for a fee. The term includes without limitation game courts, water slides, golf courses, outdoor miniature golf courses, drive-in theaters, batting cages, practice/instructional fields, and sports events, but does not include an amphitheater."
+    },
+    {
+        "code": "P02",
+        "name": "Parking Lot",
+        "description": "A facility for parking that is operated as a business enterprise by charging the public a fee and is not reserved or required to accommodate occupants, clients, customers or employees of a particular establishment or premises."
+    },
+    {
+        "code": "P03",
+        "name": "Permanent Make Up",
+        "description": "Any business that enhances or alters facial characteristics by inserting indelible pigment under the skin or by the production of scars."
+    },
+    {
+        "code": "P06",
+        "name": "Photography Business",
+        "description": "Any business that takes photographs for eventual sale to a client or customer of the business."
+    },
+    {
+        "code": "P09",
+        "name": "Billiard or Pool Hall",
+        "description": "A business establishment whose principal purpose is to make billiard tables available for use by the public for amusement or entertainment."
+    },
+    {
+        "code": "P13",
+        "name": "Public Bus Service",
+        "description": "Any person who operates a privately owned bus service for the purpose of transporting members of the general public from place to place within the City."
+    },
+    {
+        "code": "P19",
+        "name": "Professional Promoter",
+        "description": "A person who, for compensation, plans, promotes, conducts, manages or carries on or attempts to plan, promote, conduct, manage or carry on any drive or campaign for the purpose of soliciting contributions for or on behalf of any charitable person or engages in the business of soliciting contributions for charitable purposes."
+    },
+    {
+        "code": "P23",
+        "name": "Outdoor Pay Phones",
+        "description": "For regulation of installation and maintenance of outdoor public/private pay telephones located in the City."
+    },
+    {
+        "code": "P26",
+        "name": "Party Planning Service",
+        "description": "Any business that plans parties or provides at party locations any of the following services or similar services: disc jockey, clown singing telegrams, or karaoke. The category does not include any business whose primary function is to provide for the supervision, care or control of children."
+    },
+    {
+        "code": "P27",
+        "name": "Personal Services",
+        "description": "Any business that provides personal services, including without limitation a wake-up service, reminder service, errand service, vehicle registration service, personal chef or cook service, or shopping service."
+    },
+    {
+        "code": "P32",
+        "name": "Parade Vendor",
+        "description": "Any person who engages in the temporary business of selling or offering for sale any merchandise in conjunction with a parade in the City."
+    },
+    {
+        "code": "P35",
+        "name": "Outdoor Pay Phone per Location",
+        "description": "Please contact Business Licensing at (702) 229-6281 for additional information."
+    },
+    {
+        "code": "P50",
+        "name": "Professional Services",
+        "description": "A professional business with employees as defined by NRS title 54, chapter 622 and including professionals in the areas of: engineering, survey, architecture, administrators, property inspections, appraisers, law, court professionals, escrow & mortgage, investigators, accountants, counselors, trainers, etc."
+    },
+    {
+        "code": "P55",
+        "name": "Professional Services - Medical",
+        "description": "A professional business with employees as defined by NRS title 54, chapter 622 and including professionals in the areas of: medical and pharmacy professionals, veterinary care, etc."
+    },
+    {
+        "code": "P60",
+        "name": "Publishing & Newspapers",
+        "description": "Publishing & Newspapers:  An establishment that provides publishing and printing services and/or circulation of a newspaper, periodical or magazine."
+    },
+    {
+        "code": "Q01",
+        "name": "Real Estate Firm",
+        "description": "Real Estate Business comprised of one or more professionals created for the purpose of practicing the profession for which a license, certificate, registration, permit or similar type of authorization is issued by a regulatory body as defined in NRS title 54, chapter 622 or regulated pursuant to the Nevada Supreme Court Rules, for any type of compensation."
+    },
+    {
+        "code": "Q03",
+        "name": "Real Estate Salesperson",
+        "description": "Real Estate Business comprised of one independent contractor working under contract as an independent contractor for a Real Estate Broker."
+    },
+    {
+        "code": "Q05",
+        "name": "Funeral/Cemetery Administrators",
+        "description": "Funeral/Cemetery Administrators comprised of one or more professionals created for the purpose of practicing the profession for which a license, certificate, registration, permit or similar type of authorization is issued by a regulatory body as defined in NRS title 54, chapter 622 or regulated pursuant to the Nevada Supreme Court Rules, for any type of compensation."
+    },
+    {
+        "code": "R02",
+        "name": "Rooming House",
+        "description": "A facility, other than a hotel, with no more than four guest rooms where for compensation, lodging and meals are provided for no more than four persons who are not members of the immediate family."
+    },
+    {
+        "code": "R09",
+        "name": "Restaurant ",
+        "description": "An establishment providing preparation and retail sale of food & beverages with a seating capacity of 30 or more."
+    },
+    {
+        "code": "R10",
+        "name": "Food Services or Cafe",
+        "description": "A business providing preparation and retail sale of food & beverage with a seating capacity of less than 30 (0-29) including take out, delivery, catering and specialty food counters."
+    },
+    {
+        "code": "R13",
+        "name": "Real Estate Developer",
+        "description": "The owner,  or principal agent of an inactive owner, of subdivided land who offers it for sale in any offering or disposition."
+    },
+    {
+        "code": "R15",
+        "name": "Rental Referral Service",
+        "description": "Any person who provides a listing or referral service for the rental of apartments, equipment, or other types of rentals. The category does not include any person or business that is required to be licensed under NRS 645."
+    },
+    {
+        "code": "R19",
+        "name": "Riding Horse Rental",
+        "description": "Any person who provides riding horses for rent or provides boarding, stabling or training for riding horses."
+    },
+    {
+        "code": "R20",
+        "name": "Recreational Vehicle Park",
+        "description": "Any person who offers an area or tract of land where lots are rented or held out for rent to accommodate a recreational vehicle or where outdoor accommodations for camping are provided."
+    },
+    {
+        "code": "R21",
+        "name": "Radio Station",
+        "description": "Any establishment located in the City that is licensed or required to be licensed by the Federal Communications Commission and is engaged in the commercial transmission of radio broadcasting by means of electromagnetic signals over public airways, public airwaves, public spectrum or by means of a site available over the Internet."
+    },
+    {
+        "code": "R50",
+        "name": "Rental & Leasing",
+        "description": "A facility for the rental of general merchandise, small equipment, or space for temporary use to the general public. (No rental of trucks - in excess of 10,000 lbs) includes studio, production space, electronics, linens, tools, mailboxes, garden equipment and furniture."
+    },
+    {
+        "code": "R55",
+        "name": "Recycle Waste Haulers",
+        "description": "A business or person who transports waste tires, liquid waste or recycled materials to licensed recycle centers."
+    },
+    {
+        "code": "R60",
+        "name": "Repair and Maintenance",
+        "description": "A business specializing in repairs and maintenance including janitorial,  exterminator, and or the cleaning of homes, offices, buildings or swimming pools.  Does not include lawn maintenance or tree trimming."
+    },
+    {
+        "code": "S01",
+        "name": "Short Term Residential Rental (PM)",
+        "description": "The commercial use, or the making available for commercial use, of a residential dwelling unit for dwelling, lodging or sleeping purposes, wherein any individual guest rents or occupies the unit for a period of less than thirty-one consecutive calendar days."
+    },
+    {
+        "code": "S02",
+        "name": "School",
+        "description": "Any institution or place of education or instruction, or any individual acting as a tutor, facilitator, trainer or otherwise providing instruction in a skill, except for an institution or individual offering post-secondary education."
+    },
+    {
+        "code": "S03",
+        "name": "Short Term Residential Rental (Owner)",
+        "description": "Commercial use of a residential dwelling unit for dwelling, lodging or sleeping purposes, wherein any individual guest rents or occupies the unit for a period of less than 31 consecutive calendar days."
+    },
+    {
+        "code": "S04",
+        "name": "Shooting Range",
+        "description": "Any business that operates a weapons range for practice, competition, training or instruction other than a law enforcement agency."
+    },
+    {
+        "code": "S06",
+        "name": "Sewer or Septic Drain Cleaning",
+        "description": "Any business that cleans sewers, drains or septic systems and that does not require a State contractor's license."
+    },
+    {
+        "code": "S08",
+        "name": "Sales or Service Agent or Representative",
+        "description": "Any person who sells, solicits, negotiates, offers or performs on behalf of another person the transaction of any instrument or finance related service, including but not limited to insurance, financial or investment advice, securities or similar activities, whether the instrument or service is in possession of the agent or representative and whether the agent or representative is an employee or under contract to perform these activities."
+    },
+    {
+        "code": "S09",
+        "name": "Sign Painting Establishment",
+        "description": "Any person who engages in the business of painting signs but who is not required to have a State Contractor's license."
+    },
+    {
+        "code": "S10",
+        "name": "Skating Rink",
+        "description": "Any business that offers to the public for a fee the use of any facility, regardless of surface type, for the purpose of skating.  The term “skating” includes roller skating, ice skating or any other type or form of skating or skateboarding."
+    },
+    {
+        "code": "S13",
+        "name": "Peddlers and Solicitors",
+        "description": "To sell, offer for sale, or solicit orders for goods or services upon the streets, sidewalks, or alleys of the City, or by going from dwelling to dwelling or place to place whether by foot or by other means of transportation."
+    },
+    {
+        "code": "S14",
+        "name": "Sporting Goods",
+        "description": "Sales of sports equipment, supplies and clothing."
+    },
+    {
+        "code": "S19",
+        "name": "Sales-Related Call Center",
+        "description": "A business that is designed, equipped and used to: (A) Handle a large volume of telephone calls pertaining to orders for goods that are placed by telephone or through an Internet website; and; (B) Forward such orders directly to a merchant or fulfillment center to complete such transactions."
+    },
+    {
+        "code": "S50",
+        "name": "Special Care Facility",
+        "description": "A commercial facility that provides for overnight care of one or more of the following:  1) physical, mental illness or infirmity, 2) treatment of drug or alcohol dependency, 3) rehabilitation which requires confinement to a facility, but does not require medical, surgical or other specialized treament normally provided by a hospital."
+    },
+    {
+        "code": "T01",
+        "name": "Tailor and/or Dressmaker",
+        "description": "Any person who makes, services, or alters garments."
+    },
+    {
+        "code": "T02",
+        "name": "Sightseeing Bus or Limousine",
+        "description": "Any person who operates a transportation service utilizing buses or limousines to transport passengers for hire, but which is not operated over fixed routes or between pre-established points. "
+    },
+    {
+        "code": "T03",
+        "name": "Theater",
+        "description": "A building, room, or outdoor structure for the presentation of dramatic performances, as plays or motion pictures."
+    },
+    {
+        "code": "T04",
+        "name": "Mobile Home Park",
+        "description": "Any person who offers an area or tract of land where two or more mobile homes or mobile home lots are sold, rented, leased owned or held out for that purpose.  "
+    },
+    {
+        "code": "T05",
+        "name": "Trailer or Mobile Home Sales",
+        "description": "A business licensed by the Nevada Manufactured Housing Division to sell new trailers or mobile homes."
+    },
+    {
+        "code": "T06",
+        "name": "Transfer and Storage Company",
+        "description": "Transfer and storage company, with the fee amount to be charged for the first truck used in the business, and a thirty dollar annual fee to be charged for each additional truck used in the business."
+    },
+    {
+        "code": "T07",
+        "name": "Travel & Ticket Agency",
+        "description": "Any person in the business of purchasing and reserving hotel accommodations, transportation, show tickets, entertainment or other vacation incidentals for tourists or other persons. The category does not include any person who furnishes reservations or tickets exclusively for services in an establishment owned by that person."
+    },
+    {
+        "code": "T08",
+        "name": "Tattoo Establishment",
+        "description": "Any business that places indelible marks and figures upon the body by inserting pigment under the skin or by the production of scars."
+    },
+    {
+        "code": "T09",
+        "name": "Tree Trimmer",
+        "description": "Any person who offers to the public tree trimming services"
+    },
+    {
+        "code": "T10",
+        "name": "Inter-Jurisdictional Mobile Service Operation",
+        "description": "Any business operating from another jurisdiction that regularly services customers in the City and that does not fall within any other fee category described in this Chapter."
+    },
+    {
+        "code": "T12",
+        "name": "Answering Message Service",
+        "description": "Any person who provides services such as telephone answering, forwarding, message taking, paging or voice mail services."
+    },
+    {
+        "code": "T16",
+        "name": "Thrift Company",
+        "description": "Thrift company, which is any company licensed as such under NRS Chapter 677."
+    },
+    {
+        "code": "T17",
+        "name": "Title Insurance Company",
+        "description": "Any business that is licensed or required to be licensed under NRS Chapter 692A."
+    },
+    {
+        "code": "T19",
+        "name": "Truck Rental Agency",
+        "description": "Any business that offers trucks for rent.  "
+    },
+    {
+        "code": "T20",
+        "name": "Trust Company",
+        "description": "Any business that is licensed or required to be licensed under NRS Chapter 669."
+    },
+    {
+        "code": "T21",
+        "name": "Time Share Sales Agent",
+        "description": "Any person who, on behalf of a developer, sells or offers to sell a time share to a purchaser or who, if he is not registered as a representative, may act to induce other persons to attend a sales presentation on the behalf of a developer."
+    },
+    {
+        "code": "T22",
+        "name": "Time Share Project Broker",
+        "description": "Any person who coordinates the sale of time shares for a time-share project and to whom sales agents and representatives are responsible."
+    },
+    {
+        "code": "T24",
+        "name": "Temporary Merchant",
+        "description": "Any person who engages in the temporary business of selling, offering for sale, or soliciting orders for goods or services from a permanent or fixed location. A business is temporary if its operation at the fixed location is for a period of 31days or less."
+    },
+    {
+        "code": "T27",
+        "name": "Television Broadcast Station",
+        "description": "Any establishment located within the City that is licensed or required to be licensed by the Federal Communications Commission and is engaged in the commercial transmission of television broadcasting by means of electromagnetic signals over the public airways, public airwaves, public spectrum or by means of a site available over the Internet."
+    },
+    {
+        "code": "T30",
+        "name": "Tennis/Handball/Racquetball Court",
+        "description": "Which is any business that offers to the public the use of playing courts for tennis, handball and/or racquetball.  "
+    },
+    {
+        "code": "T31",
+        "name": "Tour or Tour Guide",
+        "description": "Any business that conducts tours or provides tour guide services to the general public and is and is not regulated by the Nevada Transportation Authority."
+    },
+    {
+        "code": "T32",
+        "name": "Time Share Representative",
+        "description": "Any person who is not a sales agent and who, on behalf of a developer, induces other persons to attend a sales presentation. The term does not include a person who only performs clerical tasks, arranges appointments set up by others or prepares or distributes promotional materials."
+    },
+    {
+        "code": "T50",
+        "name": "Tobacco Sales / Lounge",
+        "description": "A business or the sale of tobacco and related items used for smoking, inhalation, or absorption of such products for human consumption and the sale of related retail merchandise, gifts and novelties.  Places of assembly (Lounges) restricted to the age of 18 and up with no entertainment being provided on-site.  All areas of the business/lounge areas must be open for viewing by employees and patrons.  If accessory to a licensed alchohol establishment minimum age is 21."
+    },
+    {
+        "code": "T55",
+        "name": "Transitional Living Facility",
+        "description": "A dwelling unit of a residential character in a commercial area that provides housing and living environment as transitional living for up to six persons to reintegrate those individual into the community after incarceration or confined treatment for dependencies."
+    },
+    {
+        "code": "U05",
+        "name": "Public Utility Telephone",
+        "description": "Please contact Business Licensing at (702) 229-6281 for additional information."
+    },
+    {
+        "code": "V01",
+        "name": "Valet  Parking",
+        "description": "Any person engaged in providing for customers the service of parking private vehicles in a designated area. The category does not include any person who provides parking services for the customers of a business and is employed by that business."
+    },
+    {
+        "code": "V06",
+        "name": "Video Center",
+        "description": "Any establishment or any room therein, in which any film or videotape viewing device is made available to the public."
+    },
+    {
+        "code": "W07",
+        "name": "Warehouse or Storage",
+        "description": "Any person who engages in the business of storing the personal household goods and effects of another, and who holds himself out to the public as providing such storage."
+    },
+    {
+        "code": "W10",
+        "name": "Wire Service",
+        "description": "Any person who engages in the business of transmitting or receiving funds by means of a communication system in which the transmission and reception stations are directly connected by one or more telephones or computers."
+    },
+    {
+        "code": "W11",
+        "name": "Mini Warehouse",
+        "description": "Any person who operates a facility divided into individual spaces as an owner, officer, associate, member or employee of a business."
+    }
+]
