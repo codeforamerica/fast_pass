@@ -6,10 +6,22 @@ var app = angular.module('dof', ['dof.controllers', 'ui.bootstrap']);
 // Set up application routes
 app.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.
-		when('/',                   {templateUrl: '/partials/start.html', controller: 'sectionStart'}).
-		when('/section/:sectionId', {templateUrl: _getSectionTemplate,    controller: 'sectionGo'}).
-		when('/print',              {templateUrl: '/partials/print.html', controller: 'PrintView'}).
-		otherwise({redirectTo: '/'});
+		when('/', {
+			templateUrl: '/partials/start.html',
+			controller: 'sectionStart'
+		}).
+		when('/section/:sectionId', {
+			templateUrl: _getSectionTemplate,
+			controller: 'sectionGo'
+		}).
+		when('/print', {
+			templateUrl: '/partials/print.html',
+			controller: 'PrintView'
+		}).
+		otherwise({
+			// redirectTo: '/'
+			templateUrl: '/partials/404.html'
+		});
 }]);
 
 // This sets up a global 'UserData' object so that information collected by
