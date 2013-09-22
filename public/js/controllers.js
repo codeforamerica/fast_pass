@@ -95,6 +95,7 @@ appCtrls.controller('12Ctrl', function ($scope, $http, UserData) {
 
 })
 
+// SECTION 15 - Describe your business
 appCtrls.controller('15Ctrl', function ($scope, UserData) {
 
 	$scope.userdata = UserData
@@ -102,19 +103,28 @@ appCtrls.controller('15Ctrl', function ($scope, UserData) {
 })
 
 // SECTION 20 - ADDITIONAL BUSINESS
-appCtrls.controller('20Ctrl', function ($scope, $http, UserData) {
+appCtrls.controller('20Ctrl', function ($scope, $http, $filter, UserData) {
 	$scope.userdata = UserData
+	$scope.debug = false
 
 	var dataURL = '/data/additional-business.json'
 
 	// Display additional businesses
 	$http.get(dataURL).success( function (data) {
-		$scope.additionalBusiness = data;
-	});
+		for (var i = 0; i < data.length; i++) {
+			data[i].checked = false
+		}
+
+		$scope.additionalBusiness = data
+	})
 
 	$scope.selectedBusiness = function () {
-		return $filter('filter') ($scope.additionalBusiness, {checked: true});
-	};
+		// See example code here: http://stackoverflow.com/questions/14514461/how-can-angularjs-bind-to-list-of-checkbox-values
+		var output = $filter('filter') ($scope.additionalBusiness, {checked: true})
+		$scope.userdata.additionalBusiness = output
+		return output
+	}
+
 })
 
 

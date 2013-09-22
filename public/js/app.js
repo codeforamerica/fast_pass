@@ -59,7 +59,9 @@ app.factory('UserData', function () {
 
 app.filter('newlines', function () {
     return function(text) {
-        return text.replace(/\n/g, '<br>');
+    	if (text) {
+	        return text.replace(/\n/g, '<br>');
+	  	}
     }
 })
 
@@ -70,7 +72,7 @@ app.filter('no-html', function () {
                 .replace(/>/g, '&gt;')
                 .replace(/</g, '&lt;');
     }
-});
+})
 
 // Alternate way of declaring directives (and controllers, below). See: http://egghead.io/lessons/angularjs-thinking-differently-about-organization
 var directives = {}
@@ -125,7 +127,7 @@ directives.modal = function () {
 		templateUrl: '/partials/_modal.html',
 		link: function (scope, element, attrs) {
 
-		}		
+		}
 	}
 }
 

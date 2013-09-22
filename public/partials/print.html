@@ -12,11 +12,7 @@
 			</tr>
 			<tr>
 				<td><strong>NAICS ({{userdata.naics.year}}) Code</strong></td>
-				<td>{{userdata.naics.code}}</td>
-			</tr>
-			<tr>
-				<td><strong>NAICS ({{userdata.naics.year}}) Title</strong></td>
-				<td>{{userdata.naics.title}}</td>
+				<td>{{userdata.naics.code}} - {{userdata.naics.title}}</td>
 			</tr>
 			<tr>
 				<td><strong>Business description</strong></td>
@@ -24,7 +20,11 @@
 			</tr>
 			<tr>
 				<td><strong>Additional business modifiers</strong></td>
-				<td>{{userdata.additionalBusiness}}</td>
+				<td>
+					<ul style='margin-top: 0'>
+						<li ng-repeat='item in userdata.additionalBusiness'>{{item.official_name}}</li>
+					</ul>
+				</td>
 			</tr>
 		</tbody>
 	</table>
