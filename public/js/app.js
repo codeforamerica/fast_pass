@@ -227,6 +227,31 @@ directives.externalLink = function () {
 	}
 }
 
+directives.progressbar = function () {
+	// Show a basic progress bar.
+	return {
+		restrict: 'E',
+		replace: true,
+		templateUrl: '/partials/_progressbar.html',
+		link: function (scope, element, attrs) {
+			// Get what step you're on
+			var step = attrs.step
+
+			var item = element.find('li')
+
+			// remove highlight from all steps
+			item.removeClass('highlight')
+
+			// add highlight to the one that matches the given step
+			for (var i = 0; i < item.length; i++) {
+				if (step == i + 1) {
+					item[i].className = 'highlight'
+				}
+			}
+		}
+	}
+}
+
 /* // Might not actually be needed
 directives.autofocus = function () {
 	return function (scope, element, attrs) {

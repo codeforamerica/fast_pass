@@ -259,8 +259,10 @@ appCtrls.controller('70Ctrl', function ($scope, UserData) {
 
 })
 
-appCtrls.controller('PrintView', function ($scope, UserData) {
+appCtrls.controller('PrintView', function ($scope, $http, UserData) {
 	$scope.userdata = UserData
+
+	$scope.reportId = 902438908
 
 	// Open print dialog box
 	// Dumb hack to activate print dialog only after CSS transitions are done

@@ -103,6 +103,8 @@ a.button{height:36px}
 ul{padding:0;list-style-type:square;margin-left:18px}
 ul.comfy{line-height:175%}
 ul.no-bullets{list-style-type:none;margin-left:0}
+ul.progress-bar{padding:0;margin:0;width:100%;white-space:nowrap;margin-top:10px}ul.progress-bar li{width:33%;display:inline-block;background-color:#e7eaeb}ul.progress-bar li .step{display:inline-block;width:30px;font-size:18px;background-color:#c1c1c1;text-align:center;margin-right:6px;color:white}
+ul.progress-bar li.highlight{background-color:#5f95a7;color:white}ul.progress-bar li.highlight .step{background-color:#21687f}
 span.pill{padding:1px 3px;border-radius:4px;margin-right:4px;margin-left:4px;color:gray;border:1px solid gray}
 span.gray,span.green,span.orange,span.red{padding:2px 4px;color:white;border:0}
 span.gray{background-color:gray}

@@ -476,6 +476,36 @@ ul {
 	}
 }
 
+ul.progress-bar {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	white-space: nowrap;
+	margin-top: 10px;
+	li {
+		.step {
+			display: inline-block;
+			width: 30px;
+			font-size: 18px;
+			background-color: @lightgray;
+			text-align: center;
+			margin-right: 6px;
+			color: white;
+		}
+		width: 33%;
+		display: inline-block;
+		background-color: @color-gray;
+//		line-height: 24px;
+		&.highlight {
+			.step {
+				background-color: @color-scheme;
+			}
+			background-color:  desaturate(lighten(@color-scheme, 20%),30%);
+			color: white;
+		}
+	}
+}
+
 span {
 	&.pill {
 		padding: 1px 3px;
