@@ -124,6 +124,7 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData) {
 	$scope.userdata.nav.pathTo50 = 40    // Remember the current section to preserve path in the future
 
 	$scope.searchLoading = false
+	$scope.selectedResult = false
 
 	var addressEndpoint = 'http://mapdata.lasvegasnevada.gov/clvgis/rest/services/CLVPARCELS_Address_Locator/GeocodeServer/findAddressCandidates?&outFields=&outSR=4326&searchExtent=&f=json&Street='
 
@@ -185,6 +186,7 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData) {
 	}
 
 	$scope.selectResult = function (item) {
+		$scope.selectedResult = true
 		// Set the selected stuff to global UserData so it's available elsewhere
 		_saveAddress(item)
 	}
