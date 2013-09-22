@@ -20,7 +20,7 @@
 			</tr>
 			<tr>
 				<td><strong>Business description</strong></td>
-				<td>{{userdata.businessDescription}}</td>
+				<td ng-bind-html='userdata.businessDescription | newlines'></td>
 			</tr>
 			<tr>
 				<td><strong>Additional business modifiers</strong></td>

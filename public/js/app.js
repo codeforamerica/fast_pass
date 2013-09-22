@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('dof', ['dof.controllers', 'ui.bootstrap']);
+var app = angular.module('dof', ['dof.controllers', 'ui.bootstrap', 'ngSanitize']);
 
 // Set up application routes
 app.config(['$routeProvider', function($routeProvider) {
@@ -56,6 +56,21 @@ app.factory('UserData', function () {
 		}
 	}
 })
+
+app.filter('newlines', function () {
+    return function(text) {
+        return text.replace(/\n/g, '<br>');
+    }
+})
+
+app.filter('no-html', function () {
+    return function(text) {
+        return text
+                .replace(/&/g, '&amp;')
+                .replace(/>/g, '&gt;')
+                .replace(/</g, '&lt;');
+    }
+});
 
 // Alternate way of declaring directives (and controllers, below). See: http://egghead.io/lessons/angularjs-thinking-differently-about-organization
 var directives = {}
