@@ -6,25 +6,54 @@
 		Please type in an address, or click a location on the map.
 	</p>
 	
-	<form name='property-address-form' id='property-address-form' ng-submit='app.findAddress(app.addressInput)'>
+	<form name='property-address-form' id='property-address-form' ng-submit='findAddress(addressInput)'>
 		<div class='row'>
-			<input id='property-address-input' type='text' name='address' placeholder='e.g. 495 S. Main Street' autofocus required ng-model='app.addressInput' style='width: 100%'>
+			<input id='property-address-input' type='text' name='address' placeholder='e.g. 495 S. Main Street' autofocus required ng-model='addressInput' style='width: 100%'>
 		</div>
 
-		<div class='row' ng-show='app.address'>
+		<div class='row' style='margin-top: 20px'>
 
-			<p>
-				This address isn't inside the boundaries of the Las Vegas city limits.  For more information, see <a href='http://amiinlasvegas.com/' target='_blank'>Am I In Las Vegas?.com</a>.
+			<div class='loading-small' style='margin: 30px 0' ng-show='searchLoading'>
+				<img src='img/loading-lite.gif'>
+			</div>
 
-				This application is for business owners looking for a physical property in the City of Las Vegas. If you'd like to locate your business in unincorporated Clark County, or in the cities of North Las Vegas, Henderson, Mesquite, or Boulder City, <a href='https://blepay.clarkcountynv.gov/BLServices/BLJurisdictionLocator.aspx' target='blank'>click here to find your appropriate jurisdiction</a>.
-			</p>
+			<div ng-show='searchErrorMsg'>
+				<span class='error'>{{searchErrorMsg}}</span>
 
+				<p>
+					If this is a real address in the Las Vegas metropolitan region, make sure it is inside the City of Las Vegas boundaries.  For more information, see <a href='http://amiinlasvegas.com/' target='_blank'>Am I In Las Vegas?.com</a>.
+				</p>
+
+				<p>
+					This application is for business owners looking for a physical property in the City of Las Vegas. If you'd like to locate your business in unincorporated Clark County, or in the cities of North Las Vegas, Henderson, Mesquite, or Boulder City, <a href='https://blepay.clarkcountynv.gov/BLServices/BLJurisdictionLocator.aspx' target='blank'>click here to find your appropriate jurisdiction</a>.
+				</p>
+			</div>
+			
 		</div>
 		
-		<div class='section-navigation'>
+		<div class='section-navigation' ng-show='!searchResults'>
 			<a class='back button' href='/#/section/30'>Back</a>
 			<input type='submit' value='Find this address' class='next button' href='/#/section/50'>
 		</div>
 	</form>
+
+	<!-- Located outside the form because the button element is causing form to submit -->
+	<div ng-show='searchResults'>
+		<h3>
+			Multiple addresses found. Did you mean:
+		</h3>
+		<div class='naics-result' ng-repeat='item in searchResults | orderBy: item.score | limitTo: 10'>
+			<span>{{item.address}}</span>
+			<button ng-click='selectResult(item)' radio-select data-selected-text='Selected'>Select</button>
+		</div>
+
+		<p><a href='' class='small modal'>Don't see your address?</a></p>
+
+		<div class='section-navigation'>
+			<a class='back button' href='/#/section/30'>Back</a>
+			<a class='next button' href='/#/section/50'>Next</a>
+		</div>
+	</div>
+
 
 </section>

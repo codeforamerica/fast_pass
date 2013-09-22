@@ -26,8 +26,17 @@ var DEBUG_ALLOW         = true
 //
 // ***********************************************************************/
 
-var propertyAddress = '495 S. Main Street',
-	businessType = 'Beer Garden'
+// String.capitalize() that does the equivalent of text-transform: capitalize
+// Works on strings that begin as all caps
+String.prototype.capitalize = function() {
+	var string = this.toLowerCase().split(' ')
+	for (var i = 0; i < string.length; i++) {
+		string[i] = string[i].charAt(0).toUpperCase() + string[i].slice(1)
+	}
+    return string.join(' ')
+}
+
+
 
 /*************************************************************************
 // 

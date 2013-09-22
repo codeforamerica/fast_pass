@@ -32,7 +32,7 @@ appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 		$scope.searchResults  = false
 
 		// Display loading icon
-		$scope.searchLoading  = true			
+		$scope.searchLoading  = true
 
 		// Get search results
 		$http.get(searchURL).
@@ -119,31 +119,83 @@ appCtrls.controller('20Ctrl', function ($scope, $http, UserData) {
 
 
 // SECTION 40 - Enter a location
-appCtrls.controller('40Ctrl', function ($scope, UserData) {
+appCtrls.controller('40Ctrl', function ($scope, $http, UserData) {
 	$scope.userdata = UserData
 	$scope.userdata.nav.pathTo50 = 40    // Remember the current section to preserve path in the future
 
+	$scope.searchLoading = false
+
+	var addressEndpoint = 'http://mapdata.lasvegasnevada.gov/clvgis/rest/services/CLVPARCELS_Address_Locator/GeocodeServer/findAddressCandidates?&outFields=&outSR=4326&searchExtent=&f=json&Street='
+
+	// Prepopulate form if we already know it
+	$scope.addressInput = $scope.userdata.property.address
+
 //		$scope.map = {controller: 'MapAddressInputCtrl'}
-	this.findAddress = function (input) {
+	$scope.findAddress = function (input) {
 		// Store raw search inputs for future analysis
 		$scope.userdata.rawInputs.addressSearch.push(input)
 
-		// Temporarily forward this interaction directly.
-		// This breaks forward/back I think.
-		$scope.userdata.property.address = input
-		window.location.hash = encodeURIComponent('/section/50')
-	
-		// In the future this needs to do actual work.
-		// It will send information to an endpoint and retrieve address / parcel data.
+		// Assemble search endpoint URL based on user input
+		var addressURL = addressEndpoint + encodeURIComponent(input)
 
-		// Errors to return:
-		// -  This address could not be found in Las Vegas.
-		// -  Did you mean.... (keep on this screen?)
+		// Reset display
+		$scope.searchErrorMsg = ''
+		$scope.searchResults  = false
 
+		// Display loading icon
+		$scope.searchLoading  = true
+
+		// Get address search results
+		$http.get(addressURL).
+			success( function (response) {
+
+				// Turn off loader
+				$scope.searchLoading = false
+
+				// Extract results from response
+				var results = response.candidates
+
+				if (results.length == 0) {
+					// Message for no results
+					$scope.searchErrorMsg = 'No addresses found for ‘' + input + '’.'
+				} else if (results[0].score >= 95) {
+					
+					// If first result is a pretty good match, just take it
+					_saveAddress(results[0])
+
+					// Forward this interaction directly.
+					// This breaks forward/back apparently.
+					window.location.hash = encodeURIComponent('/section/50')
+
+				} else {
+					// Multiple results found - user select now.
+					$scope.searchResults = results
+				}
+
+				// Store raw search inputs for future analysis
+				$scope.userdata.rawInputs.businessSearch.push(input)
+
+			}).
+			error( function () {
+
+				$scope.searchLoading = false
+				$scope.searchErrorMsg = 'Error performing search for addresses. Please try again later.'
+
+			});
 	}
 
-	// Experiment with alternative controller organization. See here: http://egghead.io/lessons/angularjs-an-alternative-approach-to-controllers
-	return $scope['40Ctrl'] = this
+	$scope.selectResult = function (item) {
+		// Set the selected stuff to global UserData so it's available elsewhere
+		_saveAddress(item)
+	}
+
+	var _saveAddress = function (data) {
+		// data is either same as results[0] retrieved from data source
+		// or saved from the "select" button if there are multiple sources
+		$scope.userdata.property.address  = data.address.capitalize()
+		$scope.userdata.property.location = data.location
+		$scope.userdata.property.score    = data.score
+	}
 
 })
 

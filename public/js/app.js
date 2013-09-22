@@ -42,7 +42,10 @@ app.factory('UserData', function () {
 		property: {
 			parcelNumber: null,
 			address: null,
-			ward: null
+			master_address: null,
+			ward: null,
+			location: {},
+			score: null
 		},
 		rawInputs: {
 			businessSearch: [],
@@ -128,10 +131,10 @@ directives.buttonDisable = function () {
 }
 
 directives.radioSelect = function () {
-	// Currently only used on Step 10 (NAICS search results)
+	// Used on:
+	// - Step 10 (NAICS search results)
+	// - Step 40 (Address search results)
 	return function (scope, element, attrs) {
-
-		var isSelected = false
 
 		// This directive allows for custom text to be displayed when it is clicked,
 		// provided in the form of a 'selected-text' attribute.
