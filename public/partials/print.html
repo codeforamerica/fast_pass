@@ -1,6 +1,18 @@
 <section id='print' ng-controller='PrintView as app' hide-map>
 
-	<p ng-show='reportId' style='float: right'>Report ID # {{reportId}}</p>
+	<div style='position: absolute; margin-top: -110px; right: 0; text-align: right'>
+		<address style='font-style: normal'>
+			<strong>City of Las Vegas</strong><br>
+			<strong>Development Services Center</strong><br>
+			333 N. Rancho Drive<br>
+			Las Vegas, NV 89106
+		</address>
+	</div>
+
+	<div ng-show='reportId' style='float: right; text-align: right'>
+		Report ID # {{reportId}}<br>
+		{{printDate | date:'longDate' }}
+	</div>
 
 	<h2>Property Report</h2>
 	

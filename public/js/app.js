@@ -229,6 +229,8 @@ directives.externalLink = function () {
 
 directives.progressbar = function () {
 	// Show a basic progress bar.
+	// Write it in the templates as <progressbar step='X'></progressbar>
+	// where X is the position of the bar
 	return {
 		restrict: 'E',
 		replace: true,
@@ -245,6 +247,7 @@ directives.progressbar = function () {
 			// add highlight to the one that matches the given step
 			for (var i = 0; i < item.length; i++) {
 				if (step == i + 1) {
+					// addClass() doesn't work on these, which is SO DUMB
 					item[i].className = 'highlight'
 				}
 			}
