@@ -273,7 +273,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapData) {
 	var cityLimitsGeoJSON = '/data/clv-city-limits.geojson'
 
 	// Get a matched business type
-	$http.get(dataURL).success( function (stuff) {
+	$http.get(cityLimitsGeoJSON).success( function (stuff) {
 
 
 	})

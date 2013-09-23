@@ -212,21 +212,29 @@ directives.scrollfix = function () {
 		restrict: 'C',
 		link: function (scope, element, $window) {
 
-			var $page = angular.element(window)
-			var $el   = element[0]
-			var elScrollTopOriginal = $($el).offset().top - 40
+			var $page  = angular.element(window)
+			var $el    = element[0]
+			var margin = 40         // # of pixels to keep as a margin for scrollfix'd element
+			var windowScrollTop     = window.pageYOffset   
+									// # of pixels that page has scrolled above viewport
+			var elScrollTop         = $el.getBoundingClientRect().top
+									// # of pixels between top of element and top of viewport
+			var elScrollTopOriginal = elScrollTop
+									// Remember this for later
 
 			$page.bind('scroll', function () {
 
-				var windowScrollTop = $page[0].pageYOffset
-				var elScrollTop     = $($el).offset().top
-				// FUCK YEAH JQUERY
+				windowScrollTop = window.pageYOffset
+				elScrollTop     = $el.getBoundingClientRect().top
 
-				if ( windowScrollTop > elScrollTop - 40) {
-					elScrollTopOriginal = elScrollTop - 40
+				if (elScrollTop <= margin) {
+					// if element has scrolled to a point less than the margin,
+					// make it a fixed element.
 			        element.css('position', 'fixed').css('top', '40px').css('margin-left', '3px');
 				}
-				else if ( windowScrollTop < elScrollTopOriginal) {
+				if ( windowScrollTop <= elScrollTopOriginal) {
+					// if window has scrolled to a point below the original position
+					// convert it back to a relatively positioned element.
 					element.css('position', 'relative').css('top', '0').css('margin-left', '0');
 				}
 			})
