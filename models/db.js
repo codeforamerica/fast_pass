@@ -1,24 +1,24 @@
 var pg = require('pg')
-var Database = function () {}
+var DB = function () {}
 
 var host = 'localhost'
 var name = 'fast_track'
 
-Database.config = {
+DB.config = {
   host: host,
   database: name
 }
 
-Database.connect = function (cb) {
-  pg.connect(Database.config, function (err, client) {
+DB.connect = function (cb) {
+  pg.connect(DB.config, function (err, client) {
     cb.call(this, err, client);
   });
 }
 
-Database.query = function (q, v, cb) {
+DB.query = function (q, v, cb) {
   this.connect(function (err, client) {
     if (err) {
-      throw err; 
+      throw err;
     } else {
       client.query(q, v, function (err, result) {
         if (err) {
@@ -33,4 +33,4 @@ Database.query = function (q, v, cb) {
   });
 }
 
-module.exports = Database
+module.exports = DB

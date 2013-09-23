@@ -1,8 +1,8 @@
-var Model = require('./model')
+var DBModel = require('./db_model')
 
-var Session = Model.extend({
+var Session = DBModel.extend({
 
-  attributes: {
+  defaults: {
     'id': undefined,
     'category_ids': undefined,
     'use_modifier_ids': undefined,

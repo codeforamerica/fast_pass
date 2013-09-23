@@ -1,14 +1,18 @@
-var Model = require('./model')
+var DBModel = require('./db_model')
 
-var Zone = Model.extend({
+var Zone = DBModel.extend({
 
-  attributes: {
+  defaults: {
     'id': undefined,
-    'name': undefined,
+    'title': undefined,
     'description': undefined,
     'code': undefined
   }
 
-})
+}, {
+
+  'table': 'zones'
+
+});
 
 module.exports = Zone

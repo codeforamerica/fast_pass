@@ -1,8 +1,8 @@
-var Model = require('./model')
+var DBModel = require('./db_model')
 
-var ParcelRule = Model.extend({
+var ParcelRule = DBModel.extend({
 
-  attributes: {
+  defaults: {
     'id': undefined,
     'parcel_id': undefined
   }

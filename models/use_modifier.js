@@ -1,8 +1,8 @@
-var Model = require('./model')
+var DBModel = require('./db_model')
 
-var UseModifier = Model.extend({
+var UseModifier = DBModel.extend({
 
-  attributes: {
+  defaults: {
     'id': undefined,
     'title': undefined,
     'description': undefined,

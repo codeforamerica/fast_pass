@@ -4,9 +4,9 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , naics_category = require('./routes/naics_category')
-  , parcel = require('./routes/parcel')
-  , http = require('http')
+  , naics_category = require('./routes/naics_category'),
+  , geocoder = require('./routes/geocoder')
+  , parcel = require('./routes/parcel') , http = require('http')
   , path = require('path')
   , lessMiddleware = require('less-middleware');
 
@@ -45,6 +45,12 @@ app.get('/naics_categories/search', naics_category.search);
 app.get('/parcels', parcel.index);
 app.get('/parcels/search', parcel.search);
 app.get('/parcels/:id', parcel.find)
+
+//
+// Geocode Routes
+//
+app.get('/geocoder/geocode', geocoder.geocode);
+app.get('/geocoder/reverse_geocode', geocoder.reverseGeocode);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

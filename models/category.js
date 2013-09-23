@@ -1,9 +1,8 @@
-var Model = require('./model');
+var DBModel = require('./db_model');
 
-var Category = Model.extend({
+var Category = DBModel.extend({
 
-  attributes: {
-    'id': undefined,
+  defaults: {
     'code': undefined,
     'title': undefined,
     'description': undefined,

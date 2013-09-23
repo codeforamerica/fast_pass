@@ -1,6 +1,6 @@
-var Model = require('./model');
+var DBModel = require('./db_model');
 
-var ZoneRule = Model.extend({
+var ZoneRule = DBModel.extend({
 
   attributes: {
     'id': undefined,

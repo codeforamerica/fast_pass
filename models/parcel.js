@@ -1,8 +1,8 @@
-var Model = require('./model');
+var DBModel = require('./db_model');
 
-var Parcel = Model.extend({
+var Parcel = DBModel.extend({
 
-  attributes: {
+  defaults: {
     'id': undefined,
     'code': undefined,
     'zone_ids': undefined
