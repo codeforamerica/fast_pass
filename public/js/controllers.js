@@ -78,17 +78,20 @@ appCtrls.controller('12Ctrl', function ($scope, $http, UserData) {
 
 	$scope.userdata = UserData
 
-	var dataURL = '/data/business-types-desc.json';
-//		var dataURL = '/data/business-types.json';
-//		Note: these are coming from different sources, and seems to have different categories. Need to confirm.
+	// Only get a new business category if there isn't one
+	if ($scope.userdata.businessCategory.code == null) {
+		var dataURL = '/data/business-types-desc.json';
+	//		var dataURL = '/data/business-types.json';
+	//		Note: these are coming from different sources, and seems to have different categories. Need to confirm.
 
-	// Get a matched business type
-	$http.get(dataURL).success( function (stuff) {
+		// Get a matched business type
+		$http.get(dataURL).success( function (stuff) {
 
-		// DEMO - grab a random business type from the array.
-		$scope.userdata.businessCategory = stuff[Math.floor(Math.random() * stuff.length)];
+			// DEMO - grab a random business type from the array.
+			$scope.userdata.businessCategory = stuff[Math.floor(Math.random() * stuff.length)];
 
-	});
+		})
+	}
 
 	// UI.Bootstrap collapse
 	$scope.isCollapsed = true;
@@ -225,14 +228,6 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData) {
 
 })
 
-appCtrls.controller('MapCtrl', function ($scope) {
-
-	map.on('click', function () {
-		alert('hey')
-	})
-
-})
-
 appCtrls.controller('45Ctrl', function ($scope, UserData) {
 	$scope.userdata = UserData
 	$scope.userdata.nav.pathTo50 = 45    // Remember the current section to preserve path in the future
@@ -270,6 +265,23 @@ appCtrls.controller('50Ctrl', function ($scope, UserData) {
 appCtrls.controller('70Ctrl', function ($scope, UserData) {
 
 	$scope.userdata = UserData
+
+})
+
+appCtrls.controller('MapCtrl', function ($scope, $http, MapData) {
+
+	var cityLimitsGeoJSON = '/data/clv-city-limits.geojson'
+
+	// Get a matched business type
+	$http.get(dataURL).success( function (stuff) {
+
+
+	})
+
+	this.doStuff = function () {
+		// alert('hey')
+	}
+
 
 })
 

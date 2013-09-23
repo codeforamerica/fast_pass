@@ -4,13 +4,12 @@
 
 	<h2>Zoning map</h2>
 	
-	<ul>
-		<li>Your business category: 
+	<p class='lede'>Zones in which you're qualified to be in will be shown on the map to the left. Select individual parcels to learn more.</p>
+
+	<p ng-show='userdata.businessCategory.code'>
 		<span class='pill'>{{userdata.businessCategory.code}}</span>
 		<strong><a href='' data-title='{{userdata.businessCategory.name}}' class='modal ng-binding'>{{userdata.businessCategory.name}}</a></strong>
-	</ul>
-	
-	<p class='lede'>Zones in which you're qualified to be in will be shown on the map to the left. Select individual parcels to learn more.</p>
+	</p>
 	
 	<p>Based on the information we've collected so far, these zones are most likely approved for your business.</p>
 	
