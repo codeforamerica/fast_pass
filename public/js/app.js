@@ -58,7 +58,7 @@ app.factory('UserData', function () {
 	}
 })
 
-app.factory('Map', function () {
+app.factory('MapService', function () {
 	return {
 		clicked: {
 			latlng: [],
@@ -77,7 +77,7 @@ app.factory('Map', function () {
 	}
 })
 
-app.factory('Modal', function () {
+app.factory('ModalService', function () {
 	// Create a service for a modal???
 	return {
 		title: null,

@@ -20,6 +20,7 @@ appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 	$scope.searchErrorMsg  = ''
 	$scope.searchPerformed = false
 	$scope.selectedResult  = null
+	$scope.sampleInput     = 'coffee shop'
 
 	// Set search input box to remember the most recent input
 	$scope.searchInput = $scope.userdata.rawInputs.businessSearch[$scope.userdata.rawInputs.businessSearch.length-1]
@@ -273,8 +274,9 @@ appCtrls.controller('70Ctrl', function ($scope, UserData) {
 
 })
 
-appCtrls.controller('MapCtrl', function ($scope, $http, MapData) {
+appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 
+	$scope.mapService = MapService
 	var cityLimitsGeoJSON = '/data/clv-city-limits.geojson'
 
 	// Get a matched business type
@@ -284,6 +286,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapData) {
 	})
 
 	this.doStuff = function () {
+
 		// alert('hey')
 	}
 
