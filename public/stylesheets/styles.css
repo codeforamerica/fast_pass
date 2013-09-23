@@ -851,7 +851,7 @@ ul.progress-bar li {
 }
 ul.progress-bar li .step {
   display: inline-block;
-  width: 36px;
+  width: 32px;
   padding-right: 8px;
   margin-right: 6px;
   text-align: right;
@@ -872,14 +872,14 @@ ul.progress-bar li::after {
   height: 0;
   border-top: 12px solid transparent;
   border-bottom: 12px solid transparent;
-  border-left: 12px solid #e7eaeb;
+  border-left: 8px solid #e7eaeb;
   z-index: 4000;
   position: absolute;
   margin-top: 0px;
-  right: -12px;
+  right: -8px;
 }
 ul.progress-bar li.highlight::after {
-  border-left: 12px solid #5f95a7;
+  border-left: 8px solid #5f95a7;
 }
 ul.progress-bar li:last-of-type::after {
   border: 0;

@@ -487,7 +487,7 @@ ul.progress-bar {
 	li {
 		.step {
 			display: inline-block;
-			width: 36px;
+			width: 32px;
 			padding-right: 8px;
 			margin-right: 6px;
 			text-align: right;
@@ -513,14 +513,14 @@ ul.progress-bar {
 			height: 0; 
 			border-top: 12px solid transparent;
 			border-bottom: 12px solid transparent;
-			border-left: 12px solid @color-gray;
+			border-left: 8px solid @color-gray;
 			z-index: 4000;
 			position: absolute;
 			margin-top: 0px;
-			right: -12px;
+			right: -8px;
 		}
 		&.highlight::after {
-			border-left: 12px solid @color-lighter;
+			border-left: 8px solid @color-lighter;
 		}
 		&:last-of-type::after {
 			border: 0;
