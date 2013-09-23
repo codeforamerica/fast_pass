@@ -4,7 +4,6 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , naics_category = require('./routes/naics_category'),
   , geocoder = require('./routes/geocoder')
   , parcel = require('./routes/parcel') , http = require('http')
   , path = require('path')
@@ -37,7 +36,6 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/naics_categories/search', naics_category.search);
 
 //
 // Parcel Routes
