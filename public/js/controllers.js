@@ -15,12 +15,20 @@ appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 	$scope.userdata = UserData
 
 	// Set defaults for scope variables
-	$scope.searchInput = ''
 	$scope.searchResults = false
 	$scope.searchLoading = false
 	$scope.searchErrorMsg = ''
 	$scope.searchPerformed = false
 	$scope.selectedResult = null
+
+	// Set search input box to remember the most recent input
+	$scope.searchInput = $scope.userdata.rawInputs.businessSearch[$scope.userdata.rawInputs.businessSearch.length-1]
+
+	// If there was a selected NAICS code, kind-of restore application state 
+	if ($scope.userdata.naics.code != null) {
+		$scope.searchPerformed = true
+		$scope.selectedResult = $scope.userdata.naics.title
+	}
 
 	$scope.searchBusiness = function (input) {
 
@@ -149,9 +157,6 @@ appCtrls.controller('20Ctrl', function ($scope, $http, $filter, UserData) {
 appCtrls.controller('40Ctrl', function ($scope, $http, UserData) {
 	$scope.userdata = UserData
 	$scope.userdata.nav.pathTo50 = 40    // Remember the current section to preserve path in the future
-
-	$scope.searchLoading = false
-	$scope.selectedResult = false
 
 	var addressEndpoint = 'http://mapdata.lasvegasnevada.gov/clvgis/rest/services/CLVPARCELS_Address_Locator/GeocodeServer/findAddressCandidates?&outFields=&outSR=4326&searchExtent=&f=json&Street='
 
