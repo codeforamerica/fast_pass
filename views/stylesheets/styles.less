@@ -6,7 +6,8 @@
 
 @color-scheme:          #21687f;
 //@color-scheme:          #4a8bc9;
-@color-gray:			desaturate(lighten(@color-scheme, 60%), 50%);
+@color-lighter:         desaturate(lighten(@color-scheme, 20%),30%);
+@color-gray:            desaturate(lighten(@color-scheme, 60%), 50%);
 @lightgray:             #c1c1c1;
 @black:                 black;    // Boilerplate sets it to #222
 
@@ -406,7 +407,7 @@ button, a.button, input[type=button], input[type=submit] {
 	&.back, &[value=back] {
 		left: 0;
 		right: auto;
-		background-color: desaturate(lighten(@color-scheme, 20%),30%);
+		background-color: @color-lighter;
 		&:hover {
 //			background-color: @color-scheme;
 		}
@@ -486,13 +487,15 @@ ul.progress-bar {
 	li {
 		.step {
 			display: inline-block;
-			width: 30px;
+			width: 36px;
+			padding-right: 8px;
+			margin-right: 6px;
+			text-align: right;
 			font-size: 18px;
 			background-color: @lightgray;
-			text-align: center;
-			margin-right: 6px;
 			color: white;
 		}
+		position: relative;
 		width: 33%;
 		display: inline-block;
 		background-color: @color-gray;
@@ -501,8 +504,26 @@ ul.progress-bar {
 			.step {
 				background-color: @color-scheme;
 			}
-			background-color:  desaturate(lighten(@color-scheme, 20%),30%);
+			background-color: @color-lighter;
 			color: white;
+		}
+		&::after {
+			content: '';
+			width: 0; 
+			height: 0; 
+			border-top: 12px solid transparent;
+			border-bottom: 12px solid transparent;
+			border-left: 12px solid @color-gray;
+			z-index: 4000;
+			position: absolute;
+			margin-top: 0px;
+			right: -12px;
+		}
+		&.highlight::after {
+			border-left: 12px solid @color-lighter;
+		}
+		&:last-of-type::after {
+			border: 0;
 		}
 	}
 }

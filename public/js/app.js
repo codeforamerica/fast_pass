@@ -58,16 +58,30 @@ app.factory('UserData', function () {
 	}
 })
 
-app.factory('MapData', function () {
+app.factory('Map', function () {
 	return {
 		clicked: {
-			lat: null,
-			lng: null
+			latlng: [],
+			x: null,
+			y: null
 		},
 		point: {
-			lat: null,
-			lng: null
-		}
+			latlng: [],
+			x: null,
+			y: null
+		},
+		viewportBounds: [
+			[36.16671, -115.14953],
+			[36.16794, -115.14744]
+		]
+	}
+})
+
+app.factory('Modal', function () {
+	// Create a service for a modal???
+	return {
+		title: null,
+		text: null
 	}
 })
 

@@ -15,11 +15,11 @@ appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 	$scope.userdata = UserData
 
 	// Set defaults for scope variables
-	$scope.searchResults = false
-	$scope.searchLoading = false
-	$scope.searchErrorMsg = ''
+	$scope.searchResults   = false
+	$scope.searchLoading   = false
+	$scope.searchErrorMsg  = ''
 	$scope.searchPerformed = false
-	$scope.selectedResult = null
+	$scope.selectedResult  = null
 
 	// Set search input box to remember the most recent input
 	$scope.searchInput = $scope.userdata.rawInputs.businessSearch[$scope.userdata.rawInputs.businessSearch.length-1]
@@ -61,7 +61,7 @@ appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 
 			}).
 			error( function () {
-
+				// Display error message
 				$scope.searchLoading = false
 				$scope.searchErrorMsg = 'Error performing search for NAICS business categories.'
 
@@ -294,7 +294,7 @@ appCtrls.controller('PrintView', function ($scope, $http, UserData) {
 	$scope.userdata = UserData
 
 	$scope.reportId  = $scope.userdata.reportId
-	$scope.printDate = new Date ()
+	$scope.reportDate = new Date ()
 
 	// Open print dialog box
 	// Dumb hack to activate print dialog only after CSS transitions are done

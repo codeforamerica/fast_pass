@@ -844,17 +844,19 @@ ul.progress-bar {
   margin-top: 10px;
 }
 ul.progress-bar li {
+  position: relative;
   width: 33%;
   display: inline-block;
   background-color: #e7eaeb;
 }
 ul.progress-bar li .step {
   display: inline-block;
-  width: 30px;
+  width: 36px;
+  padding-right: 8px;
+  margin-right: 6px;
+  text-align: right;
   font-size: 18px;
   background-color: #c1c1c1;
-  text-align: center;
-  margin-right: 6px;
   color: white;
 }
 ul.progress-bar li.highlight {
@@ -863,6 +865,24 @@ ul.progress-bar li.highlight {
 }
 ul.progress-bar li.highlight .step {
   background-color: #21687f;
+}
+ul.progress-bar li::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 12px solid #e7eaeb;
+  z-index: 4000;
+  position: absolute;
+  margin-top: 0px;
+  right: -12px;
+}
+ul.progress-bar li.highlight::after {
+  border-left: 12px solid #5f95a7;
+}
+ul.progress-bar li:last-of-type::after {
+  border: 0;
 }
 span.pill {
   padding: 1px 3px;
