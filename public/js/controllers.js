@@ -109,12 +109,26 @@ appCtrls.controller('20Ctrl', function ($scope, $http, $filter, UserData) {
 
 	var dataURL = '/data/additional-business.json'
 
+	var userdata = $scope.userdata.additionalBusiness
+
 	// Display additional businesses
 	$http.get(dataURL).success( function (data) {
+
+		// Add the 'checked' value depending on current UserData
 		for (var i = 0; i < data.length; i++) {
+
 			data[i].checked = false
+
+			if (userdata !== null && userdata.length > 0) {
+				for (var j = 0; j < userdata.length; j++) {
+					if (userdata[j].id == data[i].id) {
+						data[i].checked = true
+					} 
+				}
+			}
 		}
 
+		// Add the data to the scope
 		$scope.additionalBusiness = data
 	})
 
@@ -262,7 +276,7 @@ appCtrls.controller('70Ctrl', function ($scope, UserData) {
 appCtrls.controller('PrintView', function ($scope, $http, UserData) {
 	$scope.userdata = UserData
 
-	$scope.reportId  = 902438908
+	$scope.reportId  = $scope.userdata.reportId
 	$scope.printDate = new Date ()
 
 	// Open print dialog box

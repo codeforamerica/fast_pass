@@ -23,10 +23,11 @@ app.config(['$routeProvider', function($routeProvider) {
 		});
 }]);
 
-// This sets up a global 'UserData' object so that information collected by
+// This sets up a 'UserData' service so that information collected by
 // user input can be carried across the application
 app.factory('UserData', function () {
 	return { 
+		reportId: Math.floor(Math.random() * 100000000),
 		businessCategory: {
 			code: null,
 			name: null,
@@ -53,6 +54,19 @@ app.factory('UserData', function () {
 		},
 		nav: {
 			prev: null
+		}
+	}
+})
+
+app.factory('MapData', function () {
+	return {
+		clicked: {
+			lat: null,
+			lng: null
+		},
+		point: {
+			lat: null,
+			lng: null
 		}
 	}
 })
@@ -124,9 +138,14 @@ directives.modal = function () {
 	// Make a modal
 	return {
 		restrict: 'A',
+		scope: {
+			title: '@',
+			text: '@'
+		},
 		templateUrl: '/partials/_modal.html',
-		link: function (scope, element, attrs) {
+		link: function (scope, element) {
 
+			// ?????
 		}
 	}
 }
@@ -151,32 +170,37 @@ directives.radioSelect = function () {
 	// Used on:
 	// - Step 10 (NAICS search results)
 	// - Step 40 (Address search results)
-	return function (scope, element, attrs) {
+	return {
+		restrict: 'A',
+		link: function (scope, element, attrs) {
 
-		// This directive allows for custom text to be displayed when it is clicked,
-		// provided in the form of a 'selected-text' attribute.
-		// If custom text is not provided, it will default to 'Selected'
-		var text = attrs.selectedText
-		if (!text) {
-			text = 'Selected'
+			// This directive allows for custom text to be displayed when it is clicked,
+			// provided in the form of a 'selected-text' attribute.
+			// If custom text is not provided, it will default to 'Selected'
+			var text = attrs.selectedText
+			if (!text) {
+				text = 'Selected'
+			}
+
+			// Store the original text of the button
+			var originalText = element.text()
+
+			// Action to perform when the button is clicked
+			element.bind('click', function () {
+
+				// Clear all previous select boxes
+				// This is super messy, as it relies on DOM traversal to succeed
+
+				// Probably better to figure out how to do isolate scope on this 
+				element.parent().parent().children().find('button').text(originalText).removeClass('selected')
+				element.parent().parent().children().removeClass('selected')
+
+				// Set current select box to Selected
+				element.text(text).addClass('selected')
+				element.parent().addClass('selected')
+			})
+
 		}
-
-		// Store the original text of the button
-		var originalText = element.text()
-
-		// Action to perform when the button is clicked
-		element.bind('click', function () {
-
-			// Clear all previous select boxes
-			// This is super messy, as it relies on DOM traversal to succeed
-			element.parent().parent().children().find('button').text(originalText).removeClass('selected')
-			element.parent().parent().children().removeClass('selected')
-
-			// Set current select box to Selected
-			element.text(text).addClass('selected')
-			element.parent().addClass('selected')
-		})
-
 	}
 }
 
@@ -234,11 +258,11 @@ directives.progressbar = function () {
 	return {
 		restrict: 'E',
 		replace: true,
+		scope: {
+			step: '@'
+		},
 		templateUrl: '/partials/_progressbar.html',
-		link: function (scope, element, attrs) {
-			// Get what step you're on
-			var step = attrs.step
-
+		link: function (scope, element) {
 			var item = element.find('li')
 
 			// remove highlight from all steps
@@ -246,7 +270,7 @@ directives.progressbar = function () {
 
 			// add highlight to the one that matches the given step
 			for (var i = 0; i < item.length; i++) {
-				if (step == i + 1) {
+				if (scope.step == i + 1) {
 					// addClass() doesn't work on these, which is SO DUMB
 					item[i].className = 'highlight'
 				}
