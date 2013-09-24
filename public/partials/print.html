@@ -1,6 +1,20 @@
 <section id='print' ng-controller='PrintView as app' hide-map>
 
-	<h2>City of Las Vegas </h2>
+	<div style='position: absolute; margin-top: -120px; right: 0; text-align: right'>
+		<address style='font-style: normal'>
+			<strong>City of Las Vegas</strong><br>
+			<strong>Development Services Center</strong><br>
+			333 N. Rancho Drive<br>
+			Las Vegas, NV 89106
+		</address>
+	</div>
+
+	<div ng-show='reportId' style='float: right; text-align: right'>
+		Report ID # {{reportId}}<br>
+		{{reportDate | date:'longDate' }}
+	</div>
+
+	<h2>Property Report</h2>
 	
 	<h3>Business Information</h3>
 
@@ -12,19 +26,19 @@
 			</tr>
 			<tr>
 				<td><strong>NAICS ({{userdata.naics.year}}) Code</strong></td>
-				<td>{{userdata.naics.code}}</td>
-			</tr>
-			<tr>
-				<td><strong>NAICS ({{userdata.naics.year}}) Title</strong></td>
-				<td>{{userdata.naics.title}}</td>
+				<td>{{userdata.naics.code}} - {{userdata.naics.title}}</td>
 			</tr>
 			<tr>
 				<td><strong>Business description</strong></td>
-				<td>{{userdata.businessDescription}}</td>
+				<td ng-bind-html='userdata.businessDescription | newlines'></td>
 			</tr>
 			<tr>
 				<td><strong>Additional business modifiers</strong></td>
-				<td>{{userdata.additionalBusiness}}</td>
+				<td>
+					<ul style='margin-top: 0'>
+						<li ng-repeat='item in userdata.additionalBusiness'>{{item.official_name}}</li>
+					</ul>
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -97,7 +111,7 @@
 
 	<div class='section-navigation'>
 		<a class='back button' href='/#/section/70'>Return</a>
-		<a class='left button' href=''>Print</a>
+		<a class='right button' href='' onclick='window.print(); return false;'>Print</a>
 	</div>
 
 </section>

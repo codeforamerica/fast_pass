@@ -15,12 +15,38 @@ appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 	$scope.userdata = UserData
 
 	// Set defaults for scope variables
-	$scope.searchInput = ''
-	$scope.searchResults = false
-	$scope.searchLoading = false
-	$scope.searchErrorMsg = ''
+	$scope.searchResults   = false
+	$scope.searchLoading   = false
+	$scope.searchErrorMsg  = ''
 	$scope.searchPerformed = false
-	$scope.selectedResult = null
+	$scope.selectedResult  = null
+
+	// Randomly select an example business placeholder input!
+	$scope.sampleInputs    = ['coffee shop',
+                              'automotive detail',
+                              'hairdresser',
+                              'internet retail',
+                              'women\'s clothing',
+                              'shoes',
+                              'interior designer',
+                              'furniture store',
+                              'lounge',
+                              'legal aid',
+                              'optometrist',
+                              'graphic design',
+                              'computer repair',
+                              'marketing',
+                              'bicycle shop']
+    $scope.sampleInput     = $scope.sampleInputs[Math.floor(Math.random() * $scope.sampleInputs.length)]
+
+	// Set search input box to remember the most recent input
+	$scope.searchInput = $scope.userdata.rawInputs.businessSearch[$scope.userdata.rawInputs.businessSearch.length-1]
+
+	// If there was a selected NAICS code, kind-of restore application state 
+	if ($scope.userdata.naics.code != null) {
+		$scope.searchPerformed = true
+		$scope.selectedResult = $scope.userdata.naics.title
+	}
 
 	$scope.searchBusiness = function (input) {
 
@@ -32,7 +58,7 @@ appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 		$scope.searchResults  = false
 
 		// Display loading icon
-		$scope.searchLoading  = true			
+		$scope.searchLoading  = true
 
 		// Get search results
 		$http.get(searchURL).
@@ -53,7 +79,7 @@ appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 
 			}).
 			error( function () {
-
+				// Display error message
 				$scope.searchLoading = false
 				$scope.searchErrorMsg = 'Error performing search for NAICS business categories.'
 
@@ -78,23 +104,27 @@ appCtrls.controller('12Ctrl', function ($scope, $http, UserData) {
 
 	$scope.userdata = UserData
 
-	var dataURL = '/data/business-types-desc.json';
-//		var dataURL = '/data/business-types.json';
-//		Note: these are coming from different sources, and seems to have different categories. Need to confirm.
+	// Only get a new business category if there isn't one
+	if ($scope.userdata.businessCategory.code == null) {
+		var dataURL = '/data/business-types-desc.json';
+	//		var dataURL = '/data/business-types.json';
+	//		Note: these are coming from different sources, and seems to have different categories. Need to confirm.
 
-	// Get a matched business type
-	$http.get(dataURL).success( function (stuff) {
+		// Get a matched business type
+		$http.get(dataURL).success( function (stuff) {
 
-		// DEMO - grab a random business type from the array.
-		$scope.userdata.businessCategory = stuff[Math.floor(Math.random() * stuff.length)];
+			// DEMO - grab a random business type from the array.
+			$scope.userdata.businessCategory = stuff[Math.floor(Math.random() * stuff.length)];
 
-	});
+		})
+	}
 
 	// UI.Bootstrap collapse
 	$scope.isCollapsed = true;
 
 })
 
+// SECTION 15 - Describe your business
 appCtrls.controller('15Ctrl', function ($scope, UserData) {
 
 	$scope.userdata = UserData
@@ -102,56 +132,124 @@ appCtrls.controller('15Ctrl', function ($scope, UserData) {
 })
 
 // SECTION 20 - ADDITIONAL BUSINESS
-appCtrls.controller('20Ctrl', function ($scope, $http, UserData) {
+appCtrls.controller('20Ctrl', function ($scope, $http, $filter, UserData) {
 	$scope.userdata = UserData
+	$scope.debug = false
 
 	var dataURL = '/data/additional-business.json'
 
+	var userdata = $scope.userdata.additionalBusiness
+
 	// Display additional businesses
 	$http.get(dataURL).success( function (data) {
-		$scope.additionalBusiness = data;
-	});
+
+		// Add the 'checked' value depending on current UserData
+		for (var i = 0; i < data.length; i++) {
+
+			data[i].checked = false
+
+			if (userdata !== null && userdata.length > 0) {
+				for (var j = 0; j < userdata.length; j++) {
+					if (userdata[j].id == data[i].id) {
+						data[i].checked = true
+					} 
+				}
+			}
+		}
+
+		// Add the data to the scope
+		$scope.additionalBusiness = data
+	})
 
 	$scope.selectedBusiness = function () {
-		return $filter('filter') ($scope.additionalBusiness, {checked: true});
-	};
+		// See example code here: http://stackoverflow.com/questions/14514461/how-can-angularjs-bind-to-list-of-checkbox-values
+		var output = $filter('filter') ($scope.additionalBusiness, {checked: true})
+		$scope.userdata.additionalBusiness = output
+		return output
+	}
+
 })
 
 
 // SECTION 40 - Enter a location
-appCtrls.controller('40Ctrl', function ($scope, UserData) {
+appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 	$scope.userdata = UserData
 	$scope.userdata.nav.pathTo50 = 40    // Remember the current section to preserve path in the future
+	$scope.mapService = MapService
+	$scope.debug = true
+
+	var addressEndpoint = 'http://mapdata.lasvegasnevada.gov/clvgis/rest/services/CLVPARCELS_Address_Locator/GeocodeServer/findAddressCandidates?&outFields=&outSR=4326&searchExtent=&f=json&Street='
+
+	// Prepopulate form if we already know it
+	$scope.addressInput = $scope.userdata.property.address
 
 //		$scope.map = {controller: 'MapAddressInputCtrl'}
-	this.findAddress = function (input) {
+	$scope.findAddress = function (input) {
 		// Store raw search inputs for future analysis
 		$scope.userdata.rawInputs.addressSearch.push(input)
 
-		// Temporarily forward this interaction directly.
-		// This breaks forward/back I think.
-		$scope.userdata.property.address = input
-		window.location.hash = encodeURIComponent('/section/50')
-	
-		// In the future this needs to do actual work.
-		// It will send information to an endpoint and retrieve address / parcel data.
+		// Assemble search endpoint URL based on user input
+		var addressURL = addressEndpoint + encodeURIComponent(input)
 
-		// Errors to return:
-		// -  This address could not be found in Las Vegas.
-		// -  Did you mean.... (keep on this screen?)
+		// Reset display
+		$scope.searchErrorMsg = ''
+		$scope.searchResults  = false
 
+		// Display loading icon
+		$scope.searchLoading  = true
+
+		// Get address search results
+		$http.get(addressURL).
+			success( function (response) {
+
+				// Turn off loader
+				$scope.searchLoading = false
+
+				// Extract results from response
+				var results = response.candidates
+
+				if (results.length == 0) {
+					// Message for no results
+					$scope.searchErrorMsg = 'No addresses found for ‘' + input + '’.'
+				} else if (results[0].score >= 95) {
+					
+					// If first result is a pretty good match, just take it
+					_saveAddress(results[0])
+
+					// Forward this interaction directly.
+					// This breaks forward/back apparently.
+					window.location.hash = encodeURIComponent('/section/50')
+
+				} else {
+					// Multiple results found - user select now.
+					$scope.searchResults = results
+				}
+
+				// Store raw search inputs for future analysis
+				$scope.userdata.rawInputs.businessSearch.push(input)
+
+			}).
+			error( function () {
+
+				$scope.searchLoading = false
+				$scope.searchErrorMsg = 'Error performing search for addresses. Please try again later.'
+
+			});
 	}
 
-	// Experiment with alternative controller organization. See here: http://egghead.io/lessons/angularjs-an-alternative-approach-to-controllers
-	return $scope['40Ctrl'] = this
+	$scope.selectResult = function (item) {
+		$scope.selectedResult = true
+		// Set the selected stuff to global UserData so it's available elsewhere
+		_saveAddress(item)
+	}
 
-})
-
-appCtrls.controller('MapCtrl', function ($scope) {
-
-	map.on('click', function () {
-		alert('hey')
-	})
+	var _saveAddress = function (data) {
+		// data is either same as results[0] retrieved from data source
+		// or saved from the "select" button if there are multiple sources
+		$scope.userdata.property.address  = data.address.capitalize()
+		$scope.userdata.property.location = data.location
+		$scope.userdata.property.score    = data.score
+	}
 
 })
 
@@ -195,11 +293,39 @@ appCtrls.controller('70Ctrl', function ($scope, UserData) {
 
 })
 
-appCtrls.controller('PrintView', function ($scope, UserData) {
+appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
+
+	$scope.mapService = MapService
+	var cityLimitsGeoJSON = '/data/clv-city-limits.geojson'
+
+	// Get a matched business type
+	$http.get(cityLimitsGeoJSON).success( function (stuff) {
+
+
+	})
+
+	this.doStuff = function () {
+		$scope.mapService.clicked.lat = document.getElementById('mapServiceLat').value
+		$scope.mapService.clicked.lng = document.getElementById('mapServiceLng').value
+	}
+
+
+})
+
+appCtrls.controller('PrintView', function ($scope, $http, UserData) {
 	$scope.userdata = UserData
 
+	$scope.reportId  = $scope.userdata.reportId
+	$scope.reportDate = new Date ()
+
 	// Open print dialog box
-	window.print()
+	// Dumb hack to activate print dialog only after CSS transitions are done
+	// Also prevents the dialog from opening before Angular is ready (but there should be a better fix for this...)
+	var timeout = window.setTimeout(print, 800);
+
+	function print() {
+		window.print()
+	}
 })
 
 /*******************************************************************************************/
