@@ -60,8 +60,8 @@
 <div ng-show='debug' class='ng-cloak'>
 <pre><strong>== DEBUG! ==</strong></pre>
 <p>
-	<input type='text' id='mapServiceLng' ng-model='mapService.clicked.lng' value='' style='width:50%; float:right;' watch-for-change>
-	<input type='text' id='mapServiceLat' ng-model='mapService.clicked.lat' value='' style='width:50%' watch-for-change> 
+	<input type='hidden' id='mapServiceLng' ng-model='mapService.clicked.lng' value='' style='width:50%; float:right;'>
+	<input type='hidden' id='mapServiceLat' ng-model='mapService.clicked.lat' value='' style='width:50%'> 
 </p>
 <pre>
 Clicked position: {{mapService.clicked.lat}}<span ng-show='mapService.clicked.lat'>,</span> {{mapService.clicked.lng}}

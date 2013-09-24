@@ -79,7 +79,6 @@ map.on('click', function (e) {
 
     document.getElementById('mapServiceLat').value = e.latlng.lat
 	document.getElementById('mapServiceLng').value = e.latlng.lng
-//	$('#mapServiceLng').removeClass('ng-pristine').addClass('ng-dirty').keydown()
 
     // add a marker on the point someone just clicked
 

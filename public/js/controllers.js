@@ -305,7 +305,8 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 	})
 
 	this.doStuff = function () {
-		console.log('clicked')
+		$scope.mapService.clicked.lat = document.getElementById('mapServiceLat').value
+		$scope.mapService.clicked.lng = document.getElementById('mapServiceLng').value
 	}
 
 

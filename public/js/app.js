@@ -303,14 +303,6 @@ directives.progressbar = function () {
 }
 
 
-directives.watchForChange = function () {
-	return function (scope, element) {
-		console.log('watched')
-		$(element).bind('change', function () {
-			scope.$apply()
-		})
-	}
-}
 /* // Might not actually be needed
 directives.autofocus = function () {
 	return function (scope, element, attrs) {
