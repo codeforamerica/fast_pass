@@ -20,7 +20,24 @@ appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 	$scope.searchErrorMsg  = ''
 	$scope.searchPerformed = false
 	$scope.selectedResult  = null
-	$scope.sampleInput     = 'coffee shop'
+
+	// Randomly select an example business placeholder input!
+	$scope.sampleInputs    = ['coffee shop',
+                              'automotive detail',
+                              'hairdresser',
+                              'internet retail',
+                              'women\'s clothing',
+                              'shoes',
+                              'interior designer',
+                              'furniture store',
+                              'lounge',
+                              'legal aid',
+                              'optometrist',
+                              'graphic design',
+                              'computer repair',
+                              'marketing',
+                              'bicycle shop']
+    $scope.sampleInput     = $scope.sampleInputs[Math.floor(Math.random() * $scope.sampleInputs.length)]
 
 	// Set search input box to remember the most recent input
 	$scope.searchInput = $scope.userdata.rawInputs.businessSearch[$scope.userdata.rawInputs.businessSearch.length-1]
@@ -155,9 +172,11 @@ appCtrls.controller('20Ctrl', function ($scope, $http, $filter, UserData) {
 
 
 // SECTION 40 - Enter a location
-appCtrls.controller('40Ctrl', function ($scope, $http, UserData) {
+appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 	$scope.userdata = UserData
 	$scope.userdata.nav.pathTo50 = 40    // Remember the current section to preserve path in the future
+	$scope.mapService = MapService
+	$scope.debug = true
 
 	var addressEndpoint = 'http://mapdata.lasvegasnevada.gov/clvgis/rest/services/CLVPARCELS_Address_Locator/GeocodeServer/findAddressCandidates?&outFields=&outSR=4326&searchExtent=&f=json&Street='
 
@@ -286,8 +305,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 	})
 
 	this.doStuff = function () {
-
-		// alert('hey')
+		console.log('clicked')
 	}
 
 

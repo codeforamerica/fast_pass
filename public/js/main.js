@@ -72,16 +72,19 @@ var markerIconSize =    [36, 62], // size of the icon
 
 var propertyMarker
 var popupOpen = false
+
 map.on('click', function (e) {
     var containerPoint = e.containerPoint.toString()
     var clickLatLng = e.latlng
 
-    console.log('Clicked map lat/lng: ' + e.latlng)
+    document.getElementById('mapServiceLat').value = e.latlng.lat
+	document.getElementById('mapServiceLng').value = e.latlng.lng
+//	$('#mapServiceLng').removeClass('ng-pristine').addClass('ng-dirty').keydown()
 
     // add a marker on the point someone just clicked
 
     // var markerHTML = document.getElementById('markerHTML').innerHTML
-
+/*
 	if (popupOpen == true) {
 //		propertyMarker.closePopup()
 		popupOpen = false
@@ -92,8 +95,9 @@ map.on('click', function (e) {
 		propertyMarker = ''
 	}
 	
-
+*/
 	propertyMarker = L.marker(clickLatLng).addTo(map)
+/*
 	propertyMarker.bindPopup(markerHTML, {
 		closeButton: false
 	})
@@ -106,7 +110,7 @@ map.on('click', function (e) {
     // open popup
 
     // clicking the popup brings up the parcel info.
-
+*/
 });
 
 /*

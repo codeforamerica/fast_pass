@@ -842,6 +842,7 @@ ul.progress-bar {
   width: 100%;
   white-space: nowrap;
   margin-top: 10px;
+  color: #444;
 }
 ul.progress-bar li {
   position: relative;

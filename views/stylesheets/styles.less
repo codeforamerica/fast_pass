@@ -395,6 +395,7 @@ button, a.button, input[type=button], input[type=submit] {
 	text-align: center;
 //	margin-right: 5px;
 	display: inline-block;
+//	border-bottom: 2px solid darken(@color-scheme, 6%);
 	&.back, &[value=back] {
 		&:before {
 			content: '« ';
@@ -445,6 +446,7 @@ button, a.button, input[type=button], input[type=submit] {
 	&:active {
 		position: relative;
 		top: 2px;
+//		border-bottom: 0px;
 	}
 	&.disabled, &[disabled] {
 		background-color: @lightgray;
@@ -484,6 +486,7 @@ ul.progress-bar {
 	width: 100%;
 	white-space: nowrap;
 	margin-top: 10px;
+	color: #444;
 	li {
 		.step {
 			display: inline-block;

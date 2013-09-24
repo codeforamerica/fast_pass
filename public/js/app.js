@@ -62,13 +62,13 @@ app.factory('MapService', function () {
 	return {
 		clicked: {
 			latlng: [],
-			x: null,
-			y: null
+			lat: null,
+			lng: null
 		},
 		point: {
 			latlng: [],
-			x: null,
-			y: null
+			lat: null,
+			lng: null
 		},
 		viewportBounds: [
 			[36.16671, -115.14953],
@@ -101,6 +101,7 @@ app.filter('no-html', function () {
                 .replace(/</g, '&lt;');
     }
 })
+
 
 // Alternate way of declaring directives (and controllers, below). See: http://egghead.io/lessons/angularjs-thinking-differently-about-organization
 var directives = {}
@@ -301,6 +302,15 @@ directives.progressbar = function () {
 	}
 }
 
+
+directives.watchForChange = function () {
+	return function (scope, element) {
+		console.log('watched')
+		$(element).bind('change', function () {
+			scope.$apply()
+		})
+	}
+}
 /* // Might not actually be needed
 directives.autofocus = function () {
 	return function (scope, element, attrs) {
