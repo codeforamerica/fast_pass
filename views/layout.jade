@@ -26,6 +26,6 @@ html(class='no-js', ng-app='dof')
 
 		block content
 
-		#map(ng-controller='MapCtrl', ng-click='map.doStuff()')
+		#map(ng-controller='MapCtrl as map', ng-click='map.doStuff()')
 
 		include _scripts-foot.html

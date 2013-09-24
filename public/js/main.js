@@ -12,7 +12,7 @@ var MAPBOX_ID           = 'codeforamerica.map-wzcm8dk0',
 	MAPBOX_ID_RETINA    = 'codeforamerica.map-dfs3qfso'
 
 var MAP_INIT_LATLNG     = [36.1665, -115.1479],
-	MAP_INIT_ZOOM       = 16,
+	MAP_INIT_ZOOM       = 14,
 	MAP_FIT_PADDING     = 0.25,
 	MAP_MAX_PADDING     = 6
 
@@ -26,8 +26,17 @@ var DEBUG_ALLOW         = true
 //
 // ***********************************************************************/
 
-var propertyAddress = '495 S. Main Street',
-	businessType = 'Beer Garden'
+// String.capitalize() that does the equivalent of text-transform: capitalize
+// Works on strings that begin as all caps
+String.prototype.capitalize = function() {
+	var string = this.toLowerCase().split(' ')
+	for (var i = 0; i < string.length; i++) {
+		string[i] = string[i].charAt(0).toUpperCase() + string[i].slice(1)
+	}
+    return string.join(' ')
+}
+
+
 
 /*************************************************************************
 // 
@@ -35,11 +44,7 @@ var propertyAddress = '495 S. Main Street',
 // Sets initial location, view, attribution, marker types
 //
 // ***********************************************************************/
-/*
-var map = L.mapbox.map('map', MAPBOX_ID, {
-	minZoom: MAP_INIT_ZOOM,
-	maxZoom: MAP_INIT_ZOOM
-})*/
+
 var map = L.mapbox.map('map', MAPBOX_ID, {
 	doubleClickZoom: false
 }).setView(MAP_INIT_LATLNG, MAP_INIT_ZOOM) 
@@ -65,41 +70,20 @@ var markerIconSize =    [36, 62], // size of the icon
 	markerIconAnchor =  [18, 50], // point of the icon which will correspond to marker's location
 	markerPopupAnchor = [0, -55]  // point from which the popup should open relative to the iconAnchor
 
-var vendorMarker = L.icon({
-	iconUrl: 'img/pin-food-on.png',
-
-	iconSize:     markerIconSize,
-	iconAnchor:   markerIconAnchor,
-	popupAnchor:  markerPopupAnchor
-})
-
-var vendorMarkerOff = L.icon({
-	iconUrl: 'img/pin-food-off.png',
-
-	iconSize:     markerIconSize,
-	iconAnchor:   markerIconAnchor,
-	popupAnchor:  markerPopupAnchor
-})
-
-// Not used - currently using Mapbox version of this icon.
-var hereMarker = L.icon({
-	iconUrl: 'img/pin-here.png',
-
-	iconSize:     markerIconSize,
-	iconAnchor:   markerIconAnchor,
-	popupAnchor:  markerPopupAnchor
-});
-
 var propertyMarker
 var popupOpen = false
+
 map.on('click', function (e) {
     var containerPoint = e.containerPoint.toString()
     var clickLatLng = e.latlng
 
+    document.getElementById('mapServiceLat').value = e.latlng.lat
+	document.getElementById('mapServiceLng').value = e.latlng.lng
+
     // add a marker on the point someone just clicked
 
     // var markerHTML = document.getElementById('markerHTML').innerHTML
-
+/*
 	if (popupOpen == true) {
 //		propertyMarker.closePopup()
 		popupOpen = false
@@ -110,8 +94,9 @@ map.on('click', function (e) {
 		propertyMarker = ''
 	}
 	
-
+*/
 	propertyMarker = L.marker(clickLatLng).addTo(map)
+/*
 	propertyMarker.bindPopup(markerHTML, {
 		closeButton: false
 	})
@@ -124,7 +109,7 @@ map.on('click', function (e) {
     // open popup
 
     // clicking the popup brings up the parcel info.
-
+*/
 });
 
 /*
