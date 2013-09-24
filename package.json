@@ -18,6 +18,7 @@
     "express": "3.2.6",
     "pg": "2.2.0",
     "jade": "*",
-    "less-middleware": "0.1.x"
+    "less-middleware": "0.1.x",
+    "proj4js": "*"
   }
 }
