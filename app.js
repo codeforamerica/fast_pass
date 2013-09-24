@@ -5,6 +5,7 @@
 var express = require('express')
   , routes = require('./routes')
   , geocoder = require('./routes/geocoder')
+  , category = require('./routes/category')
   , parcel = require('./routes/parcel') , http = require('http')
   , path = require('path')
   , lessMiddleware = require('less-middleware');
@@ -50,6 +51,11 @@ app.get('/parcels/:id', parcel.find)
 app.get('/address/geocode', geocoder.geocodeAddress);
 app.get('/address/suggest', geocoder.findAddressCandidates);
 app.get('/point/reverse_geocode', geocoder.reverseGeocode);
+
+//
+// Category Routes
+//
+app.get('/categories/search', category.search);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
