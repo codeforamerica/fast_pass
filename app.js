@@ -47,8 +47,9 @@ app.get('/parcels/:id', parcel.find)
 //
 // Geocode Routes
 //
-app.get('/geocoder/geocode', geocoder.geocode);
-app.get('/geocoder/reverse_geocode', geocoder.reverseGeocode);
+app.get('/address/geocode', geocoder.geocodeAddress);
+app.get('/address/suggest', geocoder.findAddressCandidates);
+app.get('/point/reverse_geocode', geocoder.reverseGeocode);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
