@@ -1,9 +1,11 @@
-<section id='section45' class='section-map'>
+<section id='section45' ng-controller='45Ctrl as app' show-map>
 
 	<h2>Zoning map</h2>
 	
 	<ul>
-		<li>Your business category: <strong>&nbsp;<a href='' data-title='Automotive Services Business Category Definition' class='modal ng-binding'></a></strong></li>
+		<li>Your business category: 
+		<span class='pill'>{{userdata.businessCategory.code}}</span>
+		<strong><a href='' data-title='{{userdata.businessCategory.name}}' class='modal ng-binding'>{{userdata.businessCategory.name}}</a></strong>
 	</ul>
 	
 	<p class='lede'>Zones in which you're qualified to be in will be shown on the map to the left. Select individual parcels to learn more.</p>

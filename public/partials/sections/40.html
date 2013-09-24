@@ -1,4 +1,4 @@
-<section id='section40' class='section-map'>
+<section id='section40' ng-controller='40Ctrl as app' show-map>
 
 	<h2>Enter the address of your space</h2>
 	
@@ -6,9 +6,19 @@
 		Please type in an address, or click a location on the map.
 	</p>
 	
-	<form name='property-address-form' id='property-address-form'>
+	<form name='property-address-form' id='property-address-form' ng-submit='app.findAddress(app.addressInput)'>
 		<div class='row'>
-			<input id='property-address-input' type='text' name='address' placeholder='e.g. 495 S. Main Street' autofocus required ng-model='property-address-input' style='width: 100%'>
+			<input id='property-address-input' type='text' name='address' placeholder='e.g. 495 S. Main Street' autofocus required ng-model='app.addressInput' style='width: 100%'>
+		</div>
+
+		<div class='row' ng-show='app.address'>
+
+			<p>
+				This address isn't inside the boundaries of the Las Vegas city limits.  For more information, see <a href='http://amiinlasvegas.com/' target='_blank'>Am I In Las Vegas?.com</a>.
+
+				This application is for business owners looking for a physical property in the City of Las Vegas. If you'd like to locate your business in unincorporated Clark County, or in the cities of North Las Vegas, Henderson, Mesquite, or Boulder City, <a href='https://blepay.clarkcountynv.gov/BLServices/BLJurisdictionLocator.aspx' target='blank'>click here to find your appropriate jurisdiction</a>.
+			</p>
+
 		</div>
 		
 		<div class='section-navigation'>

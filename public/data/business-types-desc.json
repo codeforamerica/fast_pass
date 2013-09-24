@@ -181,7 +181,7 @@
     },
     {
         "code": "B50",
-        "name": "Building, Plant Nursery &amp; Hardware Supplies",
+        "name": "Building, Plant Nursery & Hardware Supplies",
         "description": "A business which sells or home, lawn, garden, plant supplies, construction materials including brick, lumber and other  similar materials.  May also rent general equipment of a like nature."
     },
     {
@@ -291,7 +291,7 @@
     },
     {
         "code": "D50",
-        "name": "Dry Cleaning/Laundry Facility &amp; Services",
+        "name": "Dry Cleaning/Laundry Facility & Services",
         "description": "A facility or area used to provide coin or professionally operated cleaning or laundering of items such as clothing and linens.  May include rental, public counter, delivery services and includes the facility whether the plant operation is located on or off-site."
     },
     {
@@ -316,18 +316,18 @@
     },
     {
         "code": "F05",
-        "name": "Funeral Home &amp; Cemetery",
+        "name": "Funeral Home & Cemetery",
         "description": "Cemetery means property and facilities used for interring of the dead. Funeral Home means a facility in which one or both of the following activities occur: (1) Dead bodies are prepared for burial or cremation. (2) Funeral services are conducted."
     },
     {
         "code": "F15",
         "name": "Farmers Market Promoter",
-        "description": "Any person who (A) Promotes a farmers' market by marketing, advertising &amp; soliciting vendors (B) Operates a farmers market by negotiating vending space, managing &amp; controlling market operations or (C) Both promotes and operates a farmer' market."
+        "description": "Any person who (A) Promotes a farmers' market by marketing, advertising & soliciting vendors (B) Operates a farmers market by negotiating vending space, managing & controlling market operations or (C) Both promotes and operates a farmer' market."
     },
     {
         "code": "F16",
         "name": "Farmers Market Promoter 2nd Location",
-        "description": "Any person who (A) Promotes a farmers' market by marketing, advertising &amp; soliciting vendors (B) Operates a farmers market by negotiating vending space, managing &amp; controlling market operations or (C) Both promotes and operates a farmer' market."
+        "description": "Any person who (A) Promotes a farmers' market by marketing, advertising & soliciting vendors (B) Operates a farmers market by negotiating vending space, managing & controlling market operations or (C) Both promotes and operates a farmer' market."
     },
     {
         "code": "F17",
@@ -352,7 +352,7 @@
     {
         "code": "G50",
         "name": "General Retail Sales",
-        "description": "A retail establishment engaged in the sale of merchandise of a general nature and allows minor vending, rental and service of the same.  Including clothing, office, general household, personal &amp; health supplies, vending and audio/video equipment."
+        "description": "A retail establishment engaged in the sale of merchandise of a general nature and allows minor vending, rental and service of the same.  Including clothing, office, general household, personal & health supplies, vending and audio/video equipment."
     },
     {
         "code": "G55",
@@ -377,17 +377,17 @@
     {
         "code": "H04",
         "name": "Hospital",
-        "description": "An institution, designed within an integrated campus setting for the diagnosis, care, and treatment of human illness, including surgery &amp; primary treatment."
+        "description": "An institution, designed within an integrated campus setting for the diagnosis, care, and treatment of human illness, including surgery & primary treatment."
     },
     {
         "code": "H05",
         "name": "Hotel - 199 rooms or less",
-        "description": "A building or group of buildings whose main function is to provide rooms for temporary lodging where entrance to each room is gained from a completely enclosed area. A hotel may also contain restaurants, conference rooms &amp; personal service shops."
+        "description": "A building or group of buildings whose main function is to provide rooms for temporary lodging where entrance to each room is gained from a completely enclosed area. A hotel may also contain restaurants, conference rooms & personal service shops."
     },
     {
         "code": "H06",
         "name": "Resort Hotel - 200 rooms or more",
-        "description": "A building or group of buildings whose main function is to provide rooms for temporary lodging where entrance to each room is gained from a completely enclosed area. A hotel may also contain restaurants, conference rooms &amp; personal service shops."
+        "description": "A building or group of buildings whose main function is to provide rooms for temporary lodging where entrance to each room is gained from a completely enclosed area. A hotel may also contain restaurants, conference rooms & personal service shops."
     },
     {
         "code": "H08",
@@ -466,7 +466,7 @@
     },
     {
         "code": "L33",
-        "name": "Lawn &amp; Landscape Maintenance",
+        "name": "Lawn & Landscape Maintenance",
         "description": "Any business that provides lawn or landscape maintenance but is not required to have a State contractor's license."
     },
     {
@@ -622,7 +622,7 @@
     {
         "code": "P50",
         "name": "Professional Services",
-        "description": "A professional business with employees as defined by NRS title 54, chapter 622 and including professionals in the areas of: engineering, survey, architecture, administrators, property inspections, appraisers, law, court professionals, escrow &amp; mortgage, investigators, accountants, counselors, trainers, etc."
+        "description": "A professional business with employees as defined by NRS title 54, chapter 622 and including professionals in the areas of: engineering, survey, architecture, administrators, property inspections, appraisers, law, court professionals, escrow & mortgage, investigators, accountants, counselors, trainers, etc."
     },
     {
         "code": "P55",
@@ -631,8 +631,8 @@
     },
     {
         "code": "P60",
-        "name": "Publishing &amp; Newspapers",
-        "description": "Publishing &amp; Newspapers:  An establishment that provides publishing and printing services and/or circulation of a newspaper, periodical or magazine."
+        "name": "Publishing & Newspapers",
+        "description": "Publishing & Newspapers:  An establishment that provides publishing and printing services and/or circulation of a newspaper, periodical or magazine."
     },
     {
         "code": "Q01",
@@ -657,12 +657,12 @@
     {
         "code": "R09",
         "name": "Restaurant ",
-        "description": "An establishment providing preparation and retail sale of food &amp; beverages with a seating capacity of 30 or more."
+        "description": "An establishment providing preparation and retail sale of food & beverages with a seating capacity of 30 or more."
     },
     {
         "code": "R10",
         "name": "Food Services or Cafe",
-        "description": "A business providing preparation and retail sale of food &amp; beverage with a seating capacity of less than 30 (0-29) including take out, delivery, catering and specialty food counters."
+        "description": "A business providing preparation and retail sale of food & beverage with a seating capacity of less than 30 (0-29) including take out, delivery, catering and specialty food counters."
     },
     {
         "code": "R13",
@@ -691,7 +691,7 @@
     },
     {
         "code": "R50",
-        "name": "Rental &amp; Leasing",
+        "name": "Rental & Leasing",
         "description": "A facility for the rental of general merchandise, small equipment, or space for temporary use to the general public. (No rental of trucks - in excess of 10,000 lbs) includes studio, production space, electronics, linens, tools, mailboxes, garden equipment and furniture."
     },
     {
@@ -796,7 +796,7 @@
     },
     {
         "code": "T07",
-        "name": "Travel &amp; Ticket Agency",
+        "name": "Travel & Ticket Agency",
         "description": "Any person in the business of purchasing and reserving hotel accommodations, transportation, show tickets, entertainment or other vacation incidentals for tourists or other persons. The category does not include any person who furnishes reservations or tickets exclusively for services in an establishment owned by that person."
     },
     {

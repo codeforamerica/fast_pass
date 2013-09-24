@@ -2,39 +2,205 @@
 
 /* Controllers */
 
-angular.module('dof.controllers', [])
+var appCtrls = angular.module('dof.controllers', []);
 
-	// SECTION 12 - CONFIRM BUSINESS CATEGORY
-	.controller('BusinessCategoryConfirmCtrl', function ($scope, $http) {
+// SECTION 10 - NAICS Business Category search
+appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 
-		var dataURL = '/data/business-types-desc.json';
+	// This is the endpoint URL.
+	// NOTE: For future reference, it should probably not be dependent on the extenal API.
+	var searchAPI   = 'http://api.naics.us/v0/s?year=2012&collapse=1&terms='
+
+	// Attach global UserData to this controller.
+	$scope.userdata = UserData
+
+	// Set defaults for scope variables
+	$scope.searchInput = ''
+	$scope.searchResults = false
+	$scope.searchLoading = false
+	$scope.searchErrorMsg = ''
+	$scope.searchPerformed = false
+	$scope.selectedResult = null
+
+	$scope.searchBusiness = function (input) {
+
+		// Assemble search endpoint URL based on user input
+		var searchURL   = searchAPI + encodeURIComponent(input)
+
+		// Reset display
+		$scope.searchErrorMsg = ''
+		$scope.searchResults  = false
+
+		// Display loading icon
+		$scope.searchLoading  = true			
+
+		// Get search results
+		$http.get(searchURL).
+			success( function (results) {
+
+				$scope.searchLoading = false
+
+				// Message for no results
+				if (results.length == 0) {
+					$scope.searchErrorMsg = 'Nothing found for the terms ‘' + input + '’.'
+				} else {
+					$scope.searchResults = results
+					$scope.searchPerformed = true			
+				}
+
+				// Store raw search inputs for future analysis
+				$scope.userdata.rawInputs.businessSearch.push(input)
+
+			}).
+			error( function () {
+
+				$scope.searchLoading = false
+				$scope.searchErrorMsg = 'Error performing search for NAICS business categories.'
+
+			});
+
+	}
+
+	$scope.selectResult = function (code, title) {
+		// Set the selected stuff to global UserData so it's available elsewhere
+		$scope.userdata.naics.code  = code
+		$scope.userdata.naics.title = title
+
+		// Add selected title to the selection box
+		$scope.selectedResult = $scope.userdata.naics.title
+	}
+
+
+})
+
+// SECTION 12 - CONFIRM BUSINESS CATEGORY
+appCtrls.controller('12Ctrl', function ($scope, $http, UserData) {
+
+	$scope.userdata = UserData
+
+	var dataURL = '/data/business-types-desc.json';
 //		var dataURL = '/data/business-types.json';
 //		Note: these are coming from different sources, and seems to have different categories. Need to confirm.
 
-		// Get a matched business type
-		$http.get(dataURL).success( function (data) {
+	// Get a matched business type
+	$http.get(dataURL).success( function (stuff) {
 
-			// DEMO - grab a random business type from the array.
-			$scope.primaryBusiness = data[Math.floor(Math.random() * data.length)];
+		// DEMO - grab a random business type from the array.
+		$scope.userdata.businessCategory = stuff[Math.floor(Math.random() * stuff.length)];
 
-		});
+	});
 
-		// UI.Bootstrap collapse
-		$scope.isCollapsed = true;
+	// UI.Bootstrap collapse
+	$scope.isCollapsed = true;
 
+})
+
+appCtrls.controller('15Ctrl', function ($scope, UserData) {
+
+	$scope.userdata = UserData
+
+})
+
+// SECTION 20 - ADDITIONAL BUSINESS
+appCtrls.controller('20Ctrl', function ($scope, $http, UserData) {
+	$scope.userdata = UserData
+
+	var dataURL = '/data/additional-business.json'
+
+	// Display additional businesses
+	$http.get(dataURL).success( function (data) {
+		$scope.additionalBusiness = data;
+	});
+
+	$scope.selectedBusiness = function () {
+		return $filter('filter') ($scope.additionalBusiness, {checked: true});
+	};
+})
+
+
+// SECTION 40 - Enter a location
+appCtrls.controller('40Ctrl', function ($scope, UserData) {
+	$scope.userdata = UserData
+	$scope.userdata.nav.pathTo50 = 40    // Remember the current section to preserve path in the future
+
+//		$scope.map = {controller: 'MapAddressInputCtrl'}
+	this.findAddress = function (input) {
+		// Store raw search inputs for future analysis
+		$scope.userdata.rawInputs.addressSearch.push(input)
+
+		// Temporarily forward this interaction directly.
+		// This breaks forward/back I think.
+		$scope.userdata.property.address = input
+		window.location.hash = encodeURIComponent('/section/50')
+	
+		// In the future this needs to do actual work.
+		// It will send information to an endpoint and retrieve address / parcel data.
+
+		// Errors to return:
+		// -  This address could not be found in Las Vegas.
+		// -  Did you mean.... (keep on this screen?)
+
+	}
+
+	// Experiment with alternative controller organization. See here: http://egghead.io/lessons/angularjs-an-alternative-approach-to-controllers
+	return $scope['40Ctrl'] = this
+
+})
+
+appCtrls.controller('MapCtrl', function ($scope) {
+
+	map.on('click', function () {
+		alert('hey')
 	})
 
-	// SECTION 20 - ADDITIONAL BUSINESS
-	.controller('AdditionalBusinessCtrl', function ($scope, $http) {
+})
 
-		var dataURL = '/data/additional-business.json'
+appCtrls.controller('45Ctrl', function ($scope, UserData) {
+	$scope.userdata = UserData
+	$scope.userdata.nav.pathTo50 = 45    // Remember the current section to preserve path in the future
 
-		// Display additional businesses
-		$http.get(dataURL).success( function (data) {
-			$scope.additionalBusiness = data;
-		});
-	
-	});
+})
+
+// SECTION 50 - PARCEL VIEW
+appCtrls.controller('50Ctrl', function ($scope, UserData) {
+	$scope.userdata = UserData
+
+	// Switch back navigation based on user's path
+	if ($scope.userdata.nav.pathTo50 == 45) {
+		$scope.previousIsZoningOverview = true
+		$scope.previousIsAddressSearch = false
+	} else {
+		// Assume address search is the default condition.
+		$scope.previousIsZoningOverview = false
+		$scope.previousIsAddressSearch = true
+	}
+
+	// Load dummy parcel information
+	$scope.parcel = {
+		number:          '292-299-29',
+		address:         $scope.userdata.property.address,
+		master_address:  $scope.userdata.property.address,
+		record_adresses: [
+			'123 Main Street',
+			'145 Main Street',
+			'168 Chuck Testa'
+		]
+	}
+
+})
+
+appCtrls.controller('70Ctrl', function ($scope, UserData) {
+
+	$scope.userdata = UserData
+
+})
+
+appCtrls.controller('PrintView', function ($scope, UserData) {
+	$scope.userdata = UserData
+
+	// Open print dialog box
+	window.print()
+})
 
 /*******************************************************************************************/
 /* Copied from ui.bootstrap */
@@ -55,69 +221,69 @@ angular.module('ui.bootstrap.transition', [])
 .factory('$transition', ['$q', '$timeout', '$rootScope', function($q, $timeout, $rootScope) {
 
   var $transition = function(element, trigger, options) {
-    options = options || {};
-    var deferred = $q.defer();
-    var endEventName = $transition[options.animation ? "animationEndEventName" : "transitionEndEventName"];
+	options = options || {};
+	var deferred = $q.defer();
+	var endEventName = $transition[options.animation ? "animationEndEventName" : "transitionEndEventName"];
 
-    var transitionEndHandler = function(event) {
-      $rootScope.$apply(function() {
-        element.unbind(endEventName, transitionEndHandler);
-        deferred.resolve(element);
-      });
-    };
+	var transitionEndHandler = function(event) {
+	  $rootScope.$apply(function() {
+		element.unbind(endEventName, transitionEndHandler);
+		deferred.resolve(element);
+	  });
+	};
 
-    if (endEventName) {
-      element.bind(endEventName, transitionEndHandler);
-    }
+	if (endEventName) {
+	  element.bind(endEventName, transitionEndHandler);
+	}
 
-    // Wrap in a timeout to allow the browser time to update the DOM before the transition is to occur
-    $timeout(function() {
-      if ( angular.isString(trigger) ) {
-        element.addClass(trigger);
-      } else if ( angular.isFunction(trigger) ) {
-        trigger(element);
-      } else if ( angular.isObject(trigger) ) {
-        element.css(trigger);
-      }
-      //If browser does not support transitions, instantly resolve
-      if ( !endEventName ) {
-        deferred.resolve(element);
-      }
-    });
+	// Wrap in a timeout to allow the browser time to update the DOM before the transition is to occur
+	$timeout(function() {
+	  if ( angular.isString(trigger) ) {
+		element.addClass(trigger);
+	  } else if ( angular.isFunction(trigger) ) {
+		trigger(element);
+	  } else if ( angular.isObject(trigger) ) {
+		element.css(trigger);
+	  }
+	  //If browser does not support transitions, instantly resolve
+	  if ( !endEventName ) {
+		deferred.resolve(element);
+	  }
+	});
 
-    // Add our custom cancel function to the promise that is returned
-    // We can call this if we are about to run a new transition, which we know will prevent this transition from ending,
-    // i.e. it will therefore never raise a transitionEnd event for that transition
-    deferred.promise.cancel = function() {
-      if ( endEventName ) {
-        element.unbind(endEventName, transitionEndHandler);
-      }
-      deferred.reject('Transition cancelled');
-    };
+	// Add our custom cancel function to the promise that is returned
+	// We can call this if we are about to run a new transition, which we know will prevent this transition from ending,
+	// i.e. it will therefore never raise a transitionEnd event for that transition
+	deferred.promise.cancel = function() {
+	  if ( endEventName ) {
+		element.unbind(endEventName, transitionEndHandler);
+	  }
+	  deferred.reject('Transition cancelled');
+	};
 
-    return deferred.promise;
+	return deferred.promise;
   };
 
   // Work out the name of the transitionEnd event
   var transElement = document.createElement('trans');
   var transitionEndEventNames = {
-    'WebkitTransition': 'webkitTransitionEnd',
-    'MozTransition': 'transitionend',
-    'OTransition': 'oTransitionEnd',
-    'transition': 'transitionend'
+	'WebkitTransition': 'webkitTransitionEnd',
+	'MozTransition': 'transitionend',
+	'OTransition': 'oTransitionEnd',
+	'transition': 'transitionend'
   };
   var animationEndEventNames = {
-    'WebkitTransition': 'webkitAnimationEnd',
-    'MozTransition': 'animationend',
-    'OTransition': 'oAnimationEnd',
-    'transition': 'animationend'
+	'WebkitTransition': 'webkitAnimationEnd',
+	'MozTransition': 'animationend',
+	'OTransition': 'oAnimationEnd',
+	'transition': 'animationend'
   };
   function findEndEventName(endEventNames) {
-    for (var name in endEventNames){
-      if (transElement.style[name] !== undefined) {
-        return endEventNames[name];
-      }
-    }
+	for (var name in endEventNames){
+	  if (transElement.style[name] !== undefined) {
+		return endEventNames[name];
+	  }
+	}
   }
   $transition.transitionEndEventName = findEndEventName(transitionEndEventNames);
   $transition.animationEndEventName = findEndEventName(animationEndEventNames);
@@ -134,88 +300,88 @@ angular.module('ui.bootstrap.collapse',['ui.bootstrap.transition'])
   // "collapse") then you trigger a change to height 0 in between.
   // The fix is to remove the "collapse" CSS class while changing the height back to auto - phew!
   var fixUpHeight = function(scope, element, height) {
-    // We remove the collapse CSS class to prevent a transition when we change to height: auto
-    element.removeClass('collapse');
-    element.css({ height: height });
-    // It appears that  reading offsetWidth makes the browser realise that we have changed the
-    // height already :-/
-    var x = element[0].offsetWidth;
-    element.addClass('collapse');
+	// We remove the collapse CSS class to prevent a transition when we change to height: auto
+	element.removeClass('collapse');
+	element.css({ height: height });
+	// It appears that  reading offsetWidth makes the browser realise that we have changed the
+	// height already :-/
+	var x = element[0].offsetWidth;
+	element.addClass('collapse');
   };
 
   return {
-    link: function(scope, element, attrs) {
+	link: function(scope, element, attrs) {
 
-      var isCollapsed;
-      var initialAnimSkip = true;
-      scope.$watch(function (){ return element[0].scrollHeight; }, function (value) {
-        //The listener is called when scollHeight changes
-        //It actually does on 2 scenarios: 
-        // 1. Parent is set to display none
-        // 2. angular bindings inside are resolved
-        //When we have a change of scrollHeight we are setting again the correct height if the group is opened
-        if (element[0].scrollHeight !== 0) {
-          if (!isCollapsed) {
-            if (initialAnimSkip) {
-              fixUpHeight(scope, element, element[0].scrollHeight + 'px');
-            } else {
-              fixUpHeight(scope, element, 'auto');
-            }
-          }
-        }
-      });
-      
-      scope.$watch(attrs.collapse, function(value) {
-        if (value) {
-          collapse();
-        } else {
-          expand();
-        }
-      });
-      
+	  var isCollapsed;
+	  var initialAnimSkip = true;
+	  scope.$watch(function (){ return element[0].scrollHeight; }, function (value) {
+		//The listener is called when scollHeight changes
+		//It actually does on 2 scenarios: 
+		// 1. Parent is set to display none
+		// 2. angular bindings inside are resolved
+		//When we have a change of scrollHeight we are setting again the correct height if the group is opened
+		if (element[0].scrollHeight !== 0) {
+		  if (!isCollapsed) {
+			if (initialAnimSkip) {
+			  fixUpHeight(scope, element, element[0].scrollHeight + 'px');
+			} else {
+			  fixUpHeight(scope, element, 'auto');
+			}
+		  }
+		}
+	  });
+	  
+	  scope.$watch(attrs.collapse, function(value) {
+		if (value) {
+		  collapse();
+		} else {
+		  expand();
+		}
+	  });
+	  
 
-      var currentTransition;
-      var doTransition = function(change) {
-        if ( currentTransition ) {
-          currentTransition.cancel();
-        }
-        currentTransition = $transition(element,change);
-        currentTransition.then(
-          function() { currentTransition = undefined; },
-          function() { currentTransition = undefined; }
-        );
-        return currentTransition;
-      };
+	  var currentTransition;
+	  var doTransition = function(change) {
+		if ( currentTransition ) {
+		  currentTransition.cancel();
+		}
+		currentTransition = $transition(element,change);
+		currentTransition.then(
+		  function() { currentTransition = undefined; },
+		  function() { currentTransition = undefined; }
+		);
+		return currentTransition;
+	  };
 
-      var expand = function() {
-        if (initialAnimSkip) {
-          initialAnimSkip = false;
-          if ( !isCollapsed ) {
-            fixUpHeight(scope, element, 'auto');
-          }
-        } else {
-          doTransition({ height : element[0].scrollHeight + 'px' })
-          .then(function() {
-            // This check ensures that we don't accidentally update the height if the user has closed
-            // the group while the animation was still running
-            if ( !isCollapsed ) {
-              fixUpHeight(scope, element, 'auto');
-            }
-          });
-        }
-        isCollapsed = false;
-      };
-      
-      var collapse = function() {
-        isCollapsed = true;
-        if (initialAnimSkip) {
-          initialAnimSkip = false;
-          fixUpHeight(scope, element, 0);
-        } else {
-          fixUpHeight(scope, element, element[0].scrollHeight + 'px');
-          doTransition({'height':'0'});
-        }
-      };
-    }
+	  var expand = function() {
+		if (initialAnimSkip) {
+		  initialAnimSkip = false;
+		  if ( !isCollapsed ) {
+			fixUpHeight(scope, element, 'auto');
+		  }
+		} else {
+		  doTransition({ height : element[0].scrollHeight + 'px' })
+		  .then(function() {
+			// This check ensures that we don't accidentally update the height if the user has closed
+			// the group while the animation was still running
+			if ( !isCollapsed ) {
+			  fixUpHeight(scope, element, 'auto');
+			}
+		  });
+		}
+		isCollapsed = false;
+	  };
+	  
+	  var collapse = function() {
+		isCollapsed = true;
+		if (initialAnimSkip) {
+		  initialAnimSkip = false;
+		  fixUpHeight(scope, element, 0);
+		} else {
+		  fixUpHeight(scope, element, element[0].scrollHeight + 'px');
+		  doTransition({'height':'0'});
+		}
+	  };
+	}
   };
 }]);

@@ -98,7 +98,7 @@ map.on('click', function (e) {
 
     // add a marker on the point someone just clicked
 
-    var markerHTML = document.getElementById('markerHTML').innerHTML
+    // var markerHTML = document.getElementById('markerHTML').innerHTML
 
 	if (popupOpen == true) {
 //		propertyMarker.closePopup()
@@ -184,68 +184,11 @@ $(document).ready(function () {
 	})
 */
 	// BUTTONS
-	// External links - the rest should be in angular
-	$('#main').on('click', 'button', function (e) {
-		e.preventDefault()
 
-		var url = $(this).data('externalLink')
-
-		if (url) {
-			_openExternalLink(url)
-		}
-	})
-
+	// Disabled 'a' tags should behave like a disabled button
 	$('#main').on('click', 'a.disabled', function (e) {
-		// Disabled 'a' tags should behave like a disabled button
 		e.preventDefault()
 	})
-
-	// SECTION 10: Business search related jQueries
-	$('#main').on('submit', '#primary-business-form', function (e) {
-		_doNAICSSearch()
-	})
-	$('#main').on('click', '.naics-result button', function (e) {
-		// Select a business from the list
-		$('#primary-business-results p.replace').text($(this).parent().find('span').text())
-		$('#primary-business-results a.next').removeClass('disabled')
-		// Feedback
-		// Step 1. Clear all previous rows
-		$('.naics-result button').text('Select').removeClass('selected')
-		$('.naics-result').removeClass('selected')
-		// Step 2. Highlight selected row.
-		$(this).text('Selected')
-		$(this).addClass('selected')
-		$(this).parent().addClass('selected')
-	})
-
-
-	// SECTION 40: Address search related jQueries
-	$('#main').on('submit', '#property-address-form', function (e) {
-
-		// Really should be sending this event to an Angular thing
-		window.location.hash = encodeURIComponent('/section/50')
-
-	})
-
-
-	// Scrollfixed elements
-	var scrollTemp
-	$(window).scroll(function () {
-
-		var $fixedEl = $('.scrollfix')
-
-		if ($fixedEl.length > 0 ) {
-			if ($(window).scrollTop() > $fixedEl.offset().top - 40) {
-				scrollTemp = $fixedEl.offset().top - 40
-		        $fixedEl.css('position', 'fixed').css('top', '40px').css('margin-left', '10px');
-			}
-			else if ($(window).scrollTop() < scrollTemp) {
-				$fixedEl.css('position', 'relative').css('top', '0').css('margin-left', '7px');
-			}
-		}
-	
-	});
-
 
 	// MODAL
 	// Opens modal
@@ -290,18 +233,6 @@ $(document).ready(function () {
 //
 // ***********************************************************************/
 
-function _openExternalLink (url) {
-
-/*	if ($(clicked).attr('id') == 'external-pre-app') {
-		url = encodeURI(url + '?ProjectAddress=' + propertyAddress + '&Parcel=002-02-119&Ward=(unknown)&ProposedUse=' + businessType +'')
-		window.open(url, '_blank')
-		return true
-	}
-*/
-	window.open(url, '_blank')
-	return true
-
-}
 
 function _changeSection (clicked) {
 
@@ -332,46 +263,6 @@ function _closeModal() {
 	}
 }
 
-function _doNAICSSearch () {
-	// Show loader and clear search results area
-	$('#search-results').text('')
-	$('#search-results').show()
-	$('.loading-small').show()
-	$('span.error').hide()
+function _getLatLng () {
 
-	// Do a search
-	var searchAPI   = '/categories/search?q='
-	var searchTerms = $('#primary-business-input').val()
-	var searchURL   = searchAPI + encodeURIComponent(searchTerms)
-	var searchResults
-
-	var naicsXHR = $.get(searchURL, function(data) {
-		searchResults = data
-	}).done( function () {
-
-		// Message for no results
-		if (searchResults.length == 0) {
-			$('span.error').show().text('Nothing found for those search terms.')
-			return
-		}
-
-		// Format data & display
-		for (var i = 0; i < searchResults.length; i++) {
-			searchResults[i].id = searchResults[i].code
-			$('#search-results').append('<div class=\'naics-result\'><span>' + searchResults[i].title + '</span><button>Select</button></div>')
-		}
-
-		// Show selection box
-		$('#primary-business-results').show()
-
-	}).fail( function () {
-		// Error message
-		$('span.error').show().text('Error performing search for NAICS business categories')
-	
-	}).always( function () {
-		// Hide loader
-		$('.loading-small').hide()
-	})
 }
-
-
