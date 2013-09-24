@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('dof', ['dof.controllers', 'ui.bootstrap']);
+var app = angular.module('dof', ['dof.controllers', 'dof.ui.modal', 'dof.ui.collapse']);
 
 // Set up application routes
 app.config(['$routeProvider', function($routeProvider) {

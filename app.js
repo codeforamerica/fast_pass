@@ -1,13 +1,12 @@
-
 /**
  * Module dependencies.
  */
 
 var express = require('express')
   , routes = require('./routes')
-  , print = require('./routes/print')
-  , user = require('./routes/user')
-  , http = require('http')
+  , geocoder = require('./routes/geocoder')
+  , category = require('./routes/category')
+  , parcel = require('./routes/parcel') , http = require('http')
   , path = require('path')
   , lessMiddleware = require('less-middleware');
 
@@ -38,8 +37,25 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-//app.get('/print', print.view);
-//app.get('/users', user.list);
+
+//
+// Parcel Routes
+//
+app.get('/parcels', parcel.index);
+app.get('/parcels/search', parcel.search);
+app.get('/parcels/:id', parcel.find)
+
+//
+// Geocode Routes
+//
+app.get('/address/geocode', geocoder.geocodeAddress);
+app.get('/address/suggest', geocoder.findAddressCandidates);
+app.get('/point/reverse_geocode', geocoder.reverseGeocode);
+
+//
+// Category Routes
+//
+app.get('/categories/search', category.search);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
