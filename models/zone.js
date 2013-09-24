@@ -1,19 +1,18 @@
-var utils = require( process.cwd() + '/utils')
+var DBModel = require('./db_model')
 
-var ATTRIBUTES = [ 'name', 'description', 'geom' ]
+var Zone = DBModel.extend({
 
-var Zone = function (attributes) {
-
-  if (typeof(attributes) !== 'undefined' && typeof(attributes) !== 'object') {
-    throw("'attributes' must be an instance of 'object'") 
+  defaults: {
+    'id': undefined,
+    'title': undefined,
+    'description': undefined,
+    'code': undefined
   }
 
-  for (key in attributes) {
-    if (utils.includes.call(ATTRIBUTES, key)) {
-      this[key] = attributes[key]
-    }
-  }
+}, {
 
-}
+  'table': 'zones'
+
+});
 
 module.exports = Zone

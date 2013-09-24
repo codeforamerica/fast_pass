@@ -1,19 +1,18 @@
-var utils = require( process.cwd() + '/utils')
+var DBModel = require('./db_model');
 
-var ATTRIBUTES = []
+var Parcel = DBModel.extend({
 
-var Parcel = function (attributes) {
-
-  if (typof(attributes) !== 'object') {
-    throw("'attributes' must be an instance of 'object'") 
+  defaults: {
+    'id': undefined,
+    'code': undefined,
+    'zone_ids': undefined
   }
 
-  for (key in attributes) {
-    if (utils.includes.call(ATTRIBUTES, key)) {
-      this[key] = attributes[key]
-    }
-  }
+}, {
 
-}
+  table: 'parcels'
+
+});
+
 
 module.exports = Parcel

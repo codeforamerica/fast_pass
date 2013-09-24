@@ -263,7 +263,6 @@ function _closeModal() {
 	}
 }
 
-
 function _getLatLng () {
 
 }
