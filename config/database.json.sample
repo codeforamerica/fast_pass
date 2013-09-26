@@ -1,0 +1,19 @@
+{
+
+  "dev": {
+    "driver": "pg",
+    "host": "localhost",
+    "user": "ryan",
+    "database": "fasttrack_dev"
+  },
+
+  "test": {
+    "driver": "pg",
+    "host": "localhost",
+    "user": "ryan",
+    "database": "fasttrack_test"
+  },
+
+  "prod": { "ENV": "HEROKU_POSTGRESQL_BROWN_URL" }
+
+}
