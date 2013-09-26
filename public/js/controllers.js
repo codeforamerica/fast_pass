@@ -8,8 +8,8 @@ var appCtrls = angular.module('dof.controllers', []);
 appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 
 	// This is the endpoint URL.
-	// NOTE: For future reference, it should probably not be dependent on the extenal API.
 	var searchAPI   = 'http://api.naics.us/v0/s?year=2012&collapse=1&terms='
+//	var searchAPI = '/categories/search?keywords='
 
 	// Attach global UserData to this controller.
 	$scope.userdata = UserData
@@ -179,6 +179,7 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 	$scope.debug = true
 
 	var addressEndpoint = 'http://mapdata.lasvegasnevada.gov/clvgis/rest/services/CLVPARCELS_Address_Locator/GeocodeServer/findAddressCandidates?&outFields=&outSR=4326&searchExtent=&f=json&Street='
+//	var addressEndpoint = '/address/suggest?address='
 
 	// Prepopulate form if we already know it
 	$scope.addressInput = $scope.userdata.property.address
@@ -206,7 +207,9 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 				$scope.searchLoading = false
 
 				// Extract results from response
-				var results = response.candidates
+				var results = JSON.parse(response)
+				console.log(results)
+				results = results.candidates
 
 				if (results.length == 0) {
 					// Message for no results
