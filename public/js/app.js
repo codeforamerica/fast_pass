@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('dof', ['dof.controllers', 'dof.ui.modal', 'dof.ui.collapse', 'ngSanitize']);
+var app = angular.module('dof', ['dof.controllers', 'dof.ui.modal', 'dof.ui.collapse', 'ui.map', 'ngSanitize']);
 
 // Set up application routes
 app.config(['$routeProvider', function($routeProvider) {
@@ -60,6 +60,7 @@ app.factory('UserData', function () {
 
 app.factory('MapService', function () {
 	return {
+		map: null,
 		clicked: {
 			latlng: [],
 			lat: null,
@@ -123,8 +124,10 @@ directives.showMap = function () {
 			element.addClass('section-map')
 	
 			// Activate map
-			document.getElementById('map').style.display = 'block'
-			map.invalidateSize()
+			// document.getElementById('map-container').style.display = 'block'
+
+			// After activating the map, need to get Google Maps to recalculate center
+			// But how does one do this without being able to access the map element from here?
 		}
 
 	}
@@ -144,7 +147,9 @@ directives.hideMap = function () {
 			$mainEl.addClass('fullscreen').removeClass('partscreen')
 	
 			// Deactivates map so it doesn't interfere with other things on the page (.e.g. scrollfix)
-			document.getElementById('map').style.display = 'none'
+			// This is disabled because I can't get the map center recalculation to work,
+			// and we might remove scroll fix anyway
+			// document.getElementById('map-container').style.display = 'none'
 		}
 	}
 }
@@ -219,6 +224,7 @@ directives.radioSelect = function () {
 	}
 }
 
+/*
 directives.scrollfix = function () {
 	// Elements with 'scrollfix' directive (placed on the class, for additional CSS)
 	// will be fixed in place in the window once its top scrolls to a certain point
@@ -257,6 +263,7 @@ directives.scrollfix = function () {
 		}
 	}
 }
+*/
 
 directives.externalLink = function () {
 	// Buttons with 'data-external-link' attribute will go to the provided
@@ -302,6 +309,42 @@ directives.progressbar = function () {
 	}
 }
 
+directives.maxWords = function () {
+	return function (scope, element, attrs) {
+
+		var limit       = attrs.maxWords
+		scope.count     = 0
+		scope.countdown = limit - scope.count
+
+		// Count words on each key up event
+		element.bind('keyup', function () {
+			var text = element.val().trim()
+
+			// Find the number of words
+			if (text == '') {
+				scope.count = 0
+			}
+			else {
+				// Split text on all whitespace
+				var array = text.split(/\s+/)
+				scope.count = array.length
+			}
+
+			// Update the 'words remaining' countdown
+			scope.countdown = limit - scope.count
+
+			// Set warning message class
+			if (scope.countdown <= 0) {
+				scope.warning = 'warning'
+			} else {
+				scope.warning = null
+			}
+
+			// Force a refresh of the view - so it remains up-to-date
+			scope.$digest()
+		})
+	}
+}
 
 /* // Might not actually be needed
 directives.autofocus = function () {
@@ -338,9 +381,17 @@ controllers.sectionGo = function ($scope, $routeParams, UserData) {
 			window.location.href = window.location.origin + $section.find('a.next').attr('href')
 		}, 800)
 	}
+
 }
 
 // Dynamically fetch the section template from the URL
 function _getSectionTemplate($routeParams) {
 	return '/partials/sections/' + $routeParams.sectionId + '.html'
+}
+
+// Callback function for Google Maps API
+// Required by this documentation: https://github.com/angular-ui/ui-map
+// But it hasn't worked...
+function onMapReady() {
+	angular.bootstrap(document, ['dof']);
 }

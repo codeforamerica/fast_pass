@@ -377,6 +377,13 @@ textarea {
 	width: 100%
 }
 
+.textarea-note {
+	text-align: right;
+	color: @lightgray;
+	font-style: italic;
+	margin-top: 5px;
+}
+
 input[type=checkbox] {
 	margin-right: 8px;
 }
@@ -605,6 +612,10 @@ table:not(.no-style) {
 	font-weight: bold;
 }
 
+.warning {
+	color: red;
+}
+
 .message {
 	font-weight: bold;
 }
@@ -686,15 +697,21 @@ footer {
 	}
 }
 
-
-#map {
+#map-container {
 	height: 100%;
 	position: fixed;
 	top: 0;
 	left: @section-part-width;
 	right: 0;
 	z-index: @ui-index - 1000;
-	display: none;
+	// display: none;
+	a {
+		.overrideExternalLinkStyle;
+	}
+}
+#map {
+	width: 100%;
+	height: 100%;	
 }
 
 .popup-content {
@@ -798,11 +815,6 @@ footer {
 	box-shadow: 0 1px 10px rgba(0,0,0,0.25);
 }
 
-// TYPICON SIZE OVERRIDE
-.typcn {
-	font-size: 190%;
-}
-
 // CHROME FRAME OVERRIDE
 .chromeframe {
 	font-size: 18px;
@@ -825,34 +837,4 @@ footer {
 	height: 0;
 	overflow: hidden;
 	.transition(height 0.35s ease);
-}
-
-// TYPEAHEAD.JS
-
-.twitter-typeahead {
-	width: 100%;
-}
-.tt-dropdown-menu {
-	margin-top: 8px;
-	background-color: white;
-	width: 80%;
-	box-shadow: 0 1px 10px rgba(0,0,0,0.25);
-}
-.tt-suggestions {
-	padding: 0;
-	margin: 0;
-}
-.tt-suggestion {
-	border-top: 1px solid #e9e9e9;
-	padding: 10px 10px;
-	font-size: 14px;
-	p {
-		margin: 0;
-	}
-}
-.tt-hint {
-	color: #aaa;
-}
-.tt-is-under-cursor {
-	background-color: lighten(@color-scheme, 40%);
 }

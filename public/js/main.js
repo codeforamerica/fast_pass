@@ -8,14 +8,6 @@
 //
 // ***********************************************************************/
 
-var MAPBOX_ID           = 'codeforamerica.map-wzcm8dk0',
-	MAPBOX_ID_RETINA    = 'codeforamerica.map-dfs3qfso'
-
-var MAP_INIT_LATLNG     = [36.1665, -115.1479],
-	MAP_INIT_ZOOM       = 14,
-	MAP_FIT_PADDING     = 0.25,
-	MAP_MAX_PADDING     = 6
-
 var DEBUG_ALLOW         = true
 
 
@@ -37,7 +29,6 @@ String.prototype.capitalize = function() {
 }
 
 
-
 /*************************************************************************
 // 
 // INITIALIZE MAP
@@ -45,18 +36,74 @@ String.prototype.capitalize = function() {
 //
 // ***********************************************************************/
 
+
+
+function mapInitialize() {
+
+/*
+
+	// Create infowindow instance
+	infowindow = new google.maps.InfoWindow({
+		content: 'This is content that needs to be shown',
+		position: map.getCenter()
+	})
+
+	google.maps.event.addListener(map, 'click', function (e) {
+		_output('Clicked: ' + e.latLng.toUrlValue())
+
+		// Output to debug input thing for now.
+	    document.getElementById('mapServiceLat').value = e.latLng.lat()
+		document.getElementById('mapServiceLng').value = e.latLng.lng()
+
+		_deleteMarkers()
+		var marker = _addMarker(e.latLng)
+
+		map.panTo(e.latLng)
+		infowindow.open(map, marker)
+
+	})
+*/
+}
+
+
+function _addMarker (latlng) {
+	// Create marker instance
+	var marker = new google.maps.Marker({
+		position: latlng,
+		map: map
+	})
+
+	// Have to manually keep track of them
+	markers.push(marker)
+
+	return marker
+}
+
+// Deletes all markers in the array by removing references to them
+function _deleteMarkers () {
+	if (markers) {
+		for (var i in markers) {
+			markers[i].setMap(null)
+		}
+		markers.length = 0
+	}
+}
+
+google.maps.event.addDomListener(window, 'load', mapInitialize);
+
+/*************************************************************************
+// 
+// INITIALIZE MAP
+// Sets initial location, view, attribution, marker types
+//
+// ***********************************************************************/
+/*
 var map = L.mapbox.map('map', MAPBOX_ID, {
 	doubleClickZoom: false
 }).setView(MAP_INIT_LATLNG, MAP_INIT_ZOOM) 
 	// This will be overridden later when map bounds are set based on available markers.
 
 // Use normal map
-/*
-map.addLayer(L.mapbox.tileLayer(MAPBOX_ID, {
-	detectRetina: true,
-	retinaVersion: MAPBOX_ID_RETINA
-}))
-*/
 
 // Map imagery attribution
 // Note that mapbox.js provides its own separate attribution, which I don't 
@@ -94,7 +141,6 @@ map.on('click', function (e) {
 		propertyMarker = ''
 	}
 	
-*/
 	propertyMarker = L.marker(clickLatLng).addTo(map)
 /*
 	propertyMarker.bindPopup(markerHTML, {
@@ -109,7 +155,6 @@ map.on('click', function (e) {
     // open popup
 
     // clicking the popup brings up the parcel info.
-*/
 });
 
 /*
@@ -124,7 +169,7 @@ map.markerLayer.setGeoJSON({
 //
 // ***********************************************************************/
 
-
+/*
 var SECTION_TRANSITION_OUT_TIME = 175,
 	SECTION_TRANSITION_IN_TIME = 350
 
@@ -153,21 +198,10 @@ $.when( $.ajax({
 
 //	console.log(ZONE_DATA)
 })
-
+*/
 
 $(document).ready(function () {
 
-/*
-	$('.leaflet-popup-pane').on('click', '#marker-more-info', function (e) {
-		e.preventDefault()
-		if ($('#section40').is(':visible') || $('#section45').is(':visible')) {
-			$('#section40').fadeOut(SECTION_TRANSITION_OUT_TIME)
-			$('#section45').fadeOut(SECTION_TRANSITION_OUT_TIME)
-			$('#section50').fadeOut(SECTION_TRANSITION_OUT_TIME)
-			$('#section50').fadeIn(SECTION_TRANSITION_IN_TIME)
-		}
-	})
-*/
 	// BUTTONS
 
 	// Disabled 'a' tags should behave like a disabled button
@@ -219,35 +253,8 @@ $(document).ready(function () {
 // ***********************************************************************/
 
 
-function _changeSection (clicked) {
-
-	if ($(clicked).val() == 'next') {
-		$targetSection = $thisSection.next('section')
-	}
-
-	if ($(clicked).val() == 'back') {
-		$targetSection = $thisSection.prev('section')
-	}
-
-	if ($(clicked).data('section')) {
-		$targetSection = $(document).find('#' + $(clicked).data('section'))
-	}
-
-	if ($targetSection) {
-		$thisSection.fadeOut(SECTION_TRANSITION_OUT_TIME, function () {
-
-			$targetSection.fadeIn(SECTION_TRANSITION_IN_TIME)
-
-		})
-	}
-}
-
 function _closeModal() {
 	if ($('#modal').is(':visible')) {
 		$('#modal').hide()
 	}
-}
-
-function _getLatLng () {
-
 }

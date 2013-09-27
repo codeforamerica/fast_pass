@@ -5,7 +5,11 @@
 	<h2>Confirm your business category</h2>
 
 	<p class='lede'>
-		Based on your selection, we've matched your business to a Las Vegas business category of <span class='nobr'><span class='pill'>{{userdata.businessCategory.code}}</span> <strong>{{userdata.businessCategory.name}}</strong></span>.
+		You selected ‘{{userdata.naics.title}}’.
+	</p>
+
+	<p class='lede'>
+		Based on this selection, we've matched your business to a Las Vegas business category of <span class='nobr'><span class='pill'>{{userdata.businessCategory.code}}</span> <strong>{{userdata.businessCategory.name}}</strong></span>.
 		<a href='' ng-click="isCollapsed = !isCollapsed">(Learn more about this category.)</a>
 	</p>
 
