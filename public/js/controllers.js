@@ -313,8 +313,8 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
 	// e.g. += '(' + lat + ',' + lng + ')'
 
 	// Get locations
-	var parcelLat = $scope.userdata.property.location.x
-	var parcelLng = $scope.userdata.property.location.y
+	var parcelLat = $scope.userdata.property.location.y
+	var parcelLng = $scope.userdata.property.location.x
 
 	// Assemble search endpoint URL based on user input
 	var parcelRequestURL = parcelRequestEndpoint + '(' + parcelLat + ',' + parcelLng + ')'
