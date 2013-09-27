@@ -180,11 +180,11 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 	$scope.mapService = MapService
 	$scope.debug = true
 
-	var addressEndpoint = 'http://mapdata.lasvegasnevada.gov/clvgis/rest/services/CLVPARCELS_Address_Locator/GeocodeServer/findAddressCandidates?&outFields=&outSR=4326&searchExtent=&f=json&Street='
+//	var addressEndpoint = 'http://mapdata.lasvegasnevada.gov/clvgis/rest/services/CLVPARCELS_Address_Locator/GeocodeServer/findAddressCandidates?&outFields=&outSR=4326&searchExtent=&f=json&Street='
 //	var addressEndpoint = '/address/suggest?address='
-//	var addressEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?score=50&format=json&address='
+	var addressEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?jsonCallback=JSON_CALLBACK&score=50&format=json&address='
 
-	var latLngEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?score=50&format=json&latlng='
+	var latLngEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?jsonCallback=JSON_CALLBACK&score=50&format=json&latlng='
 
 	// Prepopulate form if we already know it
 	$scope.addressInput = $scope.userdata.property.address
@@ -212,22 +212,18 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 		$scope.searchLoading = true
 
 		// Get address search results
-		$http({
-			method: 'get',
-			url: addressURL,
-			responseType: 'json'
-		}).
-		success( function (response) {
+		$http.jsonp(addressURL).
+		success( function (response, status) {
 
 			// Turn off loader
 			$scope.searchLoading = false
 
 			// Extract results from response
-			var results = response.candidates
-			//var results = response.response
+			//var results = response.candidates
+			var results = response.response
 
 			if (results.length == 0) {
-			// if (!results.score) {}
+			//if (!results.score) {
 
 				// Message for no results
 				$scope.searchErrorMsg = 'No addresses found for ‘' + input + '’.'
@@ -247,10 +243,19 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 			} else {
 				// Multiple results found - user select now.
 				$scope.searchResults = results
+
+				// Format for selection
+				for (var j = 0; j < $scope.searchResults.length; j ++) {
+					if (!$scope.searchResults[j].item) {
+						var item = $scope.searchResults[j]
+						item.address = item.streetno + ' ' + item.streetname
+					}
+				}
+
 			}
 
 		}).
-		error( function () {
+		error( function (response, status) {
 
 			$scope.searchLoading = false
 			$scope.searchErrorMsg = 'Error performing search for addresses. Please try again later.'
@@ -268,16 +273,17 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 		// data is either same as results[0] retrieved from data source
 		// or saved from the "select" button if there are multiple sources
 		// Results format from mapdata.lasvegasnevada.gov endpoint
+		/*
 		$scope.userdata.property.address  = data.address.capitalize()
 		$scope.userdata.property.location = data.location
 		$scope.userdata.property.score    = data.score
+		*/
 		// Results format from clvplaces.appspot 
-		/*
 		$scope.userdata.property            = data
 		$scope.userdata.property.address    = data.streetno + ' ' + data.streetname.capitalize()
-		$scope.userdata.property.location.x = data.latlng.split(',')[0]
-		$scope.userdata.property.location.y = data.latlng.split(',')[1]
-		*/
+		$scope.userdata.property.location   = {}
+		$scope.userdata.property.location.x = data.latlng.split(',')[1]
+		$scope.userdata.property.location.y = data.latlng.split(',')[0]
 	}
 
 })
@@ -295,6 +301,7 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
 	// Reset view
 	$scope.parcelLoaded  = false
 	$scope.searchLoading = false
+	$scope.title = 'Retrieving parcel...'
 
 	// Switch back navigation based on user's path
 	if ($scope.userdata.nav.pathTo50 == 45) {
@@ -307,7 +314,7 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
 	}
 
 	// Request URL endpoint
-	var parcelRequestEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/agsquery?latlng='
+	var parcelRequestEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/agsquery?jsonCallback=JSON_CALLBACK&latlng='
 	// latlng= URL query string format needs to look like this:
 	// latlng=(36.167352999999999,-115.148408)
 	// e.g. += '(' + lat + ',' + lng + ')'
@@ -316,30 +323,29 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
 	var parcelLat = $scope.userdata.property.location.y
 	var parcelLng = $scope.userdata.property.location.x
 
+	if (!parcelLat || !parcelLng) {
+		$scope.errorMsg = 'No parcel provided.'
+		return false
+	}
+
 	// Assemble search endpoint URL based on user input
 	var parcelRequestURL = parcelRequestEndpoint + '(' + parcelLat + ',' + parcelLng + ')'
 
 	// Turn on loader
-	$scope.title = 'Loading parcel...'
 	$scope.searchLoading = true
 
 	// AJAX it
-	$http({
-		method: 'get',
-		url: parcelRequestURL,
-		type: 'json'
-	}).
+	$http.jsonp(parcelRequestURL).
 	success( function (response) {
 
 		// Turn off loader
 		$scope.searchLoading = false
-		$scope.parcelLoaded  = true
 
 		// Extract results from response
-		var results = response[0]
+		var results = response.results[0]
 
 		// Read results
-		if (results.length == 0) {
+		if (!results.LATLNG) {
 			// Note: This error check may need to be different.
 
 			// Display error message
@@ -347,30 +353,34 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
 
 		} else {
 			// String formatting
-			var masterAddress = $results.STRNO + ' ' + $results.STRDIR + ' ' + $results.STRNAME + ' ' + $results.STRTYPE
+			var masterAddress = results.STRNO + ' ' + results.STRDIR + ' ' + results.STRNAME + ' ' + results.STRTYPE
 			masterAddress = masterAddress.capitalize()
 
 			// Load in parcel data
 			$scope.parcel = {
-				number:          $results.PARCEL,
+				number:          results.PARCEL,
 				address:         $scope.userdata.property.address,
 				master_address:  masterAddress,
 				record_adresses: [],
-				ward:            $results.WARD,
-				zone:            $results.ZONING,
-				tax_district:    $results.TAXDIST,
-				zip:             $results.ZIP,
-				owner:           $results.OWNER,
+				ward:            results.WARD,
+				zone:            results.ZONING,
+				tax_district:    results.TAXDIST,
+				zip:             results.ZIP,
+				owner:           results.OWNER,
 				owner_address:   [
-					$results.ADDRESS1,
-					$results.ADDRESS2,
-					$results.ADDRESS3,
-					$results.ADDRESS4,
-					$results.ADDRESS5
+					results.ADDRESS1,
+					results.ADDRESS2,
+					results.ADDRESS3,
+					results.ADDRESS4,
+					results.ADDRESS5
 				]
 			}
 
+			$scope.userdata.property = $scope.parcel
+
 			$scope.title = $scope.parcel.address
+			$scope.parcelLoaded  = true
+
 		}
 
 	}).
@@ -400,6 +410,8 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
 appCtrls.controller('70Ctrl', function ($scope, UserData) {
 
 	$scope.userdata = UserData
+
+	$scope.parcel  = $scope.userdata.property
 
 })
 
@@ -574,6 +586,10 @@ appCtrls.controller('PrintView', function ($scope, $http, UserData) {
 
 	$scope.reportId  = $scope.userdata.reportId
 	$scope.reportDate = new Date ()
+
+
+	$scope.parcel  = $scope.userdata.property
+
 
 	// Open print dialog box
 	// Dumb hack to activate print dialog only after CSS transitions are done

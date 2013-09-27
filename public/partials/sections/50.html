@@ -44,7 +44,8 @@
 				<tr>
 					<td><strong><a href='' class='no-color help modal'>Owner</a></strong></td>
 					<td>{{parcel.owner}}<br>
-						<span ng-repeat='line in parcel.owner_address'>{{line}}<br></span>
+						<span ng-repeat='line in parcel.owner_address track by $index'>{{line}}<br></span>
+						<!-- "track by $index": see here: http://www.anujgakhar.com/2013/06/15/duplicates-in-a-repeater-are-not-allowed-in-angularjs/ -->
 					</td>
 				</tr>
 			</tbody>

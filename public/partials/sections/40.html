@@ -46,6 +46,7 @@
 		<h3>
 			Multiple addresses found. Did you mean:
 		</h3>
+
 		<div class='naics-result' ng-repeat='item in searchResults | orderBy: item.score | limitTo: 10'>
 			<span>{{item.address}}</span>
 			<button ng-click='selectResult(item)' radio-select data-selected-text='Selected'>Select</button>
