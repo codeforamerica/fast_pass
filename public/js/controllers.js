@@ -182,62 +182,80 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 
 	var addressEndpoint = 'http://mapdata.lasvegasnevada.gov/clvgis/rest/services/CLVPARCELS_Address_Locator/GeocodeServer/findAddressCandidates?&outFields=&outSR=4326&searchExtent=&f=json&Street='
 //	var addressEndpoint = '/address/suggest?address='
+//	var addressEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?score=50&format=json&address='
+
+	var latLngEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?score=50&format=json&latlng='
 
 	// Prepopulate form if we already know it
 	$scope.addressInput = $scope.userdata.property.address
 
-//		$scope.map = {controller: 'MapAddressInputCtrl'}
+	// When find address form is submitted
 	$scope.findAddress = function (input) {
+		// Reset display
+		$scope.searchErrorMsg  = ''
+		$scope.searchResults   = false
+		$scope.searchNoAddress = false
+
+		// Exit if no input
+		if (!input) {
+			$scope.searchErrorMsg = 'Please provide search terms.'
+			return false
+		}
+
 		// Store raw search inputs for future analysis
 		$scope.userdata.rawInputs.addressSearch.push(input)
 
 		// Assemble search endpoint URL based on user input
 		var addressURL = addressEndpoint + encodeURIComponent(input)
 
-		// Reset display
-		$scope.searchErrorMsg = ''
-		$scope.searchResults  = false
-
 		// Display loading icon
-		$scope.searchLoading  = true
+		$scope.searchLoading = true
 
 		// Get address search results
-		$http.get(addressURL).
-			success( function (response) {
+		$http({
+			method: 'get',
+			url: addressURL,
+			responseType: 'json'
+		}).
+		success( function (response) {
 
-				// Turn off loader
-				$scope.searchLoading = false
+			// Turn off loader
+			$scope.searchLoading = false
 
-				// Extract results from response
-				var results = response.candidates
+			// Extract results from response
+			var results = response.candidates
+			//var results = response.response
 
-				if (results.length == 0) {
-					// Message for no results
-					$scope.searchErrorMsg = 'No addresses found for ‘' + input + '’.'
-				} else if (results[0].score >= 95) {
-					
-					// If first result is a pretty good match, just take it
-					_saveAddress(results[0])
+			if (results.length == 0) {
+			// if (!results.score) {}
 
-					// Forward this interaction directly.
-					// This breaks forward/back apparently.
-					window.location.hash = encodeURIComponent('/section/50')
+				// Message for no results
+				$scope.searchErrorMsg = 'No addresses found for ‘' + input + '’.'
 
-				} else {
-					// Multiple results found - user select now.
-					$scope.searchResults = results
-				}
+				// Display additional message for alternate jurisdictions
+				$scope.searchNoAddress = true
 
-				// Store raw search inputs for future analysis
-				$scope.userdata.rawInputs.addressSearch.push(input)
+			} else if (results[0].score >= 95) {
+				
+				// If first result is a pretty good match, just take it
+				_saveAddress(results[0])
 
-			}).
-			error( function () {
+				// Forward this interaction directly.
+				// This breaks forward/back apparently.
+				window.location.hash = encodeURIComponent('/section/50')
 
-				$scope.searchLoading = false
-				$scope.searchErrorMsg = 'Error performing search for addresses. Please try again later.'
+			} else {
+				// Multiple results found - user select now.
+				$scope.searchResults = results
+			}
 
-			});
+		}).
+		error( function () {
+
+			$scope.searchLoading = false
+			$scope.searchErrorMsg = 'Error performing search for addresses. Please try again later.'
+
+		});
 	}
 
 	$scope.selectResult = function (item) {
@@ -249,9 +267,17 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 	var _saveAddress = function (data) {
 		// data is either same as results[0] retrieved from data source
 		// or saved from the "select" button if there are multiple sources
+		// Results format from mapdata.lasvegasnevada.gov endpoint
 		$scope.userdata.property.address  = data.address.capitalize()
 		$scope.userdata.property.location = data.location
 		$scope.userdata.property.score    = data.score
+		// Results format from clvplaces.appspot 
+		/*
+		$scope.userdata.property            = data
+		$scope.userdata.property.address    = data.streetno + ' ' + data.streetname.capitalize()
+		$scope.userdata.property.location.x = data.latlng.split(',')[0]
+		$scope.userdata.property.location.y = data.latlng.split(',')[1]
+		*/
 	}
 
 })
@@ -263,8 +289,12 @@ appCtrls.controller('45Ctrl', function ($scope, UserData) {
 })
 
 // SECTION 50 - PARCEL VIEW
-appCtrls.controller('50Ctrl', function ($scope, UserData) {
+appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
 	$scope.userdata = UserData
+
+	// Reset view
+	$scope.parcelLoaded  = false
+	$scope.searchLoading = false
 
 	// Switch back navigation based on user's path
 	if ($scope.userdata.nav.pathTo50 == 45) {
@@ -276,7 +306,83 @@ appCtrls.controller('50Ctrl', function ($scope, UserData) {
 		$scope.previousIsAddressSearch = true
 	}
 
+	// Request URL endpoint
+	var parcelRequestEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/agsquery?latlng='
+	// latlng= URL query string format needs to look like this:
+	// latlng=(36.167352999999999,-115.148408)
+	// e.g. += '(' + lat + ',' + lng + ')'
+
+	// Get locations
+	var parcelLat = $scope.userdata.property.location.x
+	var parcelLng = $scope.userdata.property.location.y
+
+	// Assemble search endpoint URL based on user input
+	var parcelRequestURL = parcelRequestEndpoint + '(' + parcelLat + ',' + parcelLng + ')'
+
+	// Turn on loader
+	$scope.title = 'Loading parcel...'
+	$scope.searchLoading = true
+
+	// AJAX it
+	$http({
+		method: 'get',
+		url: parcelRequestURL,
+		type: 'json'
+	}).
+	success( function (response) {
+
+		// Turn off loader
+		$scope.searchLoading = false
+		$scope.parcelLoaded  = true
+
+		// Extract results from response
+		var results = response[0]
+
+		// Read results
+		if (results.length == 0) {
+			// Note: This error check may need to be different.
+
+			// Display error message
+			$scope.errorMsg = 'Parcel not found.'
+
+		} else {
+			// String formatting
+			var masterAddress = $results.STRNO + ' ' + $results.STRDIR + ' ' + $results.STRNAME + ' ' + $results.STRTYPE
+			masterAddress = masterAddress.capitalize()
+
+			// Load in parcel data
+			$scope.parcel = {
+				number:          $results.PARCEL,
+				address:         $scope.userdata.property.address,
+				master_address:  masterAddress,
+				record_adresses: [],
+				ward:            $results.WARD,
+				zone:            $results.ZONING,
+				tax_district:    $results.TAXDIST,
+				zip:             $results.ZIP,
+				owner:           $results.OWNER,
+				owner_address:   [
+					$results.ADDRESS1,
+					$results.ADDRESS2,
+					$results.ADDRESS3,
+					$results.ADDRESS4,
+					$results.ADDRESS5
+				]
+			}
+
+			$scope.title = $scope.parcel.address
+		}
+
+	}).
+	error( function () {
+
+		$scope.searchLoading = false
+		$scope.errorMsg = 'Error loading parcel data.'
+
+	})
+
 	// Load dummy parcel information
+	/*
 	$scope.parcel = {
 		number:          '292-299-29',
 		address:         $scope.userdata.property.address,
@@ -287,6 +393,7 @@ appCtrls.controller('50Ctrl', function ($scope, UserData) {
 			'168 Chuck Testa'
 		]
 	}
+	*/
 
 })
 
@@ -445,12 +552,12 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 
 	})
 
-	$scope.mapClick = function (event, params) {
+	$scope.mapClick = function ($event, $params) {
 
-//		$scope.mapService.clicked.lat = event.latLng.toUrlValue()
+//		$scope.mapService.clicked.lat = $params.latLng.lat()
 		$scope.mapService.clicked.lng = 'no way'
 
-		console.log(event)
+		console.log($params)
 	}
 
 

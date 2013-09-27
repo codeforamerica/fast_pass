@@ -27,6 +27,6 @@ html(class='no-js', ng-app='dof')
 		block content
 
 		#map-container(ng-controller='MapCtrl as map')
-			#map(ui-map='map', ui-options='mapOptions', ui-event="{'map-click': 'mapClick(event, $params)', 'map-bounds_changed': 'mapRecenter()' }")
+			#map(ui-map='map', ui-options='mapOptions', ui-event="{'map-click': 'mapClick($event, $params)' }")
 
 		include _scripts-foot.html

@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('dof', ['dof.controllers', 'dof.ui.modal', 'dof.ui.collapse', 'ui.map', 'ngSanitize']);
+var app = angular.module('dof', ['dof.controllers', 'dof.ui.modal', 'dof.ui.collapse', 'ui.map', 'ui.event', 'ngSanitize']);
 
 // Set up application routes
 app.config(['$routeProvider', function($routeProvider) {
@@ -316,8 +316,8 @@ directives.maxWords = function () {
 		scope.count     = 0
 		scope.countdown = limit - scope.count
 
-		// Count words on each key up event
-		element.bind('keyup', function () {
+		// Count words on each input event (better than keyup, which doesn't include things like shift/ctrl keys)
+		element.bind('input', function () {
 			var text = element.val().trim()
 
 			// Find the number of words
