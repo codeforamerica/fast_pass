@@ -61,6 +61,25 @@
 					<!--If there's no address, how did you land on this page? Through Lat/Lng?<br><a href='' class='small modal'>(don't see your address?)</a>-->
 				</td>
 			</tr>
+			<tr>
+				<td><strong><a href='' class='no-color help modal'>Ward</a></strong></td>
+				<td>{{parcel.ward}}</td>
+			</tr>
+			<tr>
+				<td><strong><a href='' class='no-color help modal'>Tax District</a></strong></td>
+				<td>{{parcel.tax_district}}</td>
+			</tr>
+			<tr>
+				<td><strong><a href='' class='no-color help modal'>Zone</a></strong></td>
+				<td>{{parcel.zone}}</td>
+			</tr>
+			<tr>
+				<td><strong><a href='' class='no-color help modal'>Owner</a></strong></td>
+				<td>{{parcel.owner}}<br>
+					<span ng-repeat='line in parcel.owner_address track by $index'>{{line}}<br></span>
+					<!-- "track by $index": see here: http://www.anujgakhar.com/2013/06/15/duplicates-in-a-repeater-are-not-allowed-in-angularjs/ -->
+				</td>
+			</tr>
 		</tbody>
 	</table>
 	

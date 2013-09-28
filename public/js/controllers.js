@@ -280,7 +280,8 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 		*/
 		// Results format from clvplaces.appspot 
 		$scope.userdata.property            = data
-		$scope.userdata.property.address    = data.streetno + ' ' + data.streetname.capitalize()
+		$scope.userdata.property.address    = data.streetno + ' ' + data.streetname
+		$scope.userdata.property.address.capitalize()
 		$scope.userdata.property.location   = {}
 		$scope.userdata.property.location.x = data.latlng.split(',')[1]
 		$scope.userdata.property.location.y = data.latlng.split(',')[0]
@@ -311,6 +312,19 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
 		// Assume address search is the default condition.
 		$scope.previousIsZoningOverview = false
 		$scope.previousIsAddressSearch = true
+	}
+
+	// Don't do any new loading if user pressed 'back' - just display the data.
+	if ($scope.userdata.nav.previous >= 50) {
+
+		// Read parcel data from UserData
+		$scope.parcel =	$scope.userdata.property
+
+		// Set display
+		$scope.title = $scope.userdata.property.address
+		$scope.parcelLoaded  = true
+
+		return
 	}
 
 	// Request URL endpoint
@@ -373,11 +387,18 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
 					results.ADDRESS3,
 					results.ADDRESS4,
 					results.ADDRESS5
-				]
+				],
+				location:        {
+					x: $scope.userdata.property.location.x,
+					y: $scope.userdata.property.location.y
+				}
 			}
 
+			// Cleanup
+			$scope.parcel.owner_address.clean()
 			$scope.userdata.property = $scope.parcel
 
+			// Set display
 			$scope.title = $scope.parcel.address
 			$scope.parcelLoaded  = true
 
@@ -390,20 +411,6 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
 		$scope.errorMsg = 'Error loading parcel data.'
 
 	})
-
-	// Load dummy parcel information
-	/*
-	$scope.parcel = {
-		number:          '292-299-29',
-		address:         $scope.userdata.property.address,
-		master_address:  $scope.userdata.property.address,
-		record_adresses: [
-			'123 Main Street',
-			'145 Main Street',
-			'168 Chuck Testa'
-		]
-	}
-	*/
 
 })
 

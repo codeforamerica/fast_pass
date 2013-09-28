@@ -53,7 +53,9 @@ app.factory('UserData', function () {
 			addressSearch: []
 		},
 		nav: {
-			prev: null
+			pathTo50: null,
+			previous: null,
+			current: null
 		}
 	}
 })
@@ -365,6 +367,11 @@ controllers.sectionGo = function ($scope, $routeParams, UserData) {
 	
 	$scope.sectionId = $routeParams.sectionId
 	$scope.userdata = UserData
+
+	// Record the current and previous sectionId
+	// This allows section controllers to perform logic based on 'back' navigation, if necessary
+	$scope.userdata.nav.previous = $scope.userdata.nav.current
+	$scope.userdata.nav.current  = $scope.sectionId
 
 	// Somewhere in here should be the logic for saving to LocalStorage or retrieving it
 

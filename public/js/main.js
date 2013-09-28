@@ -28,6 +28,19 @@ String.prototype.capitalize = function() {
     return string.join(' ')
 }
 
+// Array.clean() removes from the array all values that are 'falsy'
+// e.g. undefined, null, 0, false, NaN and '' (empty string)
+Array.prototype.clean = function() {
+	for (var i = 0; i < this.length; i++) {
+		if (!this[i]) {
+			this.splice(i, 1);
+			i--;
+		}
+	}
+	return this;
+};
+
+
 
 /*************************************************************************
 // 
