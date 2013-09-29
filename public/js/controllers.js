@@ -582,10 +582,9 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 
 	$scope.mapClick = function ($event, $params) {
 
-//		$scope.mapService.clicked.lat = $params.latLng.lat()
-		$scope.mapService.clicked.lng = 'no way'
+		$scope.mapService.clicked.lat = $event.latLng.lat()
+		$scope.mapService.clicked.lng = $event.latLng.lng()
 
-		console.log($params)
 	}
 
 
