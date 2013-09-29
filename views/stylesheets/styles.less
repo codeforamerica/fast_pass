@@ -15,10 +15,6 @@
 @clv-type:              #3f3f3f;
 @ui-index:              4000;
 
-@footer-background:     @color-scheme;
-@footer-divider:        lighten(@footer-background, 10%);
-@footer-height:         40px;
-
 @background-dark:       rgba(0,0,0,0.5);
 
 @popup-width:           240px;
@@ -728,6 +724,22 @@ footer {
 	position: relative;
 }
 
+#return {
+	position: fixed;
+	top: -200px;
+	left: 50%;
+	margin-left: -200px;
+	width: 400px;
+	height: auto;
+	padding: 0 20px 20px;
+	background-color: white;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	z-index: 9999;
+	.box-shadow(0 0 8px rgba(0,0,0,0.25));
+	.transition(top 1.0s);
+}
+
 // PRINT STYLES
 
 #print {
@@ -764,7 +776,8 @@ footer {
 	.section-navigation,
 	#pi,
 	#map-container,
-	#map {
+	#map,
+	#return {
 		display: none;
 	}
 	a.help:after,

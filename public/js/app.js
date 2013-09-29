@@ -348,6 +348,33 @@ directives.maxWords = function () {
 	}
 }
 
+directives.returnDialog = function () {
+	return {
+		restrict: 'A',
+		templateUrl: '/partials/_return.html',
+		link: function (scope, element, attrs) {
+			var showDialog = attrs.returnDialog
+
+			if (showDialog) {
+				element[0].style.top = 0
+			}
+
+/*			element.bind('click', function() {
+
+				if (!showDialog) {
+					element[0].style.top = 0
+					showDialog = true
+				} else {
+					element[0].style.top = '-200px'
+					showDialog = false
+				}
+
+			})
+*/
+		}
+	}
+}
+
 /* // Might not actually be needed
 directives.autofocus = function () {
 	return function (scope, element, attrs) {

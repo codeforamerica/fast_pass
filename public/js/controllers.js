@@ -4,6 +4,15 @@
 
 var appCtrls = angular.module('dof.controllers', []);
 
+// START OF APPLICATION
+appCtrls.controller('StartCtrl', function ($scope, $location, UserData) {
+
+	if ($location.search().clear == true) {
+		console.log('Cleared')
+	}
+
+})
+
 // SECTION 10 - NAICS Business Category search
 appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 
@@ -588,7 +597,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 
 })
 
-appCtrls.controller('PrintView', function ($scope, $http, UserData) {
+appCtrls.controller('PrintViewCtrl', function ($scope, $http, UserData) {
 	$scope.userdata = UserData
 
 	$scope.reportId  = $scope.userdata.reportId
@@ -606,6 +615,25 @@ appCtrls.controller('PrintView', function ($scope, $http, UserData) {
 	function print() {
 		window.print()
 	}
+})
+
+appCtrls.controller('ReturnCtrl', function ($scope, UserData) {
+	// TO DO
+
+	// $scope.returnDialog = true
+
+	// Display this if user arrives at to a page in this application and 
+	// user data is already stored in Local Storage.
+	// if local storage
+		// import local storage into UserData
+		// $scope.userdata = UserData // needed to connect up the model?
+
+	// Is a "promise object" required to make sure the page loads up the stored user data first?
+
+	// Something (on the directive?) to close the return box when
+		// (a) someone clicks a link
+		// (b) someone navigates to another page
+
 })
 
 /*******************************************************************************************/
