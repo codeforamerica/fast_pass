@@ -191,9 +191,9 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 
 //	var addressEndpoint = 'http://mapdata.lasvegasnevada.gov/clvgis/rest/services/CLVPARCELS_Address_Locator/GeocodeServer/findAddressCandidates?&outFields=&outSR=4326&searchExtent=&f=json&Street='
 //	var addressEndpoint = '/address/suggest?address='
-	var addressEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?jsonCallback=JSON_CALLBACK&score=50&format=json&address='
+	var addressEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?jsonCallback=JSON_CALLBACK&score=20&format=json&address='
 
-	var latLngEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?jsonCallback=JSON_CALLBACK&score=50&format=json&latlng='
+	var latLngEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?jsonCallback=JSON_CALLBACK&score=20&format=json&latlng='
 
 	// Prepopulate form if we already know it
 	$scope.addressInput = $scope.userdata.property.address
@@ -596,12 +596,17 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 
 })
 
-appCtrls.controller('PrintViewCtrl', function ($scope, $http, UserData) {
+appCtrls.controller('PrintViewCtrl', function ($scope, $http, UserData, MapService) {
 	$scope.userdata = UserData
+	$scope.mapService = MapService
 
 	$scope.reportId  = $scope.userdata.reportId
 	$scope.reportDate = new Date ()
 
+	// Get a static map URL to display on the print page
+	var parcelLat = $scope.userdata.property.location.y
+	var parcelLng = $scope.userdata.property.location.x
+	$scope.staticMapImageUrl = 'http://maps.googleapis.com/maps/api/staticmap?&size=250x250&maptype=roadmap&sensor=false&markers=color:red%7C' + parcelLat + ',' + parcelLng
 
 	$scope.parcel  = $scope.userdata.property
 

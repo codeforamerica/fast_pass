@@ -43,46 +43,60 @@
 		</tbody>
 	</table>
 
-	<h3>Parcel Information</h3>
+	<div class='row'>
 
-	<table class='no-style'>
-		<tbody>
-			<tr>
-				<td width='200px'><strong><a href='' class='no-color help modal'>Parcel number</a></strong></td>
-				<td>#{{parcel.number}}</td>
-			</tr>
-			<tr>
-				<td><strong><a href='' class='no-color help modal'>Parcel master address</a></strong></td>
-				<td>{{parcel.master_address}}</td>
-			</tr>
-			<tr>
-				<td><strong><a href='' class='no-color help modal'>Other addresses on record</a></strong></td>
-				<td><span ng-repeat='address in parcel.record_addresses'>{{address}}<br></span>
-					<!--If there's no address, how did you land on this page? Through Lat/Lng?<br><a href='' class='small modal'>(don't see your address?)</a>-->
-				</td>
-			</tr>
-			<tr>
-				<td><strong><a href='' class='no-color help modal'>Ward</a></strong></td>
-				<td>{{parcel.ward}}</td>
-			</tr>
-			<tr>
-				<td><strong><a href='' class='no-color help modal'>Tax District</a></strong></td>
-				<td>{{parcel.tax_district}}</td>
-			</tr>
-			<tr>
-				<td><strong><a href='' class='no-color help modal'>Zone</a></strong></td>
-				<td>{{parcel.zone}}</td>
-			</tr>
-			<tr>
-				<td><strong><a href='' class='no-color help modal'>Owner</a></strong></td>
-				<td>{{parcel.owner}}<br>
-					<span ng-repeat='line in parcel.owner_address track by $index'>{{line}}<br></span>
-					<!-- "track by $index": see here: http://www.anujgakhar.com/2013/06/15/duplicates-in-a-repeater-are-not-allowed-in-angularjs/ -->
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	
+		<div class='col-4'>
+			<h3>Parcel Information</h3>
+
+			<table class='no-style'>
+				<tbody>
+					<tr>
+						<td width='200px'><strong><a href='' class='no-color help modal'>Parcel number</a></strong></td>
+						<td>#{{parcel.number}}</td>
+					</tr>
+					<tr>
+						<td><strong><a href='' class='no-color help modal'>Parcel master address</a></strong></td>
+						<td>{{parcel.master_address}}</td>
+					</tr>
+					<tr>
+						<td><strong><a href='' class='no-color help modal'>Other addresses on record</a></strong></td>
+						<td><span ng-repeat='address in parcel.record_addresses'>{{address}}<br></span>
+							<!--If there's no address, how did you land on this page? Through Lat/Lng?<br><a href='' class='small modal'>(don't see your address?)</a>-->
+						</td>
+					</tr>
+					<tr>
+						<td><strong><a href='' class='no-color help modal'>Ward</a></strong></td>
+						<td>{{parcel.ward}}</td>
+					</tr>
+					<tr>
+						<td><strong><a href='' class='no-color help modal'>Tax District</a></strong></td>
+						<td>{{parcel.tax_district}}</td>
+					</tr>
+					<tr>
+						<td><strong><a href='' class='no-color help modal'>Zone</a></strong></td>
+						<td>{{parcel.zone}}</td>
+					</tr>
+					<tr>
+						<td><strong><a href='' class='no-color help modal'>Owner</a></strong></td>
+						<td>{{parcel.owner}}<br>
+							<span ng-repeat='line in parcel.owner_address track by $index'>{{line}}<br></span>
+							<!-- "track by $index": see here: http://www.anujgakhar.com/2013/06/15/duplicates-in-a-repeater-are-not-allowed-in-angularjs/ -->
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class='static-map'>
+			<img src='{{staticMapImageUrl}}' alt='Map'>
+		</div>
+
+	</div>
+
+
+
+
+
 	<h3><a href='' class='help modal no-color' data-title='Zones' data-content='Planning departments use zones to make sure that different uses are not conflicting with other uses.'>Zones</a></h3>
 	
 	<ul class='comfy no-bullets'>
