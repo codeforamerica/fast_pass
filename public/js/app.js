@@ -356,21 +356,22 @@ directives.returnDialog = function () {
 			var showDialog = attrs.returnDialog
 
 			if (showDialog) {
-				element[0].style.top = 0
+				element[0].style.marginTop = 0
 			}
 
-/*			element.bind('click', function() {
+			// Close the dialog
+			element.bind('click', function() {
 
 				if (!showDialog) {
-					element[0].style.top = 0
+					element[0].style.marginTop = 0
 					showDialog = true
 				} else {
-					element[0].style.top = '-200px'
+					element[0].style.marginTop = '-200px'
 					showDialog = false
 				}
 
 			})
-*/
+
 		}
 	}
 }

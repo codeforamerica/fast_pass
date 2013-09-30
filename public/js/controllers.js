@@ -560,7 +560,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 	];
 
 	$scope.mapOptions = {
-		zoom: 15,
+		zoom: 13,
 		minZoom: 11,
 		maxZoom: 19,
 		center: new google.maps.LatLng(36.168, -115.144),
@@ -606,7 +606,7 @@ appCtrls.controller('PrintViewCtrl', function ($scope, $http, UserData, MapServi
 	// Get a static map URL to display on the print page
 	var parcelLat = $scope.userdata.property.location.y
 	var parcelLng = $scope.userdata.property.location.x
-	$scope.staticMapImageUrl = 'http://maps.googleapis.com/maps/api/staticmap?&size=250x250&maptype=roadmap&sensor=false&markers=color:red%7C' + parcelLat + ',' + parcelLng
+	$scope.staticMapImageUrl = 'http://maps.googleapis.com/maps/api/staticmap?zoom=15&size=250x250&maptype=roadmap&sensor=false&markers=color:red%7C' + parcelLat + ',' + parcelLng
 
 	$scope.parcel  = $scope.userdata.property
 
