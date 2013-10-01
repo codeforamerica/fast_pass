@@ -2,13 +2,18 @@
 
 /* Controllers */
 
-var appCtrls = angular.module('dof.controllers', []);
+var appCtrls = angular.module(appName + '.controllers', []);
 
 // START OF APPLICATION
 appCtrls.controller('StartCtrl', function ($scope, $location, UserData) {
 
-	if ($location.search().clear == true) {
-		console.log('Cleared')
+	$scope.userdata = UserData
+
+	// Clear application data if directed
+	if (_getQueryStringParams('clear') == 'true') {
+		$scope.userdata = {}
+		_clearLocalStorage()
+		console.log('User data cleared.')
 	}
 
 })
@@ -194,6 +199,11 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 	var addressEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?jsonCallback=JSON_CALLBACK&score=20&format=json&address='
 
 	var latLngEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?jsonCallback=JSON_CALLBACK&score=20&format=json&latlng='
+// example requests. see Issues #7, 38
+// /address/suggest?address=Las Vegas Blvd
+// /address/geocode?address=455 Las Vegas Blvd
+// /point/reverse_geocode?lat=123.123&lng=123.123
+
 
 	// Prepopulate form if we already know it
 	$scope.addressInput = $scope.userdata.property.address
@@ -622,21 +632,47 @@ appCtrls.controller('PrintViewCtrl', function ($scope, $http, UserData, MapServi
 })
 
 appCtrls.controller('ReturnCtrl', function ($scope, UserData) {
-	// TO DO
 
-	// $scope.returnDialog = true
+	// Default: this dialog box should be off.
+	// $scope.showDialog = false
 
-	// Display this if user arrives at to a page in this application and 
+	// Display this if user arrives to a page in this application and 
 	// user data is already stored in Local Storage.
-	// if local storage
-		// import local storage into UserData
-		// $scope.userdata = UserData // needed to connect up the model?
+	if (_checkLocalStorage() == true) {
+		console.log('Something is in local storage.')
 
-	// Is a "promise object" required to make sure the page loads up the stored user data first?
+		// Load data from local storage
+		var localStorage = _loadLocalStorage()
+		console.log(localStorage)
+		$scope.userdata = localStorage
+		// ??
+		UserData = localStorage
 
-	// Something (on the directive?) to close the return box when
-		// (a) someone clicks a link
-		// (b) someone navigates to another page
+		// Is a "promise object" required to make sure the page loads up the stored user data first?
+
+		// Redirect route to last recorded section
+		window.location.href = window.location.origin + '/#/section/' + $scope.userdata.nav.current
+
+		// Show the return dialog box
+		// $scope.showDialog = true
+		var timeout = setTimeout(showDialog, 800)
+	}
+	else {
+		// Nothing is in local storage and that person should start from the beginning
+		// console.log('Application not previously started. Starting from beginning.')
+		// window.location.href = '/#/'
+	}
+
+	$scope.hideDialog = function () {
+		$scope.showDialog = false
+		$scope.returnDialog = false
+		document.querySelector('#return').style.marginTop = '-200px'
+	}
+
+	function showDialog () {
+		document.querySelector('#return').style.marginTop = 0
+	}
+
 
 })
 
@@ -658,86 +694,86 @@ angular.module('ui.bootstrap.transition', [])
  */
 .factory('$transition', ['$q', '$timeout', '$rootScope', function($q, $timeout, $rootScope) {
 
-  var $transition = function(element, trigger, options) {
+	var $transition = function(element, trigger, options) {
 	options = options || {};
 	var deferred = $q.defer();
 	var endEventName = $transition[options.animation ? "animationEndEventName" : "transitionEndEventName"];
 
 	var transitionEndHandler = function(event) {
-	  $rootScope.$apply(function() {
+		$rootScope.$apply(function() {
 		element.unbind(endEventName, transitionEndHandler);
 		deferred.resolve(element);
-	  });
+		});
 	};
 
 	if (endEventName) {
-	  element.bind(endEventName, transitionEndHandler);
+		element.bind(endEventName, transitionEndHandler);
 	}
 
 	// Wrap in a timeout to allow the browser time to update the DOM before the transition is to occur
 	$timeout(function() {
-	  if ( angular.isString(trigger) ) {
+		if ( angular.isString(trigger) ) {
 		element.addClass(trigger);
-	  } else if ( angular.isFunction(trigger) ) {
+		} else if ( angular.isFunction(trigger) ) {
 		trigger(element);
-	  } else if ( angular.isObject(trigger) ) {
+		} else if ( angular.isObject(trigger) ) {
 		element.css(trigger);
-	  }
-	  //If browser does not support transitions, instantly resolve
-	  if ( !endEventName ) {
+		}
+		//If browser does not support transitions, instantly resolve
+		if ( !endEventName ) {
 		deferred.resolve(element);
-	  }
+		}
 	});
 
 	// Add our custom cancel function to the promise that is returned
 	// We can call this if we are about to run a new transition, which we know will prevent this transition from ending,
 	// i.e. it will therefore never raise a transitionEnd event for that transition
 	deferred.promise.cancel = function() {
-	  if ( endEventName ) {
+		if ( endEventName ) {
 		element.unbind(endEventName, transitionEndHandler);
-	  }
-	  deferred.reject('Transition cancelled');
+		}
+		deferred.reject('Transition cancelled');
 	};
 
 	return deferred.promise;
-  };
+	};
 
-  // Work out the name of the transitionEnd event
-  var transElement = document.createElement('trans');
-  var transitionEndEventNames = {
+	// Work out the name of the transitionEnd event
+	var transElement = document.createElement('trans');
+	var transitionEndEventNames = {
 	'WebkitTransition': 'webkitTransitionEnd',
 	'MozTransition': 'transitionend',
 	'OTransition': 'oTransitionEnd',
 	'transition': 'transitionend'
-  };
-  var animationEndEventNames = {
+	};
+	var animationEndEventNames = {
 	'WebkitTransition': 'webkitAnimationEnd',
 	'MozTransition': 'animationend',
 	'OTransition': 'oAnimationEnd',
 	'transition': 'animationend'
-  };
-  function findEndEventName(endEventNames) {
+	};
+	function findEndEventName(endEventNames) {
 	for (var name in endEventNames){
-	  if (transElement.style[name] !== undefined) {
+		if (transElement.style[name] !== undefined) {
 		return endEventNames[name];
-	  }
+		}
 	}
-  }
-  $transition.transitionEndEventName = findEndEventName(transitionEndEventNames);
-  $transition.animationEndEventName = findEndEventName(animationEndEventNames);
-  return $transition;
+	}
+	$transition.transitionEndEventName = findEndEventName(transitionEndEventNames);
+	$transition.animationEndEventName = findEndEventName(animationEndEventNames);
+	return $transition;
 }]);
 
 angular.module('ui.bootstrap.collapse',['ui.bootstrap.transition'])
 
 // The collapsible directive indicates a block of html that will expand and collapse
 .directive('collapse', ['$transition', function($transition) {
-  // CSS transitions don't work with height: auto, so we have to manually change the height to a
-  // specific value and then once the animation completes, we can reset the height to auto.
-  // Unfortunately if you do this while the CSS transitions are specified (i.e. in the CSS class
-  // "collapse") then you trigger a change to height 0 in between.
-  // The fix is to remove the "collapse" CSS class while changing the height back to auto - phew!
-  var fixUpHeight = function(scope, element, height) {
+	// CSS transitions don't work with height: auto, so we have to manually change the height to a
+	// specific value and then once the animation completes, we can reset the height to auto.
+	// Unfortunately if you do this while the CSS transitions are specified (i.e. in the CSS class
+	// "collapse") then you trigger a change to height 0 in between.
+	// The fix is to remove the "collapse" CSS class while changing the height back to auto - phew!
+	var fixUpHeight = function(scope, element, height) {
 	// We remove the collapse CSS class to prevent a transition when we change to height: auto
 	element.removeClass('collapse');
 	element.css({ height: height });
@@ -745,81 +781,81 @@ angular.module('ui.bootstrap.collapse',['ui.bootstrap.transition'])
 	// height already :-/
 	var x = element[0].offsetWidth;
 	element.addClass('collapse');
-  };
+	};
 
-  return {
+	return {
 	link: function(scope, element, attrs) {
 
-	  var isCollapsed;
-	  var initialAnimSkip = true;
-	  scope.$watch(function (){ return element[0].scrollHeight; }, function (value) {
+		var isCollapsed;
+		var initialAnimSkip = true;
+		scope.$watch(function (){ return element[0].scrollHeight; }, function (value) {
 		//The listener is called when scollHeight changes
 		//It actually does on 2 scenarios: 
 		// 1. Parent is set to display none
 		// 2. angular bindings inside are resolved
 		//When we have a change of scrollHeight we are setting again the correct height if the group is opened
 		if (element[0].scrollHeight !== 0) {
-		  if (!isCollapsed) {
+			if (!isCollapsed) {
 			if (initialAnimSkip) {
-			  fixUpHeight(scope, element, element[0].scrollHeight + 'px');
+				fixUpHeight(scope, element, element[0].scrollHeight + 'px');
 			} else {
-			  fixUpHeight(scope, element, 'auto');
+				fixUpHeight(scope, element, 'auto');
 			}
-		  }
+			}
 		}
-	  });
-	  
-	  scope.$watch(attrs.collapse, function(value) {
+		});
+		
+		scope.$watch(attrs.collapse, function(value) {
 		if (value) {
-		  collapse();
+			collapse();
 		} else {
-		  expand();
+			expand();
 		}
-	  });
-	  
+		});
+		
 
-	  var currentTransition;
-	  var doTransition = function(change) {
+		var currentTransition;
+		var doTransition = function(change) {
 		if ( currentTransition ) {
-		  currentTransition.cancel();
+			currentTransition.cancel();
 		}
 		currentTransition = $transition(element,change);
 		currentTransition.then(
-		  function() { currentTransition = undefined; },
-		  function() { currentTransition = undefined; }
+			function() { currentTransition = undefined; },
+			function() { currentTransition = undefined; }
 		);
 		return currentTransition;
-	  };
+		};
 
-	  var expand = function() {
+		var expand = function() {
 		if (initialAnimSkip) {
-		  initialAnimSkip = false;
-		  if ( !isCollapsed ) {
+			initialAnimSkip = false;
+			if ( !isCollapsed ) {
 			fixUpHeight(scope, element, 'auto');
-		  }
+			}
 		} else {
-		  doTransition({ height : element[0].scrollHeight + 'px' })
-		  .then(function() {
+			doTransition({ height : element[0].scrollHeight + 'px' })
+			.then(function() {
 			// This check ensures that we don't accidentally update the height if the user has closed
 			// the group while the animation was still running
 			if ( !isCollapsed ) {
-			  fixUpHeight(scope, element, 'auto');
+				fixUpHeight(scope, element, 'auto');
 			}
-		  });
+			});
 		}
 		isCollapsed = false;
-	  };
-	  
-	  var collapse = function() {
+		};
+		
+		var collapse = function() {
 		isCollapsed = true;
 		if (initialAnimSkip) {
-		  initialAnimSkip = false;
-		  fixUpHeight(scope, element, 0);
+			initialAnimSkip = false;
+			fixUpHeight(scope, element, 0);
 		} else {
-		  fixUpHeight(scope, element, element[0].scrollHeight + 'px');
-		  doTransition({'height':'0'});
+			fixUpHeight(scope, element, element[0].scrollHeight + 'px');
+			doTransition({'height':'0'});
 		}
-	  };
+		};
 	}
-  };
+	};
 }]);

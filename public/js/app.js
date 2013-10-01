@@ -1,10 +1,48 @@
 'use strict';
 
+var appName = 'dof'
+
+/*************************************************************************
+// 
+// INITIALIZE JAVASCRIPT
+//
+// ***********************************************************************/
+
+// String.capitalize() that does the equivalent of text-transform: capitalize
+// Works on strings that begin as all caps
+String.prototype.capitalize = function() {
+	var string = this.toLowerCase().split(' ')
+	for (var i = 0; i < string.length; i++) {
+		string[i] = string[i].charAt(0).toUpperCase() + string[i].slice(1)
+	}
+    return string.join(' ')
+}
+
+// Array.clean() removes from the array all values that are 'falsy'
+// e.g. undefined, null, 0, false, NaN and '' (empty string)
+Array.prototype.clean = function() {
+	for (var i = 0; i < this.length; i++) {
+		if (!this[i]) {
+			this.splice(i, 1);
+			i--;
+		}
+	}
+	return this;
+};
+
+
+/*************************************************************************
+// 
+// INITIALIZE ANGULAR
+//
+// ***********************************************************************/
+
+
 // Declare app level module which depends on filters, and services
-var app = angular.module('dof', ['dof.controllers', 'dof.ui.modal', 'dof.ui.collapse', 'ui.map', 'ui.event', 'ngSanitize', 'ngRoute']);
+var app = angular.module(appName, [appName+'.controllers', 'dof.ui.modal', 'dof.ui.collapse', 'ui.map', 'ui.event', 'ngSanitize', 'ngRoute']);
 
 // Set up application routes
-app.config(['$routeProvider', function($routeProvider) {
+app.config(['$routeProvider', function ($routeProvider) {
 	$routeProvider.
 		when('/', {
 			templateUrl: '/partials/start.html',
@@ -22,6 +60,20 @@ app.config(['$routeProvider', function($routeProvider) {
 			templateUrl: '/partials/404.html'
 		});
 }]);
+
+app.config(['$locationProvider', function ($location) {
+	// This removes the hashbang within URLs for browers that support HTML5 history
+	// This should degrade gracefully for non-HTML5 browsers.
+	// Note: this also requires the server side routes to be rewritten to accept this.
+	// Currently this is disabled because server side routes are not configured.
+	// $location.html5Mode(true)
+}]);
+
+/*************************************************************************
+// 
+// SERVICES
+//
+// ***********************************************************************/
 
 // This sets up a 'UserData' service so that information collected by
 // user input can be carried across the application
@@ -88,6 +140,12 @@ app.factory('ModalService', function () {
 	}
 })
 
+/*************************************************************************
+// 
+// FILTERS
+//
+// ***********************************************************************/
+
 app.filter('newlines', function () {
     return function(text) {
     	if (text) {
@@ -105,13 +163,19 @@ app.filter('no-html', function () {
     }
 })
 
+/*************************************************************************
+// 
+// DIRECTIVES
+//
+// ***********************************************************************/
 
-// Alternate way of declaring directives (and controllers, below). See: http://egghead.io/lessons/angularjs-thinking-differently-about-organization
+// Alternate way of declaring directives (and controllers, below). 
+// See: http://egghead.io/lessons/angularjs-thinking-differently-about-organization
 var directives = {}
 app.directive(directives)
 
+// Actions to be done when loading a part-screen section with map
 directives.showMap = function () {
-	// Actions to be done when loading a part-screen section with map
 	return function (scope, element) {
 
 		// Retrieve elements and wrap as jQLite
@@ -135,8 +199,8 @@ directives.showMap = function () {
 	}
 }
 
+// Actions to be done when loading a full-screen section with map
 directives.hideMap = function () {
-	// Actions to be done when loading a full-screen section with map
 	return function () {
 
 		// Retrieve elements and wrap as jQLite
@@ -156,8 +220,8 @@ directives.hideMap = function () {
 	}
 }
 
+// Make a modal
 directives.modal = function () {
-	// Make a modal
 	return {
 		restrict: 'A',
 		scope: {
@@ -173,9 +237,9 @@ directives.modal = function () {
 }
 
 
+// Use with an a.button element where it needs to be given the class 
+// 'disabled' until some condition is true
 directives.buttonDisable = function () {
-	// Use with an a.button element where it needs to be given the class 
-	// 'disabled' until some condition is true
 	return function (scope, element, attrs) {
 
 		scope.$watch(attrs.buttonDisable, function (value) {
@@ -351,28 +415,7 @@ directives.maxWords = function () {
 directives.returnDialog = function () {
 	return {
 		restrict: 'A',
-		templateUrl: '/partials/_return.html',
-		link: function (scope, element, attrs) {
-			var showDialog = attrs.returnDialog
-
-			if (showDialog) {
-				element[0].style.marginTop = 0
-			}
-
-			// Close the dialog
-			element.bind('click', function() {
-
-				if (!showDialog) {
-					element[0].style.marginTop = 0
-					showDialog = true
-				} else {
-					element[0].style.marginTop = '-200px'
-					showDialog = false
-				}
-
-			})
-
-		}
+		templateUrl: '/partials/_return.html'
 	}
 }
 
@@ -384,6 +427,14 @@ directives.autofocus = function () {
 }
 */
 
+
+/*************************************************************************
+// 
+// GENERAL CONTROLLERS
+// For section-specific controllers, see controllers.js
+//
+// ***********************************************************************/
+
 var controllers = {}
 app.controller(controllers)
 
@@ -394,6 +445,7 @@ controllers.sectionStart = function ($scope) {
 controllers.sectionGo = function ($scope, $routeParams, UserData) {
 	
 	$scope.sectionId = $routeParams.sectionId
+
 	$scope.userdata = UserData
 
 	// Record the current and previous sectionId
@@ -402,6 +454,11 @@ controllers.sectionGo = function ($scope, $routeParams, UserData) {
 	$scope.userdata.nav.current  = $scope.sectionId
 
 	// Somewhere in here should be the logic for saving to LocalStorage or retrieving it
+/*
+- this should be done AFTER any potential loading, because a route change with no prior user data should not be overwriting local storage!
+- is there a way to check????
+*/
+	_saveLocalStorage(UserData)
 
 	// DOM id for jQuery
 	var sectionId = '#section' + $scope.sectionId,
@@ -419,6 +476,13 @@ controllers.sectionGo = function ($scope, $routeParams, UserData) {
 
 }
 
+/*************************************************************************
+// 
+// FUNCTIONS
+//
+// ***********************************************************************/
+
+
 // Dynamically fetch the section template from the URL
 function _getSectionTemplate($routeParams) {
 	return '/partials/sections/' + $routeParams.sectionId + '.html'
@@ -428,5 +492,100 @@ function _getSectionTemplate($routeParams) {
 // Required by this documentation: https://github.com/angular-ui/ui-map
 // But it hasn't worked...
 function onMapReady() {
-	angular.bootstrap(document, ['dof']);
+	angular.bootstrap(document, [appName]);
+}	
+
+
+/**
+*    Get query string for various options
+*/ 
+
+function _getQueryStringParams(sParam) {
+
+	// The proper URL formation places the hash AFTER the query string
+	// e.g. http://server.com/?key=value#hash
+	// so the following does not work with this application
+	// var sPageURL = window.location.search.substring(1);
+
+	// The workaround is to parse the hash separately, like so:
+	var sPageURL = window.location.href.split('?')[1]
+	if (!sPageURL) {
+		return
+	}
+
+	var sURLVariables = sPageURL.split('&');
+	for (var i = 0; i < sURLVariables.length; i++) {
+		var sParameterName = sURLVariables[i].split('=');
+		if (sParameterName[0] == sParam) {
+			return sParameterName[1];
+		}
+	}
 }
+
+// localStorage functions
+function _checkLocalStorage () {
+
+	// Check for localStorage
+	if (!window['localStorage']) {
+		console.log('localStorage is not supported on this browser.')
+		return false
+	}
+
+	// Check to see if this app has previously stored anything in localStorage
+	if (window.localStorage.getItem(appName)) {
+		return true
+	}
+	else {
+		return false
+	}
+
+}
+
+function _loadLocalStorage () {
+	console.log('Loading local storage.')
+	return JSON.parse(window.localStorage.getItem(appName))
+}
+
+function _saveLocalStorage (obj) {
+	// Save to localStorage
+	console.log(obj)
+	if (window['localStorage']) {
+		console.log('Saving to local storage.')
+		window.localStorage.setItem(appName, JSON.stringify(obj))
+	}
+}
+
+function _clearLocalStorage () {
+	// Clear localStorage
+	if (window['localStorage']) {
+		console.log('Clearing local storage.')
+		window.localStorage.removeItem(appName)
+		// alternative:
+		// window.localStorage.clear()
+	}
+}
+
+
+/*
+getStorage('session');
+getStorage('local');
+
+addEvent(document.querySelector('#session'), 'keyup', function () {
+  sessionStorage.setItem('value', this.value);
+  sessionStorage.setItem('timestamp', (new Date()).getTime());
+});
+
+addEvent(document.querySelector('#local'), 'keyup', function () {
+  localStorage.setItem('value', this.value);
+  localStorage.setItem('timestamp', (new Date()).getTime());
+});
+
+addEvent(document.querySelector('#clear'), 'click', function () {
+  sessionStorage.clear();
+  localStorage.clear();
+  
+  document.querySelector('#previous').innerHTML = '';
+  getStorage('local');
+  getStorage('session');
+});
+*/
