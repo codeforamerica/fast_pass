@@ -78,37 +78,43 @@ app.config(['$locationProvider', function ($location) {
 // This sets up a 'UserData' service so that information collected by
 // user input can be carried across the application
 app.factory('UserData', function () {
-	return { 
-		reportId: Math.floor(Math.random() * 100000000),
-		businessCategory: {
-			code: null,
-			name: null,
-			description: null
-		},
-		businessDescription: null,
-		additionalBusiness: null,
-		naics: {
-			code: null,
-			title: null,
-			year: '2012'
-		},
-		property: {
-			parcelNumber: null,
-			address: null,
-			master_address: null,
-			ward: null,
-			location: {},
-			score: null
-		},
-		rawInputs: {
-			businessSearch: [],
-			addressSearch: []
-		},
-		nav: {
-			pathTo50: null,
-			previous: null,
-			current: null
+	// Only create this empty object if there's no localStorage in place
+	if (_checkLocalStorage() == false) {
+		return { 
+			reportId: Math.floor(Math.random() * 100000000),
+			businessCategory: {
+				code: null,
+				name: null,
+				description: null
+			},
+			businessDescription: null,
+			additionalBusiness: null,
+			naics: {
+				code: null,
+				title: null,
+				year: '2012'
+			},
+			property: {
+				parcelNumber: null,
+				address: null,
+				master_address: null,
+				ward: null,
+				location: {},
+				score: null
+			},
+			rawInputs: {
+				businessSearch: [],
+				addressSearch: []
+			},
+			nav: {
+				pathTo50: null,
+				previous: null,
+				current: null
+			}
 		}
+	} else {
+		// return the thing in localStorage
+		return _loadLocalStorage()
 	}
 })
 
@@ -290,7 +296,6 @@ directives.radioSelect = function () {
 	}
 }
 
-/*
 directives.scrollfix = function () {
 	// Elements with 'scrollfix' directive (placed on the class, for additional CSS)
 	// will be fixed in place in the window once its top scrolls to a certain point
@@ -329,7 +334,6 @@ directives.scrollfix = function () {
 		}
 	}
 }
-*/
 
 directives.externalLink = function () {
 	// Buttons with 'data-external-link' attribute will go to the provided
@@ -548,7 +552,7 @@ function _loadLocalStorage () {
 
 function _saveLocalStorage (obj) {
 	// Save to localStorage
-	console.log(obj)
+	// console.log(obj)
 	if (window['localStorage']) {
 		console.log('Saving to local storage.')
 		window.localStorage.setItem(appName, JSON.stringify(obj))

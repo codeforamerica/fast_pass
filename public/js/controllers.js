@@ -340,7 +340,7 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
 		$scope.parcel =	$scope.userdata.property
 
 		// Set display
-		$scope.title = $scope.userdata.property.address
+		$scope.title = $scope.userdata.property.address.capitalize()
 		$scope.parcelLoaded  = true
 
 		return
@@ -643,7 +643,7 @@ appCtrls.controller('ReturnCtrl', function ($scope, UserData) {
 
 		// Load data from local storage
 		var localStorage = _loadLocalStorage()
-		console.log(localStorage)
+		// console.log(localStorage)
 		$scope.userdata = localStorage
 		// ??
 		UserData = localStorage
@@ -655,6 +655,7 @@ appCtrls.controller('ReturnCtrl', function ($scope, UserData) {
 
 		// Show the return dialog box
 		// $scope.showDialog = true
+		// This code is a hack... it delays a bit so that it animates sliding down after load
 		var timeout = setTimeout(showDialog, 800)
 	}
 	else {
@@ -664,8 +665,8 @@ appCtrls.controller('ReturnCtrl', function ($scope, UserData) {
 	}
 
 	$scope.hideDialog = function () {
-		$scope.showDialog = false
-		$scope.returnDialog = false
+		// $scope.showDialog = false
+		// $scope.returnDialog = false
 		document.querySelector('#return').style.marginTop = '-200px'
 	}
 
