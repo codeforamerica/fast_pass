@@ -120,6 +120,7 @@ app.factory('UserData', function () {
 
 app.factory('MapService', function () {
 	return {
+		showMap: false,
 		map: null,
 		clicked: {
 			latlng: [],
@@ -181,7 +182,7 @@ var directives = {}
 app.directive(directives)
 
 // Actions to be done when loading a part-screen section with map
-directives.showMap = function () {
+directives.showMap = function (MapService) {
 	return function (scope, element) {
 
 		// Retrieve elements and wrap as jQLite
@@ -196,17 +197,14 @@ directives.showMap = function () {
 			element.addClass('section-map')
 	
 			// Activate map
-			// document.getElementById('map-container').style.display = 'block'
-
-			// After activating the map, need to get Google Maps to recalculate center
-			// But how does one do this without being able to access the map element from here?
+			MapService.showMap = true
 		}
 
 	}
 }
 
 // Actions to be done when loading a full-screen section with map
-directives.hideMap = function () {
+directives.hideMap = function (MapService) {
 	return function () {
 
 		// Retrieve elements and wrap as jQLite
@@ -219,9 +217,7 @@ directives.hideMap = function () {
 			$mainEl.addClass('fullscreen').removeClass('partscreen')
 	
 			// Deactivates map so it doesn't interfere with other things on the page (.e.g. scrollfix)
-			// This is disabled because I can't get the map center recalculation to work,
-			// and we might remove scroll fix anyway
-			// document.getElementById('map-container').style.display = 'none'
+			MapService.showMap = false
 		}
 	}
 }
@@ -457,12 +453,11 @@ controllers.sectionGo = function ($scope, $routeParams, UserData) {
 	$scope.userdata.nav.previous = $scope.userdata.nav.current
 	$scope.userdata.nav.current  = $scope.sectionId
 
-	// Somewhere in here should be the logic for saving to LocalStorage or retrieving it
-/*
-- this should be done AFTER any potential loading, because a route change with no prior user data should not be overwriting local storage!
-- is there a way to check????
-*/
-	_saveLocalStorage(UserData)
+	// Hacky thing where it doesn't autosave when you just show up on section 10 (because user
+	// hasn't done anything yet)
+	if ($scope.sectionId != 10) {
+		_saveLocalStorage(UserData)
+	}
 
 	// DOM id for jQuery
 	var sectionId = '#section' + $scope.sectionId,
@@ -569,27 +564,3 @@ function _clearLocalStorage () {
 	}
 }
 
-
-/*
-getStorage('session');
-getStorage('local');
-
-addEvent(document.querySelector('#session'), 'keyup', function () {
-  sessionStorage.setItem('value', this.value);
-  sessionStorage.setItem('timestamp', (new Date()).getTime());
-});
-
-addEvent(document.querySelector('#local'), 'keyup', function () {
-  localStorage.setItem('value', this.value);
-  localStorage.setItem('timestamp', (new Date()).getTime());
-});
-
-addEvent(document.querySelector('#clear'), 'click', function () {
-  sessionStorage.clear();
-  localStorage.clear();
-  
-  document.querySelector('#previous').innerHTML = '';
-  getStorage('local');
-  getStorage('session');
-});
-*/

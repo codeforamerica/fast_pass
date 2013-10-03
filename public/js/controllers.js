@@ -192,7 +192,7 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 	$scope.userdata = UserData
 	$scope.userdata.nav.pathTo50 = 40    // Remember the current section to preserve path in the future
 	$scope.mapService = MapService
-	$scope.debug = true
+	$scope.debug = false
 
 //	var addressEndpoint = 'http://mapdata.lasvegasnevada.gov/clvgis/rest/services/CLVPARCELS_Address_Locator/GeocodeServer/findAddressCandidates?&outFields=&outSR=4326&searchExtent=&f=json&Street='
 //	var addressEndpoint = '/address/suggest?address='
@@ -583,24 +583,153 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 		}
 	};
 
-	var cityLimitsGeoJSON = '/data/clv-city-limits.geojson'
+	// Initial view variables
+	$scope.loading = false
+	$scope.infoWindowContent = null
 
-	// Get a matched business type
-	$http.get(cityLimitsGeoJSON).success( function (stuff) {
+	// Watch for showMap/hideMap directives triggers.
+	$scope.$watch(function() {
+		// Argument #1:  the variable to watch
+		// For some reason it needs to be returned in a function like this
+		// and not give the variable itself
+		return $scope.mapService.showMap
+	}, function (newValue, oldValue) {
+		// Argument #2:  the function that does stuff with the changed variable
 
+		// Google maps API v3 requires developers to manually trigger the resize event
+		// when the map div is resized or visibility is changed
+		// This doesn't seem to work immediately so we do it after a really brief timeout
+		if (newValue == true) {
+			setTimeout(_triggerResize, 10)
+		}
+
+		function _triggerResize() {
+			google.maps.event.trigger($scope.map, 'resize')
+		}
 	})
 
+	// Create infowindow instance - we only need one, so let's keep this here.
+	$scope.infowindow = new google.maps.InfoWindow({
+		content: "<div class='loading-small' style='margin: 30px 0' ng-show='loading'><img src='img/loading-lite.gif'></div><div ng-show='infoWindowContent'>{{infoWindowContent}}</div>"
+	})
+
+	// Create marker holder
+	$scope.markers = []
+
+	// Display a very light city limits thing to direct people's attentions.
+	var cityLimitsGeoJSON = '/data/clv-city-limits.geojson'
+
+	$http.get(cityLimitsGeoJSON)
+	.success(function (response) {
+		// Translate response to Google Maps
+		// https://developers.google.com/maps/tutorials/data/importing_data
+		// 3rd party conversion util https://github.com/JasonSanford/geojson-google-maps
+		// console.log(response)
+		var options = {
+			clickable: false,
+			fillColor: 'white',
+			fillOpacity: 0,
+			strokeColor: '#cc0000',
+			strokeOpacity: 0.25,
+			strokePosition: google.maps.StrokePosition.OUTSIDE,
+			strokeWeight: 4
+		}
+
+		var cityLimits = new GeoJSON(response, options);
+
+		if (cityLimits.error) {
+			console.log('Error converting city limits GeoJSON to Google Maps overlay.')
+		} else {
+			angular.forEach(cityLimits, function (shape) {
+				angular.forEach(shape, function (geometry) {
+					geometry.setMap($scope.map)
+				})
+			})
+		}
+	})
+	.error(function () {
+		console.log('Could not retrieve city limits.')
+	})
+
+	// Actions to perform when map is clicked.
 	$scope.mapClick = function ($event, $params) {
 
+		// Record lat / lng point of click for application use
 		$scope.mapService.clicked.lat = $event.latLng.lat()
 		$scope.mapService.clicked.lng = $event.latLng.lng()
 
+		// Clear old marker(s) and add a new marker
+		$scope._deleteMarkers()
+		var marker = $scope._addMarker($event.latLng)
+
+		// Pan to click
+		$scope.map.panTo($event.latLng)
+
+		// Open info window
+		$scope.infowindow.open($scope.map, marker)
+		$scope.loading = true
+
+		// Infowindow content
+//		$scope.infowindow.content = '<a href=\'\'>Use this location</a>'
+//		$scope.infowindow.content = 'Clicked location: ' + $event.latLng.lat() + ', ' + $event.latLng.lng()
+		$scope.infoWindowContent = 'Clicked location: ' + $event.latLng.lat() + ', ' + $event.latLng.lng()
+
+		// Geocode address
+		var geocodeEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?jsonCallback=JSON_CALLBACK&score=20&format=json&latlng='
+
+		$http.jsonp(geocodeEndpoint + $event.latLng.toUrlValue()).
+		success( function (response, status) {
+
+			// Turn off loader
+			$scope.loading = false
+
+			// Extract results from response
+			//var results = response.candidates
+			var result = response.response[0]
+
+			if (result.length == 0) {
+				// Message for no results
+				// $scope.infowindow.content = 'No address found here.'
+				$scope.infoWindowContent = 'No address found here.'
+			} 
+			else {
+				// $scope.infowindow.content = result.streetno + ' ' + result.streetname + '<br>' + result.city + ', ' + result.state + ' ' + result.zip
+				$scope.infoWindowContent = result.streetno + ' ' + result.streetname + '<br>' + result.city + ', ' + result.state + ' ' + result.zip
+//				$scope.$digest()
+			}
+
+		}).
+		error( function (response, status) {
+			$scope.loading = false
+			// $scope.infowindow.content = 'Sorry, geocode error! Try again?'
+			$scope.infoWindowContent = 'Sorry, geocode error! Try again?'
+		});
+
 	}
 
+	$scope._addMarker = function(latlng) {
+		// Create marker instance
+		var marker = new google.maps.Marker({
+			position: latlng,
+			map: $scope.map
+		})
 
-	this.doStuff = function () {
-		$scope.mapService.clicked.lat = document.getElementById('mapServiceLat').value
-		$scope.mapService.clicked.lng = document.getElementById('mapServiceLng').value
+		// Have to manually keep track of them
+		$scope.markers.push(marker)
+
+		return marker
+	}
+
+	// Deletes all markers in the array by removing references to them
+	$scope._deleteMarkers = function() {
+		if ($scope.markers) {
+			// remove markers from the map
+			angular.forEach($scope.markers, function (marker) {
+				marker.setMap(null)
+			})
+			// remove markers from the array keeping track of them
+			$scope.markers.length = 0
+		}
 	}
 
 

@@ -12,67 +12,6 @@ var DEBUG_ALLOW         = true
 
 
 
-/*************************************************************************
-// 
-// INITIALIZE MAP
-// Sets initial location, view, attribution, marker types
-//
-// ***********************************************************************/
-
-
-
-function mapInitialize() {
-
-/*
-
-	// Create infowindow instance
-	infowindow = new google.maps.InfoWindow({
-		content: 'This is content that needs to be shown',
-		position: map.getCenter()
-	})
-
-	google.maps.event.addListener(map, 'click', function (e) {
-		_output('Clicked: ' + e.latLng.toUrlValue())
-
-		// Output to debug input thing for now.
-	    document.getElementById('mapServiceLat').value = e.latLng.lat()
-		document.getElementById('mapServiceLng').value = e.latLng.lng()
-
-		_deleteMarkers()
-		var marker = _addMarker(e.latLng)
-
-		map.panTo(e.latLng)
-		infowindow.open(map, marker)
-
-	})
-*/
-}
-
-
-function _addMarker (latlng) {
-	// Create marker instance
-	var marker = new google.maps.Marker({
-		position: latlng,
-		map: map
-	})
-
-	// Have to manually keep track of them
-	markers.push(marker)
-
-	return marker
-}
-
-// Deletes all markers in the array by removing references to them
-function _deleteMarkers () {
-	if (markers) {
-		for (var i in markers) {
-			markers[i].setMap(null)
-		}
-		markers.length = 0
-	}
-}
-
-// google.maps.event.addDomListener(window, 'load', mapInitialize);
 
 /*************************************************************************
 // 
