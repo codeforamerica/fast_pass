@@ -587,6 +587,55 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 	$scope.loading = false
 	$scope.infoWindowContent = null
 
+	// Create infowindow instance - we only need one, so let's keep this here.
+	$scope.infowindow = new google.maps.InfoWindow({
+		content: "<div class='loading-small' style='margin: 30px 0' ng-show='loading'><img src='img/loading-lite.gif'></div><div ng-show='infoWindowContent'>{{infoWindowContent}}</div>"
+	})
+
+	// Create marker holder
+	$scope.markers = []
+
+	// Display a very light city limits thing to direct people's attentions.
+	var cityLimitsGeoJSON = '/data/clv-city-limits.geojson'
+
+	$http.get(cityLimitsGeoJSON)
+	.success(function (response) {
+
+		// Set GeoJSON display options
+		// https://developers.google.com/maps/documentation/javascript/reference?hl=en#PolygonOptions
+		var options = {
+			clickable: false,
+			fillColor: 'white',
+			fillOpacity: 0,
+			strokeColor: '#cc0000',
+			strokeOpacity: 0.25,
+			strokePosition: google.maps.StrokePosition.OUTSIDE,
+			strokeWeight: 4
+		}
+
+		// Translate GeoJSON-formatted response to Google Maps format
+		// https://developers.google.com/maps/tutorials/data/importing_data
+		// 3rd party conversion util https://github.com/JasonSanford/geojson-google-maps
+		var cityLimits = new GeoJSON(response, options);
+
+		if (cityLimits.error) {
+			console.log('Error converting city limits GeoJSON to Google Maps overlay.')
+		} else {
+			// Display the City limits
+			// Note that for CLV the city limits has 2 shapes in the feature collection
+			angular.forEach(cityLimits, function (shape) {
+				angular.forEach(shape, function (geometry) {
+					geometry.setMap($scope.map)
+					// getBounds() is not native to Google Maps - it was added in prototype. See top of app.js
+					$scope.cityLimitsBounds = geometry.getBounds()
+				})
+			})
+		}
+	})
+	.error(function () {
+		console.log('Could not retrieve city limits.')
+	})
+
 	// Watch for showMap/hideMap directives triggers.
 	$scope.$watch(function() {
 		// Argument #1:  the variable to watch
@@ -605,50 +654,11 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 
 		function _triggerResize() {
 			google.maps.event.trigger($scope.map, 'resize')
+
+			// fit to city limits
+			// is this the best place to put this?!?
+			$scope.map.fitBounds($scope.cityLimitsBounds)
 		}
-	})
-
-	// Create infowindow instance - we only need one, so let's keep this here.
-	$scope.infowindow = new google.maps.InfoWindow({
-		content: "<div class='loading-small' style='margin: 30px 0' ng-show='loading'><img src='img/loading-lite.gif'></div><div ng-show='infoWindowContent'>{{infoWindowContent}}</div>"
-	})
-
-	// Create marker holder
-	$scope.markers = []
-
-	// Display a very light city limits thing to direct people's attentions.
-	var cityLimitsGeoJSON = '/data/clv-city-limits.geojson'
-
-	$http.get(cityLimitsGeoJSON)
-	.success(function (response) {
-		// Translate response to Google Maps
-		// https://developers.google.com/maps/tutorials/data/importing_data
-		// 3rd party conversion util https://github.com/JasonSanford/geojson-google-maps
-		// console.log(response)
-		var options = {
-			clickable: false,
-			fillColor: 'white',
-			fillOpacity: 0,
-			strokeColor: '#cc0000',
-			strokeOpacity: 0.25,
-			strokePosition: google.maps.StrokePosition.OUTSIDE,
-			strokeWeight: 4
-		}
-
-		var cityLimits = new GeoJSON(response, options);
-
-		if (cityLimits.error) {
-			console.log('Error converting city limits GeoJSON to Google Maps overlay.')
-		} else {
-			angular.forEach(cityLimits, function (shape) {
-				angular.forEach(shape, function (geometry) {
-					geometry.setMap($scope.map)
-				})
-			})
-		}
-	})
-	.error(function () {
-		console.log('Could not retrieve city limits.')
 	})
 
 	// Actions to perform when map is clicked.
