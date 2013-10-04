@@ -1,10 +1,10 @@
 {
 
-  "dev": {
+  "development": {
     "driver": "pg",
     "host": "localhost",
     "user": "ryan",
-    "database": "fast_track_dev"
+    "database": "fast_track_development"
   },
 
   "test": {

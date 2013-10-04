@@ -16,20 +16,8 @@ If it's not set already, specify a node environment variable:
 export NODE_ENV="development"
 ```
 
-Create the database configuration file:
+Setup the database:
 
 ```
-$ cp config/database.json.sample config/database.json
-```
-
-Create the database:
-
-```
-$ npm run-script create-db
-```
-
-Migrate the database.
-
-```
-$ npm run-script migrate-db
+$ npm run-script db-setup
 ```
