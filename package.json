@@ -8,7 +8,10 @@
       "url": "https://github.com/rclosner/lv-dof"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "migrate-db": "db-migrate up --config config/database.json --migrations-dir db/migrations -e \"$NODE_ENV\"",
+    "rollback-db": "db-migrate down --config config/database.json --migrations-dir db/migrations -e \"$NODE_ENV\"",
+    "create-db": "psql -c \"CREATE DATABASE fast_track_$NODE_ENV;\""
   },
   "engines": {
     "node": "0.10.x",

@@ -3,22 +3,18 @@ FastTrack
 
 ## Installation
 
-Install dependencies:
+Install application dependencies:
 
 ```
 $ npm install
+$ npm install -g db-migrate
 ```
 
-Create the local development databases:
+If it's not set already, specify a node environment variable:
 
 ```
-$ psql
-=# CREATE DATABASE fast_track_development;
-=# \q
+export NODE_ENV="development"
 ```
-
-Install ```db-migrate``` globally:
-
 
 Create the database configuration file:
 
@@ -26,21 +22,14 @@ Create the database configuration file:
 $ cp config/database.json.sample config/database.json
 ```
 
-Install the 'db-migrate' package globally.
+Create the database:
 
 ```
-$ npm install -g db-migrate
+$ npm run-script create-db
 ```
 
-Migrate the database(s).
+Migrate the database.
 
 ```
-$ db-migrate up --config config/database.json --migrations-dir db/migrations -e test
-$ db-migrate up --config config/database.json --migrations-dir db/migrations -e development
-```
-
-If you don't already have it set, it may make sense to set a node environment variable locally.
-
-```
-export NODE_ENV="development"
+$ npm run-script migrate-db
 ```
