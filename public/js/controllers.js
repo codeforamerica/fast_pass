@@ -586,11 +586,11 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 
 	// Initial view variables
 	$scope.loading = false
-	$scope.infoWindowContent = null
+	var infoLoader = "<div class='loading-small' style='margin: 30px 0; text-align: center' ng-show='loading'><img src='img/loading-lite.gif'></div>"
 
 	// Create infowindow instance - we only need one, so let's keep this here.
 	$scope.infowindow = new google.maps.InfoWindow({
-		content: "<div class='loading-small' style='margin: 30px 0; text-align: center' ng-show='loading'><img src='img/loading-lite.gif'></div>"
+		content: infoLoader
 	})
 
 	// Create marker holder
@@ -673,10 +673,14 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 		$scope._deleteMarkers()
 		var marker = $scope._addMarker($event.latLng)
 
-		// Pan to click
+		// Pan/zoom to click
 		$scope.map.panTo($event.latLng)
+		if ($scope.map.getZoom() < 17) {
+			$scope.map.setZoom(17)
+		}
 
 		// Open info window
+		$scope.infowindow.setContent(infoLoader)
 		$scope.infowindow.open($scope.map, marker)
 		$scope.loading = true
 
@@ -802,6 +806,14 @@ appCtrls.controller('ReturnCtrl', function ($scope, UserData) {
 		// console.log('Application not previously started. Starting from beginning.')
 		// window.location.href = '/#/'
 	}
+
+	// Hide dialog when Escape is pressed
+	$(document).keyup( function (e) {
+		if (e.keyCode === 13 || e.keyCode === 27) { 
+			// Close modal
+			$scope.hideDialog()
+		}
+	})
 
 	$scope.hideDialog = function () {
 		// $scope.showDialog = false

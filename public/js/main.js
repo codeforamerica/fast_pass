@@ -49,7 +49,8 @@ $(document).ready(function () {
 	$('.modal-background').on('click', _closeModal)
 	// by pressing ESC
 	$(document).keyup( function (e) {
-		if ((e.keyCode === 13 || e.keyCode === 27) && $('#modal').is(':visible')) { 
+		if (e.keyCode === 13 || e.keyCode === 27) { 
+			// Close modal
 			_closeModal()
 		}
 	})

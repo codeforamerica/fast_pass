@@ -398,7 +398,9 @@ directives.maxWords = function () {
 directives.returnDialog = function () {
 	return {
 		restrict: 'A',
-		templateUrl: '/partials/_return.html'
+		templateUrl: '/partials/_return.html',
+		link: function(scope, element, attrs) {
+		}
 	}
 }
 
