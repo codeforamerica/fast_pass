@@ -13,8 +13,8 @@ Create the test and development databases:
 
 ```
 $ psql
-=# CREATE DATABASE fasttrack_test;
-=# CREATE DATABASE fasttrack_dev;
+=# CREATE DATABASE fast_track_test;
+=# CREATE DATABASE fast_track_development;
 =# \q
 ```
 
@@ -37,5 +37,5 @@ Migrate the database(s).
 
 ```
 $ db-migrate up --config config/database.json --migrations-dir db/migrations -e test
-$ db-migrate up --config config/database.json --migrations-dir db/migrations -e dev
+$ db-migrate up --config config/database.json --migrations-dir db/migrations -e development
 ```

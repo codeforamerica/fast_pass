@@ -4,14 +4,14 @@
     "driver": "pg",
     "host": "localhost",
     "user": "ryan",
-    "database": "fasttrack_dev"
+    "database": "fast_track_dev"
   },
 
   "test": {
     "driver": "pg",
     "host": "localhost",
     "user": "ryan",
-    "database": "fasttrack_test"
+    "database": "fast_track_test"
   },
 
   "prod": { "ENV": "HEROKU_POSTGRESQL_BROWN_URL" }

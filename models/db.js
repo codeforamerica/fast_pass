@@ -1,13 +1,11 @@
-var pg = require('pg')
-var DB = function () {}
+var config = require(process.cwd() + '/config/database');
+var pg = require('pg');
+var DB = function () {};
 
 var host = 'localhost'
 var name = 'fast_track'
 
-DB.config = {
-  host: host,
-  database: name
-}
+DB.config = config[process.env.NODE_ENV];
 
 DB.connect = function (cb) {
   pg.connect(DB.config, function (err, client) {

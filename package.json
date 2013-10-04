@@ -19,8 +19,6 @@
     "pg": "2.2.0",
     "jade": "*",
     "less-middleware": "0.1.x",
-    "proj4js": "*",
-    "db-migrate": "*",
-    "pg": "*"
+    "proj4js": "*"
   }
 }

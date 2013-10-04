@@ -44,7 +44,7 @@ html,body{padding:0;margin:0;height:100%;background-color:#fafafa;font-family:'L
 #main.partscreen .container #pi{right:0}
 #main.fullscreen{width:100%}
 .container{position:relative;width:740px;margin:0 auto}
-header{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none}header #nav-logo{height:150px;position:absolute;top:10px;left:-20px;opacity:.75;filter:alpha(opacity=75)}header #nav-logo a{background:none;padding:0}
+header{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none}header #nav-logo{height:150px;position:absolute;top:10px;left:-20px;opacity:.5;filter:alpha(opacity=50)}header #nav-logo a{background:none;padding:0}
 header #nav-logo img{position:absolute;right:0px;display:block;width:94px;height:94px}
 .partscreen header{margin-left:120px}.partscreen header #nav-logo{left:100px}
 h1{font-size:38px;line-height:32px;font-weight:100;width:300px;display:inline-block}h1 sub{font-size:9px;font-weight:400;position:relative;color:#999;top:-18px}
@@ -70,10 +70,9 @@ a.no-color{color:inherit}
 a.help:after{content:'?';display:inline-block;position:relative;top:-1px;width:10px;height:10px;border-radius:6px;border:1px solid #757575;margin-left:4px;margin-right:4px;text-align:center;color:#757575;line-height:10px;font-size:10px}
 .hidden{display:none}
 small{font-size:11px;color:#888}
-.content{width:740px;position:relative}.content section{position:relative;margin-bottom:30px}.content section.section-start{display:block}
-.content section.section-large{margin-top:40px}
+.content{width:740px;position:relative}.content section{position:relative;margin-bottom:30px}.content section.section-large{margin-top:40px}
 .content section.section-hidden{display:none}
-.content section.section-map{width:500px;position:relative;right:0}
+.content section.section-map{width:500px}
 .content .section-navigation{position:relative;width:100%;margin-top:30px;height:36px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none}
 .content .radio-select{font-size:18px;line-height:175%;position:relative}.content .radio-select p{height:45px;position:relative}
 .content .radio-select button,.content .radio-select a.button{font-weight:200;position:absolute}
@@ -119,6 +118,7 @@ table:not(.no-style) td{padding:4px 0}
 .inset-box{background-color:#e7eaeb;padding:20px}
 .info-box{background-color:#e7eaeb;padding:0 20px}
 .error{color:red;font-weight:bold}
+.message{font-weight:bold}
 #modal{display:none;width:100%;height:100%;position:fixed;z-index:8000;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none}#modal .modal-background{background-color:rgba(255,255,255,0.75);width:100%;height:100%;position:fixed}
 #modal .modal-box{position:fixed;width:500px;left:50%;top:30%;margin-left:-250px;background-color:#fafafa;-webkit-box-shadow:0 0 8px rgba(0,0,0,0.25);box-shadow:0 0 8px rgba(0,0,0,0.25);border-radius:3px}
 #modal .modal-content{padding:0px 20px;-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;-o-user-select:text;user-select:text}
@@ -131,7 +131,7 @@ footer #pi img{width:32px;height:20px;margin:0 3px}
 #map{height:100%;position:fixed;top:0;left:560px;right:0;z-index:3000;display:none}
 .popup-content{padding:10px 16px 0;text-align:left;margin-top:20px}.popup-content h5{margin:0;padding:0}
 .scrollfix{position:relative}
-.leaflet-top,.leaflet-bottom{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none}
+@media print{#print{width:670px;max-width:100%} #nav-logo{opacity:1;filter:alpha(opacity=100);left:100px} header{position:relative;margin-left:120px} header a:after{content:'' !important} header img{background-color:white} .pill{color:black !important;border:1px solid black !important;background-color:transparent !important} tr,td,th{page-break-inside:avoid} .section-navigation,#pi{display:none} a.help:after,a[href^='mailto:']:after{content:'';border:0}}.leaflet-top,.leaflet-bottom{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none}
 .map-legends{display:none}
 .leaflet-control-attribution{background-color:rgba(255,255,255,0.7) !important;color:#888 !important}.leaflet-control-attribution a{background:none;padding:0;color:#555 !important}
 .leaflet-control-attribution:last-of-type{display:none}

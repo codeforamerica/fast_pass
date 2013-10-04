@@ -4,7 +4,7 @@ var Session = DBModel.extend({
 
   defaults: {
     'id': undefined,
-    'category_ids': undefined,
+    'category_id': undefined,
     'use_modifier_ids': undefined,
     'parcel_id': undefined
   }
