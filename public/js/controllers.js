@@ -11,7 +11,8 @@ appCtrls.controller('StartCtrl', function ($scope, $location, UserData) {
 
 	// Clear application data if directed
 	if (_getQueryStringParams('clear') == 'true') {
-		$scope.userdata = {}
+		UserData = _resetUserData()
+		$scope.userdata = UserData
 		_clearLocalStorage()
 		console.log('User data cleared.')
 	}
@@ -589,7 +590,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 
 	// Create infowindow instance - we only need one, so let's keep this here.
 	$scope.infowindow = new google.maps.InfoWindow({
-		content: "<div class='loading-small' style='margin: 30px 0' ng-show='loading'><img src='img/loading-lite.gif'></div><div ng-show='infoWindowContent'>{{infoWindowContent}}</div>"
+		content: "<div class='loading-small' style='margin: 30px 0; text-align: center' ng-show='loading'><img src='img/loading-lite.gif'></div>"
 	})
 
 	// Create marker holder
@@ -607,8 +608,8 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 			clickable: false,
 			fillColor: 'white',
 			fillOpacity: 0,
-			strokeColor: '#cc0000',
-			strokeOpacity: 0.25,
+			strokeColor: '#cc1100',
+			strokeOpacity: 0.15,
 			strokePosition: google.maps.StrokePosition.OUTSIDE,
 			strokeWeight: 4
 		}
@@ -680,15 +681,13 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 		$scope.loading = true
 
 		// Infowindow content
-//		$scope.infowindow.content = '<a href=\'\'>Use this location</a>'
-//		$scope.infowindow.content = 'Clicked location: ' + $event.latLng.lat() + ', ' + $event.latLng.lng()
-		$scope.infoWindowContent = 'Clicked location: ' + $event.latLng.lat() + ', ' + $event.latLng.lng()
+		// $scope.infowindow.setContent('Clicked location: ' + $event.latLng.toUrlValue(4))
 
 		// Geocode address
-		var geocodeEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?jsonCallback=JSON_CALLBACK&score=20&format=json&latlng='
+		var geocodeEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?score=20&format=json&jsonCallback=JSON_CALLBACK&latlng='
 
-		$http.jsonp(geocodeEndpoint + $event.latLng.toUrlValue()).
-		success( function (response, status) {
+		$http.jsonp(geocodeEndpoint + $event.latLng.toUrlValue())
+		.success( function (response, status) {
 
 			// Turn off loader
 			$scope.loading = false
@@ -697,22 +696,23 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 			//var results = response.candidates
 			var result = response.response[0]
 
-			if (result.length == 0) {
+			if (response.errormsg) {
+				// Error response from city API
+				$scope.infowindow.setContent(response.errormsg)
+			}
+			else if (result.length == 0) {
 				// Message for no results
-				// $scope.infowindow.content = 'No address found here.'
-				$scope.infoWindowContent = 'No address found here.'
+				$scope.infowindow.setContent('No address found here.')
 			} 
 			else {
-				// $scope.infowindow.content = result.streetno + ' ' + result.streetname + '<br>' + result.city + ', ' + result.state + ' ' + result.zip
-				$scope.infoWindowContent = result.streetno + ' ' + result.streetname + '<br>' + result.city + ', ' + result.state + ' ' + result.zip
-//				$scope.$digest()
+				// Display address
+				$scope.infowindow.setContent(result.streetno + ' ' + result.streetname + '<br>' + result.city + ', ' + result.state + ' ' + result.zip + '<br><a href=\'\'>Use this location</a>')
 			}
 
-		}).
-		error( function (response, status) {
+		})
+		.error( function (response, status) {
 			$scope.loading = false
-			// $scope.infowindow.content = 'Sorry, geocode error! Try again?'
-			$scope.infoWindowContent = 'Sorry, geocode error! Try again?'
+			$scope.infowindow.setContent('Sorry, geocode error! Try again?')
 		});
 
 	}

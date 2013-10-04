@@ -94,38 +94,7 @@ app.config(['$locationProvider', function ($location) {
 app.factory('UserData', function () {
 	// Only create this empty object if there's no localStorage in place
 	if (_checkLocalStorage() == false) {
-		return { 
-			reportId: Math.floor(Math.random() * 100000000),
-			businessCategory: {
-				code: null,
-				name: null,
-				description: null
-			},
-			businessDescription: null,
-			additionalBusiness: null,
-			naics: {
-				code: null,
-				title: null,
-				year: '2012'
-			},
-			property: {
-				parcelNumber: null,
-				address: null,
-				master_address: null,
-				ward: null,
-				location: {},
-				score: null
-			},
-			rawInputs: {
-				businessSearch: [],
-				addressSearch: []
-			},
-			nav: {
-				pathTo50: null,
-				previous: null,
-				current: null
-			}
-		}
+		return _resetUserData()
 	} else {
 		// return the thing in localStorage
 		return _loadLocalStorage()
@@ -531,6 +500,41 @@ function _getQueryStringParams(sParam) {
 		var sParameterName = sURLVariables[i].split('=');
 		if (sParameterName[0] == sParam) {
 			return sParameterName[1];
+		}
+	}
+}
+
+function _resetUserData () {
+	return { 
+		reportId: Math.floor(Math.random() * 100000000),
+		businessCategory: {
+			code: null,
+			name: null,
+			description: null
+		},
+		businessDescription: null,
+		additionalBusiness: null,
+		naics: {
+			code: null,
+			title: null,
+			year: '2012'
+		},
+		property: {
+			parcelNumber: null,
+			address: null,
+			master_address: null,
+			ward: null,
+			location: {},
+			score: null
+		},
+		rawInputs: {
+			businessSearch: [],
+			addressSearch: []
+		},
+		nav: {
+			pathTo50: null,
+			previous: null,
+			current: null
 		}
 	}
 }
