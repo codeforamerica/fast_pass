@@ -9,11 +9,10 @@ Install dependencies:
 $ npm install
 ```
 
-Create the test and development databases:
+Create the local development databases:
 
 ```
 $ psql
-=# CREATE DATABASE fast_track_test;
 =# CREATE DATABASE fast_track_development;
 =# \q
 ```
@@ -38,4 +37,10 @@ Migrate the database(s).
 ```
 $ db-migrate up --config config/database.json --migrations-dir db/migrations -e test
 $ db-migrate up --config config/database.json --migrations-dir db/migrations -e development
+```
+
+If you don't already have it set, it may make sense to set a node environment variable locally.
+
+```
+export NODE_ENV="development"
 ```
