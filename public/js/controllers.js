@@ -85,7 +85,17 @@ appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 				if (results.length == 0) {
 					$scope.searchErrorMsg = 'Nothing found for the terms ‘' + input + '’.'
 				} else {
-					$scope.searchResults = results
+
+					// Prune results that are not in the 6-digit range
+					var prunedResults = []
+					for (var j=0; j < results.length; j++) {
+						if (results[j].code.toString().length == 6) {
+							prunedResults.push(results[j])
+						}
+					}
+
+					// Set results to model
+					$scope.searchResults = prunedResults
 					$scope.searchPerformed = true			
 				}
 
