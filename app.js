@@ -12,7 +12,7 @@ var express = require('express')
 
 var app = express();
 
-process.env.NODE_ENV = process.env.NODE_ENV || "development"
+process.env.FP_NODE_ENV = process.env.FP_NODE_ENV || "development"
 
 // all environments
 app.set('port', process.env.PORT || 3000);

@@ -3,31 +3,37 @@
   "test": {
     "driver": "pg",
     "host": "localhost",
-    "user": "root",
-    "database": "fast_track_test"
+    "port": 5432,
+    "user": { "ENV": "FP_DB_TEST_USER" },
+    "password": { "ENV": "FP_DB_TEST_PASSWORD" },
+    "database": { "ENV": "FP_DB_TEST_NAME" }
   },
 
   "development": {
     "driver": "pg",
     "host": "localhost",
-    "user": "root",
-    "database": "fast_track_development"
+    "port": 5432,
+    "user": { "ENV": "FP_DB_DEVELOPMENT_USER" },
+    "password": { "ENV": "FP_DB_DEVELOPMENT_PASSWORD" },
+    "database": { "ENV": "FP_DB_DEVELOPMENT_NAME" }
   },
 
   "staging": {
     "driver": "pg",
-    "host": { "ENV": "DB_HOST" },
-    "user": { "ENV": "DB_USER" },
-    "password": { "ENV": "DB_PASSWORD" },
-    "database": { "ENV": "DB_NAME" } 
+    "host": { "ENV": "FP_DB_STAGING_HOST" },
+    "port": { "ENV": "FP_DB_PRODUCTION_PORT" },
+    "user": { "ENV": "FP_DB_STAGING_USER" },
+    "password": { "ENV": "FP_DB_STAGING_PASSWORD" },
+    "database": { "ENV": "FP_DB_STAGING_NAME" }
   },
 
   "production": {
     "driver": "pg",
-    "host": { "ENV": "DB_HOST" },
-    "user": { "ENV": "DB_USER" },
-    "password": { "ENV": "DB_PASSWORD" },
-    "database": { "ENV": "DB_NAME" } 
-  },
+    "host": { "ENV": "FP_DB_PRODUCTION_HOST" },
+    "port": { "ENV": "FP_DB_PRODUCTION_PORT" },
+    "user": { "ENV": "FP_DB_PRODUCTION_USER" },
+    "password": { "ENV": "FP_DB_PRODUCTION_PASSWORD" },
+    "database": { "ENV": "FP_DB_PRODUCTION_NAME" }
+  }
 
 }

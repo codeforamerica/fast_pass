@@ -9,10 +9,11 @@
   },
   "scripts": {
     "start": "node app.js",
-    "db-migrate": "db-migrate up --config config/database.json --migrations-dir db/migrations -e \"$NODE_ENV\"",
-    "db-rollback": "db-migrate down --config config/database.json --migrations-dir db/migrations -e \"$NODE_ENV\"",
-    "db-create": "psql -c \"CREATE DATABASE fast_track_$NODE_ENV;\"",
-    "db-setup": "cp config/database.json.sample config/database.json; npm run-script db-create; npm run-script db-migrate;"
+    "db-setup": "./db/setup.js",
+    "db-create": "./db/create.js",
+    "db-migrate": "./db/migrate.js",
+    "db-rollback": "./db/rollback.js",
+    "db-drop": "./db/drop.js"
   },
   "engines": {
     "node": "0.10.x",
