@@ -7,7 +7,6 @@ Install application dependencies:
 
 ```
 $ npm install
-$ npm install -g db-migrate
 ```
 
 ## Database
