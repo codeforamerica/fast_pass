@@ -9,12 +9,19 @@ Install application dependencies:
 $ npm install
 ```
 
-## Database
+## Environment
 
-Set your database credentials in environment variables:
+Set a default application environment:
 
 ```
-$ export FP_NODE_ENV=development
+$ export NODE_ENV=development
+```
+
+## Database
+
+Set your database credentials:
+
+```
 $ export FP_DB_DEVELOPMENT_NAME= your database
 $ export FP_DB_DEVELOPMENT_USER= your database username
 $ export FP_DB_DEVELOPMENT_PASSWORD= your database password

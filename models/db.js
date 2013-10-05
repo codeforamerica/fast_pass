@@ -6,7 +6,7 @@ var DB = function () {};
 var host = 'localhost'
 var name = 'fast_track'
 
-DB.config = config.database[process.env.FP_NODE_ENV];
+DB.config = config.database[process.env.NODE_ENV];
 
 DB.connect = function (cb) {
   pg.connect(DB.config, function (err, client) {

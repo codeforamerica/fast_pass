@@ -3,7 +3,7 @@
 var exec = require('child_process').exec;
 
 var dbconfig  = require(process.cwd() + '/config/database');
-var envconfig = dbconfig[process.env.FP_NODE_ENV];
+var envconfig = dbconfig[process.env.NODE_ENV];
 
 if (!envconfig) throw('invalid environment variable');
 
