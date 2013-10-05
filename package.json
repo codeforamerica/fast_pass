@@ -1,6 +1,6 @@
 {
-  "name": "lv-dof",
-  "description": "Las Vegas Development Opportunity Finder",
+  "name": "lv-fastpass",
+  "description": "Las Vegas Development Fastpass",
   "version": "0.0.1",
   "private": true,
   "repository": {
@@ -19,6 +19,6 @@
     "pg": "2.2.0",
     "jade": "*",
     "less-middleware": "0.1.x",
-    "proj4js": "*"
+    "proj4": "1.5.x"
   }
 }
