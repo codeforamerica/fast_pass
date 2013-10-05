@@ -1,0 +1,33 @@
+{
+
+  "test": {
+    "driver": "pg",
+    "host": "localhost",
+    "user": "root",
+    "database": "fast_track_test"
+  },
+
+  "development": {
+    "driver": "pg",
+    "host": "localhost",
+    "user": "root",
+    "database": "fast_track_development"
+  },
+
+  "staging": {
+    "driver": "pg",
+    "host": { "ENV": "DB_HOST" },
+    "user": { "ENV": "DB_USER" },
+    "password": { "ENV": "DB_PASSWORD" },
+    "database": { "ENV": "DB_NAME" } 
+  },
+
+  "production": {
+    "driver": "pg",
+    "host": { "ENV": "DB_HOST" },
+    "user": { "ENV": "DB_USER" },
+    "password": { "ENV": "DB_PASSWORD" },
+    "database": { "ENV": "DB_NAME" } 
+  },
+
+}
