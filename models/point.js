@@ -1,5 +1,5 @@
 var Model = require('./model')
-var proj4 = require('proj4js')
+var proj4 = require('proj4')
 
 var EPSG_4326   = 'EPSG:4326'
 var ESRI_102707 = 'ESRI:102707'
