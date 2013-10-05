@@ -21,7 +21,9 @@
 
 			<div ng-show='searchErrorMsg'>
 				<span class='error'>{{searchErrorMsg}}</span>
+			</div>
 
+			<div ng-show='searchNoAddress'>
 				<p>
 					If this is a real address in the Las Vegas metropolitan region, make sure it is inside the City of Las Vegas boundaries.  For more information, see <a href='http://amiinlasvegas.com/' target='_blank'>Am I In Las Vegas?.com</a>.
 				</p>
@@ -44,6 +46,7 @@
 		<h3>
 			Multiple addresses found. Did you mean:
 		</h3>
+
 		<div class='naics-result' ng-repeat='item in searchResults | orderBy: item.score | limitTo: 10'>
 			<span>{{item.address}}</span>
 			<button ng-click='selectResult(item)' radio-select data-selected-text='Selected'>Select</button>
@@ -59,10 +62,6 @@
 
 <div ng-show='debug' class='ng-cloak'>
 <pre><strong>== DEBUG! ==</strong></pre>
-<p>
-	<input type='hidden' id='mapServiceLng' ng-model='mapService.clicked.lng' value='' style='width:50%; float:right;'>
-	<input type='hidden' id='mapServiceLat' ng-model='mapService.clicked.lat' value='' style='width:50%'> 
-</p>
 <pre>
 Clicked position: {{mapService.clicked.lat}}<span ng-show='mapService.clicked.lat'>,</span> {{mapService.clicked.lng}}
 </pre>
