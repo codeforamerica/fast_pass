@@ -1,77 +1,111 @@
-<section id='section50' ng-controller='50Ctrl as app' show-map>
+<section id='section50' ng-controller='50Ctrl as app' show-map ng-cloak>
 
-	<h2>{{parcel.address}}</h2>
-	
-	<table class='no-style'>
-		<tbody>
-			<tr>
-				<td width='200px'><strong><a href='' class='no-color help modal'>Parcel number</a></strong></td>
-				<td>#{{parcel.number}}</td>
-			</tr>
-			<tr>
-				<td><strong><a href='' class='no-color help modal'>Parcel master address</a></strong></td>
-				<td>{{parcel.master_address}}</td>
-			</tr>
-			<tr>
-				<td><strong><a href='' class='no-color help modal'>Other addresses on record</a></strong></td>
-				<td><span ng-repeat='address in parcel.record_addresses'>{{address}}<br></span>
-					<!--If there's no address, how did you land on this page? Through Lat/Lng?<br><a href='' class='small modal'>(don't see your address?)</a>-->
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	
-	<h3><a href='' class='help modal no-color' data-title='Zones' data-content='Planning departments use zones to make sure that different uses are not conflicting with other uses.'>Zones</a></h3>
-	
-	<ul class='comfy no-bullets'>
-		<li><strong><span class='clickable yellow pill'>C-2</span>&nbsp;<a href='' data-title='#{zone_id} #{zone_name} Zone Definition' title='click to highlight zone on map' class='modal'>General Commercial</a></strong></li>
-		<li><strong><span class='clickable yellow pill'>DCP-0</span>&nbsp;<a href='' data-title='#{zone_id} #{zone_name} Zone Definition' title='click to highlight zone on map' class='modal'>Downtown Centennial Plan Overlay</a></strong></li>
-	</ul>
-	
-	<h3>Buildings</h3>
-	
-	<table>
-		<thead>
-			<tr>
-				<td width='30%'>Building Number</td>
-				<td width='70%'>Current Occupancy Type</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>495A</td>
-				<td><span class='green pill'>A2</span> Assembly</td>
-			</tr>
-			<tr>
-				<td>498B</td>
-				<td><span class='pill'>R1</span> Residential</td>
-			</tr>
-		</tbody>
-	</table>
+	<progressbar step='3'></progressbar>
 
-	<h3>Land use history</h3>
-	
-	<ul>
-		<li>Residential</li>
-	</ul>
-	
-	<h3>Incentives</h3>
-	
-	<ul>
-		<li><a href='http://lvrda.org/retail-assistance-program.php' target='_blank'>Downtown Retail Assistance Program</a></li>
-		<li><a href='http://lvrda.org/fast-track-program.php' target='_blank'>Redevelopment Area Fast Track Program</a></li>
-		<li><a href='http://lvrda.org/tif-program.php' target='_blank'>Tax Increment Financing (TIF)</a></li>
-		<li><a href='http://lvrda.org/quickstart-programs.php' target='_blank'>Quick Start Program</a></li>
-		<li><a href='http://lvrda.org/visual-improvement-program.php' target='_blank'>Visual Improvement Program</a></li>
-	</ul>
-	
-	<h3>Other Links</h3>
-	
-	<ul>
-		<li><a href='http://tigerweb.geo.census.gov/datamapper/map.html' target='_blank'>Demographics from US Census</a></li>
-		<li><a href='http://gisgate.co.clark.nv.us/openweb/' target='_blank'>View on Clark County GISMO</a></li>
-		<li><a href='http://clvplaces.appspot.com/apps/interactive/clvpi.htm' target='_blank'>View on Las Vegas Interactive Map</a></li>
-	</ul>
+	<h2>{{title}}</h2>
+
+	<div class='loading-small' style='margin: 30px 0' ng-show='searchLoading'>
+		<img src='img/loading-lite.gif'>
+	</div>
+
+	<div ng-show='errorMsg'>
+		<span class='error'>{{errorMsg}}</span>
+	</div>
+
+	<div ng-show='parcelLoaded'>
+		<table class='no-style'>
+			<tbody>
+				<tr>
+					<td width='200px'><strong><a href='' class='no-color help modal'>Parcel number</a></strong></td>
+					<td>#{{parcel.number}}</td>
+				</tr>
+				<tr>
+					<td><strong><a href='' class='no-color help modal'>Parcel master address</a></strong></td>
+					<td>{{parcel.master_address}}</td>
+				</tr>
+				<tr>
+					<td><strong><a href='' class='no-color help modal'>Other addresses on record</a></strong></td>
+					<td><span ng-repeat='address in parcel.record_addresses'>{{address}}<br></span>
+						<!--If there's no address, how did you land on this page? Through Lat/Lng?<br><a href='' class='small modal'>(don't see your address?)</a>-->
+					</td>
+				</tr>
+				<tr>
+					<td><strong><a href='' class='no-color help modal'>Ward</a></strong></td>
+					<td>{{parcel.ward}}</td>
+				</tr>
+				<tr>
+					<td><strong><a href='' class='no-color help modal'>Tax District</a></strong></td>
+					<td>{{parcel.tax_district}}</td>
+				</tr>
+				<tr>
+					<td><strong><a href='' class='no-color help modal'>Zone</a></strong></td>
+					<td>{{parcel.zone}}</td>
+				</tr>
+				<tr>
+					<td><strong><a href='' class='no-color help modal'>Owner</a></strong></td>
+					<td>{{parcel.owner}}<br>
+						<span ng-repeat='line in parcel.owner_address track by $index'>{{line}}<br></span>
+						<!-- "track by $index": see here: http://www.anujgakhar.com/2013/06/15/duplicates-in-a-repeater-are-not-allowed-in-angularjs/ -->
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<h3><a href='' class='help modal no-color' data-title='Zones' data-content='Planning departments use zones to make sure that different uses are not conflicting with other uses.'>Zones</a></h3>
+		
+		<ul class='comfy no-bullets'>
+			<li><strong><span class='clickable yellow pill'>C-2</span>&nbsp;<a href='' data-title='#{zone_id} #{zone_name} Zone Definition' title='click to highlight zone on map' class='modal'>General Commercial</a></strong></li>
+			<li><strong><span class='clickable yellow pill'>DCP-0</span>&nbsp;<a href='' data-title='#{zone_id} #{zone_name} Zone Definition' title='click to highlight zone on map' class='modal'>Downtown Centennial Plan Overlay</a></strong></li>
+		</ul>
+		
+		<h3>Buildings</h3>
+		
+		<table>
+			<thead>
+				<tr>
+					<td width='30%'>Building Number</td>
+					<td width='70%'>Current Occupancy Type</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>495A</td>
+					<td><span class='green pill'>A2</span> Assembly</td>
+				</tr>
+				<tr>
+					<td>498B</td>
+					<td><span class='pill'>R1</span> Residential</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h3>Land use history</h3>
+		
+		<ul>
+			<li>Residential</li>
+		</ul>
+		
+		<h3>Incentives you may qualify for</h3>
+		
+		<ul>
+			<li><a href='http://lvrda.org/retail-assistance-program.php' target='_blank'>Downtown Retail Assistance Program</a></li>
+			<li><a href='http://lvrda.org/fast-track-program.php' target='_blank'>Redevelopment Area Fast Track Program</a></li>
+			<li><a href='http://lvrda.org/tif-program.php' target='_blank'>Tax Increment Financing (TIF)</a></li>
+			<li><a href='http://lvrda.org/quickstart-programs.php' target='_blank'>Quick Start Program</a></li>
+			<li><a href='http://lvrda.org/visual-improvement-program.php' target='_blank'>Visual Improvement Program</a></li>
+		</ul>
+		
+		<!-- REMOVED for MVP
+		<h3>Other Links</h3>
+		
+		<ul>
+			<li><a href='http://tigerweb.geo.census.gov/datamapper/map.html' target='_blank'>Demographics from US Census</a></li>
+			<li><a href='http://gisgate.co.clark.nv.us/openweb/' target='_blank'>View on Clark County GISMO</a></li>
+			<li><a href='http://clvplaces.appspot.com/apps/interactive/clvpi.htm' target='_blank'>View on Las Vegas Interactive Map</a></li>
+		</ul>
+		// -->
+
+	</div>
 
 	<div class='section-navigation'>
 		<span ng-show='previousIsAddressSearch'>
@@ -80,7 +114,9 @@
 		<span ng-show='previousIsZoningOverview'>
 			<a class='back button' href='/#/section/45'>Return to zoning overview</a>
 		</span>
-		<a class='next button' href='/#/section/70'>Proceed with this property</a>
+		<span ng-show='parcelLoaded'>
+			<a class='next button' href='/#/section/70'>Proceed with this property</a>
+		</span>
 	</div>
 
 </section>

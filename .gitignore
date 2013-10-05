@@ -2,3 +2,4 @@ node_modules
 *.log
 .DS_Store
 config/database.json
+public/stylesheets/styles.css
