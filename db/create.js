@@ -28,7 +28,7 @@ var query = 'psql -c "CREATE DATABASE ' + db + ';"';
 if (user) query += ' -U ' + user;
 if (host) query += ' -h ' + host;
 if (port) query += ' -p ' + port;
-if (pass) query += ' -w ' + pass;
+if (pass) query += ' -w' + pass;
 
 exec(query, function (err, res) {
   if (err) throw(err);
