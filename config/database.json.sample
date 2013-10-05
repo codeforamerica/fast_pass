@@ -1,0 +1,19 @@
+{
+
+  "development": {
+    "driver": "pg",
+    "host": "localhost",
+    "user": "root",
+    "database": "fast_track_development"
+  },
+
+  "test": {
+    "driver": "pg",
+    "host": "localhost",
+    "user": "root",
+    "database": "fast_track_test"
+  },
+
+  "prod": { "ENV": "HEROKU_POSTGRESQL_BROWN_URL" }
+
+}
