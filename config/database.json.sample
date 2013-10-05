@@ -3,14 +3,14 @@
   "development": {
     "driver": "pg",
     "host": "localhost",
-    "user": "ryan",
+    "user": "root",
     "database": "fast_track_development"
   },
 
   "test": {
     "driver": "pg",
     "host": "localhost",
-    "user": "ryan",
+    "user": "root",
     "database": "fast_track_test"
   },
 
