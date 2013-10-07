@@ -4,7 +4,7 @@ var tableName = 'parcels';
 
 exports.up = function(db, callback) {
   db.createTable(tableName, {
-    id: { type: 'int', primaryKey: true },
+    id: { type: 'int', primaryKey: true, autoIncrement: true },
     code: 'string',
     title: 'string',
     description: 'string'

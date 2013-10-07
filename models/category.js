@@ -6,12 +6,11 @@ var Category = DBModel.extend({
     'code': undefined,
     'title': undefined,
     'description': undefined,
-    'type': undefined,
-    'related_category_ids': undefined
+    'type': undefined
   },
 
   equal: function (other) {
-    return other.get('code') == this.get('code');
+    return other.get('id') == this.get('id');
   }
 
 }, {

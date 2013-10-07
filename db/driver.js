@@ -1,20 +1,16 @@
-var config = require('./config');
+var config = require(process.cwd() + '/lib/config');
 var pg = require('pg');
+var Driver = function () {};
 
-var DB = function () {};
+Driver.config = config.database;
 
-var host = 'localhost'
-var name = 'fast_track'
-
-DB.config = config.database;
-
-DB.connect = function (cb) {
-  pg.connect(DB.config, function (err, client) {
+Driver.connect = function (cb) {
+  pg.connect(this.config, function (err, client) {
     cb.call(this, err, client);
   });
 }
 
-DB.query = function (q, v, cb) {
+Driver.query = function (q, v, cb) {
   this.connect(function (err, client) {
     if (err) {
       throw err;
@@ -32,4 +28,4 @@ DB.query = function (q, v, cb) {
   });
 }
 
-module.exports = DB
+module.exports = Driver;

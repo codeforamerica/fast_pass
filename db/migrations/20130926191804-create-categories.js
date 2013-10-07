@@ -4,7 +4,7 @@ var tableName = 'categories';
 
 exports.up = function(db, callback) {
   db.createTable(tableName, {
-    id: { type: 'int', primaryKey: true },
+    id: { type: 'int', primaryKey: true, autoIncrement: true },
     title: 'string',
     description: 'string',
     code: 'string',

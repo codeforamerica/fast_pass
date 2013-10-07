@@ -4,7 +4,7 @@ var tableName = 'sessions';
 
 exports.up = function(db, callback) {
   db.createTable(tableName, {
-    id: { type: 'int', primaryKey: true },
+    id: { type: 'int', primaryKey: true, autoIncrement: true },
     category_id: 'int',
     parcel_id: 'int'
   }, function (a) {

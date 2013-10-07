@@ -1,6 +1,6 @@
-var Model = require('./model')
-var DB    = require('./db');
-var utils = require(process.cwd() + '/lib/utils')
+var utils  = require(process.cwd() + '/lib/utils');
+var Model  = require('./model')
+var DBDriver = require(process.cwd() + '/db/driver');
 
 var DBModel = Model.extend({
 
@@ -43,7 +43,7 @@ var DBModel = Model.extend({
     cb = cb || function () {}
     var klass = this.constructor;
     if (this.persisted) {
-      DB.query('DELETE FROM ' + klass.table + ' WHERE id = ' + this.get('id'), [], cb);
+      DBDriver.query('DELETE FROM ' + klass.table + ' WHERE id = ' + this.get('id'), [], cb);
     }
   },
 
@@ -57,7 +57,7 @@ var DBModel = Model.extend({
 
   query: function (q,v,cb) {
     var klass = this;
-    DB.query(q, v, function (rows) {
+    DBDriver.query(q, v, function (rows) {
       cb( utils.map(rows, function (row) { return new klass(row); }) );
     });
   },
