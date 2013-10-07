@@ -1,15 +1,17 @@
 var Parcel = require( process.cwd() + '/models/parcel' );
+var ParcelClient = require( process.cwd() + '/lib/parcel_client' );
 
-module.exports.index = function (req, res) {
-  Parcel.all(function (rows) {
+module.exports.search = function (req, res) {
+  var position = req.query.position;
+  ParcelClient.search(position, function (data) {
     res.writeHead(200, {'Content-Type': 'application/json'});
-    res.write(JSON.stringify(rows));
+    res.write(data);
     res.end();
   });
 }
 
-module.exports.search = function (req, res) {
-  Parcel.search(req.query, function (rows) {
+module.exports.index = function (req, res) {
+  Parcel.all(function (rows) {
     res.writeHead(200, {'Content-Type': 'application/json'});
     res.write(JSON.stringify(rows));
     res.end();

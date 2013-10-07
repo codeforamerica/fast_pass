@@ -54,8 +54,8 @@ if (app.get('env') === 'development') {
 app.get('/', routes.index);
 
 // Parcel Routes
-app.get('/parcels', parcel.index);
 app.get('/parcels/search', parcel.search);
+app.get('/parcels', parcel.index);
 app.get('/parcels/:id', parcel.find)
 
 // Geocode Routes

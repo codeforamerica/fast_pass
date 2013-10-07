@@ -205,11 +205,9 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 	$scope.mapService = MapService
 	$scope.debug = false
 
-//	var addressEndpoint = 'http://mapdata.lasvegasnevada.gov/clvgis/rest/services/CLVPARCELS_Address_Locator/GeocodeServer/findAddressCandidates?&outFields=&outSR=4326&searchExtent=&f=json&Street='
-//	var addressEndpoint = '/address/suggest?address='
-	var addressEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?jsonCallback=JSON_CALLBACK&score=20&format=json&address='
 
-	var latLngEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?jsonCallback=JSON_CALLBACK&score=20&format=json&latlng='
+  var addressEndpoint = '/geocode/address?address='
+  var latLngEndpoint = '/geocode/position?latlng='
 // example requests. see Issues #7, 38
 // /address/suggest?address=Las Vegas Blvd
 // /address/geocode?address=455 Las Vegas Blvd
@@ -242,7 +240,7 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 		$scope.searchLoading = true
 
 		// Get address search results
-		$http.jsonp(addressURL).
+		$http.get(addressURL).
 		success( function (response, status) {
 
 			// Turn off loader
@@ -358,10 +356,10 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
 	}
 
 	// Request URL endpoint
-	var parcelRequestEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/agsquery?jsonCallback=JSON_CALLBACK&latlng='
+  var parcelRequestEndpoint = '/parcels/search?position='
 	// latlng= URL query string format needs to look like this:
-	// latlng=(36.167352999999999,-115.148408)
-	// e.g. += '(' + lat + ',' + lng + ')'
+	// latlng=36.167352999999999,-115.148408
+	// e.g. += lat + ',' + lng
 
 	// Get locations
 	var parcelLat = $scope.userdata.property.location.y
@@ -373,13 +371,13 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
 	}
 
 	// Assemble search endpoint URL based on user input
-	var parcelRequestURL = parcelRequestEndpoint + '(' + parcelLat + ',' + parcelLng + ')'
+	var parcelRequestURL = parcelRequestEndpoint + parcelLat + ',' + parcelLng
 
 	// Turn on loader
 	$scope.searchLoading = true
 
 	// AJAX it
-	$http.jsonp(parcelRequestURL).
+	$http.get(parcelRequestURL).
 	success( function (response) {
 
 		// Turn off loader
@@ -698,9 +696,9 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 		// $scope.infowindow.setContent('Clicked location: ' + $event.latLng.toUrlValue(4))
 
 		// Geocode address
-		var geocodeEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/geocode?score=20&format=json&jsonCallback=JSON_CALLBACK&latlng='
+    var geocodeEndpoint = '/geocode/position='
 
-		$http.jsonp(geocodeEndpoint + $event.latLng.toUrlValue())
+		$http.get(geocodeEndpoint + $event.latLng.toUrlValue())
 		.success( function (response, status) {
 
 			// Turn off loader
