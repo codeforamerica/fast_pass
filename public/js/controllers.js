@@ -23,8 +23,8 @@ appCtrls.controller('StartCtrl', function ($scope, $location, UserData) {
 appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 
 	// This is the endpoint URL.
-	var searchAPI   = 'http://api.naics.us/v0/s?year=2012&collapse=1&terms='
-//	var searchAPI = '/categories/search?keywords='
+	//var searchAPI   = 'http://api.naics.us/v0/s?year=2012&collapse=1&terms='
+  var searchAPI = '/categories/naics_search?keywords='
 
 	// Attach global UserData to this controller.
 	$scope.userdata = UserData
