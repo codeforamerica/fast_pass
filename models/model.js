@@ -20,22 +20,38 @@ var Model = function (attributes) {
 //
 utils.extend(Model.prototype, {
   initialize: func,
+
+  errors: {},
+
   attributes: {},
+
   set: function (attrs) {
     utils.extend(this.attributes, attrs);
     return attrs;
   },
+
   get: function (attr) {
     return this.attributes[attr]    
   },
+
   valid: function () {
-    var valid = true;
     var attrs = this.attributes;
+    var valid = true;
+    var errors = {}
+
     utils.each(utils.keys(attrs), function (key) {
-      if (attrs[key] === undefined) valid = false;
+      if (attrs[key] === undefined) {
+        if (!errors[key]) errors[key] = [];
+        errors[key].push('must not be null');
+        valid = false;
+      }
     });
+
+    this.errors = errors;
+
     return valid;
   },
+
   toJSON: function () {
     return this.attributes;
   }
