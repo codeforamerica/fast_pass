@@ -64,7 +64,7 @@ app.get('/address/suggest', geocoder.findAddressCandidates);
 app.get('/point/reverse_geocode', geocoder.reverseGeocode);
 
 // Category Routes
-app.get('/categories/search', category.search);
+app.get('/categories/naics_search', category.naics_search);
 
 //
 // INITIALIZE SERVER
