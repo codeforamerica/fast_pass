@@ -12,7 +12,7 @@ if (typeof(process.env.NODE_ENV) === 'undefined') {
 // Module dependencies
 var express = require('express')
   , routes = require('./routes')
-  , geocoder = require('./routes/geocoder')
+  , geo = require('./routes/geo')
   , category = require('./routes/category')
   , parcel = require('./routes/parcel') , http = require('http')
   , path = require('path')
@@ -59,9 +59,8 @@ app.get('/parcels/search', parcel.search);
 app.get('/parcels/:id', parcel.find)
 
 // Geocode Routes
-app.get('/address/geocode', geocoder.geocodeAddress);
-app.get('/address/suggest', geocoder.findAddressCandidates);
-app.get('/point/reverse_geocode', geocoder.reverseGeocode);
+app.get('/geocode/address', geo.geocodeAddress);
+app.get('/geocode/position', geo.geocodePosition);
 
 // Category Routes
 app.get('/categories/naics_search', category.naics_search);
