@@ -121,27 +121,58 @@ var DBModel = Model.extend({
   //
   table: undefined,
 
+  //
+  // Base query function
+  // Arguments:
+  //  * String - query
+  //  * Array - values to insert in query string
+  //  * Function - callback
+  // Returns:
+  //  * Array - results
+  //
   query: function (q,v,cb) {
     var klass = this;
-    DBDriver.query(q, v, function (rows) {
-      cb( utils.map(rows, function (row) { return new klass(row); }) );
+    DBDriver.query(q, v, function (results) {
+      cb( utils.map(results, function (result) { return new klass(result); }) );
     });
   },
 
+  //
+  // All query function
+  // Arguments:
+  //  * Function - callback
+  // Returns:
+  //  * Array - results
+  //
   all: function (cb) {
     this.query('SELECT * FROM ' + this.table, [], cb);
   },
 
+  //
+  // Single query function
+  // Arguments:
+  //  * ID - row id
+  //  * Function - callback
+  // Returns:
+  //  * DBModel instance - instance or null
+  //
   find: function (id,cb) {
-    this.query('SELECT * FROM ' + this.table + ' WHERE id = $1;', [id], function (sessions) {
-      if (sessions.length > 0) {
-        cb(sessions[0]);
+    this.query('SELECT * FROM ' + this.table + ' WHERE id = $1;', [id], function (results) {
+      if (results.length > 0) {
+        cb(results[0]);
       } else {
         cb();
       }
     });
   },
 
+  //
+  // More intelligent query function - constructs string from query object
+  // Arguments:
+  //  * Object - query arguments
+  // Returns:
+  //  * Array - results
+  //
   search: function (parameters, cb) {
     var query = [];
     var keys  = utils.keys(parameters);
@@ -157,6 +188,17 @@ var DBModel = Model.extend({
     this.query(query, utils.values(parameters), cb);
   },
 
+
+  //
+  // Class level update function
+  // Arguments:
+  //  * ID - row id
+  //  * Object - item attributes
+  //  * Function - callback
+  // Returns:
+  //  * DBModel instance - results
+  //  * Boolean - whether the item was updated
+  //
   update: function (id, attrs, cb) {
     var klass = this;
     this.find(id, function (row) {
@@ -166,6 +208,14 @@ var DBModel = Model.extend({
     });
   },
 
+  //
+  // Class level create function
+  // Arguments:
+  //  * Object - item attributes
+  // Returns:
+  //  * DBModel instance - results
+  //  * Boolean - whether the item was updated
+  //
   create: function (attrs, cb) {
     var klass = this;
     var record = new klass(attrs);
