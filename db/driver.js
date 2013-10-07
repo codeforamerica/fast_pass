@@ -1,4 +1,4 @@
-var config = require(process.cwd() + '/lib/config');
+var config = require(process.cwd() + '/config/config');
 var pg = require('pg');
 var Driver = function () {};
 

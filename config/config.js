@@ -1,3 +1,6 @@
+//
+// DATABASE
+//
 var dbConfig = require(process.cwd() + '/config/database')[process.env.NODE_ENV];
 var database = {}
 
@@ -17,7 +20,7 @@ for (var i = 0; i < dbConfigKeys.length; i++) {
 }
 
 //
-// Construct configuration object
+// APPLICATION
 //
 var Config = {
   database: database
