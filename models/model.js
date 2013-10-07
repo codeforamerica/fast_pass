@@ -35,6 +35,9 @@ utils.extend(Model.prototype, {
       if (attrs[key] === undefined) valid = false;
     });
     return valid;
+  },
+  toJSON: function () {
+    return this.attributes;
   }
 });
 

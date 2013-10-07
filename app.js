@@ -14,6 +14,7 @@ var express = require('express')
   , routes = require('./routes')
   , geo = require('./routes/geo')
   , category = require('./routes/category')
+  , session = require('./routes/session')
   , parcel = require('./routes/parcel') , http = require('http')
   , path = require('path')
   , lessMiddleware = require('less-middleware');
@@ -64,6 +65,11 @@ app.get('/geocode/position', geo.geocodePosition);
 
 // Category Routes
 app.get('/categories/naics_search', category.naics_search);
+
+// Session Routes
+app.put('/sessions/:id', session.update);
+app.post('/sessions', session.create);
+app.get('/sessions/:id', session.find);
 
 //
 // INITIALIZE SERVER
