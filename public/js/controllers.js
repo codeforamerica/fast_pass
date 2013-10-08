@@ -708,6 +708,12 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
       //var results = response.candidates
       var result = response.response[0]
 
+      if (!result) {
+        // Error message with empty result
+        $scope.infowindow.setContent('The server did not respond with any information. :-(  Please try again later.')
+        return false
+      }
+
       if (response.errormsg) {
         // Error response from city API
         $scope.infowindow.setContent(response.errormsg)
@@ -724,8 +730,46 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
     })
     .error( function (response, status) {
       $scope.loading = false
-      $scope.infowindow.setContent('Sorry, geocode error! Try again?')
+      $scope.infowindow.setContent('Sorry, we hit a server error :-(  Please try again later.')
     });
+
+    // Parcel area test
+    var parcelGeomEndpoint = 'http://las-vegas-zoning-api.herokuapp.com/areas'  // ?lat=36.16355&lon=-115.13984
+
+    $http.get(parcelGeomEndpoint + '?lat=' + $event.latLng.lat() + '&lon=' + $event.latLng.lng())
+    .success( function (response, status) {
+
+      // Set GeoJSON display options
+      // https://developers.google.com/maps/documentation/javascript/reference?hl=en#PolygonOptions
+      var options = {
+        clickable: true,
+        fillColor: '#cc1100',
+        fillOpacity: 0.25,
+        strokeColor: '#cc1100',
+        strokeOpacity: 0,
+        strokePosition: google.maps.StrokePosition.OUTSIDE,
+        strokeWeight: 0
+      }
+
+      // display the response geoJSON
+      var parcelGeom = new GeoJSON(response, options);
+
+      if (parcelGeom.error) {
+        console.log('Error converting parcel GeoJSON to Google Maps overlay.')
+      } else {
+        // Display the City limits
+        // Note that for CLV the city limits has 2 shapes in the feature collection
+        angular.forEach(shape, function (geometry) {
+          geometry.setMap($scope.map)
+          $scope.parcelBounds = geometry.getBounds()
+        })
+      }
+
+    })
+    .error( function (response, status) {
+      console.log('Error getting parcel shape')
+    });
+
 
   }
 
