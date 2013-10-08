@@ -1,4 +1,5 @@
 var DBModel = require('./db_model');
+var RuleValidator = require(process.cwd() + '/lib/rule_validator')
 
 var Rule = DBModel.extend({
 
@@ -8,39 +9,8 @@ var Rule = DBModel.extend({
     'value': undefined
   },
 
-  isMatch: function (object) {
-    if (typeof(object) === 'undefined') return false;
-
-    var attribute  = this.get('attribute');
-    var operator   = this.get('operator');
-    var value      = this.get('value');
-    var comparator = object.get(attribute);
-
-    if (typeof(comparator) === 'undefined') return false;
-
-    switch(operator)
-    {
-      case '=':
-        return (comparator + '') === (value + '');
-        break;
-      case '!=':
-        return (comparator + '') !== (value + '');
-        break;
-      case '>':
-        return parseFloat(comparator) > parseFloat(value);
-        break;
-      case '<':
-        return parseFloat(comparator) < parseFloat(value);
-        break;
-      case '>=':
-        return parseFloat(comparator) >= parseFloat(value);
-        break;
-      case '<=':
-        return parseFloat(comparator) <= parseFloat(value);
-        break;
-      default:
-        return false;
-    }
+  doesApplyToObject: function (object) {
+    return RuleValidator.doesRuleApply(this, object);
   }
 
 }, {

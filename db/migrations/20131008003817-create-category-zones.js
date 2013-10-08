@@ -1,13 +1,12 @@
 var dbm = require('db-migrate');
 var type = dbm.dataType;
-var tableName = 'rules';
+var tableName = 'category_zones';
 
 exports.up = function(db, callback) {
   db.createTable(tableName, {
-    id: { type: 'int', primaryKey: true, autoIncrement: true },
-    attribute: 'string',
-    operator: 'string',
-    value: 'string'
+    category_id: 'int',
+    zone_id: 'int',
+    score: 'int'
   }, callback);
 };
 

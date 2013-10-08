@@ -1,0 +1,27 @@
+[
+  {
+    "operator": "OR",
+    "subconditions":  [
+
+      {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "zone_id", "operator": "=", "value": "C-2" },
+          { "attribute": "floors",  "operator": ">=", "value": "3"  }
+        ]
+      },
+
+      {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "zone_id", "operator": "=", "value": "C-3"   },
+          { "attribute": "sq_feet", "operator": "<=", "value": "2000" }
+        ]
+      },
+
+      { "attribute": "zone_id", "operator": "=", "value": "C-4" },
+      { "attribute": "zone_id", "operator": "IN", "value": ["C-5"] }
+
+    ]
+  }
+]
