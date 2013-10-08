@@ -601,8 +601,9 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
     content: infoLoader
   })
 
-  // Create marker holder
+  // Create overlay holders
   $scope.markers = []
+  $scope.parcels = []
 
   // Display a very light city limits thing to direct people's attentions.
   var cityLimitsGeoJSON = '/data/clv-city-limits.geojson'
@@ -678,7 +679,8 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
     $scope.mapService.clicked.lng = $event.latLng.lng()
 
     // Clear old marker(s) and add a new marker
-    $scope._deleteMarkers()
+    $scope._clearMapOverlay($scope.markers)
+    //_deleteMarkers()
     var marker = $scope._addMarker($event.latLng)
 
     // Pan/zoom to click
@@ -736,6 +738,8 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
     // Parcel area test
     var parcelGeomEndpoint = 'http://las-vegas-zoning-api.herokuapp.com/areas'  // ?lat=36.16355&lon=-115.13984
 
+    $scope._clearMapOverlay($scope.parcels)
+
     $http.get(parcelGeomEndpoint + '?lat=' + $event.latLng.lat() + '&lon=' + $event.latLng.lng())
     .success( function (response, status) {
 
@@ -748,7 +752,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
         strokeColor: '#ffffff',
         strokeOpacity: 1,
         strokePosition: google.maps.StrokePosition.CENTER,
-        strokeWeight: 2
+        strokeWeight: 0
       }
 
       // display the response geoJSON
@@ -757,11 +761,11 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
       if (parcelGeom.error) {
         console.log('Error converting parcel GeoJSON to Google Maps overlay.')
       } else {
-        // Display the City limits
-        // Note that for CLV the city limits has 2 shapes in the feature collection
+        // Display parcel
         angular.forEach(parcelGeom, function (geometry) {
           geometry.setMap($scope.map)
-          $scope.parcelBounds = geometry.getBounds()
+//          $scope.parcelBounds = geometry.getBounds()
+          $scope.parcels.push(geometry)
         })
       }
 
@@ -786,15 +790,16 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
     return marker
   }
 
-  // Deletes all markers in the array by removing references to them
-  $scope._deleteMarkers = function() {
-    if ($scope.markers) {
-      // remove markers from the map
-      angular.forEach($scope.markers, function (marker) {
-        marker.setMap(null)
+  // Generic overlay clearer
+  // e.g. pass in $scope.markers to clear all markers
+  $scope._clearMapOverlay = function(overlay) {
+    if (overlay) {
+      // remove overlay items from the map
+      angular.forEach(overlay, function (item) {
+        item.setMap(null)
       })
-      // remove markers from the array keeping track of them
-      $scope.markers.length = 0
+      // remove items from the array keeping track of them
+      overlay.length = 0
     }
   }
 
@@ -829,7 +834,7 @@ appCtrls.controller('PrintViewCtrl', function ($scope, $http, UserData, MapServi
 appCtrls.controller('ReturnCtrl', function ($scope, UserData) {
 
   // Default: this dialog box should be off.
-  // $scope.showDialog = false
+  $scope.showDialog = false
 
   // Display this if user arrives to a page in this application and 
   // user data is already stored in Local Storage.
@@ -849,7 +854,6 @@ appCtrls.controller('ReturnCtrl', function ($scope, UserData) {
     window.location.href = window.location.origin + '/#/section/' + $scope.userdata.nav.current
 
     // Show the return dialog box
-    // $scope.showDialog = true
     // This code is a hack... it delays a bit so that it animates sliding down after load
     var timeout = setTimeout(showDialog, 800)
   }
@@ -862,19 +866,32 @@ appCtrls.controller('ReturnCtrl', function ($scope, UserData) {
   // Hide dialog when Escape is pressed
   $(document).keyup( function (e) {
     if (e.keyCode === 13 || e.keyCode === 27) { 
-      // Close modal
       $scope.hideDialog()
     }
   })
 
+  // Hide dialog if other parts of the map are clicked while the dialog is open
+  angular.element(document.getElementById('main')).bind('click', function() {
+    $scope.hideDialog()
+  })
+  angular.element(document.getElementById('map')).bind('click', function() {
+    $scope.hideDialog()
+  })
+
   $scope.hideDialog = function () {
-    // $scope.showDialog = false
-    // $scope.returnDialog = false
-    document.querySelector('#return').style.marginTop = '-200px'
+    // Only do stuff if the dialog is actually open
+    if ($scope.showDialog == true) {
+      // Hide dialog
+      $scope.showDialog = false
+      document.querySelector('#return').style.marginTop = '-200px'
+    }
   }
 
   function showDialog () {
-    document.querySelector('#return').style.marginTop = 0
+    if ($scope.showDialog == false) {
+      $scope.showDialog = true
+      document.querySelector('#return').style.marginTop = 0      
+    }
   }
 
 
