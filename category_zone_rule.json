@@ -1,0 +1,14 @@
+{
+  "rules": [
+     {
+      "score": -1,
+      "condition": {
+      "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "1010" },
+          { "attribute": "zone_id", "operator": "=", "value": "C-2"  }
+        ]
+      }
+    }
+  ]
+}
