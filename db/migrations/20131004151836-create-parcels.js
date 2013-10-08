@@ -8,7 +8,9 @@ exports.up = function(db, callback) {
     code: 'string',
     title: 'string',
     description: 'string'
-  }, callback);
+  }, function () {
+    db.runSql("ALTER table " + tableName + " ADD COLUMN zone_ids integer[]", callback);
+  })
 };
 
 exports.down = function(db, callback) {

@@ -1,17 +1,14 @@
 var dbm = require('db-migrate');
 var type = dbm.dataType;
-var tableName = 'categories';
+var tableName = 'rules';
 
 exports.up = function(db, callback) {
   db.createTable(tableName, {
     id: { type: 'int', primaryKey: true, autoIncrement: true },
-    title: 'string',
-    description: 'string',
-    code: 'string',
-    type: 'string'
-  }, function () {
-    db.runSql("ALTER table " + tableName + " ADD COLUMN related_parcel_ids integer[]", callback);
-  });
+    attribute: 'string',
+    operator: 'string',
+    value: 'string'
+  }, callback);
 };
 
 exports.down = function(db, callback) {
