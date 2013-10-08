@@ -743,12 +743,12 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
       // https://developers.google.com/maps/documentation/javascript/reference?hl=en#PolygonOptions
       var options = {
         clickable: true,
-        fillColor: '#cc1100',
-        fillOpacity: 0.25,
-        strokeColor: '#cc1100',
-        strokeOpacity: 0,
-        strokePosition: google.maps.StrokePosition.OUTSIDE,
-        strokeWeight: 0
+        fillColor: '#21687f',
+        fillOpacity: 0.50,
+        strokeColor: '#ffffff',
+        strokeOpacity: 1,
+        strokePosition: google.maps.StrokePosition.CENTER,
+        strokeWeight: 2
       }
 
       // display the response geoJSON
@@ -759,7 +759,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
       } else {
         // Display the City limits
         // Note that for CLV the city limits has 2 shapes in the feature collection
-        angular.forEach(shape, function (geometry) {
+        angular.forEach(parcelGeom, function (geometry) {
           geometry.setMap($scope.map)
           $scope.parcelBounds = geometry.getBounds()
         })
