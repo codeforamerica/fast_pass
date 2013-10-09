@@ -1,16 +1,17 @@
 var DBModel = require('./db_model');
 
-var Session = DBModel.extend({
+var Score = DBModel.extend({
 
   defaults: {
+    'score': undefined,
     'category_code': undefined,
     'parcel_code': undefined
   }
 
 }, {
 
-  table: 'sessions'
+  table: 'scores'
 
 });
 
-module.exports = Session;
+module.exports = Score

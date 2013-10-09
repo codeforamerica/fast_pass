@@ -1,5 +1,6 @@
 var config = require(process.cwd() + '/config/config');
 var pg = require('pg');
+
 var Driver = function () {};
 
 Driver.config = config.database;
