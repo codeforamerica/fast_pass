@@ -1,31 +1,5 @@
 {
   "rules": [
-     {
-      "score": -1,
-      "metadata": {
-        "example": true
-      },
-      "condition": {
-        "operator": "AND",
-        "subconditions": [
-          { "attribute": "category_id", "operator": "=", "value": "1010" },
-          { "attribute": "zone_id", "operator": "=", "value": "C-2"  }
-        ]
-      }
-    },
-    {
-      "score": 1,
-      "metadata": {
-        "example": true
-      },
-      "condition": {
-        "operator": "AND",
-        "subconditions": [
-          { "attribute": "category_id", "operator": "=", "value": "" },
-          { "attribute": "distance_to", ""}
-        ]
-      }
-    },
     {
       "score": 60,
       "metadata": {
@@ -765,6 +739,328 @@
         "subconditions": [
           { "attribute": "category_id", "operator": "=", "value": "R21" },
           { "attribute": "zone_id", "operator": "=", "value": "M"}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Recreational Vehicle and Boat Storage",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "R20" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-2", "C-M", "M"] }
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Recreational Vehicle and Boat Storage",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "R20" },
+          { "attribute": "zone_id", "operator": "=", "value": "C-1"}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Recycling Collection Center",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "R55" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-M", "M"] }
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Rental Store (with Outside Storage)",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "R50" },
+          { "attribute": "zone_id", "operator": "=", "value": "C-2"}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Rental Store (with Outside Storage)",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "R50" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Restaurant with Service Bar",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "R09" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["O", "C-1", "C-2", "C-PB", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Restaurant",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "IN", "value": ["R09", "R10"] },
+          { "attribute": "zone_id", "operator": "=", "value": "O" }
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Restaurant",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "IN", "value": ["R09", "R10"] },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-1", "C-2", "C-PB", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Sexually Oriented Business",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "A32" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-M", "M"] }
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Short-Term Residential Rental",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "S01" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["U", "R-E", "R-1", "R-CL", "R-TH", "R-2", "R-3", "R-4", "R-MH"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Tattoo Parlor/Body Piercing Studio",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "T08" },
+          { "attribute": "zone_id", "operator": "=", "value": "C-2"}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Tattoo Parlor/Body Piercing Studio",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "T08" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Thrift Shop",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "IN", "value": ["N36", "T16"] },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-1", "C-2"]}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Thrift Shop",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "IN", "value": ["N36", "T16"] },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Trailer/RV Camp or Park",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "R20" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-1", "C-2"]}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Trailer/RV Camp or Park",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "R20" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Transit Passenger Facility",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "P13" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-1", "C-2"]}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Transit Passenger Facility",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "P13" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Truck Rental",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "T19" },
+          { "attribute": "zone_id", "operator": "=", "value": "C-2" }
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Truck Rental",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "T19" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Valet Parking",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "V01" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["O", "C-1", "C-2", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Warehouse/Distribution Center",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "IN", "value": ["W07", "W11"] },
+          { "attribute": "zone_id", "operator": "=", "value": "C-PB" }
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Warehouse/Distribution Center",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "IN", "value": ["W07", "W11"] },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-M", "M"]}
         ]
       }
     }
