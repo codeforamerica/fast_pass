@@ -2,11 +2,769 @@
   "rules": [
      {
       "score": -1,
+      "metadata": {
+        "example": true
+      },
       "condition": {
-      "operator": "AND",
+        "operator": "AND",
         "subconditions": [
           { "attribute": "category_id", "operator": "=", "value": "1010" },
           { "attribute": "zone_id", "operator": "=", "value": "C-2"  }
+        ]
+      }
+    },
+    {
+      "score": 1,
+      "metadata": {
+        "example": true
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "" },
+          { "attribute": "distance_to", ""}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Auto Broker",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "A14" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-1", "C-2", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Auto Repair Garage, Major",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "A60" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-2", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Auto Repair Garage, Minor",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "A55" },
+          { "attribute": "zone_id", "operator": "=", "value": "C-1"}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Auto Repair Garage, Minor",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "A55" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-2", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Auto Sales Showroom",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "A65" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-1", "C-PB"]}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Auto Sales Showroom",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "A64" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-2", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Automobile Rental",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "A19" },
+          { "attribute": "zone_id", "operator": "=", "value": "C-1"}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Automobile Rental",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "A19" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-2", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Bailbond Service",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "B01" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-1", "C-2"]}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Bailbond Service",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "B01" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Building Maintenance Service and Sales",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "B01" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-1", "C-PB"]}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Building Maintenance Service and Sales",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "B01" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-2", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": ["Car Wash, Full Service or Auto Detailing", "Car Wash, Self-Service"],
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "IN", "value": ["C02", "A45"] },
+          { "attribute": "zone_id", "operator": "=", "value": "C-1"}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": ["Car Wash, Full Service or Auto Detailing", "Car Wash, Self-Service"],
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "IN", "value": ["C02", "A45"] },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-2", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Cemetery/Mausoleum",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "F05" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-2", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Check Cashing Service, Limited",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "C23" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["O", "C-1", "C-2", "C-PB", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Clinic",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "C55" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-1", "C-2", "C-PB", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": ["Construction Material Supply Yard", "Contractor’s Plant, Shop & Storage Yard"],
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "B50" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Employment Agency",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "E01" },
+          { "attribute": "zone_id", "operator": "=", "value": "C-1"}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Employment Agency",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "E01" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-2", "C-PB", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Financial Institution, Specified",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "F02" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["O", "C-1", "C-2"]}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Financial Institution, Specified",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "F02" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "General Retail Store",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "G50" },
+          { "attribute": "zone_id", "operator": "=", "value": "O"}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "General Retail Store",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "G50" },
+          { "attribute": "zone_id", "operator": "=", "value": "C-PB"}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "General Retail Store",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "G50" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-1", "C-2", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 80,
+      "metadata": {
+        "planning_use": "Health Club",
+        "planning_permit": "Accessory"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "H11" },
+          { "attribute": "zone_id", "operator": "=", "value": "O"}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Health Club",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "H11" },
+          { "attribute": "zone_id", "operator": "=", "value": "C-PB"}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Health Club",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "H11" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-1", "C-2", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Hospital",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "H04" },
+          { "attribute": "zone_id", "operator": "=", "value": "C-1"}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Hospital",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "H04" },
+          { "attribute": "zone_id", "operator": "=", "value": "O"}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Hospital",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "H04" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-2", "C-PB", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Hotel, Motel or Hotel Suites",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "IN", "value": ["H04", "H06"] },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-1", "C-PB"]}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Hotel, Motel or Hotel Suites",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "IN", "value": ["H04", "H06"] },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-2", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Hotel, Residence",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "H15" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-1", "C-2", "C-PB"]}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Hotel, Residence",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "H15" },
+          { "attribute": "zone_id", "operator": "=", "value": "C-M"}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Individual Care - Family Home",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "H14" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["U", "R-E", "R-1", "R-CL", "R-TH", "R-2", "R-3", "R-4", "R-MH"]}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Laundry, Self-Service",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "D50" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-1", "C-2", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Manufacturing, Heavy",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "IN", "value": ["M05", "M55"] },
+          { "attribute": "zone_id", "operator": "=", "value": "C-M"}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Manufacturing, Heavy",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "IN", "value": ["M05", "M55"] },
+          { "attribute": "zone_id", "operator": "=", "value": "M"}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Manufacturing, Light",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "IN", "value": ["M05", "M50"] },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-PB", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Mobile Home Park",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "T04" },
+          { "attribute": "zone_id", "operator": "=", "value": "R-MH"}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Mortuary or Funeral Chapel",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "F05" },
+          { "attribute": "zone_id", "operator": "=", "value": "C-1"}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Mortuary or Funeral Chapel",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "F05" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-2", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Night Club",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "D19" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-1", "C-PB"]}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Night Club",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "D19" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-2", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Office, Medical or Dental",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "P55" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["P-O", "O", "C-1", "C-2", "C-PB", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Office",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "P50" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["P-O", "O", "C-1", "C-2", "C-PB", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Open Air Vending/Transient Sales Lot",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "O07" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["O", "C-1", "C-2", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 60,
+      "metadata": {
+        "planning_use": "Parking Facility",
+        "planning_permit": "Conditional Use"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "P02" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["P-O", "O"]}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Parking Facility",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "P02" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["C-1", "C-2", "C-PB", "C-M", "M"]}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Public or Private School",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "S02" },
+          { "attribute": "zone_id", "operator": "=~", "value": ".*"}
+        ]
+      }
+    },
+    {
+      "score": 40,
+      "metadata": {
+        "planning_use": "Radio, TV or Microwave Communication Tower",
+        "planning_permit": "Special Use Permit"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "R21" },
+          { "attribute": "zone_id", "operator": "IN", "value": ["O", "C-1", "C-2", "C-PB", "C-M"]}
+        ]
+      }
+    },
+    {
+      "score": 100,
+      "metadata": {
+        "planning_use": "Radio, TV or Microwave Communication Tower",
+        "planning_permit": "Permitted"
+      },
+      "condition": {
+        "operator": "AND",
+        "subconditions": [
+          { "attribute": "category_id", "operator": "=", "value": "R21" },
+          { "attribute": "zone_id", "operator": "=", "value": "M"}
         ]
       }
     }
