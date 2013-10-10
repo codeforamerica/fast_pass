@@ -321,6 +321,16 @@ appCtrls.controller('45Ctrl', function ($scope, UserData) {
   $scope.userdata = UserData
   $scope.userdata.nav.pathTo50 = 45    // Remember the current section to preserve path in the future
 
+  // Reset view
+  $scope.loading = true
+  $scope.errorMsg = false
+  $scope.loaded = false
+
+  var fakeloading = window.setTimeout(function () {
+    $scope.loading = false
+    $scope.loaded = true
+  }, 800)
+
 })
 
 // SECTION 50 - PARCEL VIEW

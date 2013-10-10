@@ -452,20 +452,6 @@ controllers.sectionGo = function ($scope, $routeParams, UserData) {
 		_saveLocalStorage(UserData)
 	}
 
-	// DOM id for jQuery
-	var sectionId = '#section' + $scope.sectionId,
-		$section = $(sectionId)
-
-	// Note: this DOM manipulation after the template has loaded may not be the most Angular-friendly way of
-	// doing this and may not even work in IE8
-
-	// Auto forward loading screens (FOR DEMO PURPOSES ONLY)
-	if ($section.find('.loading').length > 0) {
-		var spinner = window.setTimeout(function() {
-			window.location.href = window.location.origin + $section.find('a.next').attr('href')
-		}, 800)
-	}
-
 }
 
 /*************************************************************************
