@@ -651,7 +651,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     // Google maps API v3 requires developers to manually trigger the resize event
     // when the map div is resized or visibility is changed
     // This doesn't seem to work immediately so we do it after a really brief timeout
-    if (newValue == true) {
+    if (newValue == true && newValue != oldValue) {
       setTimeout($scope._mapInvalidateSize, 10)
     }
 
@@ -662,39 +662,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     return $scope.userdata.nav.current
   }, function (newValue, oldValue) {
     if (newValue != oldValue) {
-      $scope.isMapViewSet = true
-
-      // Standard view resets
-      $scope.infowindow.close()
-      $scope._clearMapOverlay($scope.parcels)
-      $scope._clearMapOverlay($scope.markers)
-      $scope._clearMapOverlay($scope.parcelzzz)
-
-      // Set map view based on section
-      switch(newValue) {
-        case '40':
-          // Address selection
-          $scope.map.fitBounds($scope.cityLimitsBounds)
-          break
-        case '41':
-          // Neighborhood selection
-          $scope.map.fitBounds($scope.cityLimitsBounds)
-          break
-        case '45':
-          // Zoning map display
-          $scope.showParcels()
-          // Change view
-          // Currently: fake it!
-          $scope.map.setCenter(new google.maps.LatLng(36.16526743280042,-115.14169692993164))
-          $scope.map.setZoom(16)
-          break
-        case '50':
-          // Parcel view
-
-          break
-        default:
-          // what?
-      }
+      $scope._setMapView(newValue)
     }
   })
 
@@ -807,6 +775,9 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     // The name of this function is based on leaflet.js's similar invalidateSize() method
     // Google Maps v3 API requires that the developer manually handle situations where the map display div changes size
     google.maps.event.trigger($scope.map, 'resize')
+
+    // Reset view
+    $scope._setMapView($scope.userdata.nav.current)
   }
 
   $scope.showParcels = function () {
@@ -847,6 +818,44 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     .error( function (response, status) {
       console.log('Error getting parcelzzzzz')
     });
+  }
+
+  $scope._setMapView = function (section) {
+    $scope.isMapViewSet = true
+
+    // Standard view resets
+    $scope.infowindow.close()
+    $scope._clearMapOverlay($scope.parcels)
+    $scope._clearMapOverlay($scope.markers)
+    $scope._clearMapOverlay($scope.parcelzzz)
+
+    // Set map view based on section
+    switch(section) {
+      case '40':
+        // Address selection
+        // Note: This fit bounds should happen when this occurs, but it's triggering before the mapinvalidatesize() is called, so the first view of this isn't set properly.
+        $scope.map.fitBounds($scope.cityLimitsBounds)
+//          console.log($scope.cityLimitsBounds)
+        break
+      case '41':
+        // Neighborhood selection
+        $scope.map.fitBounds($scope.cityLimitsBounds)
+        break
+      case '45':
+        // Zoning map display
+        $scope.showParcels()
+        // Change view
+        // Currently: fake it!
+        $scope.map.setCenter(new google.maps.LatLng(36.16526743280042,-115.14169692993164))
+        $scope.map.setZoom(16)
+        break
+      case '50':
+        // Parcel view
+
+        break
+      default:
+        // what?
+    }
   }
 
   $scope._getFillColor = function (score) {

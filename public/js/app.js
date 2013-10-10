@@ -576,7 +576,6 @@ function _loadLocalStorage () {
 
 function _saveLocalStorage (obj) {
 	// Save to localStorage
-	// console.log(obj)
 	if (window['localStorage']) {
 		console.log('Saving to local storage.')
 		window.localStorage.setItem(appName, JSON.stringify(obj))
@@ -588,8 +587,6 @@ function _clearLocalStorage () {
 	if (window['localStorage']) {
 		console.log('Clearing local storage.')
 		window.localStorage.removeItem(appName)
-		// alternative:
-		// window.localStorage.clear()
 	}
 }
 
