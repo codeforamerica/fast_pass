@@ -809,9 +809,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     // Google Maps v3 API requires that the developer manually handle situations where the map display div changes size
 //    google.maps.event.addListenerOnce($scope.map, 'idle', function() {
       console.log('Resizing map')
-      var stupid = window.setTimeout(function () {
-        google.maps.event.trigger($scope.map, 'resize')
-      }, 800)
+      google.maps.event.trigger($scope.map, 'resize')
 //    });
   }
 
