@@ -412,6 +412,13 @@ directives.returnDialog = function () {
 	}
 }
 
+directives.staticMap = function () {
+	return {
+		restrict: 'A',
+		template: "<img src='{{staticMapImageUrl}}' alt='Map'>"
+	}
+}
+
 /* // Might not actually be needed
 directives.autofocus = function () {
 	return function (scope, element, attrs) {
@@ -503,7 +510,7 @@ function _getQueryStringParams(sParam) {
 
 function _resetUserData () {
 	return { 
-		reportId: Math.floor(Math.random() * 100000000),
+		reportId: _generateReportId(),
 		businessCategory: {
 			code: null,
 			name: null,
@@ -534,6 +541,29 @@ function _resetUserData () {
 			current: null
 		}
 	}
+}
+
+function _generateReportId () {
+	var id
+	var date = new Date()
+
+	// Generate a "report ID" based on date / time
+	// Hopefully these are unique!
+	var year = date.getUTCFullYear().toString()
+	var month = date.getUTCMonth() + 1
+	month = month.toString()
+	if (month.length == 1) { month = '0' + month }
+	var day = date.getUTCDate().toString()
+	if (day.length == 1) { day = '0' + day }
+	var msec = date.getTime().toString().substring(7,12)
+
+	var string = year + month + day + msec
+	string = string.substring(2)
+	id = string.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
+
+	// Example ID number:    # 131-010-86260
+
+	return id
 }
 
 // localStorage functions

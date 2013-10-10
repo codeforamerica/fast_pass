@@ -620,7 +620,6 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
 
   // Display a very light city limits thing to direct people's attentions.
   var cityLimitsGeoJSON = '/data/clv-city-limits.geojson'
-  // var cityLimitsGeoJSON = '/data/parcels_big.geojson'
 
   $http.get(cityLimitsGeoJSON)
   .success(function (response) {
@@ -660,9 +659,9 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
 
     // Google maps API v3 requires developers to manually trigger the resize event
     // when the map div is resized or visibility is changed
-    // This doesn't seem to work immediately so we do it after a really brief timeout
-    if (newValue == true && newValue != oldValue) {
-      setTimeout($scope._mapInvalidateSize, 10)
+    // We do this after the map reports being loaded and idle
+    if (newValue == true) {
+      $scope._mapInvalidateSize()
     }
 
   })
@@ -683,14 +682,38 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     $scope.mapService.clicked.lat = $event.latLng.lat()
     $scope.mapService.clicked.lng = $event.latLng.lng()
     $scope.mapService.clicked.latLng = new google.maps.LatLng($event.latLng.lat(), $event.latLng.lng())
-    console.log($event.latLng.lat() +','+ $event.latLng.lng())
+    // console.log($event.latLng.lat() +','+ $event.latLng.lng())
+
+    // Set map actions based on section
+    switch($scope.userdata.nav.current) {
+      case '40':
+        $scope.selectParcel($event.latLng)
+        break
+      case '41':
+        // Neighborhood selection
+        break
+      case '45':
+        // Zoning map display
+        break
+      case '50':
+        // Parcel view
+        break
+      case '70':
+        break
+      default:
+        // Nothing
+    }
+  }
+
+
+  $scope.selectParcel = function (latlng) {
 
     // Clear old marker(s) and add a new marker
     $scope._clearMapOverlay($scope.markers)
-    var marker = $scope._addMarker($event.latLng)
+    var marker = $scope._addMarker(latlng)
 
     // Pan/zoom to click
-    $scope.map.panTo($event.latLng)
+    $scope.map.panTo(latlng)
     if ($scope.map.getZoom() < 17) {
       $scope.map.setZoom(17)
     }
@@ -701,12 +724,12 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     $scope.loading = true
 
     // Infowindow content
-    // $scope.infowindow.setContent('Clicked location: ' + $event.latLng.toUrlValue(4))
+    // $scope.infowindow.setContent('Clicked location: ' + latlng.toUrlValue(4))
 
     // Geocode address
     var geocodeEndpoint = '/geocode/position?position='
 
-    $http.get(geocodeEndpoint + $event.latLng.toUrlValue())
+    $http.get(geocodeEndpoint + latlng.toUrlValue())
     .success( function (response, status) {
 
       // Turn off loader
@@ -746,7 +769,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
 
     $scope._clearMapOverlay($scope.parcels)
 
-    $http.get(parcelGeomEndpoint + '?lat=' + $event.latLng.lat() + '&lon=' + $event.latLng.lng())
+    $http.get(parcelGeomEndpoint + '?lat=' + latlng.lat() + '&lon=' + latlng.lng())
     .success( function (response, status) {
 
       // Set GeoJSON display options
@@ -784,10 +807,12 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
   $scope._mapInvalidateSize = function () {
     // The name of this function is based on leaflet.js's similar invalidateSize() method
     // Google Maps v3 API requires that the developer manually handle situations where the map display div changes size
-    google.maps.event.trigger($scope.map, 'resize')
-
-    // Reset view
-    $scope._setMapView($scope.userdata.nav.current)
+//    google.maps.event.addListenerOnce($scope.map, 'idle', function() {
+      console.log('Resizing map')
+      var stupid = window.setTimeout(function () {
+        google.maps.event.trigger($scope.map, 'resize')
+      }, 800)
+//    });
   }
 
   $scope.showParcels = function () {
@@ -833,6 +858,8 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
   $scope._setMapView = function (section) {
     $scope.isMapViewSet = true
 
+    $scope._mapInvalidateSize()
+
     // Standard view resets
     $scope.infowindow.close()
     $scope._clearMapOverlay($scope.parcels)
@@ -850,10 +877,23 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
       case '41':
         // Neighborhood selection
         $scope.map.fitBounds($scope.cityLimitsBounds)
+        $scope.map.setOptions({
+          disableDefaultUI: true,
+          disableDoubleClickZoom: true,
+          keyboardShortcuts: false,
+          draggable: false
+        })
         break
       case '45':
         // Zoning map display
         $scope.showParcels()
+        // Reset Options
+        $scope.map.setOptions({
+          disableDefaultUI: false,
+          disableDoubleClickZoom: false,
+          keyboardShortcuts: true,
+          draggable: true
+        })
         // Change view
         // Currently: fake it!
         $scope.map.setCenter(new google.maps.LatLng(36.16526743280042,-115.14169692993164))
@@ -862,6 +902,8 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
       case '50':
         // Parcel view
 
+        break
+      case '70':
         break
       default:
         // what?
@@ -892,9 +934,9 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
       return 'orange'
     } else if (score >= 10 && score < 20) {
       // return '#e7742f'
-      return 'red'
+      return '#ff9900'
     } else {
-      return '#d92120'
+      return 'red'
     }
   }
 
@@ -932,6 +974,10 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
           angular.forEach(shape, function (geometry) {
             // Display on map
             geometry.setMap($scope.map)
+            // TEst click
+  //          google.maps.event.addListener(geometry, 'click', function(){alert('hi')});
+  //  That worked. Now have to make it do stuff.
+  // Maybe make it receive event listeners outside of this function, since it's being returned in an array.
             // Add geometry to overlay holder
             overlay.push(geometry)
           })
@@ -939,6 +985,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
         // Otherwise, single geometry feature
         else {
           shape.setMap($scope.map)
+//          google.maps.event.addListener(shape, 'click', function(){alert('hi')});
           overlay.push(shape)
         }
       })
