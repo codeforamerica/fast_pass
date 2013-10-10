@@ -606,6 +606,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
   // Create overlay holders
   $scope.markers = []
   $scope.parcels = []
+  $scope.parcelzzz = []
 
   // Display a very light city limits thing to direct people's attentions.
   var cityLimitsGeoJSON = '/data/clv-city-limits.geojson'
@@ -656,13 +657,24 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
 
   })
 
+  // Set map view per section
   $scope.$watch(function () {
     return $scope.userdata.nav.current
   }, function (newValue, oldValue) {
     if (newValue != oldValue) {
       $scope.isMapViewSet = true
+
+      // Standard view resets
+      $scope.infowindow.close()
+      $scope._clearMapOverlay($scope.parcels)
+      $scope._clearMapOverlay($scope.markers)
+      $scope._clearMapOverlay($scope.parcelzzz)
+
+      // Set map view based on section
       switch(newValue) {
         case '40':
+          // Address selection
+          $scope.map.fitBounds($scope.cityLimitsBounds)
           break
         case '41':
           // Neighborhood selection
@@ -675,6 +687,10 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
           // Currently: fake it!
           $scope.map.setCenter(new google.maps.LatLng(36.16526743280042,-115.14169692993164))
           $scope.map.setZoom(16)
+          break
+        case '50':
+          // Parcel view
+
           break
         default:
           // what?
@@ -797,8 +813,6 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     //var parcelsGeoJSON = '/data/parcels_small.geojson'
     var parcelsGeoJSON = '/data/parcels_big.geojson'
 
-    var parcelzzz = []
-
     $http.get(parcelsGeoJSON)
     .success( function (response, status) {
 
@@ -826,7 +840,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
 
           // Add to map.
           var parcel = $scope._overlayGeoJSON(response.features[i], options)
-          parcelzzz.push(parcel[0])
+          $scope.parcelzzz.push(parcel[0])
         }
       }
     })
