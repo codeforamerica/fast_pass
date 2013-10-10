@@ -450,9 +450,11 @@ appCtrls.controller('70Ctrl', function ($scope, UserData) {
 
 })
 
-appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
+appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
 
-  $scope.mapService = MapService
+  $scope.mapService   = MapService
+  $scope.userdata     = UserData
+  $scope.isMapViewSet = false
 
   $scope.mapStyles = [
     {
@@ -607,6 +609,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
 
   // Display a very light city limits thing to direct people's attentions.
   var cityLimitsGeoJSON = '/data/clv-city-limits.geojson'
+  // var cityLimitsGeoJSON = '/data/parcels_big.geojson'
 
   $http.get(cityLimitsGeoJSON)
   .success(function (response) {
@@ -623,23 +626,12 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
       strokeWeight: 4
     }
 
-    // Translate GeoJSON-formatted response to Google Maps format
-    // https://developers.google.com/maps/tutorials/data/importing_data
-    // 3rd party conversion util https://github.com/JasonSanford/geojson-google-maps
-    var cityLimits = new GeoJSON(response, options);
+    // Display city limits
+    var cityLimits = $scope._overlayGeoJSON(response, options)
+    $scope.cityLimitsBounds = cityLimits[1].getBounds()
 
-    if (cityLimits.error) {
-      console.log('Error converting city limits GeoJSON to Google Maps overlay.')
-    } else {
-      // Display the City limits
-      // Note that for CLV the city limits has 2 shapes in the feature collection
-      angular.forEach(cityLimits, function (shape) {
-        angular.forEach(shape, function (geometry) {
-          geometry.setMap($scope.map)
-          // getBounds() is not native to Google Maps - it was added in prototype. See top of app.js
-          $scope.cityLimitsBounds = geometry.getBounds()
-        })
-      })
+    if ($scope.isMapViewSet == false) {
+      $scope.map.fitBounds($scope.cityLimitsBounds)
     }
   })
   .error(function () {
@@ -659,15 +651,34 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
     // when the map div is resized or visibility is changed
     // This doesn't seem to work immediately so we do it after a really brief timeout
     if (newValue == true) {
-      setTimeout(_triggerResize, 10)
+      setTimeout($scope._mapInvalidateSize, 10)
     }
 
-    function _triggerResize() {
-      google.maps.event.trigger($scope.map, 'resize')
+  })
 
-      // fit to city limits
-      // is this the best place to put this?!?
-      $scope.map.fitBounds($scope.cityLimitsBounds)
+  $scope.$watch(function () {
+    return $scope.userdata.nav.current
+  }, function (newValue, oldValue) {
+    if (newValue != oldValue) {
+      $scope.isMapViewSet = true
+      switch(newValue) {
+        case '40':
+          break
+        case '41':
+          // Neighborhood selection
+          $scope.map.fitBounds($scope.cityLimitsBounds)
+          break
+        case '45':
+          // Zoning map display
+          $scope.showParcels()
+          // Change view
+          // Currently: fake it!
+          $scope.map.setCenter(new google.maps.LatLng(36.16526743280042,-115.14169692993164))
+          $scope.map.setZoom(16)
+          break
+        default:
+          // what?
+      }
     }
   })
 
@@ -677,10 +688,11 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
     // Record lat / lng point of click for application use
     $scope.mapService.clicked.lat = $event.latLng.lat()
     $scope.mapService.clicked.lng = $event.latLng.lng()
+    $scope.mapService.clicked.latLng = new google.maps.LatLng($event.latLng.lat(), $event.latLng.lng())
+    console.log($event.latLng.lat() +','+ $event.latLng.lng())
 
     // Clear old marker(s) and add a new marker
     $scope._clearMapOverlay($scope.markers)
-    //_deleteMarkers()
     var marker = $scope._addMarker($event.latLng)
 
     // Pan/zoom to click
@@ -744,7 +756,6 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
     .success( function (response, status) {
 
       // Set GeoJSON display options
-      // https://developers.google.com/maps/documentation/javascript/reference?hl=en#PolygonOptions
       var options = {
         clickable: true,
         fillColor: '#21687f',
@@ -756,25 +767,102 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
       }
 
       // display the response geoJSON
-      var parcelGeom = new GeoJSON(response, options);
-
-      if (parcelGeom.error) {
-        console.log('Error converting parcel GeoJSON to Google Maps overlay.')
-      } else {
-        // Display parcel
-        angular.forEach(parcelGeom, function (geometry) {
-          geometry.setMap($scope.map)
-//          $scope.parcelBounds = geometry.getBounds()
-          $scope.parcels.push(geometry)
-        })
-      }
-
+      $scope.parcels = $scope._overlayGeoJSON(response, options)
     })
     .error( function (response, status) {
       console.log('Error getting parcel shape')
     });
 
+  }
 
+  // Actions to perform when map boundaries have changed.
+  $scope.mapBoundsChanged = function ($event, $params) {
+
+    // Report on map boundaries, center, and zoom level.
+    // This stuff is always available from the map anyway
+    // Giving it to mapService is just what allows other controllers to know about it - do they need to?
+    // for now, the answer is no.
+    //$scope.mapService.bounds = $scope.map.getBounds()
+    //$scope.mapService.zoom = $scope.map.getZoom()
+    //$scope.mapService.center = $scope.map.getCenter()
+  }
+
+  $scope._mapInvalidateSize = function () {
+    // The name of this function is based on leaflet.js's similar invalidateSize() method
+    // Google Maps v3 API requires that the developer manually handle situations where the map display div changes size
+    google.maps.event.trigger($scope.map, 'resize')
+  }
+
+  $scope.showParcels = function () {
+    //var parcelsGeoJSON = '/data/parcels_small.geojson'
+    var parcelsGeoJSON = '/data/parcels_big.geojson'
+
+    var parcelzzz = []
+
+    $http.get(parcelsGeoJSON)
+    .success( function (response, status) {
+
+      // Set default GeoJSON display options
+      var options = {
+        clickable: true,
+        fillColor: '#000000',
+        fillOpacity: 0.40,
+        strokeColor: '#ffffff',
+        strokeOpacity: 1,
+        strokePosition: google.maps.StrokePosition.CENTER,
+        strokeWeight: 0
+      }
+
+      for (var i=0; i < response.features.length; i++) {
+        // Add some random scores.
+        response.features[i].properties.score = Math.floor(Math.random() * 100)
+
+        var score = response.features[i].properties.score
+
+        // Filter out parcels below a certain score threshold.
+        if (score >= 10) {
+          // Change fill color based on score.
+          options.fillColor = $scope._getFillColor(score)
+
+          // Add to map.
+          var parcel = $scope._overlayGeoJSON(response.features[i], options)
+          parcelzzz.push(parcel[0])
+        }
+      }
+    })
+    .error( function (response, status) {
+      console.log('Error getting parcelzzzzz')
+    });
+  }
+
+  $scope._getFillColor = function (score) {
+    // Keep scores within scale
+    if (score > 100) { score = 100 }
+    else if (score < 0 ) { score = 0 }
+    /*
+    // For testing: color scale between red and green
+    var r = Math.floor((255 * score) / 100),
+        g = Math.floor((255 * (100 - score)) / 100),
+        b = 0;
+
+    return "rgb(" + r + "," + g + "," + b + ")"
+    */
+    // Colors: variations on suggestions from http://www.sron.nl/~pault/
+    if (score >= 60) {
+      // return '#29b35e' //green
+      return 'green'
+    } else if (score >= 40 && score < 60) {
+      // return '#b9ca3b' // yellow
+      return 'yellow'
+    } else if (score >= 20 && score < 40) {
+      // return '#dfa53a' // orange
+      return 'orange'
+    } else if (score >= 10 && score < 20) {
+      // return '#e7742f'
+      return 'red'
+    } else {
+      return '#d92120'
+    }
   }
 
   $scope._addMarker = function(latlng) {
@@ -788,6 +876,47 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService) {
     $scope.markers.push(marker)
 
     return marker
+  }
+
+  // Generic GeoJSON overlay adder
+  $scope._overlayGeoJSON = function(geojson, options) {
+    // geojson = map data to display in standard GeoJSON format
+    // options = Google map options object
+
+    // Create an overlay holder
+    var overlay = []
+
+    // Translate GeoJSON-formatted response to Google Maps format
+    // https://developers.google.com/maps/tutorials/data/importing_data
+    // 3rd party conversion util https://github.com/JasonSanford/geojson-google-maps
+    var geo = new GeoJSON(geojson, options)
+
+    if (!geo.error) {
+      // Display everything
+      angular.forEach(geo, function (shape) {
+        // If there is another array (common for Feature Collections)
+        if (Array.isArray(shape) == true) {
+          angular.forEach(shape, function (geometry) {
+            // Display on map
+            geometry.setMap($scope.map)
+            // Add geometry to overlay holder
+            overlay.push(geometry)
+          })
+        }
+        // Otherwise, single geometry feature
+        else {
+          shape.setMap($scope.map)
+          overlay.push(shape)
+        }
+      })
+    }
+    else {
+      console.log('Error converting GeoJSON input to Google Maps overlay.')
+    }
+
+    // Return the array that holds the overlay information
+    // this is necessary for doing stuff with it (e.g. clearing it) later
+    return overlay
   }
 
   // Generic overlay clearer
@@ -819,7 +948,6 @@ appCtrls.controller('PrintViewCtrl', function ($scope, $http, UserData, MapServi
   $scope.staticMapImageUrl = 'http://maps.googleapis.com/maps/api/staticmap?zoom=15&size=250x250&maptype=roadmap&sensor=false&markers=color:red%7C' + parcelLat + ',' + parcelLng
 
   $scope.parcel  = $scope.userdata.property
-
 
   // Open print dialog box
   // Dumb hack to activate print dialog only after CSS transitions are done

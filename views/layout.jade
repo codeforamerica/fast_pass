@@ -1,13 +1,13 @@
 doctype 5
 //- Boilerplate 5 IE detection for CSS (slightly rewritten for Jade)
 //if lt IE 7
-	html(xmlns:ng='http://http://angularjs.org', id='ng-app', class='no-js lt-ie9 lt-ie8 lt-ie7', ng-app='dof')
+	html(xmlns:ng='http://http://angularjs.org', id='ng-app', class='no-js lt-ie9 lt-ie8 lt-ie7', ng-app='fastpass')
 //if IE 7
-	html(xmlns:ng='http://http://angularjs.org', id='ng-app', class='no-js lt-ie9 lt-ie8', ng-app='dof')
+	html(xmlns:ng='http://http://angularjs.org', id='ng-app', class='no-js lt-ie9 lt-ie8', ng-app='fastpass')
 //if IE 8
-	html(xmlns:ng='http://http://angularjs.org', id='ng-app', class='no-js lt-ie9', ng-app='dof')
+	html(xmlns:ng='http://http://angularjs.org', id='ng-app', class='no-js lt-ie9', ng-app='fastpass')
 //-if gt IE 8
-html(class='no-js', ng-app='dof')
+html(class='no-js', ng-app='fastpass')
 	head
 		meta(charset='utf-8')
 		meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
@@ -27,6 +27,6 @@ html(class='no-js', ng-app='dof')
 		block content
 
 		#map-container(ng-controller='MapCtrl as map')
-			#map(ui-map='map', ui-options='mapOptions', ui-event="{'map-click': 'mapClick($event, $params)' }", ng-show='mapService.showMap')
+			#map(ui-map='map', ui-options='mapOptions', ui-event="{'map-click': 'mapClick($event, $params)', 'map-bounds_changed': 'mapBoundsChanged($event, $params)' }", ng-show='mapService.showMap')
 
 		include _scripts-foot.html

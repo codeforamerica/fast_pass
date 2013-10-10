@@ -1,6 +1,6 @@
 'use strict';
 
-var appName = 'dof'
+var appName = 'fastpass'
 
 /*************************************************************************
 // 
@@ -29,6 +29,14 @@ Array.prototype.clean = function() {
 	}
 	return this;
 };
+
+// Array.isArray polyfill (necessary for < IE9)
+// reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
+if(!Array.isArray) {
+  Array.isArray = function (vArg) {
+    return Object.prototype.toString.call(vArg) === "[object Array]";
+  };
+}
 
 // Google maps - give maps.Polygon object a getBounds() method
 // see here: http://stackoverflow.com/questions/2177055/how-do-i-get-google-maps-to-show-a-whole-polygon
@@ -106,7 +114,7 @@ app.factory('MapService', function () {
 		showMap: false,
 		map: null,
 		clicked: {
-			latlng: [],
+			latLng: null,
 			lat: null,
 			lng: null
 		},
@@ -475,10 +483,11 @@ function _getSectionTemplate($routeParams) {
 // Callback function for Google Maps API
 // Required by this documentation: https://github.com/angular-ui/ui-map
 // But it hasn't worked...
+/*
 function onMapReady() {
 	angular.bootstrap(document, [appName]);
 }	
-
+*/
 
 /**
 *    Get query string for various options
