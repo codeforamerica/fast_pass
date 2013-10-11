@@ -451,8 +451,11 @@ controllers.sectionGo = function ($scope, $routeParams, UserData) {
 
 	// Record the current and previous sectionId
 	// This allows section controllers to perform logic based on 'back' navigation, if necessary
-	$scope.userdata.nav.previous = $scope.userdata.nav.current
-	$scope.userdata.nav.current  = $scope.sectionId
+	// Only do this if the current Id is different (otherwise reloads can mess with this)
+	if ($scope.userdata.nav.current != $scope.sectionId) {
+		$scope.userdata.nav.previous = $scope.userdata.nav.current
+		$scope.userdata.nav.current  = $scope.sectionId
+	}
 
 	// Hacky thing where it doesn't autosave when you just show up on section 10 (because user
 	// hasn't done anything yet)
@@ -460,6 +463,10 @@ controllers.sectionGo = function ($scope, $routeParams, UserData) {
 		_saveLocalStorage(UserData)
 	}
 
+	window.onbeforeunload = function(e) {
+		// Save to localStorage when user is about to leave the page.
+		_saveLocalStorage(UserData)
+	};
 }
 
 /*************************************************************************
@@ -606,4 +613,3 @@ function _clearLocalStorage () {
 		window.localStorage.removeItem(appName)
 	}
 }
-

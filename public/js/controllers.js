@@ -11,8 +11,13 @@ appCtrls.controller('StartCtrl', function ($scope, $location, UserData) {
 
   // Clear application data if directed
   if (_getQueryStringParams('clear') == 'true') {
+    // DAMN THIS IS FUCKING PERSISTENT DATA!!!
+    $scope.userdata = _resetUserData()
+
     UserData = _resetUserData()
-    $scope.userdata = UserData
+    _saveLocalStorage(UserData)
+    console.log(UserData)
+
     _clearLocalStorage()
     console.log('User data cleared.')
   }
@@ -96,7 +101,10 @@ appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 
           // Set results to model
           $scope.searchResults = prunedResults
-          $scope.searchPerformed = true     
+          $scope.searchPerformed = true
+
+          // After a search, save to local storage
+          _saveLocalStorage($scope.userdata)
         }
 
         // Store raw search inputs for future analysis
@@ -703,7 +711,9 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
   }, function (newValue, oldValue) {
     if ($scope.userdata.nav.current == 41) {
       if (newValue) {
-        $scope.neighborhood[newValue].setMap($scope.map)
+        $scope.neighborhood[newValue].setOptions({
+          fillOpacity: 0.5
+        })
       }
     }
   })
@@ -799,29 +809,23 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
 
     // Parcel area test
     var parcelGeomEndpoint = 'http://las-vegas-zoning-api.herokuapp.com/areas'  // ?lat=36.16355&lon=-115.13984
+    var parcelGeomUrl = parcelGeomEndpoint + '?lat=' + latlng.lat() + '&lon=' + latlng.lng()
+
+    // Set GeoJSON display options
+    var options = {
+      clickable: true,
+      fillColor: '#21687f',
+      fillOpacity: 0.50,
+      strokeColor: '#ffffff',
+      strokeOpacity: 1,
+      strokePosition: google.maps.StrokePosition.CENTER,
+      strokeWeight: 0
+    }
 
     $scope._clearMapOverlay($scope.parcels)
-
-    $http.get(parcelGeomEndpoint + '?lat=' + latlng.lat() + '&lon=' + latlng.lng())
-    .success( function (response, status) {
-
-      // Set GeoJSON display options
-      var options = {
-        clickable: true,
-        fillColor: '#21687f',
-        fillOpacity: 0.50,
-        strokeColor: '#ffffff',
-        strokeOpacity: 1,
-        strokePosition: google.maps.StrokePosition.CENTER,
-        strokeWeight: 0
-      }
-
-      // display the response geoJSON
-      $scope.parcels = $scope._overlayGeoJSON(response, options)
+    $scope.parcels = $scope._loadGeoJSON(parcelGeomUrl, options, function () {
+      console.log($scope.parcels)
     })
-    .error( function (response, status) {
-      console.log('Error getting parcel shape')
-    });
 
   }
 
@@ -953,8 +957,8 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     // Set default GeoJSON display options
     var options = {
       clickable: false,
-      fillColor: '#ff0000',
-      fillOpacity: 0.20,
+      fillColor: '#21687f',
+      fillOpacity: 0,
       strokeWeight: 0
     }
 
@@ -969,64 +973,6 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     $scope.neighborhood.summerlin = $scope._loadGeoJSON(geoSummerlin, options)
 
   }
-
-  /*
-  $scope._loadGeoJSON = function (geoJsonUrl) {
-    $http.get(geoJsonUrl)
-    .success( function (response, status) {
-      return response
-    })
-    .error( function (response, status) {
-      console.log('Error getting GeoJSON file: ' + geoJsonUrl )
-    })
-  }
-  */
-
-  $scope._loadGeoJSON = function (geoJsonUrl, options) {
-    // kind of like _overlayGeoJSON but without the immediate adding to map
-
-    $http.get(geoJsonUrl)
-    .success( function (response, status) {
-
-      // Create an overlay holder
-      var overlay = []
-
-      // Translate GeoJSON-formatted response to Google Maps format
-      // https://developers.google.com/maps/tutorials/data/importing_data
-      // 3rd party conversion util https://github.com/JasonSanford/geojson-google-maps
-      var geo = new GeoJSON(response, options)
-
-      if (!geo.error) {
-        // Display everything
-        angular.forEach(geo, function (shape) {
-          // If there is another array (common for Feature Collections)
-          if (Array.isArray(shape) == true) {
-            angular.forEach(shape, function (geometry) {
-              geometry.setMap($scope.map)
-              // Add geometry to overlay holder
-              overlay.push(geometry)
-            })
-          }
-          // Otherwise, single geometry feature
-          else {
-            shape.setMap($scope.map)
-            overlay.push(shape)
-          }
-        })
-      }
-      else {
-        console.log('Error converting GeoJSON input to Google Maps overlay.')
-      }
-
-      // Return the array that holds the overlay information
-      // this is necessary for doing stuff with it (e.g. clearing it) later
-      return overlay
-    })
-    .error( function (response, status) {
-      console.log('Error getting GeoJSON file: ' + geoJsonUrl )
-    })
-  }
-
 
   $scope._getFillColor = function (score) {
     // Keep scores within scale
@@ -1069,6 +1015,25 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     $scope.markers.push(marker)
 
     return marker
+  }
+
+  $scope._loadGeoJSON = function (url, options, callback) {
+    var overlay
+
+    $http.get(url)
+    .success( function (response, status) {
+      overlay = $scope._overlayGeoJSON(response, options)
+
+      // Execute callback function
+      if (typeof callback === "function") {
+        callback()
+      }
+
+      return overlay
+    })
+    .error( function (response, status) {
+      console.log('Error getting GeoJSON file: ' + url )
+    })
   }
 
   // Generic GeoJSON overlay adder
@@ -1165,16 +1130,8 @@ appCtrls.controller('ReturnCtrl', function ($scope, UserData) {
   // Display this if user arrives to a page in this application and 
   // user data is already stored in Local Storage.
   if (_checkLocalStorage() == true) {
-    console.log('Something is in local storage.')
 
-    // Load data from local storage
-    var localStorage = _loadLocalStorage()
-    // console.log(localStorage)
-    $scope.userdata = localStorage
-    // ??
-    UserData = localStorage
-
-    // Is a "promise object" required to make sure the page loads up the stored user data first?
+    $scope.userdata = UserData
 
     // Redirect route to last recorded section
     window.location.href = window.location.origin + '/#/section/' + $scope.userdata.nav.current
