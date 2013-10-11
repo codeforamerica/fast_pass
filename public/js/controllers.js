@@ -844,13 +844,14 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
   $scope._mapInvalidateSize = function () {
     // The name of this function is based on leaflet.js's similar invalidateSize() method
     // Google Maps v3 API requires that the developer manually handle situations where the map display div changes size
-//    google.maps.event.addListenerOnce($scope.map, 'idle', function() {
-      console.log('Resizing map')
-      google.maps.event.trigger($scope.map, 'resize')
 
+    // setTimeout 0 is a treating symptomps solution to deal with the map
+    // sometimes not resizing properly when loaded for the first time. This
+    // might not actually solve the problem. See issue #68.
+    window.setTimeout(function() { 
+      google.maps.event.trigger($scope.map, 'resize') 
       $scope._setMapView($scope.userdata.nav.current)
-
-//    });
+    }, 0)
   }
 
   $scope.showParcels = function () {
