@@ -687,7 +687,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
       if (newValue) {
         // On hovering over a neighborhood, display it by changing the fill opacity to non-zero
         $scope.neighborhood[newValue].setOptions({
-          fillOpacity: 0.25
+          fillOpacity: 0.15
         })
       } else {
         // On unhover, hide it by changing the fill opacity to zero
@@ -918,6 +918,20 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     $scope._clearMapOverlay($scope.markers)
     $scope._clearMapOverlay($scope.parcelzzz)
 
+    var defaultMapUIOptions = {
+      disableDefaultUI: false,
+      disableDoubleClickZoom: false,
+      keyboardShortcuts: true,
+      draggable: true
+    }
+    var fixedMapUIOptions = {
+      disableDefaultUI: true,
+      disableDoubleClickZoom: true,
+      keyboardShortcuts: false,
+      draggable: false
+    }
+
+
     // Set map view based on section
     switch(section) {
       case '40':
@@ -925,19 +939,14 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
         // Note: This fit bounds should happen when this occurs, but it's triggering before the mapinvalidatesize() is called, so the first view of this isn't set properly.
         $scope.map.fitBounds($scope.cityLimitsBounds)
 //          console.log($scope.cityLimitsBounds)
+        $scope.map.setOptions(defaultMapUIOptions)
         break
       case '41':
         // Neighborhood selection
         $scope.map.fitBounds($scope.cityLimitsBounds)
-        $scope.map.setOptions({
-          disableDefaultUI: true,
-          disableDoubleClickZoom: true,
-          keyboardShortcuts: false,
-          draggable: false
-        })
+        $scope.map.setOptions(fixedMapUIOptions)
         // Load GeoJSONs
         $scope.loadNeighborhoods()
-
         break
       case '45':
         // Remove neighborhoods from previous
@@ -945,12 +954,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
         // Zoning map display
         $scope.showParcels()
         // Reset Options
-        $scope.map.setOptions({
-          disableDefaultUI: false,
-          disableDoubleClickZoom: false,
-          keyboardShortcuts: true,
-          draggable: true
-        })
+        $scope.map.setOptions(defaultMapUIOptions)
         // Change view
         // Currently: fake it!
         $scope.map.setCenter(new google.maps.LatLng(36.16526743280042,-115.14169692993164))
