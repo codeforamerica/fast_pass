@@ -292,10 +292,8 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 
     }).
     error( function (response, status) {
-
       $scope.searchLoading = false
       $scope.searchErrorMsg = 'Error performing search for addresses. Please try again later.'
-
     });
   }
 
@@ -370,6 +368,7 @@ appCtrls.controller('41Ctrl', function ($scope, $http, UserData, MapService) {
 // SECTION 50 - PARCEL VIEW
 appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
   $scope.userdata = UserData
+  $scope.mapService = MapService
 
   // Reset view
   $scope.parcelLoaded  = false
@@ -471,18 +470,22 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
       $scope.userdata.property = $scope.parcel
 
       // Set display
-      $scope.title = $scope.parcel.address
+      $scope.title = $scope.parcel.address.capitalize()
       $scope.parcelLoaded  = true
 
     }
-
   }).
   error( function () {
-
     $scope.searchLoading = false
     $scope.errorMsg = 'Error loading parcel data.'
-
   })
+
+  // Also get the parcel geometry separately, because the city endpoint above doesn't do it.
+  // We'll do this by sending a signal to the MapService about displaying a parcel.
+  $scope.mapService.parcel = {
+    lat: parcelLat,
+    lng: parcelLng
+  }
 
 })
 
@@ -700,6 +703,28 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     }
   })
 
+  // Set map view if given a parcel
+  $scope.$watch(function () {
+    return $scope.mapService.parcel
+  }, function (newValue, oldValue) {
+    // Doesn't matter what section it's on... ?
+    if (newValue.lat && newValue.lng) {
+      $scope._displayParcelGeometry(newValue.lat, newValue.lng, function (parcel) {
+        // Not all address latlng values seem to return parcels, so handle this better
+        if (parcel[0]) {
+          $scope.map.fitBounds(parcel[0].getBounds())
+          if ($scope.map.getZoom() > 18) {
+            $scope.map.setZoom(18)
+          }          
+        } else {
+          console.log('No parcel geometry found at ' + newValue.lat + ',' +newValue.lng)
+        }
+      })
+    } else {
+      $scope._clearMapOverlay($scope.parcels)
+    }
+  })
+
   // Actions to perform when map is clicked.
   $scope.mapClick = function ($event, $params) {
 
@@ -789,26 +814,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
       $scope.infowindow.setContent('Sorry, we hit a server error :-(  Please try again later.')
     });
 
-    // Get the parcel given a latlng point
-    var parcelGeomEndpoint = 'http://las-vegas-zoning-api.herokuapp.com/areas'  // ?lat=36.16355&lon=-115.13984
-    var parcelGeomUrl = parcelGeomEndpoint + '?lat=' + latlng.lat() + '&lon=' + latlng.lng()
-
-    // Set GeoJSON display options
-    var options = {
-      clickable: true,
-      fillColor: '#21687f',
-      fillOpacity: 0.50,
-      strokeColor: '#ffffff',
-      strokeOpacity: 1,
-      strokePosition: google.maps.StrokePosition.CENTER,
-      strokeWeight: 0
-    }
-
-    $scope._clearMapOverlay($scope.parcels)
-    $scope._loadGeoJSON(parcelGeomUrl, options, function (parcel) {
-      $scope.parcels = parcel
-    })
-
+    $scope._displayParcelGeometry(latlng.lat(), latlng.lng())
   }
 
 
@@ -1090,7 +1096,32 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     return marker
   }
 
+  $scope._displayParcelGeometry = function (lat, lng, callback) {
+    // Get the parcel given a latlng point
+    var parcelGeomEndpoint = 'http://las-vegas-zoning-api.herokuapp.com/areas'  // ?lat=36.16355&lon=-115.13984
+    var parcelGeomUrl = parcelGeomEndpoint + '?lat=' + lat + '&lon=' + lng
 
+    // Set GeoJSON display options
+    var options = {
+      clickable: true,
+      fillColor: '#21687f',
+      fillOpacity: 0.50,
+      strokeColor: '#ffffff',
+      strokeOpacity: 1,
+      strokePosition: google.maps.StrokePosition.CENTER,
+      strokeWeight: 0
+    }
+
+    $scope._clearMapOverlay($scope.parcels)
+    $scope._loadGeoJSON(parcelGeomUrl, options, function (parcel) {
+      $scope.parcels = parcel
+  
+      // Execute callback function
+      if (typeof callback === "function") {
+        callback(parcel)
+      }    
+    })
+  }
 
   // Display a very light city limits thing to direct people's attentions.
   var cityLimitsGeoJSON = '/data/clv-city-limits.geojson'

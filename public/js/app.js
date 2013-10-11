@@ -114,6 +114,10 @@ app.factory('MapService', function () {
 		showMap: false,
 		map: null,
 		neighborhood: null,
+		parcel: {
+			lat: null,
+			lng: null
+		},
 		clicked: {
 			latLng: null,
 			lat: null,
