@@ -113,6 +113,7 @@ app.factory('MapService', function () {
 	return {
 		showMap: false,
 		map: null,
+		neighborhood: null,
 		clicked: {
 			latLng: null,
 			lat: null,

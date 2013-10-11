@@ -146,7 +146,7 @@
     },
     {
         "code": "B05",
-        "name": "Cosmetological  Establishment",
+        "name": "Cosmetological Establishment",
         "description": "Establishment that is licensed or required to be licensed by the State pursuant to the provisions of NRS Chapter 644 and that provides cosmetology services to the general public."
     },
     {
@@ -531,27 +531,27 @@
     },
     {
         "code": "N31",
-        "name": "NP COMMUNITY SERVICES",
+        "name": "Non-profit Community Services",
         "description": "NON PROFIT SOCIAL SERVICES GENERAL- (no state license required)"
     },
     {
         "code": "N33",
-        "name": "NP MEDICAL",
+        "name": "Non-profit Medical",
         "description": "NON-PROFIT COUNSELING"
     },
     {
         "code": "N35",
-        "name": "NP DRUG/ALCOHOL COUNSELING",
+        "name": "Non-profit Drug/Alcohol Counseling",
         "description": "A Non-Profit Organization that counsels alcohol and drug abusers- which means the application of counseling to reduce or eliminate the habitual use of alcohol or other drugs"
     },
     {
         "code": "N36",
-        "name": "NP THRIFT STORE",
+        "name": "Non-profit Thrift Store",
         "description": "A shop that is operated by a non-profit organization and that sells donated and used merchandise only."
     },
     {
         "code": "N38",
-        "name": "NP Homeless Shelter/Rescue Mission",
+        "name": "Non-profit Homeless Shelter/Rescue Mission",
         "description": "NP Homeless Shelter/Rescue Mission"
     },
     {
@@ -561,7 +561,7 @@
     },
     {
         "code": "O08",
-        "name": "Outdoor Sports Center and Activities Related ",
+        "name": "Outdoor Sports Center and Activities Related",
         "description": "An outdoor facility or area for sport, entertainment, games of skill, or recreation that is open to use by the general public for a fee. The term includes without limitation game courts, water slides, golf courses, outdoor miniature golf courses, drive-in theaters, batting cages, practice/instructional fields, and sports events, but does not include an amphitheater."
     },
     {
@@ -656,7 +656,7 @@
     },
     {
         "code": "R09",
-        "name": "Restaurant ",
+        "name": "Restaurant",
         "description": "An establishment providing preparation and retail sale of food & beverages with a seating capacity of 30 or more."
     },
     {

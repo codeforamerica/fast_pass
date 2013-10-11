@@ -333,6 +333,28 @@ appCtrls.controller('45Ctrl', function ($scope, UserData) {
 
 })
 
+// SECTION 41 - NEIGHBORHOOD SELECTION VIEW
+appCtrls.controller('41Ctrl', function ($scope, $http, UserData, MapService) {
+  $scope.userdata   = UserData
+  $scope.mapService = MapService
+
+  // Load up neighborhood GeoJSONs.
+
+  $scope.hoverDowntown = function () {
+    $scope.mapService.neighborhood = 'downtown'
+  }
+
+  $scope.hoverSummerlin = function () {
+    $scope.mapService.neighborhood = 'summerlin'
+  }
+
+  $scope.hoverAny = function () {
+    $scope.mapService.neighborhood = 'city'
+  }
+
+
+})
+
 // SECTION 50 - PARCEL VIEW
 appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
   $scope.userdata = UserData
@@ -675,6 +697,17 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     }
   })
 
+  // Set map view per section
+  $scope.$watch(function () {
+    return $scope.mapService.neighborhood
+  }, function (newValue, oldValue) {
+    if ($scope.userdata.nav.current == 41) {
+      if (newValue) {
+        $scope.neighborhood[newValue].setMap($scope.map)
+      }
+    }
+  })
+
   // Actions to perform when map is clicked.
   $scope.mapClick = function ($event, $params) {
 
@@ -810,6 +843,9 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
 //    google.maps.event.addListenerOnce($scope.map, 'idle', function() {
       console.log('Resizing map')
       google.maps.event.trigger($scope.map, 'resize')
+
+      $scope._setMapView($scope.userdata.nav.current)
+
 //    });
   }
 
@@ -856,7 +892,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
   $scope._setMapView = function (section) {
     $scope.isMapViewSet = true
 
-    $scope._mapInvalidateSize()
+//    $scope._mapInvalidateSize()
 
     // Standard view resets
     $scope.infowindow.close()
@@ -881,6 +917,10 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
           keyboardShortcuts: false,
           draggable: false
         })
+
+        // Load GeoJSONs
+        $scope.loadNeighborhoods()
+
         break
       case '45':
         // Zoning map display
@@ -907,6 +947,86 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
         // what?
     }
   }
+
+  $scope.loadNeighborhoods = function () {
+
+    // Set default GeoJSON display options
+    var options = {
+      clickable: false,
+      fillColor: '#ff0000',
+      fillOpacity: 0.20,
+      strokeWeight: 0
+    }
+
+    var geoDowntown =  '/data/clv-downtown.geojson'
+    var geoSummerlin = '/data/clv-summerlin.geojson'
+
+    $scope.neighborhood = {} 
+
+    $scope.neighborhood.city = 'reserved for city'
+
+    $scope.neighborhood.downtown = $scope._loadGeoJSON(geoDowntown, options)
+    $scope.neighborhood.summerlin = $scope._loadGeoJSON(geoSummerlin, options)
+
+  }
+
+  /*
+  $scope._loadGeoJSON = function (geoJsonUrl) {
+    $http.get(geoJsonUrl)
+    .success( function (response, status) {
+      return response
+    })
+    .error( function (response, status) {
+      console.log('Error getting GeoJSON file: ' + geoJsonUrl )
+    })
+  }
+  */
+
+  $scope._loadGeoJSON = function (geoJsonUrl, options) {
+    // kind of like _overlayGeoJSON but without the immediate adding to map
+
+    $http.get(geoJsonUrl)
+    .success( function (response, status) {
+
+      // Create an overlay holder
+      var overlay = []
+
+      // Translate GeoJSON-formatted response to Google Maps format
+      // https://developers.google.com/maps/tutorials/data/importing_data
+      // 3rd party conversion util https://github.com/JasonSanford/geojson-google-maps
+      var geo = new GeoJSON(response, options)
+
+      if (!geo.error) {
+        // Display everything
+        angular.forEach(geo, function (shape) {
+          // If there is another array (common for Feature Collections)
+          if (Array.isArray(shape) == true) {
+            angular.forEach(shape, function (geometry) {
+              geometry.setMap($scope.map)
+              // Add geometry to overlay holder
+              overlay.push(geometry)
+            })
+          }
+          // Otherwise, single geometry feature
+          else {
+            shape.setMap($scope.map)
+            overlay.push(shape)
+          }
+        })
+      }
+      else {
+        console.log('Error converting GeoJSON input to Google Maps overlay.')
+      }
+
+      // Return the array that holds the overlay information
+      // this is necessary for doing stuff with it (e.g. clearing it) later
+      return overlay
+    })
+    .error( function (response, status) {
+      console.log('Error getting GeoJSON file: ' + geoJsonUrl )
+    })
+  }
+
 
   $scope._getFillColor = function (score) {
     // Keep scores within scale
@@ -972,10 +1092,11 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
           angular.forEach(shape, function (geometry) {
             // Display on map
             geometry.setMap($scope.map)
-            // TEst click
-  //          google.maps.event.addListener(geometry, 'click', function(){alert('hi')});
-  //  That worked. Now have to make it do stuff.
-  // Maybe make it receive event listeners outside of this function, since it's being returned in an array.
+            // Test click
+            // google.maps.event.addListener(geometry, 'click', function(){alert('hi')});
+            // That worked. Now have to make it do stuff.
+            // Maybe make it receive event listeners outside of this function, since it's being returned in an array.
+            
             // Add geometry to overlay holder
             overlay.push(geometry)
           })
@@ -983,7 +1104,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
         // Otherwise, single geometry feature
         else {
           shape.setMap($scope.map)
-//          google.maps.event.addListener(shape, 'click', function(){alert('hi')});
+          // google.maps.event.addListener(shape, 'click', function(){alert('hi')});
           overlay.push(shape)
         }
       })
@@ -1009,7 +1130,6 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
       overlay.length = 0
     }
   }
-
 
 })
 
