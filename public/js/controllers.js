@@ -815,7 +815,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
 
   $scope.showParcels = function () {
     //var parcelsGeoJSON = '/data/parcels_small.geojson'
-    var parcelsGeoJSON = '/data/parcels_big.geojson'
+    var parcelsGeoJSON = '/parcels'
 
     $http.get(parcelsGeoJSON)
     .success( function (response, status) {

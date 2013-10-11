@@ -8,7 +8,7 @@
       "url": "https://github.com/rclosner/lv-dof"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "node server.js",
     "db-setup": "./scripts/db/setup.js",
     "db-create": "./scripts/db/create.js",
     "db-migrate": "./scripts/db/migrate.js",
