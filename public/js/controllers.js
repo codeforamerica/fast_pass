@@ -789,7 +789,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
       $scope.infowindow.setContent('Sorry, we hit a server error :-(  Please try again later.')
     });
 
-    // Parcel area test
+    // Get the parcel given a latlng point
     var parcelGeomEndpoint = 'http://las-vegas-zoning-api.herokuapp.com/areas'  // ?lat=36.16355&lon=-115.13984
     var parcelGeomUrl = parcelGeomEndpoint + '?lat=' + latlng.lat() + '&lon=' + latlng.lng()
 
@@ -805,9 +805,8 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     }
 
     $scope._clearMapOverlay($scope.parcels)
-    $scope._loadGeoJSON(parcelGeomUrl, options, function (overlay) {
-//      $scope.parcels.push(overlay)
-      console.log('hey')
+    $scope._loadGeoJSON(parcelGeomUrl, options, function (parcel) {
+      $scope.parcels = parcel
     })
 
   }
@@ -910,8 +909,6 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
   $scope._setMapView = function (section) {
     $scope.isMapViewSet = true
 
-//    $scope._mapInvalidateSize()
-
     // Standard view resets
     $scope.infowindow.close()
     $scope._clearMapOverlay($scope.parcels)
@@ -938,7 +935,6 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
         // Address selection
         // Note: This fit bounds should happen when this occurs, but it's triggering before the mapinvalidatesize() is called, so the first view of this isn't set properly.
         $scope.map.fitBounds($scope.cityLimitsBounds)
-//          console.log($scope.cityLimitsBounds)
         $scope.map.setOptions(defaultMapUIOptions)
         break
       case '41':
