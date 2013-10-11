@@ -356,8 +356,12 @@ appCtrls.controller('41Ctrl', function ($scope, $http, UserData, MapService) {
     $scope.mapService.neighborhood = 'summerlin'
   }
 
-  $scope.hoverAny = function () {
+  $scope.hoverCity = function () {
     $scope.mapService.neighborhood = 'city'
+  }
+
+  $scope.unhover = function () {
+    $scope.mapService.neighborhood = ''
   }
 
 
@@ -681,9 +685,17 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
   }, function (newValue, oldValue) {
     if ($scope.userdata.nav.current == 41) {
       if (newValue) {
+        // On hovering over a neighborhood, display it by changing the fill opacity to non-zero
         $scope.neighborhood[newValue].setOptions({
-          fillOpacity: 0.5
+          fillOpacity: 0.25
         })
+      } else {
+        // On unhover, hide it by changing the fill opacity to zero
+        for (var i in $scope.neighborhood) {
+          $scope.neighborhood[i].setOptions({
+            fillOpacity: 0
+          })
+        }
       }
     }
   })
@@ -793,34 +805,13 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     }
 
     $scope._clearMapOverlay($scope.parcels)
-    $scope.parcels = $scope._loadGeoJSON(parcelGeomUrl, options)
+    $scope._loadGeoJSON(parcelGeomUrl, options, function (overlay) {
+//      $scope.parcels.push(overlay)
+      console.log('hey')
+    })
 
   }
 
-  // Actions to perform when map boundaries have changed.
-  $scope.mapBoundsChanged = function ($event, $params) {
-
-    // Report on map boundaries, center, and zoom level.
-    // This stuff is always available from the map anyway
-    // Giving it to mapService is just what allows other controllers to know about it - do they need to?
-    // for now, the answer is no.
-    //$scope.mapService.bounds = $scope.map.getBounds()
-    //$scope.mapService.zoom = $scope.map.getZoom()
-    //$scope.mapService.center = $scope.map.getCenter()
-  }
-
-  $scope._mapInvalidateSize = function () {
-    // The name of this function is based on leaflet.js's similar invalidateSize() method
-    // Google Maps v3 API requires that the developer manually handle situations where the map display div changes size
-
-    // setTimeout 0 is a treating symptomps solution to deal with the map
-    // sometimes not resizing properly when loaded for the first time. This
-    // might not actually solve the problem. See issue #68.
-    window.setTimeout(function() { 
-      google.maps.event.trigger($scope.map, 'resize') 
-      $scope._setMapView($scope.userdata.nav.current)
-    }, 0)
-  }
 
   $scope.showParcels = function () {
     //var parcelsGeoJSON = '/data/parcels_small.geojson'
@@ -862,6 +853,60 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     });
   }
 
+  $scope.loadNeighborhoods = function () {
+
+    // Set default GeoJSON display options
+    var options = {
+      clickable: false,
+      fillColor: '#ff0000',
+      fillOpacity: 0,
+      strokeWeight: 0
+    }
+
+    var geoCity = '/data/clv-city-limits.geojson'
+    var geoDowntown =  '/data/clv-downtown.geojson'
+    var geoSummerlin = '/data/clv-summerlin.geojson'
+
+    $scope.neighborhood = {}
+
+    $scope._loadGeoJSON(geoCity, options, function (overlay) {
+      $scope.neighborhood.city = overlay[1]
+    })
+    $scope._loadGeoJSON(geoDowntown, options, function (overlay) {
+      $scope.neighborhood.downtown = overlay[0]
+    })
+    $scope._loadGeoJSON(geoSummerlin, options, function (overlay) {
+      $scope.neighborhood.summerlin = overlay[0]
+    })
+
+  }
+
+
+  // Actions to perform when map boundaries have changed.
+  $scope.mapBoundsChanged = function ($event, $params) {
+
+    // Report on map boundaries, center, and zoom level.
+    // This stuff is always available from the map anyway
+    // Giving it to mapService is just what allows other controllers to know about it - do they need to?
+    // for now, the answer is no.
+    //$scope.mapService.bounds = $scope.map.getBounds()
+    //$scope.mapService.zoom = $scope.map.getZoom()
+    //$scope.mapService.center = $scope.map.getCenter()
+  }
+
+  $scope._mapInvalidateSize = function () {
+    // The name of this function is based on leaflet.js's similar invalidateSize() method
+    // Google Maps v3 API requires that the developer manually handle situations where the map display div changes size
+
+    // setTimeout 0 is a treating symptomps solution to deal with the map
+    // sometimes not resizing properly when loaded for the first time. This
+    // might not actually solve the problem. See issue #68.
+    window.setTimeout(function() { 
+      google.maps.event.trigger($scope.map, 'resize') 
+      $scope._setMapView($scope.userdata.nav.current)
+    }, 0)
+  }
+
   $scope._setMapView = function (section) {
     $scope.isMapViewSet = true
 
@@ -890,12 +935,13 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
           keyboardShortcuts: false,
           draggable: false
         })
-
         // Load GeoJSONs
         $scope.loadNeighborhoods()
 
         break
       case '45':
+        // Remove neighborhoods from previous
+        $scope._clearMapOverlay($scope.neighborhood)
         // Zoning map display
         $scope.showParcels()
         // Reset Options
@@ -919,71 +965,6 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
       default:
         // what?
     }
-  }
-
-  $scope.loadNeighborhoods = function () {
-
-    // Set default GeoJSON display options
-    var options = {
-      clickable: false,
-      fillColor: '#21687f',
-      fillOpacity: 0,
-      strokeWeight: 0
-    }
-
-    var geoDowntown =  '/data/clv-downtown.geojson'
-    var geoSummerlin = '/data/clv-summerlin.geojson'
-
-    $scope.neighborhood = {} 
-
-    $scope.neighborhood.city = 'reserved for city'
-
-    $scope.neighborhood.downtown = $scope._loadGeoJSON(geoDowntown, options)
-    $scope.neighborhood.summerlin = $scope._loadGeoJSON(geoSummerlin, options)
-
-  }
-
-  $scope._getFillColor = function (score) {
-    // Keep scores within scale
-    if (score > 100) { score = 100 }
-    else if (score < 0 ) { score = 0 }
-    /*
-    // For testing: color scale between red and green
-    var r = Math.floor((255 * score) / 100),
-        g = Math.floor((255 * (100 - score)) / 100),
-        b = 0;
-
-    return "rgb(" + r + "," + g + "," + b + ")"
-    */
-    // Colors: variations on suggestions from http://www.sron.nl/~pault/
-    if (score >= 60) {
-      // return '#29b35e' //green
-      return 'green'
-    } else if (score >= 40 && score < 60) {
-      // return '#b9ca3b' // yellow
-      return 'yellow'
-    } else if (score >= 20 && score < 40) {
-      // return '#dfa53a' // orange
-      return 'orange'
-    } else if (score >= 10 && score < 20) {
-      // return '#e7742f'
-      return '#ff9900'
-    } else {
-      return 'red'
-    }
-  }
-
-  $scope._addMarker = function(latlng) {
-    // Create marker instance
-    var marker = new google.maps.Marker({
-      position: latlng,
-      map: $scope.map
-    })
-
-    // Have to manually keep track of them
-    $scope.markers.push(marker)
-
-    return marker
   }
 
   $scope._loadGeoJSON = function (url, options, callback) {
@@ -1064,6 +1045,51 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
       overlay.length = 0
     }
   }
+
+  // For zoning view - color scheme
+  $scope._getFillColor = function (score) {
+    // Keep scores within scale
+    if (score > 100) { score = 100 }
+    else if (score < 0 ) { score = 0 }
+    /*
+    // For testing: color scale between red and green
+    var r = Math.floor((255 * score) / 100),
+        g = Math.floor((255 * (100 - score)) / 100),
+        b = 0;
+
+    return "rgb(" + r + "," + g + "," + b + ")"
+    */
+    // Colors: variations on suggestions from http://www.sron.nl/~pault/
+    if (score >= 60) {
+      // return '#29b35e' //green
+      return 'green'
+    } else if (score >= 40 && score < 60) {
+      // return '#b9ca3b' // yellow
+      return 'yellow'
+    } else if (score >= 20 && score < 40) {
+      // return '#dfa53a' // orange
+      return 'orange'
+    } else if (score >= 10 && score < 20) {
+      // return '#e7742f'
+      return '#ff9900'
+    } else {
+      return 'red'
+    }
+  }
+
+  $scope._addMarker = function(latlng) {
+    // Create marker instance
+    var marker = new google.maps.Marker({
+      position: latlng,
+      map: $scope.map
+    })
+
+    // Have to manually keep track of them
+    $scope.markers.push(marker)
+
+    return marker
+  }
+
 
 
   // Display a very light city limits thing to direct people's attentions.
