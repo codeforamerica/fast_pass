@@ -4,7 +4,7 @@ var Parcel = DBModel.extend({
 
   defaults: {
     'code': undefined,
-    'zone_ids': undefined
+    'zone_code': undefined
   }
 
 }, {

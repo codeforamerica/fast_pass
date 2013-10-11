@@ -4,7 +4,8 @@ var Session = DBModel.extend({
 
   defaults: {
     'category_code': undefined,
-    'parcel_code': undefined
+    'parcel_code': undefined,
+    'zone_code': undefined
   }
 
 }, {

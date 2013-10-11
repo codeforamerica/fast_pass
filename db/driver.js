@@ -6,13 +6,13 @@ var Driver = function () {};
 Driver.config = config.database;
 
 Driver.connect = function (cb) {
-  pg.connect(this.config, function (err, client) {
-    cb.call(this, err, client);
+  pg.connect(Driver.config, function (err, client) {
+    cb.call(Driver, err, client);
   });
 }
 
 Driver.query = function (q, v, cb) {
-  this.connect(function (err, client) {
+  Driver.connect(function (err, client) {
     if (err) {
       throw err;
     } else {

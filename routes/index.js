@@ -4,5 +4,8 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'City of Las Vegas Development Opportunity Finder' });
+  res.render('index', {
+    title: 'Development FastPass - City of Las Vegas, Nevada',
+    description: 'Find the best location for your Las Vegas-based business'
+  });
 };
