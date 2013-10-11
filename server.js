@@ -65,6 +65,7 @@ app.get('/geocode/position', geo.geocodePosition);
 
 // Category Routes
 app.get('/categories/naics_search', category.naics_search);
+app.get('/categories/business_licensing', category.business_licensing)
 
 // Session Routes
 app.put('/sessions/:id', session.update);

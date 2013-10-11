@@ -1,0 +1,255 @@
+[
+    {
+        "code": "A20",
+        "name": "Auctions & Auctioneers"
+    },
+    {
+        "code": "A24",
+        "name": "Psychic Arts - Science"
+    },
+    {
+        "code": "A33",
+        "name": "Adult Nightclub Establishment"
+    },
+
+    {
+        "code": "A65",
+        "name": "Automotive Sales/Rental Facility"
+    },
+
+    {
+        "code": "B13",
+        "name": "Burglar Alarm Service"
+    },
+    {
+        "code": "B22",
+        "name": "Babysitting Service"
+    },
+
+    {
+        "code": "D20",
+        "name": "Commercial Dance Studio"
+    },
+
+    {
+        "code": "E05",
+        "name": "Escort Bureau"
+    },
+    {
+        "code": "E06",
+        "name": "Escort and Escort Runner"
+    },
+    {
+        "code": "E07",
+        "name": "Erotic Dance Establishment"
+    },
+
+    {
+        "code": "F15",
+        "name": "Farmers Market Promoter"
+    },
+
+    {
+        "code": "G01",
+        "name": "Gaming Restricted"
+    },
+    {
+        "code": "G06",
+        "name": "Slot Operator"
+    },
+    {
+        "code": "G07",
+        "name": "Gaming Nonrestricted Limited"
+    },
+    {
+        "code": "G08",
+        "name": "Gaming/Nonrestricted"
+    },
+
+    {
+        "code": "I07",
+        "name": "Ice Cream Truck"
+    },
+
+
+    {
+        "code": "L06",
+        "name": "Locksmith and Safe Mechanic"
+    },
+    {
+        "code": "L09",
+        "name": "Beer Wine Cooler On Sale"
+    },
+    {
+        "code": "L10",
+        "name": "Beer Wine Cooler Off Sale"
+    },
+    {
+        "code": "L11",
+        "name": "Beer Wine Cooler On-Off Sale"
+    },
+    {
+        "code": "L12",
+        "name": "Gift Shop Limited"
+    },
+    {
+        "code": "L13",
+        "name": "Nonprofit Club General On-Sale"
+    },
+    {
+        "code": "L14",
+        "name": "Keg Beer"
+    },
+    {
+        "code": "L15",
+        "name": "Package"
+    },
+    {
+        "code": "L16",
+        "name": "Tavern"
+    },
+    {
+        "code": "L17",
+        "name": "Wholesale General"
+    },
+    {
+        "code": "L18",
+        "name": "Alcoholic Beverage Caterer"
+    },
+    {
+        "code": "L19",
+        "name": "Restaurant Service Bar"
+    },
+    {
+        "code": "L22",
+        "name": "Gift Basket Limited"
+    },
+    {
+        "code": "L23",
+        "name": "Wine/beer/cordial/liqueur tasting "
+    },
+    {
+        "code": "L24",
+        "name": "Alcoholic Beverage Caterer GFL"
+    },
+    {
+        "code": "L25",
+        "name": "Ancillary Lounge Bar"
+    },
+    {
+        "code": "L28",
+        "name": "Banquet or Event Establish-Liquor"
+    },
+    {
+        "code": "L29",
+        "name": "Beer/Wine/Cooler cultural event on-sale"
+    },
+    {
+        "code": "L30",
+        "name": "Permanent Trade Show Facility"
+    },
+    {
+        "code": "L32",
+        "name": "Convention Facility "
+    },
+
+    {
+        "code": "L36",
+        "name": "Nonprofit club restaurant service bar"
+    },
+    {
+        "code": "L38",
+        "name": "Tavern-Limited"
+    },
+    {
+        "code": "L40",
+        "name": "Internet Alcohol Sales"
+    },
+    {
+        "code": "L41",
+        "name": "Urban Lounge"
+    },
+    {
+        "code": "L44",
+        "name": "Instructional Wine Making Facility"
+    },
+    {
+        "code": "L46",
+        "name": "Liquor Manufacturer"
+    },
+    {
+        "code": "M03",
+        "name": "Massage Establishment"
+    },
+
+    {
+        "code": "M11",
+        "name": "Massage Establishment (Accessory)"
+    },
+
+    {
+        "code": "M22",
+        "name": "Martial Arts Instruction Business"
+    },
+
+    {
+        "code": "O04",
+        "name": "Outcall Entertainment Referral Service"
+    },
+
+    {
+        "code": "P04",
+        "name": "Pawnbroker"
+    },
+
+    {
+        "code": "P08",
+        "name": "Auto Pawnbroker"
+    },
+
+    {
+        "code": "R03",
+        "name": "Reflexology Establishment"
+    },
+
+    {
+        "code": "R11",
+        "name": "Reflexology Practitioner"
+    },
+
+    {
+        "code": "S20",
+        "name": "Secondhand Dealer Class 1-C"
+    },
+    {
+        "code": "S23",
+        "name": "Secondhand Dealer Class 1-A"
+    },
+    {
+        "code": "S24",
+        "name": "Secondhand Dealer Class 1-B"
+    },
+    {
+        "code": "S25",
+        "name": "Secondhand Dealer Class II"
+    },
+    {
+        "code": "S26",
+        "name": "Secondhand Dealer Class III "
+    },
+
+    {
+        "code": "T25",
+        "name": "Teenage Dance/Dancehall/Club"
+    },
+
+    {
+        "code": "T29",
+        "name": "Topless Club With Alcohol"
+    },
+
+    {
+        "code": "W01",
+        "name": "Wedding Chapel"
+    }
+]
