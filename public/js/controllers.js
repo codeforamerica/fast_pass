@@ -139,7 +139,7 @@ appCtrls.controller('12Ctrl', function ($scope, $http, UserData) {
 
   // Only get a new business category if there isn't one
   if ($scope.userdata.businessCategory.code == null) {
-    var dataURL = '/data/business-types-desc.json';
+    var dataURL = '/categories/business_licensing';
   //    var dataURL = '/data/business-types.json';
   //    Note: these are coming from different sources, and seems to have different categories. Need to confirm.
 
