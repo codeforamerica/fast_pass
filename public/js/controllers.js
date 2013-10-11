@@ -648,36 +648,6 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
   $scope.parcels = []
   $scope.parcelzzz = []
 
-  // Display a very light city limits thing to direct people's attentions.
-  var cityLimitsGeoJSON = '/data/clv-city-limits.geojson'
-
-  $http.get(cityLimitsGeoJSON)
-  .success(function (response) {
-
-    // Set GeoJSON display options
-    // https://developers.google.com/maps/documentation/javascript/reference?hl=en#PolygonOptions
-    var options = {
-      clickable: false,
-      fillColor: 'white',
-      fillOpacity: 0,
-      strokeColor: '#cc1100',
-      strokeOpacity: 0.15,
-      strokePosition: google.maps.StrokePosition.OUTSIDE,
-      strokeWeight: 4
-    }
-
-    // Display city limits
-    var cityLimits = $scope._overlayGeoJSON(response, options)
-    $scope.cityLimitsBounds = cityLimits[1].getBounds()
-
-    if ($scope.isMapViewSet == false) {
-      $scope.map.fitBounds($scope.cityLimitsBounds)
-    }
-  })
-  .error(function () {
-    console.log('Could not retrieve city limits.')
-  })
-
   // Watch for showMap/hideMap directives triggers.
   $scope.$watch(function() {
     // Argument #1:  the variable to watch
@@ -823,9 +793,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     }
 
     $scope._clearMapOverlay($scope.parcels)
-    $scope.parcels = $scope._loadGeoJSON(parcelGeomUrl, options, function () {
-      console.log($scope.parcels)
-    })
+    $scope.parcels = $scope._loadGeoJSON(parcelGeomUrl, options)
 
   }
 
@@ -1027,7 +995,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
 
       // Execute callback function
       if (typeof callback === "function") {
-        callback()
+        callback(overlay)
       }
 
       return overlay
@@ -1096,6 +1064,29 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
       overlay.length = 0
     }
   }
+
+
+  // Display a very light city limits thing to direct people's attentions.
+  var cityLimitsGeoJSON = '/data/clv-city-limits.geojson'
+  var cityLimitsOptions = {
+    clickable: false,
+    fillColor: 'white',
+    fillOpacity: 0,
+    strokeColor: '#cc1100',
+    strokeOpacity: 0.15,
+    strokePosition: google.maps.StrokePosition.OUTSIDE,
+    strokeWeight: 4
+  }
+
+  $scope._loadGeoJSON(cityLimitsGeoJSON, cityLimitsOptions, function (overlay) {
+    $scope.cityLimitsBounds = overlay[1].getBounds()
+
+    if ($scope.isMapViewSet == false) {
+      $scope.map.fitBounds($scope.cityLimitsBounds)
+    }
+  })
+
+
 
 })
 
