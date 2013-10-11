@@ -535,6 +535,7 @@ function _resetUserData () {
 			title: null,
 			year: '2012'
 		},
+		neighborhood: null,
 		property: {
 			parcelNumber: null,
 			address: null,

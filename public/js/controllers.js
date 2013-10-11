@@ -213,14 +213,15 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
   $scope.mapService = MapService
   $scope.debug = false
 
-
   var addressEndpoint = '/geocode/address?address='
   var latLngEndpoint = '/geocode/position?latlng='
-// example requests. see Issues #7, 38
-// /address/suggest?address=Las Vegas Blvd
-// /address/geocode?address=455 Las Vegas Blvd
-// /point/reverse_geocode?lat=123.123&lng=123.123
+  // example requests. see Issues #7, 38
+  // /address/suggest?address=Las Vegas Blvd
+  // /address/geocode?address=455 Las Vegas Blvd
+  // /point/reverse_geocode?lat=123.123&lng=123.123
 
+  // If a user lands here, clear neighborhood input from userdata
+  $scope.userdata.neighborhood = null
 
   // Prepopulate form if we already know it
   $scope.addressInput = $scope.userdata.property.address
@@ -323,45 +324,43 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
 
 })
 
-appCtrls.controller('45Ctrl', function ($scope, UserData) {
-  $scope.userdata = UserData
-  $scope.userdata.nav.pathTo50 = 45    // Remember the current section to preserve path in the future
-
-  // Reset view
-  $scope.loading = true
-  $scope.errorMsg = false
-  $scope.loaded = false
-
-  var fakeloading = window.setTimeout(function () {
-    $scope.loading = false
-    $scope.loaded = true
-  }, 800)
-
-})
-
 // SECTION 41 - NEIGHBORHOOD SELECTION VIEW
 appCtrls.controller('41Ctrl', function ($scope, $http, UserData, MapService) {
   $scope.userdata   = UserData
   $scope.mapService = MapService
 
   // Load up neighborhood GeoJSONs.
-
   $scope.hoverDowntown = function () {
     $scope.mapService.neighborhood = 'downtown'
   }
-
   $scope.hoverSummerlin = function () {
     $scope.mapService.neighborhood = 'summerlin'
   }
-
   $scope.hoverCity = function () {
     $scope.mapService.neighborhood = 'city'
   }
 
+  // Reset to blank onmouseout
   $scope.unhover = function () {
     $scope.mapService.neighborhood = ''
   }
+})
 
+// SECTION 45 - ZONING MAP VIEW
+appCtrls.controller('45Ctrl', function ($scope, UserData) {
+  $scope.userdata  = UserData
+  $scope.userdata.nav.pathTo50 = 45    // Remember the current section to preserve path in the future
+
+  // Reset view
+  $scope.loading   = true
+  $scope.errorMsg  = false
+  $scope.loaded    = false
+
+  // There needs to be ACTUAL DATA GETTING GOT FROM SOMEWHERE!
+  var fakeloading  = window.setTimeout(function () {
+    $scope.loading = false
+    $scope.loaded  = true
+  }, 400)
 
 })
 
@@ -717,7 +716,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
             $scope.map.setZoom(18)
           }          
         } else {
-          console.log('No parcel geometry found at ' + newValue.lat + ',' +newValue.lng)
+          console.log('No parcel geometry found at ' + newValue.lat + ',' + newValue.lng)
         }
       })
     } else {
