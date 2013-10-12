@@ -53,29 +53,29 @@
 			<table class='no-style'>
 				<tbody>
 					<tr>
-						<td width='200px'><strong><a href='' class='no-color help modal'>Parcel number</a></strong></td>
+						<td width='200px'><strong><a href='' class='no-color help'>Parcel number</a></strong></td>
 						<td>#{{parcel.number}}</td>
 					</tr>
 					<tr>
-						<td><strong><a href='' class='no-color help modal'>Parcel master address</a></strong></td>
+						<td><strong><a href='' class='no-color help'>Parcel master address</a></strong></td>
 						<td>{{parcel.master_address}}</td>
 					</tr>
 					<tr>
-						<td><strong><a href='' class='no-color help modal'>Other addresses on record</a></strong></td>
+						<td><strong><a href='' class='no-color help'>Other addresses on record</a></strong></td>
 						<td>
 							<span ng-repeat='address in parcel.record_address'>{{address}}<br></span>
 						</td>
 					</tr>
 					<tr>
-						<td><strong><a href='' class='no-color help modal'>Ward</a></strong></td>
+						<td><strong><a href='' class='no-color help'>Ward</a></strong></td>
 						<td>{{parcel.ward}}</td>
 					</tr>
 					<tr>
-						<td><strong><a href='' class='no-color help modal'>Tax District</a></strong></td>
+						<td><strong><a href='' class='no-color help'>Tax District</a></strong></td>
 						<td>{{parcel.tax_district}}</td>
 					</tr>
 					<tr>
-						<td><strong><a href='' class='no-color help modal'>Owner</a></strong></td>
+						<td><strong><a href='' class='no-color help'>Owner</a></strong></td>
 						<td>{{parcel.owner}}<br>
 							<span ng-repeat='line in parcel.owner_address track by $index'>{{line}}<br></span>
 							<!-- "track by $index": see here: http://www.anujgakhar.com/2013/06/15/duplicates-in-a-repeater-are-not-allowed-in-angularjs/ -->
@@ -90,11 +90,11 @@
 	</div>
 
 
-	<h3><a href='' class='help modal no-color' data-title='Zones' data-content='Planning departments use zones to make sure that different uses are not conflicting with other uses.'>Zones</a></h3>
+	<h3><a href='' class='help no-color' data-title='Zones' data-content='Planning departments use zones to make sure that different uses are not conflicting with other uses.'>Zones</a></h3>
 	
 	<ul class='comfy no-bullets'>
 		<li ng-repeat='zone in parcel.zones'>
-			<strong><span class='clickable {{zone.color}} pill'>{{zone.designation}}</span>&nbsp;<a href='' data-title='#{zone_id} #{zone_name} Zone Definition [note: this is old]' title='click to highlight zone on map' class='modal'>{{zone.name}}</a></strong>
+			<strong><span class='clickable {{zone.color}} pill'>{{zone.designation}}</span>&nbsp;<a href='' data-title='#{zone_id} #{zone_name} Zone Definition [note: this is old]' title='click to highlight zone on map'>{{zone.name}}</a></strong>
 		</li>
 	</ul>
 	

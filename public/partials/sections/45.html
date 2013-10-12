@@ -15,24 +15,24 @@
 	<div ng-show='loaded'>
 		<h2>Zoning map</h2>
 		
-		<p class='lede'>Zones in which you're qualified to be in will be shown on the map to the left. Select individual parcels to learn more.</p>
+		<p class='lede'>Zones in which you're qualified to be in will be shown on the map to the left. Select individual parcels to learn `re.</p>
 
 		<p ng-show='userdata.businessCategory.code'>
 			<span class='pill'>{{userdata.businessCategory.code}}</span>
-			<strong><a href='' data-title='{{userdata.businessCategory.name}}' class='modal ng-binding'>{{userdata.businessCategory.name}}</a></strong>
+			<strong><a href='' data-title='{{userdata.businessCategory.name}}' class='modal-link ng-binding'>{{userdata.businessCategory.name}}</a></strong>
 		</p>
 		
 		<p>Based on the information we've collected so far, these zones are most likely approved for your business.</p>
 		
 		<ul class='comfy no-bullets'>
-			<li><strong><span class='clickable green pill'>DCP-0</span>&nbsp;<a href='' data-title='#{zone_id} #{zone_name} Zone Definition' title='click to highlight zone on map' class='modal'>Downtown Centennial Plan</a></strong></li>
+			<li><strong><span class='clickable green pill'>DCP-0</span>&nbsp;<a href='' data-title='#{zone_id} #{zone_name} Zone Definition' title='click to highlight zone on map' class='modal-link'>Downtown Centennial Plan</a></strong></li>
 		</ul>
 		
 		<p>These zones may require additional conditions for approval.</p>
 		
 		<ul class='comfy no-bullets'>
-			<li><strong><span class='clickable orange pill'>CM-1</span> <a href='' data-title='#{zone_id} #{zone_name} Zone Definition' title='click to highlight zone on map' class='modal'>Light Industrial</a></strong></li>
-			<li><strong><span class='clickable yellow pill'>CM-2</span> <a href='' data-title='#{zone_id} #{zone_name} Zone Definition' title='click to highlight zone on map' class='modal'>Medium Industrial</a></strong></li>
+			<li><strong><span class='clickable orange pill'>CM-1</span> <a href='' data-title='#{zone_id} #{zone_name} Zone Definition' title='click to highlight zone on map' class='modal-link'>Light Industrial</a></strong></li>
+			<li><strong><span class='clickable yellow pill'>CM-2</span> <a href='' data-title='#{zone_id} #{zone_name} Zone Definition' title='click to highlight zone on map' class='modal-link'>Medium Industrial</a></strong></li>
 		</ul>
 		
 		<div class='section-navigation'>
