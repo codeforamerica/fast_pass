@@ -47,7 +47,27 @@
 			</tbody>
 		</table>
 		
-		<h3><a href='' class='help no-color' data-title='Zoning' data-content='Planning departments use zones to make sure that different uses are not conflicting with other uses.'>Zoning</a></h3>
+
+
+
+	<div ng-controller='ModalDemoCtrl'>
+	    <script type='text/ng-template' id='myModalContent.html'>
+			<div id='modal'>
+				<div class='modal-header'>
+					<h4 class='modal-title'>{{title}}Zoning</h4>
+				</div>
+				<div class='modal-body'
+				<p>Planning departments use zones to make sure that different uses are not conflicting with other uses.</p>
+					<p ng-repeat='text'>{{text}}</p>
+				</div>
+				<div class='modal-footer'>
+					<button ng-click='ok()'>close</button>
+				</div>
+			</div>
+	    </script>
+		
+		<h3><a href='' class='help no-color' data-title='Zoning' data-content='Planning departments use zones to make sure that different uses are not conflicting with other uses.' ng-click='open()'>Zoning</a></h3>
+	</div>
 		
 		<ul class='comfy no-bullets'>
 			<li ng-repeat='zone in parcel.zones'>
@@ -123,44 +143,5 @@
 			<a class='next button' href='/#/section/70'>Proceed with this property</a>
 		</span>
 	</div>
-
-
-	<div ng-controller='ModalDemoCtrl'>
-	    <script type='text/ng-template' id='myModalContent.html'>
-			<div id='modal'>
-				<div class='modal-header'>
-					<h4 class='modal-title'>{{title}} I'm a modal!</h4>
-				</div>
-				<div class='modal-body'
-				<p>The look in your eyes, I recognize it. You used to have it for me. I'll alert the crew. About four years. I got tired of hearing how young I looked. Fate protects fools, little children and ships named Enterprise. Could someone survive inside a transporter buffer for 75 years? That might've been one of the shortest assignments in the history of Starfleet. Your head is not an artifact! Maybe if we felt any human loss as keenly as we feel one of those close to us, human history would be far less bloody. This should be interesting. I recommend you don't fire until you're within 40,000 kilometers. And blowing into maximum warp speed, you appeared for an instant to be in two places at once. Mr. Crusher, ready a collision course with the Borg ship.</p>
-					<p ng-repeat='text'>{{text}}</p>
-				</div>
-				<div class='modal-footer'>
-					<button ng-click='ok()'>close</button>
-				</div>
-			</div>
-<!--
-	        <div class='modal-header'>
-	            <h3>I'm a modal!</h3>
-	        </div>
-	        <div class='modal-body'>
-	            <ul>
-	                <li ng-repeat='item in items'>
-	                    <a ng-click='selected.item = item'>{{ item }}</a>
-	                </li>
-	            </ul>
-	            Selected: <b>{{ selected.item }}</b>
-	        </div>
-	        <div class='modal-footer'>
-	            <button class='btn btn-primary' ng-click='ok()'>OK</button>
-	            <button class='btn btn-warning' ng-click='cancel()'>Cancel</button>
-	        </div>
-// -->
-	    </script>
-
-	    <button class='btn' ng-click='open()'>Open me!</button>
-	</div>
-
-
 
 </section>
