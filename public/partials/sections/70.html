@@ -26,8 +26,10 @@
 			<tr>
 				<td><strong>Zone</strong></td>
 				<td>
-					<span class='pill'>{{userdata.property.zone.code}}</span>
-					{{parcel.property.zone.name}}
+					<div ng-repeat='zone in userdata.property.zones' style='margin: 4px 0'>
+						<span class='{{zone.class}} pill'>{{zone.designation}}</span>
+						{{zone.name}}
+					</div>
 				</td>
 			</tr>
 		</tbody>

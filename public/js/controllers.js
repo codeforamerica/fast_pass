@@ -255,6 +255,11 @@ appCtrls.controller('40Ctrl', function ($scope, $http, $location, UserData, MapS
       // Turn off loader
       $scope.searchLoading = false
 
+      if (response.errormsg) {
+        $scope.searchErrorMsg = response.errormsg
+        return
+      }
+
       // Extract results from response
       //var results = response.candidates
       var results = response.response
@@ -368,6 +373,9 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
   $scope.parcelLoaded  = false
   $scope.searchLoading = false
   $scope.title = 'Retrieving parcel...'
+  $scope.downtownIncentives = false
+  $scope.showOtherLinks     = false
+  $scope.homeOccupancy      = false
 
   // Switch back navigation based on user's path
   if ($scope.userdata.nav.pathTo50 == 45) {
@@ -379,14 +387,31 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
     $scope.previousIsAddressSearch = true
   }
 
+  $scope._checkZoning = function (zones) {
+    // assume zones is an array of zones
+    for (var i=0; i < zones.length; i++) {
+      // Check if zones affect anything and then update view elements accordingly.
+      if (zones[i].designation == 'DCP-O') {
+        // Las Vegas downtown overlay
+        $scope.downtownIncentives = true
+      }
+      if (zones[i].type == 'residential') {
+        $scope.homeOccupancy = true
+      }
+    }
+  }
+
   // Don't do any new loading if user pressed 'back' - just display the data.
   if ($scope.userdata.nav.previous >= 50) {
 
     // Read parcel data from UserData
     $scope.parcel = $scope.userdata.property
 
+    // Check zoning status and update the view
+    $scope._checkZoning($scope.parcel.zones)
+
     // Set display
-    $scope.title = $scope.userdata.property.address.capitalize()
+    $scope.title = $scope.parcel.address.capitalize()
     $scope.parcelLoaded  = true
 
     return
@@ -440,9 +465,27 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
         number:          results.PARCEL,
         address:         $scope.userdata.property.address,
         master_address:  masterAddress,
-        record_adresses: [],
+        record_address: [
+          '(unknown)'
+        ],
         ward:            results.WARD,
-        zone:            results.ZONING,
+        zones:            [
+          {
+            designation:   results.ZONING,
+            name:          null,
+            type:          null,
+            score:         null,
+            class:         'green'
+          },
+          { 
+            // FAKE EXTRA ZONE INFO!!!!!
+            designation:   'DCP-O',
+            name:          null,
+            type:          null,
+            score:         null,
+            class:         'yellow'
+          }
+        ],
         tax_district:    results.TAXDIST,
         zip:             results.ZIP,
         owner:           results.OWNER,
@@ -456,8 +499,56 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
         location:        {
           x: $scope.userdata.property.location.x,
           y: $scope.userdata.property.location.y
-        }
+        },
+        // FAKE BUILDING DATA!!!!
+        buildings:       [
+          {
+            unitNumber:    '495A',
+            occupancyType: 'A2',
+            occupancyName: 'Assembly',
+            class:         'green'
+          },
+          {
+            unitNumber:    '498B',
+            occupancyType: 'R1',
+            occupancyName: 'Residential',
+            class:         'yellow'
+          }
+        ],
+        landuse:         [
+          'Commercial'
+        ]
       }
+
+      // Fill in additional zoning data from our static data file
+      var zoningData = '/data/zone-types.json'
+      $http.get(zoningData)
+      .success(function (response, status) {
+        for (var i=0; i < $scope.parcel.zones.length; i++) {
+          var zones = response
+          var zone  = $scope.parcel.zones[i]
+          var designation = zone.designation
+          // Default values
+          zone.name = '(unknown zone)'
+          zone.type = 'unknown'
+          zone.page_reference = '(unknown)'
+          // Replace it with actual values
+          for (var j=0; j < zones.length; j++) {
+            if (designation == zones[j].designation) {
+              zone.name = zones[j].name
+              zone.type = zones[j].type
+              zone.page_reference = zones[j].page_reference
+            }
+          }
+          // Fake score data ?? 
+          // ----
+        }
+        // Check zoning status and update the view
+        $scope._checkZoning($scope.parcel.zones)
+      })
+      .error(function (response, status) {
+        console.log('Error getting zoning type data.')
+      });
 
       // Cleanup
       $scope.parcel.owner_address.clean()
@@ -481,8 +572,11 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
     lng: parcelLng
   }
 
+
 })
 
+
+// SECTION 70 - Overview
 appCtrls.controller('70Ctrl', function ($scope, UserData) {
 
   $scope.userdata = UserData
@@ -491,6 +585,7 @@ appCtrls.controller('70Ctrl', function ($scope, UserData) {
 
 })
 
+// MAP CONTROLLER - Everything map related
 appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
 
   $scope.mapService   = MapService
@@ -1140,6 +1235,8 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
 
 })
 
+// PRINT VIEW CONTROLLER
+// Pretty similar to Section 50...
 appCtrls.controller('PrintViewCtrl', function ($scope, $http, UserData, MapService) {
   $scope.userdata = UserData
   $scope.mapService = MapService
@@ -1154,6 +1251,28 @@ appCtrls.controller('PrintViewCtrl', function ($scope, $http, UserData, MapServi
 
   $scope.parcel  = $scope.userdata.property
 
+  // SOME LOGIC similar to Section 50
+  // Reset
+  $scope.downtownIncentives = false
+  $scope.homeOccupancy = false
+  // Check Zoning
+  $scope._checkZoning = function (zones) {
+    // assume zones is an array of zones
+    for (var i=0; i < zones.length; i++) {
+      // Check if zones affect anything and then update view elements accordingly.
+      if (zones[i].designation == 'DCP-O') {
+        // Las Vegas downtown overlay
+        $scope.downtownIncentives = true
+      }
+      if (zones[i].type == 'residential') {
+        $scope.homeOccupancy = true
+      }
+    }
+  }
+  // Check
+  $scope._checkZoning($scope.parcel.zones)
+
+
   // Open print dialog box
   // Dumb hack to activate print dialog only after CSS transitions are done
   // Also prevents the dialog from opening before Angular is ready (but there should be a better fix for this...)
@@ -1162,8 +1281,11 @@ appCtrls.controller('PrintViewCtrl', function ($scope, $http, UserData, MapServi
   function print() {
     window.print()
   }
+
+
 })
 
+// WELCOME BACK!!!!!!
 appCtrls.controller('ReturnCtrl', function ($scope, UserData) {
 
   // Default: this dialog box should be off.
@@ -1222,6 +1344,7 @@ appCtrls.controller('ReturnCtrl', function ($scope, UserData) {
 
 })
 
+// MODALS
 appCtrls.controller('ModalDemoCtrl', function ($scope, $modal, $log) {
 
   $scope.items = ['item1', 'item2', 'item3'];

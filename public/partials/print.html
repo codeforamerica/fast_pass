@@ -62,8 +62,8 @@
 					</tr>
 					<tr>
 						<td><strong><a href='' class='no-color help modal'>Other addresses on record</a></strong></td>
-						<td><span ng-repeat='address in parcel.record_addresses'>{{address}}<br></span>
-							<!--If there's no address, how did you land on this page? Through Lat/Lng?<br><a href='' class='small modal'>(don't see your address?)</a>-->
+						<td>
+							<span ng-repeat='address in parcel.record_address'>{{address}}<br></span>
 						</td>
 					</tr>
 					<tr>
@@ -73,10 +73,6 @@
 					<tr>
 						<td><strong><a href='' class='no-color help modal'>Tax District</a></strong></td>
 						<td>{{parcel.tax_district}}</td>
-					</tr>
-					<tr>
-						<td><strong><a href='' class='no-color help modal'>Zone</a></strong></td>
-						<td>{{parcel.zone}}</td>
 					</tr>
 					<tr>
 						<td><strong><a href='' class='no-color help modal'>Owner</a></strong></td>
@@ -94,14 +90,12 @@
 	</div>
 
 
-
-
-
 	<h3><a href='' class='help modal no-color' data-title='Zones' data-content='Planning departments use zones to make sure that different uses are not conflicting with other uses.'>Zones</a></h3>
 	
 	<ul class='comfy no-bullets'>
-		<li><strong><span class='clickable yellow pill'>C-2</span>&nbsp;<a href='' data-title='#{zone_id} #{zone_name} Zone Definition' title='click to highlight zone on map' class='modal'>General Commercial</a></strong></li>
-		<li><strong><span class='clickable yellow pill'>DCP-0</span>&nbsp;<a href='' data-title='#{zone_id} #{zone_name} Zone Definition' title='click to highlight zone on map' class='modal'>Downtown Centennial Plan Overlay</a></strong></li>
+		<li ng-repeat='zone in parcel.zones'>
+			<strong><span class='clickable {{zone.class}} pill'>{{zone.designation}}</span>&nbsp;<a href='' data-title='#{zone_id} #{zone_name} Zone Definition [note: this is old]' title='click to highlight zone on map' class='modal'>{{zone.name}}</a></strong>
+		</li>
 	</ul>
 	
 	<h3>Buildings</h3>
@@ -114,13 +108,9 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td>495A</td>
-				<td><span class='green pill'>A2</span> Assembly</td>
-			</tr>
-			<tr>
-				<td>498B</td>
-				<td><span class='pill'>R1</span> Residential</td>
+			<tr ng-repeat='building in parcel.buildings'>
+				<td>{{building.unitNumber}}</td>
+				<td><span class='{{building.class}} pill'>{{building.occupancyType}}</span> {{building.occupancyName}}</td>
 			</tr>
 		</tbody>
 	</table>
@@ -128,18 +118,30 @@
 	<h3>Land use history</h3>
 	
 	<ul>
-		<li>Residential</li>
+		<li ng-repeat='landuse in parcel.landuse'>
+			{{landuse}}
+		</li>
 	</ul>
+
+	<div ng-show='homeOccupancy'>
+		<h3>Operating from a residential property</h3>
+		
+		<p>
+			This property is located in a residential zone. If you're operating your business from a residence, you'll need to apply for <a href='http://www.lasvegasnevada.gov/Apply/26524.htm' target='_blank'>a home occupancy permit</a>.
+		</p>
+	</div>
 	
-	<h3>Incentives</h3>
-	
-	<ul>
-		<li><a href='http://lvrda.org/retail-assistance-program.php' target='_blank'>Downtown Retail Assistance Program</a></li>
-		<li><a href='http://lvrda.org/fast-track-program.php' target='_blank'>Redevelopment Area Fast Track Program</a></li>
-		<li><a href='http://lvrda.org/tif-program.php' target='_blank'>Tax Increment Financing (TIF)</a></li>
-		<li><a href='http://lvrda.org/quickstart-programs.php' target='_blank'>Quick Start Program</a></li>
-		<li><a href='http://lvrda.org/visual-improvement-program.php' target='_blank'>Visual Improvement Program</a></li>
-	</ul>
+	<div ng-show='downtownIncentives'>
+		<h3>Incentives you may qualify for</h3>
+		
+		<ul>
+			<li><a href='http://lvrda.org/retail-assistance-program.php' target='_blank'>Downtown Retail Assistance Program</a></li>
+			<li><a href='http://lvrda.org/fast-track-program.php' target='_blank'>Redevelopment Area Fast Track Program</a></li>
+			<li><a href='http://lvrda.org/tif-program.php' target='_blank'>Tax Increment Financing (TIF)</a></li>
+			<li><a href='http://lvrda.org/quickstart-programs.php' target='_blank'>Quick Start Program</a></li>
+			<li><a href='http://lvrda.org/visual-improvement-program.php' target='_blank'>Visual Improvement Program</a></li>
+		</ul>
+	</div>
 
 
 	<div class='section-navigation'>
