@@ -207,7 +207,7 @@ appCtrls.controller('20Ctrl', function ($scope, $http, $filter, UserData) {
 
 
 // SECTION 40 - Enter a location
-appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
+appCtrls.controller('40Ctrl', function ($scope, $http, $location, UserData, MapService) {
   $scope.userdata = UserData
   $scope.userdata.nav.pathTo50 = 40    // Remember the current section to preserve path in the future
   $scope.mapService = MapService
@@ -269,14 +269,9 @@ appCtrls.controller('40Ctrl', function ($scope, $http, UserData, MapService) {
         $scope.searchNoAddress = true
 
       } else if (results[0].score >= 95) {
-        
-        // If first result is a pretty good match, just take it
+        // If first result is a pretty good match, just take it, and forward to parcel view immediately.
         _saveAddress(results[0])
-
-        // Forward this interaction directly.
-        // This breaks forward/back apparently.
-        window.location.hash = encodeURIComponent('/section/50')
-
+        $location.path('/section/50')
       } else {
         // Multiple results found - user select now.
         $scope.searchResults = results
