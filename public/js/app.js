@@ -135,13 +135,6 @@ app.factory('MapService', function () {
 	}
 })
 
-app.factory('ModalService', function () {
-	// Create a service for a modal???
-	return {
-		title: null,
-		text: null
-	}
-})
 
 /*************************************************************************
 // 

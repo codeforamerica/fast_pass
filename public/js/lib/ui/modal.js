@@ -61,7 +61,7 @@ angular.module('dof.ui.modal', [])
     return {
       restrict: 'EA',
       replace: true,
-      templateUrl: 'template/modal/backdrop.html',
+      templateUrl: 'partials/modal/backdrop.html',
       link: function (scope, element, attrs) {
 
         //trigger CSS transitions
@@ -89,7 +89,7 @@ angular.module('dof.ui.modal', [])
       },
       replace: true,
       transclude: true,
-      templateUrl: 'template/modal/window.html',
+      templateUrl: 'partials/modal/window.html',
       link: function (scope, element, attrs) {
         scope.windowClass = attrs.windowClass || '';
 
