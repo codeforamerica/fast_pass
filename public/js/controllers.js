@@ -475,7 +475,7 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
             name:          null,
             type:          null,
             score:         null,
-            class:         'green'
+            color:         'green'
           },
           { 
             // FAKE EXTRA ZONE INFO!!!!!
@@ -483,7 +483,7 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
             name:          null,
             type:          null,
             score:         null,
-            class:         'yellow'
+            color:         'yellow'
           }
         ],
         tax_district:    results.TAXDIST,
@@ -506,13 +506,13 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
             unitNumber:    '495A',
             occupancyType: 'A2',
             occupancyName: 'Assembly',
-            class:         'green'
+            color:         'green'
           },
           {
             unitNumber:    '498B',
             occupancyType: 'R1',
             occupancyName: 'Residential',
-            class:         'yellow'
+            color:         'yellow'
           }
         ],
         landuse:         [

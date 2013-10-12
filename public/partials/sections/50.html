@@ -51,7 +51,7 @@
 		
 		<ul class='comfy no-bullets'>
 			<li ng-repeat='zone in parcel.zones'>
-				<strong><span class='clickable {{zone.class}} pill'>{{zone.designation}}</span>&nbsp;<a href='' data-title='#{zone_id} #{zone_name} Zone Definition [note: this is old]' title='click to highlight zone on map' class='modal'>{{zone.name}}</a></strong>
+				<strong><span class='clickable {{zone.color}} pill'>{{zone.designation}}</span>&nbsp;<a href='' data-title='#{zone_id} #{zone_name} Zone Definition [note: this is old]' title='click to highlight zone on map' class='modal'>{{zone.name}}</a></strong>
 			</li>
 		</ul>
 		
@@ -67,7 +67,7 @@
 			<tbody>
 				<tr ng-repeat='building in parcel.buildings'>
 					<td>{{building.unitNumber}}</td>
-					<td><span class='{{building.class}} pill'>{{building.occupancyType}}</span> {{building.occupancyName}}</td>
+					<td><span class='{{building.color}} pill'>{{building.occupancyType}}</span> {{building.occupancyName}}</td>
 				</tr>
 			</tbody>
 		</table>
