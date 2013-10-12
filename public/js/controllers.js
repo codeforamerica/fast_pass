@@ -866,9 +866,12 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     // $scope.infowindow.setContent('Clicked location: ' + latlng.toUrlValue(4))
 
     // Geocode address
-    var geocodeEndpoint = '/geocode/position?position='
+    // var geocodeEndpoint = '/geocode/position?position='
+    // Temp replacement?
+    var geocodeEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/agsquery?jsonCallback=JSON_CALLBACK&latlng=('
 
-    $http.get(geocodeEndpoint + latlng.toUrlValue())
+//    $http.get(geocodeEndpoint + latlng.toUrlValue())
+    $http.jsonp(geocodeEndpoint + latlng.toUrlValue() + ')')
     .success( function (response, status) {
 
       // Turn off loader
@@ -876,7 +879,8 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
 
       // Extract results from response
       //var results = response.candidates
-      var result = response.response[0]
+//      var result = response.response[0]
+      var result = response.results[0]
 
       if (!result) {
         // Error message with empty result
@@ -894,7 +898,9 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
       } 
       else {
         // Display address
-        $scope.infowindow.setContent(result.streetno + ' ' + result.streetname + '<br>' + result.city + ', ' + result.state + ' ' + result.zip + '<br><a href=\'\'>Use this location</a>')
+//        $scope.infowindow.setContent(result.streetno + ' ' + result.streetname + '<br>' + result.city + ', ' + result.state + ' ' + result.zip + '<br><a href=\'\'>Use this location</a>')
+       $scope.infowindow.setContent(result.STRNO + ' ' + result.STRDIR + ' ' + result.STRNAME + ' ' + result.STRTYPE + '<br><a href=\'\' ng-click="mapService.parcelSelect">Use this location</a>')
+
       }
 
     })
@@ -1052,9 +1058,11 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
         break
       case '50':
         // Parcel view
-
+        $scope.map.setOptions(fixedMapUIOptions)
+        $scope._displayParcelGeometry(36.16526743280042,-115.14169692993164)
         break
       case '70':
+        $scope.map.setOptions(fixedMapUIOptions)
         break
       default:
         // what?

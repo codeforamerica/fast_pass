@@ -16,29 +16,29 @@
 		<table class='no-style'>
 			<tbody>
 				<tr>
-					<td width='200px'><strong><a href='' class='no-color help modal'>Parcel number</a></strong></td>
+					<td width='200px'><strong><a href='' class='no-color help'>Parcel number</a></strong></td>
 					<td>#{{parcel.number}}</td>
 				</tr>
 				<tr>
-					<td><strong><a href='' class='no-color help modal'>Parcel master address</a></strong></td>
+					<td><strong><a href='' class='no-color help'>Parcel master address</a></strong></td>
 					<td>{{parcel.master_address}}</td>
 				</tr>
 				<tr>
-					<td><strong><a href='' class='no-color help modal'>Other addresses on record</a></strong></td>
+					<td><strong><a href='' class='no-color help'>Other addresses on record</a></strong></td>
 					<td>
 						<span ng-repeat='address in parcel.record_address'>{{address}}<br></span>
 					</td>
 				</tr>
 				<tr>
-					<td><strong><a href='' class='no-color help modal'>Ward</a></strong></td>
+					<td><strong><a href='' class='no-color help'>Ward</a></strong></td>
 					<td>{{parcel.ward}}</td>
 				</tr>
 				<tr>
-					<td><strong><a href='' class='no-color help modal'>Tax District</a></strong></td>
+					<td><strong><a href='' class='no-color help'>Tax District</a></strong></td>
 					<td>{{parcel.tax_district}}</td>
 				</tr>
 				<tr>
-					<td><strong><a href='' class='no-color help modal'>Owner</a></strong></td>
+					<td><strong><a href='' class='no-color help'>Owner</a></strong></td>
 					<td>{{parcel.owner}}<br>
 						<span ng-repeat='line in parcel.owner_address track by $index'>{{line}}<br></span>
 						<!-- "track by $index": see here: http://www.anujgakhar.com/2013/06/15/duplicates-in-a-repeater-are-not-allowed-in-angularjs/ -->
@@ -47,11 +47,11 @@
 			</tbody>
 		</table>
 		
-		<h3><a href='' class='help modal no-color' data-title='Zoning' data-content='Planning departments use zones to make sure that different uses are not conflicting with other uses.'>Zoning</a></h3>
+		<h3><a href='' class='help no-color' data-title='Zoning' data-content='Planning departments use zones to make sure that different uses are not conflicting with other uses.'>Zoning</a></h3>
 		
 		<ul class='comfy no-bullets'>
 			<li ng-repeat='zone in parcel.zones'>
-				<strong><span class='clickable {{zone.color}} pill'>{{zone.designation}}</span>&nbsp;<a href='' data-title='#{zone_id} #{zone_name} Zone Definition [note: this is old]' title='click to highlight zone on map' class='modal'>{{zone.name}}</a></strong>
+				<strong><span class='clickable {{zone.color}} pill'>{{zone.designation}}</span>&nbsp;<a href='' data-title='#{zone_id} #{zone_name} Zone Definition [note: this is old]' title='click to highlight zone on map'>{{zone.name}}</a></strong>
 			</li>
 		</ul>
 		
@@ -127,7 +127,19 @@
 
 	<div ng-controller='ModalDemoCtrl'>
 	    <script type='text/ng-template' id='myModalContent.html'>
-	    <!--
+			<div id='modal'>
+				<div class='modal-header'>
+					<h4 class='modal-title'>{{title}} I'm a modal!</h4>
+				</div>
+				<div class='modal-body'
+				<p>The look in your eyes, I recognize it. You used to have it for me. I'll alert the crew. About four years. I got tired of hearing how young I looked. Fate protects fools, little children and ships named Enterprise. Could someone survive inside a transporter buffer for 75 years? That might've been one of the shortest assignments in the history of Starfleet. Your head is not an artifact! Maybe if we felt any human loss as keenly as we feel one of those close to us, human history would be far less bloody. This should be interesting. I recommend you don't fire until you're within 40,000 kilometers. And blowing into maximum warp speed, you appeared for an instant to be in two places at once. Mr. Crusher, ready a collision course with the Borg ship.</p>
+					<p ng-repeat='text'>{{text}}</p>
+				</div>
+				<div class='modal-footer'>
+					<button ng-click='ok()'>close</button>
+				</div>
+			</div>
+<!--
 	        <div class='modal-header'>
 	            <h3>I'm a modal!</h3>
 	        </div>
@@ -143,7 +155,7 @@
 	            <button class='btn btn-primary' ng-click='ok()'>OK</button>
 	            <button class='btn btn-warning' ng-click='cancel()'>Cancel</button>
 	        </div>
-	    // -->
+// -->
 	    </script>
 
 	    <button class='btn' ng-click='open()'>Open me!</button>
