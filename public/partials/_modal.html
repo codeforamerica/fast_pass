@@ -1,16 +1,12 @@
-<div id='modal'>
-	<div class='modal-background'></div>
-	<div class='modal-box'></div>
-		<div class='modal-content'>
-			<h4 class='modal-title'>{{title}}</h4>
-
-			<div class='modal-text'>
-				<p ng-repeat='text'>{{text}}</p>
-			</div>
-
-		</div>
-		<div class='modal-close'>
-			<a href=''>close</a>
-		</div>
+<div class='modal'>
+	<div class='modal-header'>
+		<h4 class='modal-title'>{{title}}Zoning</h4>
+	</div>
+	<div class='modal-body'
+	<p>Planning departments use zones to make sure that different uses are not conflicting with other uses.</p>
+		<p ng-repeat='paragraph in text track by $index'>{{text}}</p>
+	</div>
+	<div class='modal-footer'>
+		<button ng-click='ok()'>close</button>
 	</div>
 </div>

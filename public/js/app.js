@@ -116,7 +116,8 @@ app.factory('MapService', function () {
 		neighborhood: null,
 		parcel: {
 			lat: null,
-			lng: null
+			lng: null,
+			geometry: null
 		},
 		clicked: {
 			latLng: null,
@@ -212,16 +213,19 @@ directives.hideMap = function (MapService) {
 }
 
 // Make a modal
-directives.modal = function () {
+directives.modalLink = function () {
 	return {
 		restrict: 'A',
 		scope: {
 			title: '@',
 			text: '@'
 		},
-		templateUrl: '/partials/_modal.html',
+		// templateUrl: '/partials/_modal.html',
 		link: function (scope, element) {
-
+			element.bind('click', function() {
+				// This gets bound to the contents of the modal window, not the link itself.
+//				alert('Open a modal')
+			})
 			// ?????
 		}
 	}

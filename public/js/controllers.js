@@ -320,6 +320,8 @@ appCtrls.controller('40Ctrl', function ($scope, $http, $location, UserData, MapS
     $scope.userdata.property.location   = {}
     $scope.userdata.property.location.x = data.latlng.split(',')[1]
     $scope.userdata.property.location.y = data.latlng.split(',')[0]
+    // Save geometry as GeoJSON
+    // $scope.userdata.property.geometry   = ''
   }
 
 })
@@ -410,11 +412,32 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
     // Check zoning status and update the view
     $scope._checkZoning($scope.parcel.zones)
 
+    // Send the parcel geometry to MapService
+    $scope.mapService.parcel.geometry = $scope.parcel.geometry
+
     // Set display
     $scope.title = $scope.parcel.address.capitalize()
     $scope.parcelLoaded  = true
 
     return
+  }
+
+  $scope._getParcelGeom = function (lat, lng, callback) {
+    // Save parcel geometry
+    // Get the parcel given a latlng point from the parcel API
+    var parcelGeomUrl = 'http://las-vegas-zoning-api.herokuapp.com/areas' + '?lat=' + lat + '&lon=' + lng
+    $http.get(parcelGeomUrl)
+    .success( function (response, status) {
+      // Execute callback function
+      if (typeof callback === "function") {
+        callback(response)
+      }
+      return response
+    })
+    .error( function (response, status) {
+      console.log('Error getting GeoJSON file: ' + parcelGeomUrl)
+      return ''
+    })
   }
 
   // Request URL endpoint
@@ -497,9 +520,12 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
           results.ADDRESS5
         ],
         location:        {
-          x: $scope.userdata.property.location.x,
-          y: $scope.userdata.property.location.y
+          lat:           parcelLat,
+          lng:           parcelLng,
+          x:             parcelLng,
+          y:             parcelLat
         },
+        geometry:        null,
         // FAKE BUILDING DATA!!!!
         buildings:       [
           {
@@ -519,6 +545,23 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
           'Commercial'
         ]
       }
+
+      // Get parcel geometry and save it to the user data & map service
+      $scope._getParcelGeom(parcelLat, parcelLng, function (geom) {
+        $scope.parcel.geometry = geom
+        $scope.mapService.parcel.geometry = geom
+        // Also get the parcel geometry separately, because the city endpoint above doesn't do it.
+        // We'll do this by sending a signal to the MapService about displaying a parcel.
+        // TODO: VERIFY IF THIS IS NEEDED
+        /*
+        if (!geom) {
+          $scope.mapService.parcel = {
+            lat: parcelLat,
+            lng: parcelLng
+          }
+        }
+        */
+      })
 
       // Fill in additional zoning data from our static data file
       var zoningData = '/data/zone-types.json'
@@ -553,6 +596,8 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
       // Cleanup
       $scope.parcel.owner_address.clean()
       $scope.userdata.property = $scope.parcel
+      // Save everything
+      _saveLocalStorage($scope.userdata)
 
       // Set display
       $scope.title = $scope.parcel.address.capitalize()
@@ -564,14 +609,6 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
     $scope.searchLoading = false
     $scope.errorMsg = 'Error loading parcel data.'
   })
-
-  // Also get the parcel geometry separately, because the city endpoint above doesn't do it.
-  // We'll do this by sending a signal to the MapService about displaying a parcel.
-  $scope.mapService.parcel = {
-    lat: parcelLat,
-    lng: parcelLng
-  }
-
 
 })
 
@@ -723,7 +760,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     center: new google.maps.LatLng(36.168, -115.144),
     backgroundColor: '#f1f1f4',
     mapTypeId: google.maps.MapTypeId.ROADMAP,
-//    streetViewControl: false,
+    // streetViewControl: false,
     styles: $scope.mapStyles,
     zoomControlOptions: {
       style: google.maps.ZoomControlStyle.LARGE
@@ -792,7 +829,9 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     }
   })
 
-  // Set map view if given a parcel
+  // Set map view & parcel if given a parcel's lat/lng
+  // IS THIS STILL BEING USED ANYWHERE?
+  /*
   $scope.$watch(function () {
     return $scope.mapService.parcel
   }, function (newValue, oldValue) {
@@ -809,6 +848,33 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
           console.log('No parcel geometry found at ' + newValue.lat + ',' + newValue.lng)
         }
       })
+    } else {
+      $scope._clearMapOverlay($scope.parcels)
+    }
+  })
+*/
+
+  // Set map view if given a parcel
+  $scope.$watch(function () {
+    return $scope.mapService.parcel.geometry
+  }, function (newValue, oldValue) {
+    var geometry = newValue
+    if (geometry) {
+      var options = {
+        clickable: true,
+        fillColor: '#21687f',
+        fillOpacity: 0.50,
+        strokeColor: '#ffffff',
+        strokeOpacity: 1,
+        strokePosition: google.maps.StrokePosition.CENTER,
+        strokeWeight: 0
+      }
+      // Display the geometry
+      $scope.parcels = $scope._overlayGeoJSON(geometry, options)
+      $scope.map.fitBounds($scope.parcels[0].getBounds())
+      if ($scope.map.getZoom() > 18) {
+        $scope.map.setZoom(18)
+      }          
     } else {
       $scope._clearMapOverlay($scope.parcels)
     }
@@ -866,11 +932,11 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     // $scope.infowindow.setContent('Clicked location: ' + latlng.toUrlValue(4))
 
     // Geocode address
-    // var geocodeEndpoint = '/geocode/position?position='
-    // Temp replacement?
+    var geocodeEndpoint = '/geocode/position?position='
+    // Temp replacement
     var geocodeEndpoint = 'http://clvplaces.appspot.com/maptools/rest/services/agsquery?jsonCallback=JSON_CALLBACK&latlng=('
 
-//    $http.get(geocodeEndpoint + latlng.toUrlValue())
+    // $http.get(geocodeEndpoint + latlng.toUrlValue())
     $http.jsonp(geocodeEndpoint + latlng.toUrlValue() + ')')
     .success( function (response, status) {
 
@@ -878,8 +944,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
       $scope.loading = false
 
       // Extract results from response
-      //var results = response.candidates
-//      var result = response.response[0]
+      // var result = response.response[0]
       var result = response.results[0]
 
       if (!result) {
@@ -898,8 +963,10 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
       } 
       else {
         // Display address
-//        $scope.infowindow.setContent(result.streetno + ' ' + result.streetname + '<br>' + result.city + ', ' + result.state + ' ' + result.zip + '<br><a href=\'\'>Use this location</a>')
-       $scope.infowindow.setContent(result.STRNO + ' ' + result.STRDIR + ' ' + result.STRNAME + ' ' + result.STRTYPE + '<br><a href=\'\' ng-click="mapService.parcelSelect">Use this location</a>')
+        // var streetname = result.streetno + ' ' + result.streetname
+        var streetname =  result.STRNO + ' ' + result.STRDIR + ' ' + result.STRNAME + ' ' + result.STRTYPE
+        streetname = streetname.capitalize()
+        $scope.infowindow.setContent('<h3>' + streetname + '</h3><div style="text-align:center"><button ng-click="loadParcel()">Use this location</button></div>')
 
       }
 
@@ -910,6 +977,10 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     });
 
     $scope._displayParcelGeometry(latlng.lat(), latlng.lng())
+  }
+
+  $scope.loadParcel = function () {
+    alert('test')
   }
 
 
@@ -1059,7 +1130,6 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
       case '50':
         // Parcel view
         $scope.map.setOptions(fixedMapUIOptions)
-        $scope._displayParcelGeometry(36.16526743280042,-115.14169692993164)
         break
       case '70':
         $scope.map.setOptions(fixedMapUIOptions)
@@ -1219,6 +1289,27 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
     })
   }
 
+  $scope._displayParcelGeoJSON = function (geoJSON, callback) {
+    // TODO: DO WE NEED THIS?
+    // There is already a geoJSON
+
+    // Set GeoJSON display options
+    var options = {
+      clickable: true,
+      fillColor: '#21687f',
+      fillOpacity: 0.50,
+      strokeColor: '#ffffff',
+      strokeOpacity: 1,
+      strokePosition: google.maps.StrokePosition.CENTER,
+      strokeWeight: 0
+    }
+
+    $scope._clearMapOverlay($scope.parcels)
+    $scope.parcels = $scope._overlayGeoJSON(geoJSON, options, function (overlay) {
+      // display parcel?
+    })
+  }
+
   // Display a very light city limits thing to direct people's attentions.
   var cityLimitsGeoJSON = '/data/clv-city-limits.geojson'
   var cityLimitsOptions = {
@@ -1252,10 +1343,40 @@ appCtrls.controller('PrintViewCtrl', function ($scope, $http, UserData, MapServi
   $scope.reportId  = $scope.userdata.reportId
   $scope.reportDate = new Date ()
 
-  // Get a static map URL to display on the print page
-  var parcelLat = $scope.userdata.property.location.y
-  var parcelLng = $scope.userdata.property.location.x
-  $scope.staticMapImageUrl = 'http://maps.googleapis.com/maps/api/staticmap?zoom=15&size=250x250&maptype=roadmap&sensor=false&markers=color:red%7C' + parcelLat + ',' + parcelLng
+  $scope._getStaticImageUrl = function() {
+
+    // Get a static map URL to display on the print page
+    var parcelLat = $scope.userdata.property.location.y
+    var parcelLng = $scope.userdata.property.location.x
+
+    var parcelGeometry = $scope.userdata.property.geometry
+
+    var staticMapBaseUrl   = 'http://maps.googleapis.com/maps/api/staticmap'
+    var staticMapBaseQuery = '?zoom=15&size=250x250&maptype=roadmap&sensor=false'
+
+    var staticMapDisplay = ''
+
+    if (parcelGeometry) {
+      // Display a shape
+      // See documentation for Static Maps API https://developers.google.com/maps/documentation/staticmaps/#Paths
+      var pathStyle = 'weight:1|fillcolor:0x0000ff90'
+      var pathString = ''
+      var path = parcelGeometry.features[0].geometry.coordinates[0]
+      for (var i=0; i < path.length; i++) {
+        pathString += '|' + path[i][1] + ',' + path[i][0]
+      }
+
+      staticMapDisplay = '&path=' + pathStyle + pathString
+    }
+    else {
+      // Display a point marker
+      var staticMapDisplay   = '&markers=color:red%7C' + parcelLat + ',' + parcelLng
+    }
+
+    return staticMapBaseUrl + staticMapBaseQuery + staticMapDisplay
+  }
+
+  $scope.staticMapImageUrl = $scope._getStaticImageUrl()
 
   $scope.parcel  = $scope.userdata.property
 
@@ -1360,7 +1481,7 @@ appCtrls.controller('ModalDemoCtrl', function ($scope, $modal, $log) {
   $scope.open = function () {
 
     var modalInstance = $modal.open({
-      templateUrl: 'myModalContent.html',
+      templateUrl: '/partials/_modal.html',
       controller: ModalInstanceCtrl,
       resolve: {
         items: function () {
