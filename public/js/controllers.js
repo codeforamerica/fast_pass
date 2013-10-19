@@ -1370,7 +1370,7 @@ appCtrls.controller('PrintViewCtrl', function ($scope, $http, UserData, MapServi
       // Note that this could potentially create a URL string that's too long, in the case of complex geometry.
       // In that case, default to point marker, below.
     }
-    if (!parcelGeometry || staticMapDisplay.length > 2000) {
+    if (!parcelGeometry || staticMapDisplay.length > 1900) {
       // Display a point marker
       staticMapDisplay = '&markers=color:red%7C' + parcelLat + ',' + parcelLng
     }
