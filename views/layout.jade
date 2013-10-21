@@ -10,15 +10,15 @@ doctype 5
 html(class='no-js', ng-app='fastpass')
   //<![endif]
   head
-    include _head
+    include layout/_head
 
   body
 
-    include _chromeframe
+    include layout/_chromeframe
 
     block content
 
     #map-container(ng-controller='MapCtrl as map')
       #map(ui-map='map', ui-options='mapOptions', ui-event="{'map-click': 'mapClick($event, $params)', 'map-bounds_changed': 'mapBoundsChanged($event, $params)' }", ng-show='mapService.showMap')
 
-    include _javascripts
+    include layout/_javascripts

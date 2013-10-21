@@ -1,0 +1,23 @@
+html
+  body
+    section#section12(ng-controller='12Ctrl as app', hide-map='')
+      progressbar(step='1')
+      h2 Confirm your business category
+      p.lede
+        | You selected &OpenCurlyQuote;&lcub;&lcub;userdata&period;naics&period;title&rcub;&rcub;&rsquor;&period;
+      p.lede
+        | Based on this selection&comma; we&apos;ve matched your business to a Las Vegas business category of
+        span.nobr
+          span.pill &lcub;&lcub;userdata&period;businessCategory&period;code&rcub;&rcub;
+          strong &lcub;&lcub;userdata&period;businessCategory&period;name&rcub;&rcub;
+        | &period;
+        a(href='', ng-click='isCollapsed = !isCollapsed') &lpar;Learn more about this category&period;&rpar;
+      .info-box(collapse='isCollapsed')
+        p &lcub;&lcub;userdata&period;businessCategory&period;description&rcub;&rcub;
+        p
+          a(href='http://www5.lasvegasnevada.gov/LCAT/Bus_Lic_Instructions.aspx?Category={{userdata.businessCategory.code}}&CategoryName={{userdata.businessCategory.name}}', target='_blank') View complete licensing procedure from Las Vegas Business Licensing&period;
+      p.lede
+        | Does this look correct to you&quest;
+      .section-navigation
+        a.back.button(href='/#/section/10') No&comma; go back and choose another
+        a.next.button(href='/#/section/15') Looks good&period; Let&rsquor;s keep going

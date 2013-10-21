@@ -12,10 +12,7 @@ if (typeof(process.env.NODE_ENV) === 'undefined') {
 // Module dependencies
 var express = require('express')
   , routes = require('./routes')
-  , geo = require('./routes/geo')
-  , category = require('./routes/category')
-  , session = require('./routes/session')
-  , parcel = require('./routes/parcel') , http = require('http')
+  , http = require('http')
   , path = require('path')
   , lessMiddleware = require('less-middleware');
 
@@ -40,6 +37,7 @@ app.use(lessMiddleware({
     compress: true,
     debug: true
 }));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Turn error handler on for the development environment.
@@ -52,25 +50,27 @@ if (app.get('env') === 'development') {
 //
 
 // Visible Routes
-app.get('/', routes.index);
+app.get('/', routes.pages);
+app.get('/partials/:name', routes.partials);
+app.get('/pages/:name', routes.pages)
 
 // Parcel Routes
-app.get('/parcels/search', parcel.search);
-app.get('/parcels', parcel.index);
-app.get('/parcels/:id', parcel.find)
+//app.get('/parcels/search', parcel.search);
+//app.get('/parcels', parcel.index);
+//app.get('/parcels/:id', parcel.find)
 
 // Geocode Routes
-app.get('/geocode/address', geo.geocodeAddress);
-app.get('/geocode/position', geo.geocodePosition);
+//app.get('/geocode/address', routes.geo.geocodeAddress);
+//app.get('/geocode/position', routes.geo.geocodePosition);
 
 // Category Routes
-app.get('/categories/naics_search', category.naics_search);
-app.get('/categories/business_licensing', category.business_licensing)
+//app.get('/categories/naics_search', category.naics_search);
+//app.get('/categories/business_licensing', category.business_licensing)
 
 // Session Routes
-app.put('/sessions/:id', session.update);
-app.post('/sessions', session.create);
-app.get('/sessions/:id', session.find);
+//app.put('/sessions/:id', session.update);
+//app.post('/sessions', session.create);
+//app.get('/sessions/:id', session.find);
 
 //
 // INITIALIZE SERVER

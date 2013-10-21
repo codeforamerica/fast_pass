@@ -67,7 +67,7 @@ var app = angular.module(appName, [appName+'.controllers', 'dof.ui.modal', 'dof.
 app.config(['$routeProvider', function ($routeProvider) {
 	$routeProvider.
 		when('/', {
-			templateUrl: '/partials/start.html',
+			templateUrl: '/partials/start',
 			controller: 'sectionStart'
 		}).
 		when('/section/:sectionId', {
@@ -75,11 +75,11 @@ app.config(['$routeProvider', function ($routeProvider) {
 			controller: 'sectionGo'
 		}).
 		when('/print', {
-			templateUrl: '/partials/print.html'
+			templateUrl: '/partials/print'
 		}).
 		otherwise({
 			// redirectTo: '/'
-			templateUrl: '/partials/404.html'
+			templateUrl: '/partials/404'
 		});
 }]);
 
@@ -350,7 +350,7 @@ directives.progressbar = function () {
 		scope: {
 			step: '@'
 		},
-		templateUrl: '/partials/_progressbar.html',
+		templateUrl: '/partials/_progressbar',
 		link: function (scope, element) {
 			var item = element.find('li')
 
@@ -408,7 +408,7 @@ directives.maxWords = function () {
 directives.returnDialog = function () {
 	return {
 		restrict: 'A',
-		templateUrl: '/partials/_return.html',
+		templateUrl: '/partials/_return',
 		link: function(scope, element, attrs) {
 		}
 	}
@@ -479,7 +479,7 @@ controllers.sectionGo = function ($scope, $routeParams, UserData) {
 
 // Dynamically fetch the section template from the URL
 function _getSectionTemplate($routeParams) {
-	return '/partials/sections/' + $routeParams.sectionId + '.html'
+	return '/pages/' + $routeParams.sectionId
 }
 
 // Callback function for Google Maps API

@@ -1,0 +1,22 @@
+html
+  body
+    section#section20.ng-cloak(ng-controller='20Ctrl as app', hide-map='')
+      progressbar(step='1')
+      h2 Additional information about your business
+      p.lede
+        | Now let&rsquor;s see if there are any additional activities your business includes which might affect your zoning status&period; Check all that apply&period;
+      // Priveleged licenses
+      // future: Special Use and Conditional Use Permits?
+      div
+        div(ng-repeat='item in additionalBusiness | orderBy: "official_name"')
+          input#{{item.id}}(type='checkbox', name='additional-business', value='{{item.id}}', ng-model='item.checked', ng-checked='item.checked', ng-click='selectedBusiness()')
+          label(for='{{item.id}}', ng-show='item.name') &lcub;&lcub;item&period;name&rcub;&rcub;
+          label(for='{{item.id}}', ng-hide='item.name') &lcub;&lcub;item&period;official&UnderBar;name&rcub;&rcub;
+          a.small.help.modal(href='', data-title='{{item.official_name}}')
+          br
+        .ng-cloak(ng-show='debug')
+          pre.
+            \n: {{userdata.additionalBusiness | json}}            
+      .section-navigation
+        a.back.button(href='/#/section/15') Back
+        a.next.button(href='/#/section/30') Next

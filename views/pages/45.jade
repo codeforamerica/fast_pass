@@ -1,0 +1,38 @@
+html
+  body
+    section#section45(ng-controller='45Ctrl as app', show-map='')
+      progressbar(step='2')
+      div(ng-show='loading')
+        h2 We&apos;re locating appropriate properties for you&period;
+        .loading
+          img(src='img/loading-lite.gif')
+      div(ng-show='errorMsg')
+        span.error &lcub;&lcub;errorMsg&rcub;&rcub;
+      div(ng-show='loaded')
+        h2 Zoning map
+        p.lede
+          | Zones in which you&apos;re qualified to be in will be shown on the map to the left&period; Select individual parcels to learn &grave;re&period;
+        p(ng-show='userdata.businessCategory.code')
+          span.pill &lcub;&lcub;userdata&period;businessCategory&period;code&rcub;&rcub;
+          strong
+            a.modal-link.ng-binding(href='', data-title='{{userdata.businessCategory.name}}') &lcub;&lcub;userdata&period;businessCategory&period;name&rcub;&rcub;
+        p
+          | Based on the information we&apos;ve collected so far&comma; these zones are most likely approved for your business&period;
+        ul.comfy.no-bullets
+          li
+            strong
+              span.clickable.green.pill DCP-0
+              a.modal-link(href='', data-title='#{zone_id} #{zone_name} Zone Definition', title='click to highlight zone on map') Downtown Centennial Plan
+        p These zones may require additional conditions for approval&period;
+        ul.comfy.no-bullets
+          li
+            strong
+              span.clickable.orange.pill CM-1
+              a.modal-link(href='', data-title='#{zone_id} #{zone_name} Zone Definition', title='click to highlight zone on map') Light Industrial
+          li
+            strong
+              span.clickable.yellow.pill CM-2
+              a.modal-link(href='', data-title='#{zone_id} #{zone_name} Zone Definition', title='click to highlight zone on map') Medium Industrial
+        .section-navigation
+          a.back.button(href='/#/section/41') Back
+          a.next.button(href='/#/section/50') Select a parcel on the map to continue

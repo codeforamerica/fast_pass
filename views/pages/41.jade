@@ -1,0 +1,15 @@
+html
+  body
+    section#section41(ng-controller='41Ctrl as app', show-map='')
+      progressbar(step='2')
+      h2 Select a neighborhood
+      p.lede Do you know what neighborhood you&apos;d like to be in&quest;
+      .radio-select
+        p
+          a.button(href='/#/section/45', ng-mouseover='hoverDowntown()', ng-mouseout='unhover()', ng-click='userdata.neighborhood="downtown"') Downtown Las Vegas
+        p
+          a.button(href='/#/section/45', ng-mouseover='hoverSummerlin()', ng-mouseout='unhover()', ng-click='userdata.neighborhood="summerlin"') Summerlin
+        p
+          a.button(href='/#/section/45', ng-mouseover='hoverCity()', ng-mouseout='unhover()', ng-click='userdata.neighborhood="any"') Any neighborhood
+      .section-navigation
+        a.back.button(href='/#/section/30') Back

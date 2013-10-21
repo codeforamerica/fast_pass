@@ -1,6 +1,4 @@
-extends layout
-
-include mixins
+extends ../layout
 
 block content
 	#return(ng-controller='ReturnCtrl', class='ng-cloak', return-dialog='false')
@@ -8,7 +6,7 @@ block content
 	#main.fullscreen
 		.container
 
-			include header
+			include ../header
 
 			.content(role='main', ng-view)
 
@@ -16,4 +14,4 @@ block content
 					img(src='img/loading-lite.gif')
 					p Loading application...
 
-			include footer
+			include ../footer
