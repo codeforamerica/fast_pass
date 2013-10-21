@@ -33,9 +33,9 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(lessMiddleware({
-    src: __dirname + '/views/stylesheets',
-    dest: __dirname + '/public/stylesheets',
-    prefix: '/stylesheets',
+    src: __dirname + '/public/less',
+    dest: __dirname + '/public/css',
+    prefix: '/css',
     once: true,
     compress: true,
     debug: true
