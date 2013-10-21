@@ -12,6 +12,7 @@ if (typeof(process.env.NODE_ENV) === 'undefined') {
 // Module dependencies
 var express = require('express')
   , routes = require('./routes')
+  , api = require('./routes/api')
   , http = require('http')
   , path = require('path')
   , lessMiddleware = require('less-middleware');
@@ -57,22 +58,16 @@ app.get('/pages/:name', routes.pages)
 // TODO: MAKE ROUTES CLEANER
 
 // Parcel Routes
-app.get('/parcels/search', routes.parcel.search);
-app.get('/parcels', routes.parcel.index);
-app.get('/parcels/:id', routes.parcel.find)
+app.get('/api/parcels/search', api.parcels.search);
+app.get('/api/parcels', api.parcels.index);
 
 // Geocode Routes
-app.get('/geocode/address', routes.geo.geocodeAddress);
-app.get('/geocode/position', routes.geo.geocodePosition);
+app.get('/api/geocode/address', api.geo.geocodeAddress);
+app.get('/api/geocode/position', api.geo.geocodePosition);
 
 // Category Routes
-app.get('/categories/naics_search', routes.category.naics_search);
-app.get('/categories/business_licensing', routes.category.business_licensing)
-
-// Session Routes
-app.put('/sessions/:id', routes.session.update);
-app.post('/sessions', routes.session.create);
-app.get('/sessions/:id', routes.session.find);
+app.get('/api/categories/naics_search', api.categories.naics_search);
+app.get('/api/categories/business_licensing', api.categories.business_licensing)
 
 //
 // INITIALIZE SERVER

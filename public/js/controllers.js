@@ -29,7 +29,7 @@ appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 
   // This is the endpoint URL.
   //var searchAPI   = 'http://api.naics.us/v0/s?year=2012&terms='
-  var searchAPI = '/categories/naics_search?keywords='
+  var searchAPI = '/api/categories/naics_search?keywords='
 
   // Attach global UserData to this controller.
   $scope.userdata = UserData
@@ -139,7 +139,7 @@ appCtrls.controller('12Ctrl', function ($scope, $http, UserData) {
 
   // Only get a new business category if there isn't one
   if ($scope.userdata.businessCategory.code == null) {
-    var dataURL = '/categories/business_licensing';
+    var dataURL = '/api/categories/business_licensing';
   //    var dataURL = '/data/business-types.json';
   //    Note: these are coming from different sources, and seems to have different categories. Need to confirm.
 
@@ -213,8 +213,8 @@ appCtrls.controller('40Ctrl', function ($scope, $http, $location, UserData, MapS
   $scope.mapService = MapService
   $scope.debug = false
 
-  var addressEndpoint = '/geocode/address?address='
-  var latLngEndpoint = '/geocode/position?latlng='
+  var addressEndpoint = '/api/geocode/address?address='
+  var latLngEndpoint = '/api/geocode/position?latlng='
   // example requests. see Issues #7, 38
   // /address/suggest?address=Las Vegas Blvd
   // /address/geocode?address=455 Las Vegas Blvd
@@ -441,7 +441,7 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
   }
 
   // Request URL endpoint
-  var parcelRequestEndpoint = '/parcels/search?position='
+  var parcelRequestEndpoint = '/api/parcels/search?position='
   // latlng= URL query string format needs to look like this:
   // latlng=36.167352999999999,-115.148408
   // e.g. += lat + ',' + lng
@@ -985,7 +985,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
 
 
   $scope.showParcels = function () {
-    var parcelsGeoJSON = '/parcels'
+    var parcelsGeoJSON = '/api/parcels'
 
     $http.get(parcelsGeoJSON)
     .success( function (response, status) {
