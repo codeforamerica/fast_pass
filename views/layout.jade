@@ -16,7 +16,18 @@ html(class='no-js', ng-app='fastpass')
 
     include layout/_chromeframe
 
-    block content
+    #return(ng-controller='ReturnCtrl', class='ng-cloak', return-dialog='false')
+    #main.fullscreen
+      .container
+
+        header(role='banner')
+          include layout/_header
+
+        .content(role='main', ng-view)
+          block content
+
+        footer
+          include layout/_footer
 
     #map-container(ng-controller='MapCtrl as map')
       #map(ui-map='map', ui-options='mapOptions', ui-event="{'map-click': 'mapClick($event, $params)', 'map-bounds_changed': 'mapBoundsChanged($event, $params)' }", ng-show='mapService.showMap')

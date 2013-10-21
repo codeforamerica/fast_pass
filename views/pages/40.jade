@@ -1,45 +1,42 @@
-html
-  body
-    section#section40(ng-controller='40Ctrl as app', show-map='', ng-init='searchLoading=false; searchResults=false;')
-      progressbar(step='2')
-      h2 Enter the address of your space
-      p.lede
-        | Please type in an address&comma; or click a location on the map&period;
-      form#property-address-form(name='property-address-form', ng-submit='findAddress(addressInput)')
-        .row
-          input#property-address-input(type='text', name='address', placeholder='e.g. 495 S. Main Street', autofocus='', required='', ng-model='addressInput', style='width: 100%')
-        .row(style='margin-top: 20px')
-          .loading-small(style='margin: 30px 0', ng-show='searchLoading')
-            img(src='img/loading-lite.gif')
-          div(ng-show='searchErrorMsg')
-            span.error &lcub;&lcub;searchErrorMsg&rcub;&rcub;
-          div(ng-show='searchNoAddress')
-            p
-              | If this is a real address in the Las Vegas metropolitan region&comma; make sure it is inside the City of Las Vegas boundaries&period;  For more information&comma; see
-              a(href='http://amiinlasvegas.com/', target='_blank') Am I In Las Vegas&quest;&period;com
-              | &period;
-            p
-              | This application is for business owners looking for a physical property in the City of Las Vegas&period; If you&apos;d like to locate your business in unincorporated Clark County&comma; or in the cities of North Las Vegas&comma; Henderson&comma; Mesquite&comma; or Boulder City&comma;
-              a(href='https://blepay.clarkcountynv.gov/BLServices/BLJurisdictionLocator.aspx', target='blank') click here to find your appropriate jurisdiction
-              | &period;
-        .section-navigation(ng-show='!searchResults')
-          a.back.button(href='/#/section/30') Back
-          input.next.button(type='submit', value='Find this address', href='/#/section/50')
-      // Located outside the form because the button element is causing form to submit
-      div(ng-show='searchResults')
-        h3
-          | Multiple addresses found&period; Did you mean&colon;
-        .naics-result(ng-repeat='item in searchResults | orderBy: item.score | limitTo: 10')
-          span &lcub;&lcub;item&period;address&rcub;&rcub;
-          button(ng-click='selectResult(item)', radio-select='', data-selected-text='Selected') Select
+section#section40(ng-controller='40Ctrl as app', show-map='', ng-init='searchLoading=false; searchResults=false;')
+  progressbar(step='2')
+  h2 Enter the address of your space
+  p.lede
+    | Please type in an address&comma; or click a location on the map&period;
+  form#property-address-form(name='property-address-form', ng-submit='findAddress(addressInput)')
+    .row
+      input#property-address-input(type='text', name='address', placeholder='e.g. 495 S. Main Street', autofocus='', required='', ng-model='addressInput', style='width: 100%')
+    .row(style='margin-top: 20px')
+      .loading-small(style='margin: 30px 0', ng-show='searchLoading')
+        img(src='img/loading-lite.gif')
+      div(ng-show='searchErrorMsg')
+        span.error &lcub;&lcub;searchErrorMsg&rcub;&rcub;
+      div(ng-show='searchNoAddress')
         p
-          a.small(href='', modal-link='') Don&apos;t see your address&quest;
-        .section-navigation
-          a.back.button(href='/#/section/30') Back
-          a.next.button(href='/#/section/50', button-disable='selectedResult') Next
-      .ng-cloak(ng-show='debug')
-        pre.
-          
-        pre.
-          \nClicked position: {{mapService.clicked.lat}}           {{mapService.clicked.lng}}
-                    
+          | If this is a real address in the Las Vegas metropolitan region&comma; make sure it is inside the City of Las Vegas boundaries&period;  For more information&comma; see
+          a(href='http://amiinlasvegas.com/', target='_blank') Am I In Las Vegas&quest;&period;com
+          | &period;
+        p
+          | This application is for business owners looking for a physical property in the City of Las Vegas&period; If you&apos;d like to locate your business in unincorporated Clark County&comma; or in the cities of North Las Vegas&comma; Henderson&comma; Mesquite&comma; or Boulder City&comma;
+          a(href='https://blepay.clarkcountynv.gov/BLServices/BLJurisdictionLocator.aspx', target='blank') click here to find your appropriate jurisdiction
+          | &period;
+    .section-navigation(ng-show='!searchResults')
+      a.back.button(href='/#/section/30') Back
+      input.next.button(type='submit', value='Find this address', href='/#/section/50')
+  // Located outside the form because the button element is causing form to submit
+  div(ng-show='searchResults')
+    h3
+      | Multiple addresses found&period; Did you mean&colon;
+    .naics-result(ng-repeat='item in searchResults | orderBy: item.score | limitTo: 10')
+      span &lcub;&lcub;item&period;address&rcub;&rcub;
+      button(ng-click='selectResult(item)', radio-select='', data-selected-text='Selected') Select
+    p
+      a.small(href='', modal-link='') Don&apos;t see your address&quest;
+    .section-navigation
+      a.back.button(href='/#/section/30') Back
+      a.next.button(href='/#/section/50', button-disable='selectedResult') Next
+  .ng-cloak(ng-show='debug')
+    pre.
+
+    pre.
+      \nClicked position: {{mapService.clicked.lat}}           {{mapService.clicked.lng}}

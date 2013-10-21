@@ -1,17 +1,6 @@
 extends ../layout
 
 block content
-	#return(ng-controller='ReturnCtrl', class='ng-cloak', return-dialog='false')
-
-	#main.fullscreen
-		.container
-
-			include ../header
-
-			.content(role='main', ng-view)
-
-				.loading
-					img(src='img/loading-lite.gif')
-					p Loading application...
-
-			include ../footer
+  .loading
+    img(src='img/loading-lite.gif')
+    p Loading application...
