@@ -54,23 +54,25 @@ app.get('/', routes.pages);
 app.get('/partials/:name', routes.partials);
 app.get('/pages/:name', routes.pages)
 
+// TODO: MAKE ROUTES CLEANER
+
 // Parcel Routes
-//app.get('/parcels/search', parcel.search);
-//app.get('/parcels', parcel.index);
-//app.get('/parcels/:id', parcel.find)
+app.get('/parcels/search', routes.parcel.search);
+app.get('/parcels', routes.parcel.index);
+app.get('/parcels/:id', routes.parcel.find)
 
 // Geocode Routes
-//app.get('/geocode/address', routes.geo.geocodeAddress);
-//app.get('/geocode/position', routes.geo.geocodePosition);
+app.get('/geocode/address', routes.geo.geocodeAddress);
+app.get('/geocode/position', routes.geo.geocodePosition);
 
 // Category Routes
-//app.get('/categories/naics_search', category.naics_search);
-//app.get('/categories/business_licensing', category.business_licensing)
+app.get('/categories/naics_search', routes.category.naics_search);
+app.get('/categories/business_licensing', routes.category.business_licensing)
 
 // Session Routes
-//app.put('/sessions/:id', session.update);
-//app.post('/sessions', session.create);
-//app.get('/sessions/:id', session.find);
+app.put('/sessions/:id', routes.session.update);
+app.post('/sessions', routes.session.create);
+app.get('/sessions/:id', routes.session.find);
 
 //
 // INITIALIZE SERVER
