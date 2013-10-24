@@ -20,24 +20,23 @@ var SAMPLE_INPUTS = [
   'bicycle shop' 
 ];
 
-var utils = {
-  getRandom: function (arr) {
-    return arr[Math.floor(Math.random(arr.length))] 
-  }
-}
-
 var controllers = angular.module(appName + '.controllers', []);
 
 controllers.controller('ApplicationCtrl', ['$rootScope', '$location', 'Session',
   function ($rootScope, $location, Session) {
-
     var lastStep = Session.get('last_step');
 
     var goToLastStep = function () {
       if (lastStep) $location.path('section/' + lastStep);
     }
 
+    var onBeforeUnload = function () {
+      Session.save(); 
+    }
+
     goToLastStep();
+
+    window.onbeforeunload = onBeforeUnload;
   }
 ]);
 
@@ -84,7 +83,7 @@ controllers.controller('DialogCtrl', ['$scope', 'Session',
 controllers.controller('ClassificationSearchCtrl', ['$scope', 'NAICSClassification',
   function ($scope, NAICSClassification) {
 
-    $scope.sampleInput = utils.getRandom(SAMPLE_INPUTS);
+    $scope.sampleInput = utils.random(SAMPLE_INPUTS);
 
     var resetSearch = function () {
       $scope.results = [];
@@ -137,7 +136,8 @@ controllers.controller('ClassificationSelectCtrl', ['$scope', 'Session',
 
     var select = function (item) {
       $scope.selected = item;
-      Session.set({ naics_classification: item.code })
+      Session.set({ naics_classification: item.code });
+      Session.save();
     } 
 
     $scope.select = select;
@@ -1551,65 +1551,6 @@ controllers.controller('PrintViewCtrl', function ($scope, $http, UserData, MapSe
 
   function print() {
     window.print()
-  }
-
-
-})
-
-// WELCOME BACK!!!!!!
-controllers.controller('ReturnCtrl', function ($scope, UserData) {
-
-  // Default: this dialog box should be off.
-  $scope.showDialog = false
-
-  // Display this if user arrives to a page in this application and 
-  // user data is already stored in Local Storage.
-  if (_checkLocalStorage() == true) {
-
-    $scope.userdata = UserData
-
-    // Redirect route to last recorded section
-    window.location.href = window.location.origin + '/#/section/' + $scope.userdata.nav.current
-
-    // Show the return dialog box
-    // This code is a hack... it delays a bit so that it animates sliding down after load
-    var timeout = setTimeout(showDialog, 800)
-  }
-  else {
-    // Nothing is in local storage and that person should start from the beginning
-    // console.log('Application not previously started. Starting from beginning.')
-    // window.location.href = '/#/'
-  }
-
-  // Hide dialog when Escape is pressed
-  $(document).keyup( function (e) {
-    if (e.keyCode === 13 || e.keyCode === 27) { 
-      $scope.hideDialog()
-    }
-  })
-
-  // Hide dialog if other parts of the map are clicked while the dialog is open
-  angular.element(document.getElementById('main')).bind('click', function() {
-    $scope.hideDialog()
-  })
-  angular.element(document.getElementById('map')).bind('click', function() {
-    $scope.hideDialog()
-  })
-
-  $scope.hideDialog = function () {
-    // Only do stuff if the dialog is actually open
-    if ($scope.showDialog == true) {
-      // Hide dialog
-      $scope.showDialog = false
-      document.querySelector('#return').style.marginTop = '-200px'
-    }
-  }
-
-  function showDialog () {
-    if ($scope.showDialog == false) {
-      $scope.showDialog = true
-      document.querySelector('#return').style.marginTop = 0      
-    }
   }
 
 

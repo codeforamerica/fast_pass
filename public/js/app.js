@@ -53,6 +53,62 @@ google.maps.Polygon.prototype.getBounds = function() {
     return bounds;
 }
 
+var func = function () {}
+
+var Model = function (attributes) {
+  if (typeof(attributes) !== 'undefined' && typeof(attributes) !== 'object') {
+    throw("'attributes' must be an instance of 'object'") 
+  }
+  attributes = attributes || {}
+  this.attributes = {}
+  attributes = utils.defaults(attributes, this.defaults);
+  this.set(attributes)
+  this.initialize.apply(this, arguments);
+}
+
+utils.extend(Model.prototype, {
+  initialize: func,
+
+  attributes: {},
+
+  set: function (attrs) {
+    utils.extend(this.attributes, attrs);
+    return attrs;
+  },
+
+  get: function (attr) {
+    return this.attributes[attr]    
+  },
+
+  toJSON: function () {
+    return this.attributes;
+  }
+});
+
+Model.extend = function(protoProps, staticProps) {
+  var parent = this;
+  var child;
+
+  if (protoProps && utils.has(protoProps, 'constructor')) {
+    child = protoProps.constructor;
+  } else {
+    child = function(){ return parent.apply(this, arguments); };
+  }
+
+  utils.extend(child, parent, staticProps);
+
+  var Surrogate = function(){ this.constructor = child; };
+  Surrogate.prototype = parent.prototype;
+  child.prototype = new Surrogate;
+
+  if (protoProps) utils.extend(child.prototype, protoProps);
+
+  child.__super__ = parent.prototype;
+
+  return child;
+};
+
+
 /*************************************************************************
 // 
 // INITIALIZE ANGULAR
@@ -97,6 +153,38 @@ app.config(['$locationProvider', function ($location) {
 //
 // ***********************************************************************/
 
+app.factory('ClientStorage', [
+  function () {
+
+    var mockLocalStorage = {
+      getItem: function () { return null },
+      setItem: function () { return null }
+    }
+
+    var driver;
+
+    if (Modernizr.localstorage) {
+      driver = window.localStorage;
+    } else {
+      driver = mockLocalStorage; 
+    }
+
+    var ClientStorage = Model.extend(
+      {
+        save: function () {
+          driver.setItem(appName, JSON.stringify(this.toJSON()));
+        }
+      } 
+    );
+
+    ClientStorage.load = function () {
+      return new ClientStorage( JSON.parse(driver.getItem(appName)) );
+    }
+
+    return ClientStorage.load();
+  }
+]);
+
 app.factory('NAICSClassification', ['$resource',
   function ($resource) {
     return $resource('api/categories/naics_search', {}, {
@@ -105,8 +193,8 @@ app.factory('NAICSClassification', ['$resource',
   }
 ]);
 
-app.factory('Session', ['$resource',
-  function ($resource) {
+app.factory('Session', ['$resource', 'ClientStorage',
+  function ($resource, ClientStorage) {
 
     var API = $resource('api/sessions/:id', {}, {
       find:   { method: 'GET'  },
@@ -114,51 +202,33 @@ app.factory('Session', ['$resource',
       create: { method: 'POST' }
     });
 
-    var DEFAULTS = {
-      naics_classification: null,
-      last_step: null
-    }
-
-    var Session = function (attrs) {
-      this.attributes = attrs || {};
-      for (var attr in DEFAULTS) {
-        this.attributes[attr] = DEFAULTS[attr];
-      }
-    } 
-
-    Session.findOrCreate = function () {
-      new Session(); 
-    }
-   
-    Session.prototype = {
-      set: function (attrs) {
-        for (var attr in attrs) {
-          this.attributes[attr] = attrs[attr];
-        }
-        return attrs;
-      },
-      get: function (attr) {
-        return this.attributes[attr];
+    var Session = Model.extend({
+      defaults: {
+        naics_classification: null,
+        last_step: null
       },
       reset: function () {
-        for (var attr in DEFAULTS) {
-          this.attributes[attr] = DEFAULTS[attr];
-        }
-        return this;
-      },
-      toJSON: function () {
-        return this.attributes;
+        this.attributes = utils.defaults(this.defaults, {});
       },
       save: function () {
-        if (this.isPersisted()) {
-          API.update(this.toJSON());
-        } else {
-          API.create(this.toJSON());
-        }
+        ClientStorage.set({ session: this.toJSON() })
+        ClientStorage.save();
       },
       isPersisted: function () {
         return !!this.get('id');
       }
+    });
+
+    Session.findOrCreate = function () {
+      var session, data = ClientStorage.get('session');
+
+      if (typeof(data) === 'undefined') {
+        session = new Session();
+      } else {
+        session = new Session(data);
+      }
+
+      return session; 
     }
 
     return Session.findOrCreate();
@@ -521,21 +591,13 @@ controllers.sectionGo = function ($scope, $routeParams, UserData) {
 	// Record the current and previous sectionId
 	// This allows section controllers to perform logic based on 'back' navigation, if necessary
 	// Only do this if the current Id is different (otherwise reloads can mess with this)
-	if ($scope.userdata.nav.current != $scope.sectionId) {
-		$scope.userdata.nav.previous = $scope.userdata.nav.current
-		$scope.userdata.nav.current  = $scope.sectionId
-	}
 
 	// Hacky thing where it doesn't autosave when you just show up on section 10 (because user
 	// hasn't done anything yet)
 	if ($scope.sectionId != 10) {
-		_saveLocalStorage(UserData)
+		//_saveLocalStorage(UserData)
 	}
 
-	window.onbeforeunload = function(e) {
-		// Save to localStorage when user is about to leave the page.
-		_saveLocalStorage(UserData)
-	};
 }
 
 /*************************************************************************
