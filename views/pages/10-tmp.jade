@@ -1,0 +1,55 @@
+section
+
+  progressbar(step='1')
+
+  h2 What is your activity or business?
+
+  p.lede Type in some keywords about your business, then press the Search button.
+
+  div(ng-controller='ClassificationSearchCtrl')
+
+    div(id='classification-search', class='row')
+      form(ng-submit='search(keywords)')
+        input.col-5(type='text', ng-model='keywords', placeholder='e.g. {{sampleInput}}', required='', autofocus='')
+        input.col-1(type='submit', value='Search')
+
+    div(id='classification-select', class='row', ng-controller='ClassificationSelectCtrl', style='margin-top:20px;')
+
+     .col-4 
+
+        div(ng-show='showLoading')
+          .loading-small(style='margin: 30px 0')
+            img(src='img/loading-lite.gif')
+
+        div(ng-show='showError')
+          span.error An error occurred! Please try again later.
+
+        div(ng-show='showInvalid')
+          span.error Invalid input! Search terms must not be blank. 
+
+        div(ng-show='showResults')
+
+          div(ng-if='results.length <= 0')
+            span.error No results found for query '{{lastSearch}}'
+
+          div(ng-if='results.length > 0')
+            h3
+              | Please choose a business category from the list below.
+            .naics-result(ng-repeat='item in results')
+              span {{ item.title }}
+              button(ng-click='select(item)', radio-select='', data-selected-text='Selected') Select
+        p
+          | This search tool uses the
+          a(href='http://www.census.gov/eos/www/naics/', target='_blank') North American Industry Classification System (NAICS), 2012 edition.
+          | We'll use this to match your business to a City of Las Vegas business category.
+      #primary-business-results.inset-box.col-2.scrollfix(ng-show='showResults')
+        h3 Your selected business category
+        p(style='font-size: 120%;')
+          span(ng-show='selected') {{ selected.title }}
+          span(ng-show='!selected') Nothing is selected yet. Your chosen business type will appear here.
+        .row.section-navigation
+          a.next.button(href='/#/section/12', button-disable='selected') Next
+
+  .section-navigation
+    a.back.button(href='/') Back
+    a.next.button(href='/#/section/12', button-disable='resultSelected') Next

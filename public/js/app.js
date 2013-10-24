@@ -61,7 +61,7 @@ google.maps.Polygon.prototype.getBounds = function() {
 
 
 // Declare app level module which depends on filters, and services
-var app = angular.module(appName, [appName+'.controllers', 'dof.ui.modal', 'dof.ui.collapse', 'ui.map', 'ui.event', 'ngSanitize', 'ngRoute']);
+var app = angular.module(appName, [appName+'.controllers', 'dof.ui.modal', 'dof.ui.collapse', 'ui.map', 'ui.event', 'ngSanitize', 'ngRoute', 'ngResource']);
 
 // Set up application routes
 app.config(['$routeProvider', function ($routeProvider) {
@@ -96,6 +96,74 @@ app.config(['$locationProvider', function ($location) {
 // SERVICES
 //
 // ***********************************************************************/
+
+app.factory('NAICSClassification', ['$resource',
+  function ($resource) {
+    return $resource('api/categories/naics_search', {}, {
+      search: { method: 'GET', params: { keywords: null }, isArray: true }
+    });
+  }
+]);
+
+app.factory('Session', ['$resource',
+  function ($resource) {
+
+    var API = $resource('api/sessions/:id', {}, {
+      find:   { method: 'GET'  },
+      update: { method: 'PUT'  },
+      create: { method: 'POST' }
+    });
+
+    var DEFAULTS = {
+      naics_classification: null,
+      last_step: null
+    }
+
+    var Session = function (attrs) {
+      this.attributes = attrs || {};
+      for (var attr in DEFAULTS) {
+        this.attributes[attr] = DEFAULTS[attr];
+      }
+    } 
+
+    Session.findOrCreate = function () {
+      new Session(); 
+    }
+   
+    Session.prototype = {
+      set: function (attrs) {
+        for (var attr in attrs) {
+          this.attributes[attr] = attrs[attr];
+        }
+        return attrs;
+      },
+      get: function (attr) {
+        return this.attributes[attr];
+      },
+      reset: function () {
+        for (var attr in DEFAULTS) {
+          this.attributes[attr] = DEFAULTS[attr];
+        }
+        return this;
+      },
+      toJSON: function () {
+        return this.attributes;
+      },
+      save: function () {
+        if (this.isPersisted()) {
+          API.update(this.toJSON());
+        } else {
+          API.create(this.toJSON());
+        }
+      },
+      isPersisted: function () {
+        return !!this.get('id');
+      }
+    }
+
+    return Session.findOrCreate();
+  }
+]);
 
 // This sets up a 'UserData' service so that information collected by
 // user input can be carried across the application
@@ -176,7 +244,7 @@ directives.showMap = function (MapService) {
 	return function (scope, element) {
 
 		// Retrieve elements and wrap as jQLite
-		var $mainEl = angular.element(document.getElementById('main'))
+		var $mainEl = angular.element(document.getElementById('left'))
 
 		// Check to make sure it's not already part-screen
 		// .hasClass is used because other classes might be on the element
@@ -198,7 +266,7 @@ directives.hideMap = function (MapService) {
 	return function () {
 
 		// Retrieve elements and wrap as jQLite
-		var $mainEl = angular.element(document.getElementById('main'))
+		var $mainEl = angular.element(document.getElementById('left'))
 
 		// Check to make sure it's not already full-screen
 		if (!$mainEl.hasClass('fullscreen')) {

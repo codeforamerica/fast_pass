@@ -15,7 +15,7 @@ var express = require('express')
   , api = require('./routes/api')
   , http = require('http')
   , path = require('path')
-  , lessMiddleware = require('less-middleware');
+  , less = require('less-middleware');
 
 //
 // APPLICATION CONFIGURATION
@@ -30,12 +30,13 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(app.router);
-app.use(lessMiddleware({
+app.use(less({
     src: __dirname + '/public/less',
     dest: __dirname + '/public/css',
     prefix: '/css',
     once: true,
     compress: true,
+    optimization: 2,
     debug: true
 }));
 

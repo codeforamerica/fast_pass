@@ -2,10 +2,150 @@
 
 /* Controllers */
 
-var appCtrls = angular.module(appName + '.controllers', []);
+var SAMPLE_INPUTS = [
+  'coffee shop',
+  'automotive detail',
+  'hairdresser',
+  'internet retail',
+  'women\'s clothing',
+  'shoes',
+  'interior designer',
+  'furniture store',
+  'lounge',
+  'legal aid',
+  'optometrist',
+  'graphic design',
+  'computer repair',
+  'marketing',
+  'bicycle shop' 
+];
+
+var utils = {
+  getRandom: function (arr) {
+    return arr[Math.floor(Math.random(arr.length))] 
+  }
+}
+
+var controllers = angular.module(appName + '.controllers', []);
+
+controllers.controller('ApplicationCtrl', ['$rootScope', '$location', 'Session',
+  function ($rootScope, $location, Session) {
+
+    var lastStep = Session.get('last_step');
+
+    var goToLastStep = function () {
+      if (lastStep) $location.path('section/' + lastStep);
+    }
+
+    goToLastStep();
+  }
+]);
+
+controllers.controller('DialogCtrl', ['$scope', 'Session',
+  function ($scope, Session) {
+
+    var showDialog = Session.isPersisted();
+
+    var $main   = document.getElementById('main');
+    var $dialog = document.getElementById('dialog');
+
+    var show = function () {
+      showDialog = true;
+      $dialog.style.marginTop = '0';
+    }
+
+    var hide = function () {
+      showDialog = false;
+      $dialog.style.marginTop = '-200px';
+    }
+
+    var resetSession = function () {
+      Session.reset();
+      dismissDialog();
+    }
+
+    var dismissDialog = function () {
+      if (showDialog) {
+        hide(); 
+      }
+    }
+
+    angular.element($main).bind('click', dismissDialog);
+
+    $scope.reset   = resetSession;
+    $scope.dismiss = dismissDialog;
+
+    if (showDialog) {
+      setTimeout(show, 800);
+    }
+  }
+]);
+
+controllers.controller('ClassificationSearchCtrl', ['$scope', 'NAICSClassification',
+  function ($scope, NAICSClassification) {
+
+    $scope.sampleInput = utils.getRandom(SAMPLE_INPUTS);
+
+    var resetSearch = function () {
+      $scope.results = [];
+      $scope.showResults = false;
+      $scope.showError = false;
+      $scope.showInvalid = false;
+      $scope.lastSearch = null;
+    } 
+
+    var onSearchSuccess = function (results) {
+      $scope.results = results;
+      $scope.showLoading = false;
+      $scope.showResults = true; 
+    }
+
+    var onSearchError = function () {
+      $scope.showLoading = false;
+      $scope.showError = true;
+    }
+
+    var onInvalidTerms = function () {
+      $scope.showLoading = false;
+      $scope.showInvalid = true; 
+    }
+
+    var search = function (keywords) {
+      resetSearch();
+
+      if (typeof(keywords) === 'undefined') {
+        onInvalidTerms();
+        return false;
+      }
+
+      $scope.lastSearch  = keywords;
+      $scope.showLoading = true;
+
+      NAICSClassification.search({ keywords: keywords }).
+        $promise.then(
+          onSearchSuccess,
+          onSearchError
+        );
+    }
+
+    $scope.search = search;
+  }
+]);
+
+controllers.controller('ClassificationSelectCtrl', ['$scope', 'Session',
+  function ($scope, Session) {
+
+    var select = function (item) {
+      $scope.selected = item;
+      Session.set({ naics_classification: item.code })
+    } 
+
+    $scope.select = select;
+  }
+]);
 
 // START OF APPLICATION
-appCtrls.controller('StartCtrl', function ($scope, $location, UserData) {
+controllers.controller('StartCtrl', function ($scope, $location, UserData) {
 
   $scope.userdata = UserData
 
@@ -25,7 +165,7 @@ appCtrls.controller('StartCtrl', function ($scope, $location, UserData) {
 })
 
 // SECTION 10 - NAICS Business Category search
-appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
+controllers.controller('10Ctrl', function ($scope, $http, UserData) {
 
   // This is the endpoint URL.
   //var searchAPI   = 'http://api.naics.us/v0/s?year=2012&terms='
@@ -133,7 +273,7 @@ appCtrls.controller('10Ctrl', function ($scope, $http, UserData) {
 })
 
 // SECTION 12 - CONFIRM BUSINESS CATEGORY
-appCtrls.controller('12Ctrl', function ($scope, $http, UserData) {
+controllers.controller('12Ctrl', function ($scope, $http, UserData) {
 
   $scope.userdata = UserData
 
@@ -158,7 +298,7 @@ appCtrls.controller('12Ctrl', function ($scope, $http, UserData) {
 })
 
 // SECTION 15 - Describe your business
-appCtrls.controller('15Ctrl', function ($scope, UserData) {
+controllers.controller('15Ctrl', function ($scope, UserData) {
 
   $scope.userdata = UserData
 
@@ -167,7 +307,7 @@ appCtrls.controller('15Ctrl', function ($scope, UserData) {
 })
 
 // SECTION 20 - ADDITIONAL BUSINESS
-appCtrls.controller('20Ctrl', function ($scope, $http, $filter, UserData) {
+controllers.controller('20Ctrl', function ($scope, $http, $filter, UserData) {
   $scope.userdata = UserData
   $scope.debug = false
 
@@ -207,7 +347,7 @@ appCtrls.controller('20Ctrl', function ($scope, $http, $filter, UserData) {
 
 
 // SECTION 40 - Enter a location
-appCtrls.controller('40Ctrl', function ($scope, $http, $location, UserData, MapService) {
+controllers.controller('40Ctrl', function ($scope, $http, $location, UserData, MapService) {
   $scope.userdata = UserData
   $scope.userdata.nav.pathTo50 = 40    // Remember the current section to preserve path in the future
   $scope.mapService = MapService
@@ -327,7 +467,7 @@ appCtrls.controller('40Ctrl', function ($scope, $http, $location, UserData, MapS
 })
 
 // SECTION 41 - NEIGHBORHOOD SELECTION VIEW
-appCtrls.controller('41Ctrl', function ($scope, $http, UserData, MapService) {
+controllers.controller('41Ctrl', function ($scope, $http, UserData, MapService) {
   $scope.userdata   = UserData
   $scope.mapService = MapService
 
@@ -349,7 +489,7 @@ appCtrls.controller('41Ctrl', function ($scope, $http, UserData, MapService) {
 })
 
 // SECTION 45 - ZONING MAP VIEW
-appCtrls.controller('45Ctrl', function ($scope, UserData) {
+controllers.controller('45Ctrl', function ($scope, UserData) {
   $scope.userdata  = UserData
   $scope.userdata.nav.pathTo50 = 45    // Remember the current section to preserve path in the future
 
@@ -367,7 +507,7 @@ appCtrls.controller('45Ctrl', function ($scope, UserData) {
 })
 
 // SECTION 50 - PARCEL VIEW
-appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
+controllers.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
   $scope.userdata = UserData
   $scope.mapService = MapService
 
@@ -614,7 +754,7 @@ appCtrls.controller('50Ctrl', function ($scope, $http, UserData, MapService) {
 
 
 // SECTION 70 - Overview
-appCtrls.controller('70Ctrl', function ($scope, UserData) {
+controllers.controller('70Ctrl', function ($scope, UserData) {
 
   $scope.userdata = UserData
 
@@ -623,7 +763,7 @@ appCtrls.controller('70Ctrl', function ($scope, UserData) {
 })
 
 // MAP CONTROLLER - Everything map related
-appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
+controllers.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
 
   $scope.mapService   = MapService
   $scope.userdata     = UserData
@@ -1336,7 +1476,7 @@ appCtrls.controller('MapCtrl', function ($scope, $http, MapService, UserData) {
 
 // PRINT VIEW CONTROLLER
 // Pretty similar to Section 50...
-appCtrls.controller('PrintViewCtrl', function ($scope, $http, UserData, MapService) {
+controllers.controller('PrintViewCtrl', function ($scope, $http, UserData, MapService) {
   $scope.userdata = UserData
   $scope.mapService = MapService
 
@@ -1417,7 +1557,7 @@ appCtrls.controller('PrintViewCtrl', function ($scope, $http, UserData, MapServi
 })
 
 // WELCOME BACK!!!!!!
-appCtrls.controller('ReturnCtrl', function ($scope, UserData) {
+controllers.controller('ReturnCtrl', function ($scope, UserData) {
 
   // Default: this dialog box should be off.
   $scope.showDialog = false
@@ -1476,7 +1616,7 @@ appCtrls.controller('ReturnCtrl', function ($scope, UserData) {
 })
 
 // MODALS
-appCtrls.controller('ModalDemoCtrl', function ($scope, $modal, $log) {
+controllers.controller('ModalDemoCtrl', function ($scope, $modal, $log) {
 
   $scope.items = ['item1', 'item2', 'item3'];
 

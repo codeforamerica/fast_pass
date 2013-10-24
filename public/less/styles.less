@@ -1,6 +1,6 @@
-@import 'normalize.less';
-@import 'preboot.less';
-@import url('main.css'); // HTML5 Boilerplate default CSS file
+@import './vendor/normalize/normalize.less';
+@import './vendor/preboot/preboot.less';
+@import './vendor/html5-boilerplate/main.less';
 
 // CONSTANTS
 
@@ -58,7 +58,8 @@ html, body {
 	color: @black;
 }
 
-#main {
+#left {
+  width: 100%;
 	min-height: 100%;
 	z-index: @ui-index;
 	padding: 30px;
@@ -83,9 +84,6 @@ html, body {
 				right: 0;
 			}
 		}
-	}
-	&.fullscreen {
-		width: 100%;
 	}
 }
 
@@ -676,7 +674,7 @@ footer {
 	position: relative;
 }
 
-#return {
+#dialog {
 	position: fixed;
 	top: 0;
 	margin-top: -200px;
@@ -752,7 +750,7 @@ footer {
 	#pi,
 	#map-container,
 	#map,
-	#return {
+	#dialog {
 		display: none;
 	}
 	a.help:after,
