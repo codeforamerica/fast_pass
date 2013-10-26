@@ -153,35 +153,31 @@ app.config(['$locationProvider', function ($location) {
 //
 // ***********************************************************************/
 
-app.factory('ClientStorage', [
+app.factory('WebStorage', [
   function () {
 
-    var mockLocalStorage = {
-      getItem: function () { return null },
-      setItem: function () { return null }
+    var driver = new Persist.Store(appName);
+
+    var WebStorage = Model.extend({
+      save: function () {
+        return driver.set('data', JSON.stringify(this.toJSON()));
+      },
+      remove: function () {
+        return driver.remove('data');
+      }
+    });
+
+    WebStorage.load = function () {
+      var data = driver.get('data');
+
+      if (data) {
+        data = JSON.parse(data);
+      }
+
+      return new WebStorage(data || {});
     }
 
-    var driver;
-
-    if (Modernizr.localstorage) {
-      driver = window.localStorage;
-    } else {
-      driver = mockLocalStorage; 
-    }
-
-    var ClientStorage = Model.extend(
-      {
-        save: function () {
-          driver.setItem(appName, JSON.stringify(this.toJSON()));
-        }
-      } 
-    );
-
-    ClientStorage.load = function () {
-      return new ClientStorage( JSON.parse(driver.getItem(appName)) );
-    }
-
-    return ClientStorage.load();
+    return WebStorage.load();
   }
 ]);
 
@@ -193,42 +189,57 @@ app.factory('NAICSClassification', ['$resource',
   }
 ]);
 
-app.factory('Session', ['$resource', 'ClientStorage',
-  function ($resource, ClientStorage) {
+app.factory('Session', ['$resource', 'WebStorage',
+  function ($resource, WebStorage) {
 
-    var API = $resource('api/sessions/:id', {}, {
-      find:   { method: 'GET'  },
-      update: { method: 'PUT'  },
+    var API = $resource('api/sessions/:id', { }, {
+      find:   { method: 'GET', params: { id: '@id' } },
+      update: { method: 'PUT', params: { id: '@id' } },
       create: { method: 'POST' }
     });
+
+    var onSaveSuccess = function (response) {
+      session.set(response.data);
+      WebStorage.set({ session: session.toJSON() })
+      WebStorage.save();
+    }
+
+    var onSaveError = function (error) {
+      console.log('An error occurred when saving the session');
+    }
 
     var Session = Model.extend({
       defaults: {
         naics_classification: null,
-        last_step: null
+        planning_use: null,
+        business_category: null 
       },
       reset: function () {
         this.attributes = utils.defaults(this.defaults, {});
+        this.save();
       },
       save: function () {
-        ClientStorage.set({ session: this.toJSON() })
-        ClientStorage.save();
+        var session = this;
+
+        if (this.isPersisted()) {
+          API.update({ id: 1 }, onSaveSuccess, onSaveError); 
+        } else {
+          API.create({ id: 1 }, onSaveSuccess, onSaveError);
+        }
+
+        return session;
       },
       isPersisted: function () {
-        return !!this.get('id');
+        return typeof(this.get('id')) !== 'undefined';
       }
     });
 
     Session.findOrCreate = function () {
-      var session, data = ClientStorage.get('session');
+      var sessionData;
 
-      if (typeof(data) === 'undefined') {
-        session = new Session();
-      } else {
-        session = new Session(data);
-      }
+      sessionData = WebStorage.get('session');
 
-      return session; 
+      return new Session( sessionData || {} );
     }
 
     return Session.findOrCreate();

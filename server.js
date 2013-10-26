@@ -70,6 +70,11 @@ app.get('/api/geocode/position', api.geo.geocodePosition);
 app.get('/api/categories/naics_search', api.categories.naics_search);
 app.get('/api/categories/business_licensing', api.categories.business_licensing)
 
+// Session Routes
+app.get('/api/sessions/:id', api.sessions.find);
+app.put('/api/sessions/:id', api.sessions.update);
+app.post('/api/sessions', api.sessions.create);
+
 //
 // INITIALIZE SERVER
 //

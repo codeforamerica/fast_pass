@@ -60,6 +60,7 @@ controllers.controller('DialogCtrl', ['$scope', 'Session',
 
     var resetSession = function () {
       Session.reset();
+      Session.save();
       dismissDialog();
     }
 
@@ -68,6 +69,8 @@ controllers.controller('DialogCtrl', ['$scope', 'Session',
         hide(); 
       }
     }
+
+    window.session = Session;
 
     angular.element($main).bind('click', dismissDialog);
 
