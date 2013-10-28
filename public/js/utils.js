@@ -16,6 +16,16 @@ var Utils = function () {
     }
   };
 
+  var map = this.map = function(obj, iterator, context) {
+    var results = [];
+    if (obj == null) return results;
+    if (Array.prototype.map && obj.map === Array.prototype.map) return obj.map(iterator, context);
+    each(obj, function(value, index, list) {
+      results.push(iterator.call(context, value, index, list));
+    });
+    return results;
+  };
+
   var defaults = this.defaults = function(obj) {
     each(Array.prototype.slice.call(arguments, 1), function(source) {
       if (source) {

@@ -319,40 +319,49 @@ small {
 
 // FORMATTING
 
-.naics-result {
-	border-top: 1px solid #ddd;
-	padding: 6px 80px 6px 0;
-	position: relative;
+search-result {
+  display: block !important;
+  border-top: 1px solid #ddd;
+  padding: 6px 80px 6px 0;
+  position: relative;
+
 	&.selected {
-		background-color: rgba(0,0,0,.10);
+    background-color: rgba(0,0,0,.10);
+    button {
+      background-color: @color-scheme;
+      color: white;
+    }
 	}
+
 	&:last-of-type {
-		border-bottom: 1px solid #ddd;
+    .naics-result {
+		  border-bottom: 1px solid #ddd;
+    }
 	}
-	&:hover {
-		background-color: rgba(0,0,0,.05);
-	}
-	button {
-		position: absolute;
-		right: 0;
-		top: 4px;
-		background-color: @color-gray;
-		padding: 3px 10px;
-		color: @color-scheme;
-		&:hover {
-			color: white
-		}
-		&:active {
-			// override typical button down behavior
-			position: absolute !important;
-			top: 4px !important;
-		}
-		&.selected {
-			background-color: @color-scheme;
-			color: white;
-		}
-	}
+
+  &:hover {
+    background-color: rgba(0,0,0,.05);
+    button {
+      background-color: @color-scheme;
+      color: white;
+    }
+  }
+
+  button {
+    position: absolute;
+    right: 0;
+    top: 4px;
+    background-color: @color-gray;
+    padding: 3px 10px;
+    color: @color-scheme;
+    &:active {
+      // override typical button down behavior
+      position: absolute !important;
+      top: 4px !important;
+    }
+  }
 }
+
 
 // FORMS & INPUT
 

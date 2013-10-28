@@ -1,6 +1,6 @@
 'use strict';
 
-var appName = 'fastpass'
+var APP_NAME = 'fastpass';
 
 /*************************************************************************
 // 
@@ -117,7 +117,7 @@ Model.extend = function(protoProps, staticProps) {
 
 
 // Declare app level module which depends on filters, and services
-var app = angular.module(appName, [appName+'.controllers', 'dof.ui.modal', 'dof.ui.collapse', 'ui.map', 'ui.event', 'ngSanitize', 'ngRoute', 'ngResource']);
+var app = angular.module(APP_NAME, [APP_NAME+'.controllers', 'dof.ui.modal', 'dof.ui.collapse', 'ui.map', 'ui.event', 'ngSanitize', 'ngRoute', 'ngResource']);
 
 // Set up application routes
 app.config(['$routeProvider', function ($routeProvider) {
@@ -156,7 +156,7 @@ app.config(['$locationProvider', function ($location) {
 app.factory('WebStorage', [
   function () {
 
-    var driver = new Persist.Store(appName);
+    var driver = new Persist.Store(APP_NAME);
 
     var WebStorage = Model.extend({
       save: function () {
@@ -181,14 +181,6 @@ app.factory('WebStorage', [
   }
 ]);
 
-app.factory('NAICSClassification', ['$resource',
-  function ($resource) {
-    return $resource('api/categories/naics_search', {}, {
-      search: { method: 'GET', params: { keywords: null }, isArray: true }
-    });
-  }
-]);
-
 app.factory('Session', ['$resource', 'WebStorage',
   function ($resource, WebStorage) {
 
@@ -198,51 +190,125 @@ app.factory('Session', ['$resource', 'WebStorage',
       create: { method: 'POST' }
     });
 
-    var onSaveSuccess = function (response) {
-      session.set(response.data);
-      WebStorage.set({ session: session.toJSON() })
-      WebStorage.save();
-    }
-
-    var onSaveError = function (error) {
-      console.log('An error occurred when saving the session');
-    }
-
     var Session = Model.extend({
+
       defaults: {
         naics_classification: null,
-        planning_use: null,
-        business_category: null 
+        description: null,
+        keywords: null
       },
+
       reset: function () {
-        this.attributes = utils.defaults(this.defaults, {});
+        this.set(utils.defaults(this.defaults, {}));
         this.save();
       },
+
       save: function () {
         var session = this;
 
-        if (this.isPersisted()) {
-          API.update({ id: 1 }, onSaveSuccess, onSaveError); 
-        } else {
-          API.create({ id: 1 }, onSaveSuccess, onSaveError);
+        var onSuccess = function (res) {
+          session.set(res.data);
+          WebStorage.set({ session: session.toJSON() });
+          WebStorage.save();
         }
 
-        return session;
+        var onError = function (err) {
+          console.log('An error occurred when saving the session.');
+        }
+
+        if (this.isPersisted()) {
+          API.update({ id: 1 }, onSuccess, onError); 
+        } else {
+          API.create({ id: 1 }, onSuccess, onError);
+        }
       },
+
       isPersisted: function () {
         return typeof(this.get('id')) !== 'undefined';
       }
+
     });
 
     Session.findOrCreate = function () {
-      var sessionData;
-
-      sessionData = WebStorage.get('session');
-
-      return new Session( sessionData || {} );
+      return new Session( WebStorage.get('session') || {} );
     }
 
     return Session.findOrCreate();
+  }
+]);
+
+app.factory('BusinessCategory', ['$resource',
+  function ($resource) {
+    var API = $resource('api/sessions/:id', { }, {
+      find: { method: 'GET', params: { id: '@id' } }
+    });
+
+    var BusinessCategory = Model.extend({
+    
+    });
+
+    return BusinessCategory;
+  }
+]);
+
+app.factory('PlanningUse', ['$resource',
+  function ($resource) {
+    var API = $resource('api/sessions/:id', { }, {
+      find:   { method: 'GET', params: { id: '@id' } },
+      update: { method: 'PUT', params: { id: '@id' } },
+      create: { method: 'POST' }
+    });
+
+    var PlanningUse = Model.extend({
+    
+    });
+
+    return PlanningUse;
+  }
+]);
+
+app.factory('Parcel', ['$resource',
+  function ($resource) {
+    var API = $resource('api/sessions/:id', { }, {
+      find:   { method: 'GET', params: { id: '@id' } }
+    });
+
+    var Parcel = Model.extend({
+    
+    }, {
+
+    });
+
+    return Parcel;
+  }
+]);
+
+app.factory('NAICSCategory', ['$resource',
+  function ($resource) {
+    var API = $resource('api/categories/naics_search', {}, {
+      search: { method: 'GET', params: { keywords: null }, isArray: true }
+    });
+
+    var NAICSCategory = Model.extend({
+      defaults: {
+        index: null,
+        code: null,
+        description: null,
+        title: null,
+        seq_no: null
+      }
+    }, {
+      search: function (params, success, error) {
+        var onSuccess = function (results) {
+          success(utils.map(results, function (result) {
+            return new NAICSCategory(result);
+          }));
+        }
+        API.search(params, onSuccess, error);
+      } 
+    });
+
+    return NAICSCategory;
   }
 ]);
 
@@ -396,42 +462,28 @@ directives.buttonDisable = function () {
 	}
 }
 
-directives.radioSelect = function () {
-	// Used on:
-	// - Step 10 (NAICS search results)
-	// - Step 40 (Address search results)
-	return {
-		restrict: 'A',
-		link: function (scope, element, attrs) {
+directives.searchResult = function () {
+  var deselect = function (el) {
+    el.removeClass('selected');
+  }
 
-			// This directive allows for custom text to be displayed when it is clicked,
-			// provided in the form of a 'selected-text' attribute.
-			// If custom text is not provided, it will default to 'Selected'
-			var text = attrs.selectedText
-			if (!text) {
-				text = 'Selected'
-			}
+  var select = function (el) {
+    el.addClass('selected');
+  }
 
-			// Store the original text of the button
-			var originalText = element.text()
-
-			// Action to perform when the button is clicked
-			element.bind('click', function () {
-
-				// Clear all previous select boxes
-				// This is super messy, as it relies on DOM traversal to succeed
-
-				// Probably better to figure out how to do isolate scope on this 
-				element.parent().parent().children().find('button').text(originalText).removeClass('selected')
-				element.parent().parent().children().removeClass('selected')
-
-				// Set current select box to Selected
-				element.text(text).addClass('selected')
-				element.parent().addClass('selected')
-			})
-
-		}
-	}
+  return {
+    restrict: 'E',
+    templateUrl: 'partials/search_result',
+    link: function (scope, el, attrs) { 
+      scope.$watch('selected', function (value) {
+        if (value && value == scope.result) {
+          select(el);
+        } else {
+          deselect(el); 
+        }
+      })
+    }
+  }
 }
 
 directives.scrollfix = function () {
@@ -628,7 +680,7 @@ function _getSectionTemplate($routeParams) {
 // But it hasn't worked...
 /*
 function onMapReady() {
-	angular.bootstrap(document, [appName]);
+	angular.bootstrap(document, [APP_NAME]);
 }	
 */
 
@@ -727,7 +779,7 @@ function _checkLocalStorage () {
 	}
 
 	// Check to see if this app has previously stored anything in localStorage
-	if (window.localStorage.getItem(appName)) {
+	if (window.localStorage.getItem(APP_NAME)) {
 		return true
 	}
 	else {
@@ -738,14 +790,14 @@ function _checkLocalStorage () {
 
 function _loadLocalStorage () {
 	console.log('Loading local storage.')
-	return JSON.parse(window.localStorage.getItem(appName))
+	return JSON.parse(window.localStorage.getItem(APP_NAME))
 }
 
 function _saveLocalStorage (obj) {
 	// Save to localStorage
 	if (window['localStorage']) {
 		console.log('Saving to local storage.')
-		window.localStorage.setItem(appName, JSON.stringify(obj))
+		window.localStorage.setItem(APP_NAME, JSON.stringify(obj))
 	}
 }
 
@@ -753,6 +805,6 @@ function _clearLocalStorage () {
 	// Clear localStorage
 	if (window['localStorage']) {
 		console.log('Clearing local storage.')
-		window.localStorage.removeItem(appName)
+		window.localStorage.removeItem(APP_NAME)
 	}
 }

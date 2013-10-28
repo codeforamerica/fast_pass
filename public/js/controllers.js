@@ -20,7 +20,7 @@ var SAMPLE_INPUTS = [
   'bicycle shop' 
 ];
 
-var controllers = angular.module(appName + '.controllers', []);
+var controllers = angular.module(APP_NAME + '.controllers', []);
 
 controllers.controller('ApplicationCtrl', ['$rootScope', '$location', 'Session',
   function ($rootScope, $location, Session) {
@@ -70,8 +70,6 @@ controllers.controller('DialogCtrl', ['$scope', 'Session',
       }
     }
 
-    window.session = Session;
-
     angular.element($main).bind('click', dismissDialog);
 
     $scope.reset   = resetSession;
@@ -83,10 +81,9 @@ controllers.controller('DialogCtrl', ['$scope', 'Session',
   }
 ]);
 
-controllers.controller('ClassificationSearchCtrl', ['$scope', 'NAICSClassification',
-  function ($scope, NAICSClassification) {
+controllers.controller('ClassificationSearchCtrl', ['$scope', 'Session', 'NAICSCategory',
+  function ($scope, Session, NAICSCategory) {
 
-    $scope.sampleInput = utils.random(SAMPLE_INPUTS);
 
     var resetSearch = function () {
       $scope.results = [];
@@ -123,13 +120,20 @@ controllers.controller('ClassificationSearchCtrl', ['$scope', 'NAICSClassificati
       $scope.lastSearch  = keywords;
       $scope.showLoading = true;
 
-      NAICSClassification.search({ keywords: keywords }).
-        $promise.then(
-          onSearchSuccess,
-          onSearchError
-        );
+      Session.set({ keywords: keywords });
+      Session.save();
+
+      NAICSCategory.search({ keywords: keywords }, onSearchSuccess, onSearchError)
     }
 
+    var keywords = Session.get('keywords');
+
+    if (keywords) {
+      $scope.keywords = keywords;
+      search(keywords);
+    }
+
+    $scope.sampleInput = utils.random(SAMPLE_INPUTS);
     $scope.search = search;
   }
 ]);
@@ -138,10 +142,23 @@ controllers.controller('ClassificationSelectCtrl', ['$scope', 'Session',
   function ($scope, Session) {
 
     var select = function (item) {
-      $scope.selected = item;
-      Session.set({ naics_classification: item.code });
-      Session.save();
+      if (item !== $scope.selected) {
+        $scope.selected = item;
+        Session.set({ naics_classification: item.get('code') });
+        Session.save();
+      } else {
+        $scope.selected = null; 
+      }
     } 
+
+    $scope.$watch('results', function () {
+      var code = Session.get('naics_classification');
+      if (code) {
+        utils.each($scope.results, function (result) {
+          if (result.get('code') == code) $scope.selected = result;
+        })
+      }
+    });
 
     $scope.select = select;
   }
@@ -149,129 +166,6 @@ controllers.controller('ClassificationSelectCtrl', ['$scope', 'Session',
 
 // START OF APPLICATION
 controllers.controller('StartCtrl', function ($scope, $location, UserData) {
-
-  $scope.userdata = UserData
-
-  // Clear application data if directed
-  if (_getQueryStringParams('clear') == 'true') {
-    // DAMN THIS IS FUCKING PERSISTENT DATA!!!
-    $scope.userdata = _resetUserData()
-
-    UserData = _resetUserData()
-    _saveLocalStorage(UserData)
-    console.log(UserData)
-
-    _clearLocalStorage()
-    console.log('User data cleared.')
-  }
-
-})
-
-// SECTION 10 - NAICS Business Category search
-controllers.controller('10Ctrl', function ($scope, $http, UserData) {
-
-  // This is the endpoint URL.
-  //var searchAPI   = 'http://api.naics.us/v0/s?year=2012&terms='
-  var searchAPI = '/api/categories/naics_search?keywords='
-
-  // Attach global UserData to this controller.
-  $scope.userdata = UserData
-
-  // Set defaults for scope variables
-  $scope.searchResults   = false
-  $scope.searchLoading   = false
-  $scope.searchErrorMsg  = ''
-  $scope.searchPerformed = false
-  $scope.selectedResult  = null
-
-  // Randomly select an example business placeholder input!
-  $scope.sampleInputs    = ['coffee shop',
-                            'automotive detail',
-                            'hairdresser',
-                            'internet retail',
-                            'women\'s clothing',
-                            'shoes',
-                            'interior designer',
-                            'furniture store',
-                            'lounge',
-                            'legal aid',
-                            'optometrist',
-                            'graphic design',
-                            'computer repair',
-                            'marketing',
-                            'bicycle shop']
-  $scope.sampleInput     = $scope.sampleInputs[Math.floor(Math.random() * $scope.sampleInputs.length)]
-
-  // Set search input box to remember the most recent input
-  $scope.searchInput = $scope.userdata.rawInputs.businessSearch[$scope.userdata.rawInputs.businessSearch.length-1]
-
-  // If there was a selected NAICS code, kind-of restore application state 
-  if ($scope.userdata.naics.code != null) {
-    $scope.searchPerformed = true
-    $scope.selectedResult = $scope.userdata.naics.title
-  }
-
-  $scope.searchBusiness = function (input) {
-
-    // Assemble search endpoint URL based on user input
-    var searchURL   = searchAPI + encodeURIComponent(input)
-
-    // Reset display
-    $scope.searchErrorMsg = ''
-    $scope.searchResults  = false
-
-    // Display loading icon
-    $scope.searchLoading  = true
-
-    // Get search results
-    $http.get(searchURL).
-      success( function (results) {
-
-        $scope.searchLoading = false
-
-        // Message for no results
-        if (results.length == 0) {
-          $scope.searchErrorMsg = 'Nothing found for the terms ‘' + input + '’.'
-        } else {
-
-          // Prune results that are not in the 6-digit range
-          var prunedResults = []
-          for (var j=0; j < results.length; j++) {
-            if (results[j].code.toString().length == 6) {
-              prunedResults.push(results[j])
-            }
-          }
-
-          // Set results to model
-          $scope.searchResults = prunedResults
-          $scope.searchPerformed = true
-
-          // After a search, save to local storage
-          _saveLocalStorage($scope.userdata)
-        }
-
-        // Store raw search inputs for future analysis
-        $scope.userdata.rawInputs.businessSearch.push(input)
-
-      }).
-      error( function () {
-        // Display error message
-        $scope.searchLoading = false
-        $scope.searchErrorMsg = 'Error performing search for NAICS business categories.'
-
-      });
-
-  }
-
-  $scope.selectResult = function (code, title) {
-    // Set the selected stuff to global UserData so it's available elsewhere
-    $scope.userdata.naics.code  = code
-    $scope.userdata.naics.title = title
-
-    // Add selected title to the selection box
-    $scope.selectedResult = $scope.userdata.naics.title
-  }
-
 
 })
 

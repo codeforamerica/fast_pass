@@ -99,12 +99,10 @@ small{font-size:11px;color:#888}
 .content .radio-select a.button{height:40px;line-height:20px}
 .content .loading-small{width:100%;text-align:center;color:gray}
 .content .loading{width:100%;text-align:center;margin-top:80px;height:160px;color:gray}
-.naics-result{border-top:1px solid #ddd;padding:6px 80px 6px 0;position:relative}.naics-result.selected{background-color:rgba(0,0,0,0.1)}
-.naics-result:last-of-type{border-bottom:1px solid #ddd}
-.naics-result:hover{background-color:rgba(0,0,0,0.05)}
-.naics-result button{position:absolute;right:0;top:4px;background-color:#e7eaeb;padding:3px 10px;color:#21687f}.naics-result button:hover{color:#fff}
-.naics-result button:active{position:absolute !important;top:4px !important}
-.naics-result button.selected{background-color:#21687f;color:white}
+search-result{display:block !important;border-top:1px solid #ddd;padding:6px 80px 6px 0;position:relative}search-result.selected{background-color:rgba(0,0,0,0.1)}search-result.selected button{background-color:#21687f;color:white}
+search-result:last-of-type .naics-result{border-bottom:1px solid #ddd}
+search-result:hover{background-color:rgba(0,0,0,0.05)}search-result:hover button{background-color:#21687f;color:white}
+search-result button{position:absolute;right:0;top:4px;background-color:#e7eaeb;padding:3px 10px;color:#21687f}search-result button:active{position:absolute !important;top:4px !important}
 input{display:inline-block}
 input[type=text],textarea{padding:9px;border:1px solid #aaa;font-size:18px}
 textarea{height:140px;width:100%}

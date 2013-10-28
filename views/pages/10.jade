@@ -1,47 +1,56 @@
-html
-  body
-    section#section10(ng-controller='10Ctrl as app', hide-map='')
-      progressbar(step='1')
-      h2 What is your activity or business&quest;
-      p.lede
-        | Type in some keywords about your business&comma; then press the Search button&period;
-      form#primary-business-form(name='primary-business-form', ng-submit='searchBusiness(searchInput)')
-        .row(style='white-space: nowrap;')
-          input#primary-business-input.col-5(type='text', name='primary-business', placeholder='e.g. {{sampleInput}}', ng-model='searchInput', required='', autofocus='')
-          input.col-1(type='submit', value='Search')
+section#section10
+
+  progressbar(step='1')
+
+  h2 What is your activity or business?
+  p.lede
+    | Type in some keywords about your business, then press the Search button.
+
+  div(ng-controller='ClassificationSearchCtrl')
+
+    form(ng-submit='search(keywords)')
+
+      .row(style='white-space: nowrap;')
+        input.col-5(type='text', placeholder='e.g. {{sampleInput}}', ng-model='keywords', required='', autofocus='', value='{{keywords}}')
+        input.col-1(type='submit', value='Search')
+
+    div(id='classification-select', class='row', ng-controller='ClassificationSelectCtrl', style='margin-top:20px;')
       .row(style='margin-top: 20px')
         .col-4
-          .loading-small(style='margin: 30px 0', ng-show='searchLoading')
-            img(src='img/loading-lite.gif')
-          div(ng-show='searchErrorMsg')
-            span.error &lcub;&lcub;searchErrorMsg&rcub;&rcub;
-          div(ng-show='searchResults')
-            h3
-              | Please choose a business category from the list below&period;
-            .naics-result(ng-repeat='item in searchResults')
-              span &lcub;&lcub;item&period;title&rcub;&rcub;
-              button(ng-click='selectResult(item.code, item.title)', radio-select='', data-selected-text='Selected') Select
-          p
-            | This search tool uses the
-            a(href='http://www.census.gov/eos/www/naics/', target='_blank') North American Industry Classification System &lpar;NAICS&rpar;&comma; 2012 edition
-            | &period; We&apos;ll use this to match your business to a City of Las Vegas business category&period;
-        #primary-business-results.inset-box.col-2.scrollfix(ng-show='searchPerformed')
+
+          div(ng-show='showLoading')
+            .loading-small(style='margin: 30px 0')
+              img(src='img/loading-lite.gif')
+
+          div(ng-show='showError')
+            span.error An error occurred! Please try again later.
+
+          div(ng-show='showInvalid')
+            span.error Invalid input! Search terms must not be blank. 
+
+          div(ng-show='showResults')
+
+            div(ng-if='results.length <= 0')
+                span.error No results found for query '{{lastSearch}}'
+
+            div(ng-if='results.length > 0')
+              h3
+                | Please choose a business category from the list below.
+              search-result(ng-repeat='result in results', result='result')
+
+            p
+              | This search tool uses the &nbsp;
+              a(href='http://www.census.gov/eos/www/naics/', target='_blank') North American Industry Classification System (NAICS), 2012 edition.
+              | &nbsp; We'll use this to match your business to a City of Las Vegas business category.
+
+        #primary-business-results.inset-box.col-2.scrollfix(ng-show='showResults')
           h3 Your selected business category
           p(style='font-size: 120%;')
-            span(ng-show='selectedResult') &lcub;&lcub;selectedResult&rcub;&rcub;
-            span(ng-show='!selectedResult') Nothing is selected yet&period; Your chosen business type will appear here&period;
+            span(ng-show='selected') {{ selected.get('title') }}
+            span(ng-show='!selected') Nothing is selected yet. Your chosen business type will appear here.
           .row.section-navigation
-            a.next.button(href='/#/section/12', button-disable='selectedResult') Next
-      .section-navigation
-        a.back.button(href='/') Back
-        a.next.button(href='/#/section/12', button-disable='selectedResult', ng-show='!searchPerformed') Next
-        //
-              <a href='/#/section/30' style='position: absolute; bottom: 0; right: 0'>Skip business classification &raquo;</a>
-          // 
-      modal.ng-cloak(ng-show='false')
-        title What is NAICS&quest;
-        text
-          p
-            | The
-            a(href='http://www.census.gov/eos/www/naics/', target='_blank') North American Industry Classification System &lpar;NAICS&rpar;
-            | is a standardized list of business functions used by the U&period;S&period; Census Bureau and other Federal statistical agencies to collect and analyze data about the economy&period; It is updated every five years&comma; and the latest edition was released in 2012&period; You use this code on your business federal income tax return and your Nevada Tax ID&period; The City of Las Vegas uses the NAICS code as one way to determine what local business licenses you&apos;ll need&period;
+            a.next.button(href='/#/section/12', button-disable='selected') Next
+
+  .section-navigation
+    a.back.button(href='/') Back
+    a.next.button(href='/#/section/12', button-disable='selectedResult', ng-show='!searchPerformed') Next
