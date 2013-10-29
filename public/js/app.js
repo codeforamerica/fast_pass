@@ -595,15 +595,6 @@ directives.maxWords = function () {
   }
 }
 
-directives.returnDialog = function () {
-	return {
-		restrict: 'A',
-		templateUrl: '/partials/_return',
-		link: function(scope, element, attrs) {
-		}
-	}
-}
-
 directives.staticMap = function () {
 	return {
 		restrict: 'A',
