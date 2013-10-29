@@ -572,7 +572,8 @@ directives.progressbar = function () {
 directives.maxWords = function () {
   var count = function (str) {
     str = str || '' 
-    return str.match(/\S+/g).length;
+    var matches = str.match(/\S+/g) || [];
+    return matches.length;
   }
 
   return {
@@ -582,7 +583,7 @@ directives.maxWords = function () {
       maxWords: '@'
     },
     link: function (scope, el, attrs) {
-      scope.countdown = scope.maxWords - count(scope.words);
+      scope.countdown = scope.maxWords - count(scope.words); 
       scope.$watch('words', function () {
         scope.countdown = scope.maxWords - count(scope.words);
         if (scope.countdown <= 0) {
