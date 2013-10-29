@@ -67,8 +67,8 @@ app.get('/api/geocode/address', api.geo.geocodeAddress);
 app.get('/api/geocode/position', api.geo.geocodePosition);
 
 // Category Routes
-app.get('/api/categories/naics_search', api.categories.naics_search);
-app.get('/api/categories/business_licensing', api.categories.business_licensing)
+app.get('/api/categories/naics', api.categories.naics_search);
+app.get('/api/categories/business_licensing', api.categories.business_licensing_search)
 
 // Session Routes
 app.get('/api/sessions/:id', api.sessions.find);

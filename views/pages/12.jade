@@ -1,17 +1,19 @@
-section#section12(ng-controller='12Ctrl as app', hide-map='')
+section#section12(ng-controller='ClassificationsCtrl', hide-map='')
+
   progressbar(step='1')
+
   h2 Confirm your business category
+
   p.lede
-    | You selected &OpenCurlyQuote;&lcub;&lcub;userdata&period;naics&period;title&rcub;&rcub;&rsquor;&period;
+    | You selected '{{selected.get('title')}}'.
   p.lede
     | Based on this selection&comma; we&apos;ve matched your business to a Las Vegas business category of
     span.nobr
-      span.pill &lcub;&lcub;userdata&period;businessCategory&period;code&rcub;&rcub;
-      strong &lcub;&lcub;userdata&period;businessCategory&period;name&rcub;&rcub;
-    | &period;
-    a(href='', ng-click='isCollapsed = !isCollapsed') &lpar;Learn more about this category&period;&rpar;
-  .info-box(collapse='isCollapsed')
-    p &lcub;&lcub;userdata&period;businessCategory&period;description&rcub;&rcub;
+      span.pill {{ businessCategory.get('code') }}
+      strong {{ businessCategory.get('title') }}.
+    a(href='', ng-click='showDescription = !showDescription') (Learn more about this category.)
+  .info-box(collapse='showDescription')
+    p {{ businessCategory.description }}
     p
       a(href='http://www5.lasvegasnevada.gov/LCAT/Bus_Lic_Instructions.aspx?Category={{userdata.businessCategory.code}}&CategoryName={{userdata.businessCategory.name}}', target='_blank') View complete licensing procedure from Las Vegas Business Licensing&period;
   p.lede

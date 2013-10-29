@@ -22,6 +22,10 @@ var SAMPLE_INPUTS = [
 
 var controllers = angular.module(APP_NAME + '.controllers', []);
 
+//
+// Application Controller - Handles basic functionality of the app
+//
+
 controllers.controller('ApplicationCtrl', ['$rootScope', '$location', 'Session',
   function ($rootScope, $location, Session) {
     var lastStep = Session.get('last_step');
@@ -39,6 +43,11 @@ controllers.controller('ApplicationCtrl', ['$rootScope', '$location', 'Session',
     window.onbeforeunload = onBeforeUnload;
   }
 ]);
+
+//
+// Dialog Controller - Allows user to reset session when visiting
+//                     the page for a second time.
+//
 
 controllers.controller('DialogCtrl', ['$scope', 'Session',
   function ($scope, Session) {
@@ -81,9 +90,16 @@ controllers.controller('DialogCtrl', ['$scope', 'Session',
   }
 ]);
 
-controllers.controller('ClassificationSearchCtrl', ['$scope', 'Session', 'NAICSCategory',
+//
+// Section 10 - What kind of business are you?
+//
+
+controllers.controller('ClassificationsCtrl', ['$scope', 'Session', 'NAICSCategory',
   function ($scope, Session, NAICSCategory) {
 
+    //
+    // NAICS Search
+    //
 
     var resetSearch = function () {
       $scope.results = [];
@@ -120,13 +136,13 @@ controllers.controller('ClassificationSearchCtrl', ['$scope', 'Session', 'NAICSC
       $scope.lastSearch  = keywords;
       $scope.showLoading = true;
 
-      Session.set({ keywords: keywords });
+      Session.set({ naics_keywords: keywords });
       Session.save();
 
       NAICSCategory.search({ keywords: keywords }, onSearchSuccess, onSearchError)
     }
 
-    var keywords = Session.get('keywords');
+    var keywords = Session.get('naics_keywords');
 
     if (keywords) {
       $scope.keywords = keywords;
@@ -135,28 +151,29 @@ controllers.controller('ClassificationSearchCtrl', ['$scope', 'Session', 'NAICSC
 
     $scope.sampleInput = utils.random(SAMPLE_INPUTS);
     $scope.search = search;
-  }
-]);
 
-controllers.controller('ClassificationSelectCtrl', ['$scope', 'Session',
-  function ($scope, Session) {
+    //
+    // NAICS Select
+    //
 
     var select = function (item) {
       if (item !== $scope.selected) {
         $scope.selected = item;
-        Session.set({ naics_classification: item.get('code') });
-        Session.save();
+        Session.set({ naics_code: item.get('code') });
       } else {
         $scope.selected = null; 
+        Session.set({ naics_code: null });
       }
+
+      Session.save();
     } 
 
     $scope.$watch('results', function () {
-      var code = Session.get('naics_classification');
+      var code = Session.get('naics_code');
       if (code) {
         utils.each($scope.results, function (result) {
           if (result.get('code') == code) $scope.selected = result;
-        })
+        });
       }
     });
 
@@ -164,84 +181,24 @@ controllers.controller('ClassificationSelectCtrl', ['$scope', 'Session',
   }
 ]);
 
-// START OF APPLICATION
-controllers.controller('StartCtrl', function ($scope, $location, UserData) {
+//
+// Section 15 - Describe your business.
+//
 
-})
-
-// SECTION 12 - CONFIRM BUSINESS CATEGORY
-controllers.controller('12Ctrl', function ($scope, $http, UserData) {
-
-  $scope.userdata = UserData
-
-  // Only get a new business category if there isn't one
-  if ($scope.userdata.businessCategory.code == null) {
-    var dataURL = '/api/categories/business_licensing';
-  //    var dataURL = '/data/business-types.json';
-  //    Note: these are coming from different sources, and seems to have different categories. Need to confirm.
-
-    // Get a matched business type
-    $http.get(dataURL).success( function (stuff) {
-
-      // DEMO - grab a random business type from the array.
-      $scope.userdata.businessCategory = stuff[Math.floor(Math.random() * stuff.length)];
-
-    })
-  }
-
-  // UI.Bootstrap collapse
-  $scope.isCollapsed = true;
-
-})
-
-// SECTION 15 - Describe your business
-controllers.controller('15Ctrl', function ($scope, UserData) {
-
-  $scope.userdata = UserData
-
-  $scope.countdown = null
-
-})
-
-// SECTION 20 - ADDITIONAL BUSINESS
-controllers.controller('20Ctrl', function ($scope, $http, $filter, UserData) {
-  $scope.userdata = UserData
-  $scope.debug = false
-
-  var dataURL = '/data/additional-business.json'
-
-  var userdata = $scope.userdata.additionalBusiness
-
-  // Display additional businesses
-  $http.get(dataURL).success( function (data) {
-
-    // Add the 'checked' value depending on current UserData
-    for (var i = 0; i < data.length; i++) {
-
-      data[i].checked = false
-
-      if (userdata !== null && userdata.length > 0) {
-        for (var j = 0; j < userdata.length; j++) {
-          if (userdata[j].id == data[i].id) {
-            data[i].checked = true
-          } 
-        }
-      }
+controllers.controller('DescriptionCtrl', ['$scope', 'Session',
+  function ($scope, Session) {
+    var save = function () {
+      Session.save(); 
     }
 
-    // Add the data to the scope
-    $scope.additionalBusiness = data
-  })
+    $scope.$watch('description', function (description) {
+      Session.set({ description: description.trim() });
+    })
 
-  $scope.selectedBusiness = function () {
-    // See example code here: http://stackoverflow.com/questions/14514461/how-can-angularjs-bind-to-list-of-checkbox-values
-    var output = $filter('filter') ($scope.additionalBusiness, {checked: true})
-    $scope.userdata.additionalBusiness = output
-    return output
+    $scope.description = Session.get('description');
+    $scope.save = save
   }
-
-})
-
+]);
 
 // SECTION 40 - Enter a location
 controllers.controller('40Ctrl', function ($scope, $http, $location, UserData, MapService) {

@@ -461,6 +461,8 @@ button, a.button, input[type=button], input[type=submit] {
 	&.disabled, &[disabled] {
 		background-color: @lightgray;
 		color: darken(@lightgray, 20%);
+    cursor: default;
+    pointer-events: none;
 		&:hover {
 			background-color: @lightgray;
 		}

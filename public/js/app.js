@@ -193,9 +193,9 @@ app.factory('Session', ['$resource', 'WebStorage',
     var Session = Model.extend({
 
       defaults: {
-        naics_classification: null,
-        description: null,
-        keywords: null
+        naics_code: null,
+        naics_keywords: null,
+        description: null
       },
 
       reset: function () {
@@ -285,7 +285,7 @@ app.factory('Parcel', ['$resource',
 
 app.factory('NAICSCategory', ['$resource',
   function ($resource) {
-    var API = $resource('api/categories/naics_search', {}, {
+    var API = $resource('api/categories/naics', {}, {
       search: { method: 'GET', params: { keywords: null }, isArray: true }
     });
 
@@ -446,40 +446,40 @@ directives.modalLink = function () {
 	}
 }
 
-
-// Use with an a.button element where it needs to be given the class 
-// 'disabled' until some condition is true
-directives.buttonDisable = function () {
-	return function (scope, element, attrs) {
-
-		scope.$watch(attrs.buttonDisable, function (value) {
-			if (value) {
-				element.removeClass('disabled')
-			} else {
-				element.addClass('disabled')				
-			}
-		})
-	}
+directives.disableButton = function () {
+  return {
+    restrict: 'A',
+    link: function (scope, el, attrs) {
+      scope.$watch(attrs.disableButton, function (value) {
+        if (value) {
+          el.addClass('disabled');
+        } else {
+          el.removeClass('disabled');
+        }
+      });
+    }
+  }
 }
 
 directives.searchResult = function () {
-  var deselect = function (el) {
-    el.removeClass('selected');
-  }
-
-  var select = function (el) {
-    el.addClass('selected');
-  }
-
   return {
     restrict: 'E',
-    templateUrl: 'partials/search_result',
+    scope: {
+      result: '=',
+      selected: '=',
+      select: '&'
+    },
     link: function (scope, el, attrs) { 
+      el.find('button').bind('click', function () {
+        scope.select(scope.result);
+      });
       scope.$watch('selected', function (value) {
         if (value && value == scope.result) {
-          select(el);
+          el.addClass('selected');
+          el.find('button').text('Selected');
         } else {
-          deselect(el); 
+          el.removeClass('selected');
+          el.find('button').text('Select');
         }
       })
     }
@@ -570,40 +570,29 @@ directives.progressbar = function () {
 }
 
 directives.maxWords = function () {
-	return function (scope, element, attrs) {
+  var count = function (str) {
+    str = str || '' 
+    return str.match(/\S+/g).length;
+  }
 
-		var limit       = attrs.maxWords
-		scope.count     = 0
-		scope.countdown = limit - scope.count
-
-		// Count words on each input event (better than keyup, which doesn't include things like shift/ctrl keys)
-		element.bind('input', function () {
-			var text = element.val().trim()
-
-			// Find the number of words
-			if (text == '') {
-				scope.count = 0
-			}
-			else {
-				// Split text on all whitespace
-				var array = text.split(/\s+/)
-				scope.count = array.length
-			}
-
-			// Update the 'words remaining' countdown
-			scope.countdown = limit - scope.count
-
-			// Set warning message class
-			if (scope.countdown <= 0) {
-				scope.warning = 'warning'
-			} else {
-				scope.warning = null
-			}
-
-			// Force a refresh of the view - so it remains up-to-date
-			scope.$digest()
-		})
-	}
+  return {
+    restrict: 'A',
+    scope: {
+      words: '=',
+      maxWords: '@'
+    },
+    link: function (scope, el, attrs) {
+      scope.countdown = scope.maxWords - count(scope.words);
+      scope.$watch('words', function () {
+        scope.countdown = scope.maxWords - count(scope.words);
+        if (scope.countdown <= 0) {
+          scope.warning = 'warning' 
+        } else {
+          scope.warning = null; 
+        }
+      });
+    }
+  }
 }
 
 directives.returnDialog = function () {

@@ -11,7 +11,7 @@ module.exports.naics_search = function (req, res) {
   });
 }
 
-module.exports.business_licensing = function (req, res) {
+module.exports.business_licensing_search = function (req, res) {
   res.writeHead(200, {'Content-Type': 'application/json'});
   res.write(JSON.stringify(dummyData));
   res.end();

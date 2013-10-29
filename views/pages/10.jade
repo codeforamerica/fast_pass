@@ -6,7 +6,7 @@ section#section10
   p.lede
     | Type in some keywords about your business, then press the Search button.
 
-  div(ng-controller='ClassificationSearchCtrl')
+  div(ng-controller='ClassificationsCtrl')
 
     form(ng-submit='search(keywords)')
 
@@ -14,7 +14,7 @@ section#section10
         input.col-5(type='text', placeholder='e.g. {{sampleInput}}', ng-model='keywords', required='', autofocus='', value='{{keywords}}')
         input.col-1(type='submit', value='Search')
 
-    div(id='classification-select', class='row', ng-controller='ClassificationSelectCtrl', style='margin-top:20px;')
+    div(id='classification-select', class='row', style='margin-top:20px;')
       .row(style='margin-top: 20px')
         .col-4
 
@@ -36,7 +36,9 @@ section#section10
             div(ng-if='results.length > 0')
               h3
                 | Please choose a business category from the list below.
-              search-result(ng-repeat='result in results', result='result')
+              search-result(ng-repeat='result in results', result='result', selected='selected', select='select(result)')
+                span {{ result.get('title') }}
+                button Select
 
             p
               | This search tool uses the &nbsp;
@@ -49,8 +51,8 @@ section#section10
             span(ng-show='selected') {{ selected.get('title') }}
             span(ng-show='!selected') Nothing is selected yet. Your chosen business type will appear here.
           .row.section-navigation
-            a.next.button(href='/#/section/12', button-disable='selected') Next
+            a.next.button(href='/#/section/15', disable-button='!selected') Next
 
-  .section-navigation
-    a.back.button(href='/') Back
-    a.next.button(href='/#/section/12', button-disable='selectedResult', ng-show='!searchPerformed') Next
+    .section-navigation
+      a.back.button(href='/') Back
+      a.next.button(href='/#/section/15', disable-button='!selected') Next
