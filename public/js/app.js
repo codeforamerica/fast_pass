@@ -237,33 +237,38 @@ app.factory('Session', ['$resource', 'WebStorage',
   }
 ]);
 
-app.factory('BusinessCategory', ['$resource',
+app.factory('Address', ['$resource',
   function ($resource) {
-    var API = $resource('api/sessions/:id', { }, {
-      find: { method: 'GET', params: { id: '@id' } }
+    var API = $resource('api/geocode/address', { }, {
+      search:   { method: 'GET', params: { address: '@address' }, isArray: true }
     });
 
-    var BusinessCategory = Model.extend({
-    
+    var Address = Model.extend({
+      defaults: {
+        city: null,
+        state: null,
+        address: null,
+        zipcode: null,
+        latitude: null,
+        longitude: null
+      },
+      position: function () {
+        return [ this.get('latitude'), this.get('longitude') ].join(',')
+      }
+    }, {
+      search: function (params, success, error) {
+        var onSuccess = function (results) {
+          var addresses = utils.map(results, function (result) {
+            return new Address(result);
+          }); 
+          success(addresses);
+        }
+
+        API.search(params, onSuccess, error);
+      }
     });
 
-    return BusinessCategory;
-  }
-]);
-
-app.factory('PlanningUse', ['$resource',
-  function ($resource) {
-    var API = $resource('api/sessions/:id', { }, {
-      find:   { method: 'GET', params: { id: '@id' } },
-      update: { method: 'PUT', params: { id: '@id' } },
-      create: { method: 'POST' }
-    });
-
-    var PlanningUse = Model.extend({
-    
-    });
-
-    return PlanningUse;
+    return Address;
   }
 ]);
 
@@ -483,6 +488,27 @@ directives.searchResult = function () {
         }
       })
     }
+  }
+}
+
+directives.searchForm = function () {
+  return {
+    restrict: 'E',
+    scope: {
+      action: '&searchAction',
+      terms: '=searchTerms',
+      searchType: '=',
+      placeholder: '@searchPlaceholder'
+    },
+    link: function (scope, el, attrs) {
+    },
+    templateUrl: 'partials/search_form',
+  }
+}
+
+directives.navigation = function () {
+  return {
+  
   }
 }
 

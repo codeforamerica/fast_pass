@@ -94,7 +94,7 @@ controllers.controller('DialogCtrl', ['$scope', 'Session',
 // Section 10 - What kind of business are you?
 //
 
-controllers.controller('ClassificationsCtrl', ['$scope', 'Session', 'NAICSCategory',
+controllers.controller('CategoriesCtrl', ['$scope', 'Session', 'NAICSCategory',
   function ($scope, Session, NAICSCategory) {
 
     //
@@ -200,125 +200,93 @@ controllers.controller('DescriptionCtrl', ['$scope', 'Session',
   }
 ]);
 
-// SECTION 40 - Enter a location
-controllers.controller('40Ctrl', function ($scope, $http, $location, UserData, MapService) {
-  $scope.userdata = UserData
-  $scope.userdata.nav.pathTo50 = 40    // Remember the current section to preserve path in the future
-  $scope.mapService = MapService
-  $scope.debug = false
+controllers.controller('AddressesCtrl', ['$scope', 'Session', 'Address',
+  function ($scope, Session, Address) {
 
-  var addressEndpoint = '/api/geocode/address?address='
-  var latLngEndpoint = '/api/geocode/position?latlng='
-  // example requests. see Issues #7, 38
-  // /address/suggest?address=Las Vegas Blvd
-  // /address/geocode?address=455 Las Vegas Blvd
-  // /point/reverse_geocode?lat=123.123&lng=123.123
+    //
+    // Address Search
+    //
 
-  // If a user lands here, clear neighborhood input from userdata
-  $scope.userdata.neighborhood = null
+    var perPage = 20;
 
-  // Prepopulate form if we already know it
-  $scope.addressInput = $scope.userdata.property.address
-
-  // When find address form is submitted
-  $scope.findAddress = function (input) {
-    // Reset display
-    $scope.searchErrorMsg  = ''
-    $scope.searchResults   = false
-    $scope.searchNoAddress = false
-
-    // Exit if no input
-    if (!input) {
-      $scope.searchErrorMsg = 'Please provide search terms.'
-      return false
+    var resetSearch = function () {
+      $scope.results = []; 
+      $scope.showResults = false;
+      $scope.showError = false;
+      $scope.showInvalid = false;
+      $scope.lastSearch = null;
     }
 
-    // Store raw search inputs for future analysis
-    $scope.userdata.rawInputs.addressSearch.push(input)
+    var onSearchSuccess = function (results) {
+      $scope.results = results.slice(0,perPage);
+      $scope.showLoading = false;
+      $scope.showResults = true;
+    }
 
-    // Assemble search endpoint URL based on user input
-    var addressURL = addressEndpoint + encodeURIComponent(input)
+    var onSearchError = function () {
+      $scope.showLoading = false; 
+      $scope.showError = true;
+    }
 
-    // Display loading icon
-    $scope.searchLoading = true
+    var onInvalidTerms = function () {
+      $scope.showLoading = false;
+      $scope.showInvalid = true; 
+    }
 
-    // Get address search results
-    $http.get(addressURL).
-    success( function (response, status) {
+    var search = function (address) {
+      resetSearch();
 
-      // Turn off loader
-      $scope.searchLoading = false
-
-      if (response.errormsg) {
-        $scope.searchErrorMsg = response.errormsg
-        return
+      if (typeof(address) === 'undefined') {
+        onInvalidTerms();
+        return false;
       }
 
-      // Extract results from response
-      //var results = response.candidates
-      var results = response.response
+      $scope.lastSearch  = address;
+      $scope.showLoading = true;
 
-      if (results.length == 0) {
-      //if (!results.score) {
+      Session.set({ address_keywords: address });
+      Session.save();
 
-        // Message for no results
-        $scope.searchErrorMsg = 'No addresses found for ‘' + input + '’.'
+      Address.search({ address: address }, onSearchSuccess, onSearchError) 
+    }
 
-        // Display additional message for alternate jurisdictions
-        $scope.searchNoAddress = true
+    var address = Session.get('address_keywords');
 
-      } else if (results[0].score >= 95) {
-        // If first result is a pretty good match, just take it, and forward to parcel view immediately.
-        _saveAddress(results[0])
-        $location.path('/section/50')
+    if (address) {
+      $scope.address = address;
+      search(address);
+    }
+
+    $scope.search = search;
+
+    //
+    // Address Select
+    //
+
+    var select = function (item) {
+      if (item !== $scope.selected) {
+        $scope.selected = item;
+        Session.set({ address: item.get('address') });
       } else {
-        // Multiple results found - user select now.
-        $scope.searchResults = results
-
-        // Format for selection
-        for (var j = 0; j < $scope.searchResults.length; j ++) {
-          if (!$scope.searchResults[j].item) {
-            var item = $scope.searchResults[j]
-            item.address = item.streetno + ' ' + item.streetname
-          }
-        }
-
+        $scope.selected = null; 
+        Session.set({ address: null });
       }
 
-    }).
-    error( function (response, status) {
-      $scope.searchLoading = false
-      $scope.searchErrorMsg = 'Error performing search for addresses. Please try again later.'
+      Session.save();
+    }
+
+    $scope.$watch('results', function () {
+      var address = Session.get('address');
+      if (address) {
+        utils.each($scope.results, function (result) {
+          if (result.get('address') == address) $scope.selected = result;
+        });
+      }
     });
-  }
 
-  $scope.selectResult = function (item) {
-    $scope.selectedResult = true
-    // Set the selected stuff to global UserData so it's available elsewhere
-    _saveAddress(item)
+    $scope.select = select;
   }
-
-  var _saveAddress = function (data) {
-    // data is either same as results[0] retrieved from data source
-    // or saved from the "select" button if there are multiple sources
-    // Results format from mapdata.lasvegasnevada.gov endpoint
-    /*
-    $scope.userdata.property.address  = data.address.capitalize()
-    $scope.userdata.property.location = data.location
-    $scope.userdata.property.score    = data.score
-    */
-    // Results format from clvplaces.appspot 
-    $scope.userdata.property            = data
-    $scope.userdata.property.address    = data.streetno + ' ' + data.streetname
-    $scope.userdata.property.address.capitalize()
-    $scope.userdata.property.location   = {}
-    $scope.userdata.property.location.x = data.latlng.split(',')[1]
-    $scope.userdata.property.location.y = data.latlng.split(',')[0]
-    // Save geometry as GeoJSON
-    // $scope.userdata.property.geometry   = ''
-  }
-
-})
+]);
 
 // SECTION 41 - NEIGHBORHOOD SELECTION VIEW
 controllers.controller('41Ctrl', function ($scope, $http, UserData, MapService) {
