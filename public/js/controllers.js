@@ -289,6 +289,48 @@ controllers.controller('40Ctrl', ['$scope', 'Session', 'Address',
     });
 
     $scope.select = select;
+
+    //
+    // Maps
+    //
+    $scope.map = null;
+
+    $scope.mapOptions = {
+      zoom: 13,
+      minZoom: 11,
+      maxZoom: 19,
+      center: new google.maps.LatLng(36.168, -115.144),
+      backgroundColor: '#f1f1f4',
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      zoomControlOptions: {
+        style: google.maps.ZoomControlStyle.LARGE
+      }
+    }
+
+    $scope.center = { latitude: 0, longitude: 0 }
+    $scope.zoom   = 19;
+
+    $scope.$watch('center', function (value) {
+      if (value) {
+        $scope.map.setCenter( new google.maps.LatLng( value.latitude, value.longitude ) );
+      }
+    })
+
+    $scope.$watch('zoom', function (value) {
+      if (value) {
+        $scope.map.setZoom(value);
+      }
+    })
+
+    $scope.$watch('selected', function (value) {
+      if (value) {
+        $scope.center = {
+          latitude: value.get('latitude'),
+          longitude: value.get('longitude')
+        }
+        $scope.zoom = 19;
+      }
+    });
   }
 ]);
 

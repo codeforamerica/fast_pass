@@ -60,11 +60,12 @@ textarea{resize:vertical}
 .clearfix{*zoom:1}
 @media only screen and (min-width:35em){}@media print,(-o-min-device-pixel-ratio:5/4),(-webkit-min-device-pixel-ratio:1.25),(min-resolution:120dpi){}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important} a,a:visited{text-decoration:underline} a[href]:after{content:" (" attr(href) ")"} abbr[title]:after{content:" (" attr(title) ")"} .ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""} pre,blockquote{border:1px solid #999;page-break-inside:avoid} thead{display:table-header-group;} tr,img{page-break-inside:avoid} img{max-width:100% !important} @page {margin:0.5cm}p,h2,h3{orphans:3;widows:3} h2,h3{page-break-after:avoid}}*{box-sizing:border-box}
 html,body{padding:0;margin:0;height:100%;background-color:#fafafa;font-family:'Lato','Helvetica Neue',sans-serif;font-size:13px;color:#000}
-.full,.left{-webkit-transition:width .8s;-moz-transition:width .8s;-o-transition:width .8s;transition:width .8s;width:100%;min-height:100%;z-index:4000;padding:30px;background-color:#fafafa;position:relative;overflow-x:hidden;overflow-y:auto}
-.left{-webkit-box-shadow:3px 0 6px rgba(0,0,0,0.1);box-shadow:3px 0 6px rgba(0,0,0,0.1);width:560px;border-right:1px solid #c1c1c1}.left header{margin-left:120px}.left header #logo{left:100px}
-.left footer{width:500px}
-.left #pi{right:0}
-.left .container{width:100%}
+.full-screen,.left-screen{-webkit-transition:width .8s;-moz-transition:width .8s;-o-transition:width .8s;transition:width .8s;width:100%;min-height:100%;z-index:4000;padding:30px;background-color:#fafafa;position:relative;overflow-x:hidden;overflow-y:auto}
+.left-screen{-webkit-box-shadow:3px 0 6px rgba(0,0,0,0.1);box-shadow:3px 0 6px rgba(0,0,0,0.1);width:560px;border-right:1px solid #c1c1c1}.left-screen header{margin-left:120px}.left-screen header #logo{left:100px}
+.left-screen footer{width:500px}
+.left-screen #pi{right:0}
+.left-screen .container{width:100%}
+.right-screen{height:100%;position:fixed;top:0;left:560px;right:0;z-index:3000}.right-screen google-map{display:block;width:100%;height:100%}
 .container{position:relative;width:740px;margin:0 auto}
 header{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none}header #logo{height:150px;position:absolute;top:10px;left:-20px;opacity:.5;filter:alpha(opacity=50)}header #logo a{background:none;padding:0}
 header #logo img{position:absolute;right:0px;display:block;width:94px;height:94px}
@@ -77,8 +78,8 @@ h5{font-size:16px}
 .nobr{white-space:nowrap}
 .lede{font-size:18px;font-weight:200;line-height:175%}
 .row{position:relative;width:100%}
-.col-1,.col-2,.col-3,.col-4,.col-5,.col-6,#section-10 .search-form .search-input,#section-10 .search-form .search-input,#section-10 .search-results,#section-10 .search-selection,#section-40 .search-form .search-input,#section-40 .search-form .search-input,#section-40 .search-results{display:inline-block;position:relative;vertical-align:top;margin-right:10px}.col-1:last-child,.col-2:last-child,.col-3:last-child,.col-4:last-child,.col-5:last-child,.col-6:last-child{margin-right:0}
-.col-1,#section-10 .search-form .search-input,#section-40 .search-form .search-input{width:113.33333333333333px}
+.col-1,.col-2,.col-3,.col-4,.col-5,.col-6,#section-10 .search-form .search-input,#section-10 .search-form .search-submit,#section-10 .search-results,#section-10 .search-selection,#section-40 .search-form .search-input,#section-40 .search-form .search-submit,#section-40 .search-results{display:inline-block;position:relative;vertical-align:top;margin-right:10px}.col-1:last-child,.col-2:last-child,.col-3:last-child,.col-4:last-child,.col-5:last-child,.col-6:last-child{margin-right:0}
+.col-1,#section-10 .search-form .search-submit,#section-40 .search-form .search-submit{width:113.33333333333333px}
 .col-2,#section-10 .search-selection{width:236.66666666666666px}
 .col-3,#section-40 .search-form .search-input{width:360px}
 .col-4,#section-10 .search-results,#section-40 .search-results{width:483.3333333333333px}

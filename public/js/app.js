@@ -117,7 +117,7 @@ Model.extend = function(protoProps, staticProps) {
 
 
 // Declare app level module which depends on filters, and services
-var app = angular.module(APP_NAME, [APP_NAME+'.controllers', 'dof.ui.modal', 'dof.ui.collapse', 'ui.map', 'ui.event', 'ngSanitize', 'ngRoute', 'ngResource']);
+var app = angular.module(APP_NAME, [APP_NAME+'.controllers', 'dof.ui.modal', 'dof.ui.collapse', 'ui.map', 'ui.event', 'ngSanitize', 'ngRoute', 'ngResource' ]);
 
 // Set up application routes
 app.config(['$routeProvider', function ($routeProvider) {
