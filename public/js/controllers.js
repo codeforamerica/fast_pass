@@ -307,28 +307,26 @@ controllers.controller('40Ctrl', ['$scope', 'Session', 'Address',
       }
     }
 
-    $scope.center = { latitude: 0, longitude: 0 }
-    $scope.zoom   = 19;
+    var getPosition = function (address) {
+      return new google.maps.LatLng( address.get('latitude'), address.get('longitude') );
+    }
 
-    $scope.$watch('center', function (value) {
-      if (value) {
-        $scope.map.setCenter( new google.maps.LatLng( value.latitude, value.longitude ) );
-      }
-    })
-
-    $scope.$watch('zoom', function (value) {
-      if (value) {
-        $scope.map.setZoom(value);
-      }
-    })
+    var markers = [];
 
     $scope.$watch('selected', function (value) {
       if (value) {
-        $scope.center = {
-          latitude: value.get('latitude'),
-          longitude: value.get('longitude')
-        }
-        $scope.zoom = 19;
+        $scope.map.setCenter( getPosition(value) );
+        $scope.map.setZoom(19);
+
+        utils.each(markers, function (marker) { marker.setMap(null) });
+
+        var marker = new google.maps.Marker({
+          position: getPosition(value),
+          map: $scope.map,
+          title: value.get('address')
+        });
+
+        markers.push(marker);
       }
     });
   }
