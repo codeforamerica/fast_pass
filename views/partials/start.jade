@@ -1,27 +1,30 @@
-section#start
-  #system-warning
-    h3 This application is in alpha.
-    p
-      | The Las Vegas Development FastPass is currently in active development by
-      a(href='http://www.codeforamerica.org/cities/lasvegas/', target='_blank') 2013 Code for America fellows
-      | and is available for demo and testing purposes&period; Many features may be incomplete or broken&period; To contribute&comma; please check out our
-      a(href='https://github.com/rclosner/lv-dof', target='_blank') GitHub repository
-      | or
-      a(href='mailto:lasvegas@codeforamerica.org') e-mail us
-      | &period; Thanks&excl;
-  h2 Find the best property for your business&period;
-  p.lede
-    | Am I zoned for my barbershop&quest;  Is this a great spot for my bar&quest;  Where should I open my boutique hat store&quest; This tool will help you answer these important questions before starting the permitting and licensing process with the City of Las Vegas&period;
-  .row
-    .col-3.inset-box
-      h3 Important note
+extends ../layout/fullscreen
+
+block content
+  section#start
+    #system-warning
+      h3 This application is in alpha.
       p
-        | This tool does not automatically submit any forms or applications to the City&period;  However&comma; we&apos;ll connect you with appropriate forms or contacts at the end of this process&period;
-    .col-3
-      h3 What you&apos;ll need
-      ul
-        li A business idea
-        li Details about your business activities
-        li &lpar;optional&rpar; An address or neighborhood where you&apos;d like to locate
-      .section-navigation
-        a.next.button(href='/#/section/10') Let&rsquor;s get started&excl;
+        | The Las Vegas Development FastPass is currently in active development by
+        a(href='http://www.codeforamerica.org/cities/lasvegas/', target='_blank') 2013 Code for America fellows
+        | and is available for demo and testing purposes&period; Many features may be incomplete or broken&period; To contribute&comma; please check out our
+        a(href='https://github.com/rclosner/lv-dof', target='_blank') GitHub repository
+        | or
+        a(href='mailto:lasvegas@codeforamerica.org') e-mail us
+        | &period; Thanks&excl;
+    h2 Find the best property for your business&period;
+    p.lede
+      | Am I zoned for my barbershop&quest;  Is this a great spot for my bar&quest;  Where should I open my boutique hat store&quest; This tool will help you answer these important questions before starting the permitting and licensing process with the City of Las Vegas&period;
+    .row
+      .col-3.inset-box
+        h3 Important note
+        p
+          | This tool does not automatically submit any forms or applications to the City&period;  However&comma; we&apos;ll connect you with appropriate forms or contacts at the end of this process&period;
+      .col-3
+        h3 What you&apos;ll need
+        ul
+          li A business idea
+          li Details about your business activities
+          li &lpar;optional&rpar; An address or neighborhood where you&apos;d like to locate
+        .section-navigation
+          a.next.button(href='/#/section/10') Let&rsquor;s get started&excl;

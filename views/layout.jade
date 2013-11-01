@@ -11,22 +11,12 @@ html(class='no-js', ng-app='fastpass')
   head
     include layout/_head
 
-  body
+  body(ng-controller='ApplicationCtrl')
 
     include layout/_chromeframe
     include layout/_dialog
 
-    #main(ng-controller='ApplicationCtrl')
-      #left
-        .container
-          header(role='banner')
-            include layout/_header
-
-          .content(role='main', ng-view)
-            block content
-
-          footer
-            include layout/_footer
-      #right
+    #main(role='main', ng-view)
+      block content
 
     include layout/_javascripts

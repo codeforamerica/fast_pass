@@ -356,30 +356,6 @@ app.factory('MapService', function () {
 	}
 })
 
-
-/*************************************************************************
-// 
-// FILTERS
-//
-// ***********************************************************************/
-
-app.filter('newlines', function () {
-    return function(text) {
-    	if (text) {
-	        return text.replace(/\n/g, '<br>');
-	  	}
-    }
-})
-
-app.filter('no-html', function () {
-    return function(text) {
-        return text
-                .replace(/&/g, '&amp;')
-                .replace(/>/g, '&gt;')
-                .replace(/</g, '&lt;');
-    }
-})
-
 /*************************************************************************
 // 
 // DIRECTIVES
@@ -390,66 +366,6 @@ app.filter('no-html', function () {
 // See: http://egghead.io/lessons/angularjs-thinking-differently-about-organization
 var directives = {}
 app.directive(directives)
-
-// Actions to be done when loading a part-screen section with map
-directives.showMap = function (MapService) {
-	return function (scope, element) {
-
-		// Retrieve elements and wrap as jQLite
-		var $mainEl = angular.element(document.getElementById('left'))
-
-		// Check to make sure it's not already part-screen
-		// .hasClass is used because other classes might be on the element
-		if (!$mainEl.hasClass('partscreen')) {
-
-			// Set the appropriate CSS classes
-			$mainEl.addClass('partscreen').removeClass('fullscreen')
-			element.addClass('section-map')
-	
-			// Activate map
-			MapService.showMap = true
-		}
-
-	}
-}
-
-// Actions to be done when loading a full-screen section with map
-directives.hideMap = function (MapService) {
-	return function () {
-
-		// Retrieve elements and wrap as jQLite
-		var $mainEl = angular.element(document.getElementById('left'))
-
-		// Check to make sure it's not already full-screen
-		if (!$mainEl.hasClass('fullscreen')) {
-
-			// Set the appropriate CSS classes
-			$mainEl.addClass('fullscreen').removeClass('partscreen')
-	
-			// Deactivates map so it doesn't interfere with other things on the page (.e.g. scrollfix)
-			MapService.showMap = false
-		}
-	}
-}
-
-// Make a modal
-directives.modalLink = function () {
-	return {
-		restrict: 'A',
-		scope: {
-			title: '@',
-			text: '@'
-		},
-		// templateUrl: '/partials/_modal.html',
-		link: function (scope, element) {
-			element.bind('click', function() {
-				// This gets bound to the contents of the modal window, not the link itself.
-//				alert('Open a modal')
-			})
-			// ?????
-		}
-	}
-}
 
 directives.disableButton = function () {
   return {
@@ -475,9 +391,6 @@ directives.searchResult = function () {
       select: '&'
     },
     link: function (scope, el, attrs) { 
-      el.find('button').bind('click', function () {
-        scope.select(scope.result);
-      });
       scope.$watch('selected', function (value) {
         if (value && value == scope.result) {
           el.addClass('selected');
@@ -495,10 +408,9 @@ directives.searchForm = function () {
   return {
     restrict: 'E',
     scope: {
-      action: '&searchAction',
-      terms: '=searchTerms',
-      searchType: '=',
-      placeholder: '@searchPlaceholder'
+      action: '&',
+      terms: '=',
+      placeholder: '@'
     },
     link: function (scope, el, attrs) {
     },
@@ -508,7 +420,15 @@ directives.searchForm = function () {
 
 directives.navigation = function () {
   return {
-  
+    restrict: 'E',
+    replace: true,
+    scope: {
+      back: '@',
+      next: '@',
+      backDisable: '=',
+      nextDisable: '='
+    },
+    templateUrl: 'partials/navigation'
   }
 }
 
@@ -538,7 +458,7 @@ directives.scrollfix = function () {
 				if (elScrollTop <= margin) {
 					// if element has scrolled to a point less than the margin,
 					// make it a fixed element.
-			        element.css('position', 'fixed').css('top', '40px').css('margin-left', '3px');
+			        element.css('position', 'fixed').css('top', '40px');
 				}
 				if ( windowScrollTop <= elScrollTopOriginal) {
 					// if window has scrolled to a point below the original position

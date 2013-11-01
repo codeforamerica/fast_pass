@@ -94,7 +94,7 @@ controllers.controller('DialogCtrl', ['$scope', 'Session',
 // Section 10 - What kind of business are you?
 //
 
-controllers.controller('CategoriesCtrl', ['$scope', 'Session', 'NAICSCategory',
+controllers.controller('10Ctrl', ['$scope', 'Session', 'NAICSCategory',
   function ($scope, Session, NAICSCategory) {
 
     //
@@ -145,7 +145,7 @@ controllers.controller('CategoriesCtrl', ['$scope', 'Session', 'NAICSCategory',
     var keywords = Session.get('naics_keywords');
 
     if (keywords) {
-      $scope.keywords = keywords;
+      $scope.terms = keywords;
       search(keywords);
     }
 
@@ -185,7 +185,7 @@ controllers.controller('CategoriesCtrl', ['$scope', 'Session', 'NAICSCategory',
 // Section 15 - Describe your business.
 //
 
-controllers.controller('DescriptionCtrl', ['$scope', 'Session',
+controllers.controller('15Ctrl', ['$scope', 'Session',
   function ($scope, Session) {
     var save = function () {
       Session.save(); 
@@ -200,7 +200,11 @@ controllers.controller('DescriptionCtrl', ['$scope', 'Session',
   }
 ]);
 
-controllers.controller('AddressesCtrl', ['$scope', 'Session', 'Address',
+//
+// Section 40 - Search for an address
+//
+
+controllers.controller('40Ctrl', ['$scope', 'Session', 'Address',
   function ($scope, Session, Address) {
 
     //
@@ -253,7 +257,7 @@ controllers.controller('AddressesCtrl', ['$scope', 'Session', 'Address',
     var address = Session.get('address_keywords');
 
     if (address) {
-      $scope.address = address;
+      $scope.terms = address;
       search(address);
     }
 

@@ -1,40 +1,37 @@
-section#section40(ng-controller='AddressesCtrl')
+extends ../layout/splitscreen
 
-  progressbar(step='2')
+block left
 
-  h2 Enter the address of your space
+  section(id='section-40', ng-controller='40Ctrl')
 
-  form(ng-submit='search(address)')
-    .row(style='white-space: nowrap;')
-      input.col-5(type='text', placeholder='e.g. 495 S. Main Street', ng-model='address', required='', autofocus='', value='{{address}}')
-      input.col-1(type='submit', value='Search')
+    progressbar(step='2')
 
-  div(id='address-select', class='row', style='margin-top:20px;')
-    .row(style='margin-top: 20px')
-      .col-6
+    h2 Enter the address of your space
 
-        div(ng-show='showLoading')
-          .loading-small(style='margin: 30px 0')
-            img(src='img/loading-lite.gif')
+    search-form(action='search(terms)', terms='terms', placeholder='e.g. 495 S. Main Street')
 
-        div(ng-show='showError')
-          span.error An error occurred! Please try again later.
+    div(class='search-results')
 
-        div(ng-show='showInvalid')
-          span.error Invalid input! Address must not be blank. 
+      div(ng-show='showLoading')
+        .loading-small
+          img(src='img/loading-lite.gif')
 
-        div(ng-show='showResults')
+      div(ng-show='showError')
+        span.error An error occurred! Please try again later.
 
-          div(ng-if='results.length <= 0')
-              span.error No results found for query '{{lastSearch}}'
+      div(ng-show='showInvalid')
+        span.error Invalid input! Address must not be blank. 
 
-          div(ng-if='results.length > 0')
-            h3
-              | Please choose an address from the list below.
-            search-result(ng-repeat='result in results', result='result', selected='selected', select='select(result)')
-              span {{ result.get('address') }}
-              button Select
+      div(ng-show='showResults')
 
-    .section-navigation
-      a.back.button(href='/#/section/30') Back
-      a.next.button(href='/#/section/30', disable-button='!selected') Next
+        div(ng-if='results.length <= 0')
+            span.error No results found for query '{{lastSearch}}'
+
+        div(ng-if='results.length > 0')
+          h3
+            | Please choose an address from the list below.
+          search-result(ng-repeat='result in results', result='result', selected='selected', select='select(result)')
+            span {{ result.get('address') }}
+            button(ng-click='select(result)') Select
+
+      navigation(back='/#/section/30', next='/#/section/41', next-disable='!selected')

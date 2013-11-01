@@ -1,15 +1,18 @@
-section#section15(ng-controller='DescriptionCtrl', hide-map='')
+extends ../layout/fullscreen
 
-  progressbar(step='1')
+block content
 
-  h2 Describe your business
+  section(id='section-15', ng-controller='15Ctrl')
 
-  p.lede
-    | Please describe your business in complete detail by writing one or two paragraphs&period;
-  form
-    div(max-words=350, words='description')
-      textarea(autofocus='', ng-model='words')
-      .textarea-note(ng-class='warning') {{countdown}} words remaining.
-  .section-navigation
-    a.back.button(href='/#/section/10', ng-click='save()') Back
-    a.next.button(href='/#/section/30', ng-click='save()') Next
+    progressbar(step='1')
+
+    h2 Describe your business
+
+    p.lede
+      | Please describe your business in complete detail by writing one or two paragraphs&period;
+    form
+      div(max-words=350, words='description')
+        textarea(autofocus='', ng-model='words')
+        .textarea-note(ng-class='warning') {{countdown}} words remaining.
+
+    navigation(back='/#/section/10', next='/#/section/30')
