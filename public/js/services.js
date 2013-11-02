@@ -4,10 +4,73 @@
 //
 // ***********************************************************************/
 
-var services = angular.module(APPLICATION_NAME + '.services', ['ngResource']);
+var services = angular.module(APPLICATION_NAME + '.services', [ 'ngResource' ]);
 
-services.factory('WebStorage', [
+services.factory('Model', [
+
   function () {
+    var func = function () {}
+
+    var Model = function (attributes) {
+      if (typeof(attributes) !== 'undefined' && typeof(attributes) !== 'object') {
+        throw("'attributes' must be an instance of 'object'") 
+      }
+      attributes = attributes || {}
+      this.attributes = {}
+      attributes = utils.defaults(attributes, this.defaults);
+      this.set(attributes)
+      this.initialize.apply(this, arguments);
+    }
+
+    utils.extend(Model.prototype, {
+      initialize: func,
+
+      attributes: {},
+
+      set: function (attrs) {
+        utils.extend(this.attributes, attrs);
+        return attrs;
+      },
+
+      get: function (attr) {
+        return this.attributes[attr]    
+      },
+
+      toJSON: function () {
+        return this.attributes;
+      }
+    });
+
+    Model.extend = function(protoProps, staticProps) {
+      var parent = this;
+      var child;
+
+      if (protoProps && utils.has(protoProps, 'constructor')) {
+        child = protoProps.constructor;
+      } else {
+        child = function(){ return parent.apply(this, arguments); };
+      }
+
+      utils.extend(child, parent, staticProps);
+
+      var Surrogate = function(){ this.constructor = child; };
+      Surrogate.prototype = parent.prototype;
+      child.prototype = new Surrogate;
+
+      if (protoProps) utils.extend(child.prototype, protoProps);
+
+      child.__super__ = parent.prototype;
+
+      return child;
+    };
+
+    return Model;
+  }
+
+])
+
+services.factory('WebStorage', [ 'Model',
+  function (Model) {
 
     var driver = new Persist.Store(APPLICATION_NAME);
 
@@ -34,8 +97,8 @@ services.factory('WebStorage', [
   }
 ]);
 
-services.factory('Session', ['$resource', 'WebStorage',
-  function ($resource, WebStorage) {
+services.factory('Session', ['$resource', 'WebStorage', 'Model',
+  function ($resource, WebStorage, Model) {
 
     var API = $resource('api/sessions/:id', { }, {
       find:   { method: 'GET', params: { id: '@id' } },
@@ -90,8 +153,8 @@ services.factory('Session', ['$resource', 'WebStorage',
   }
 ]);
 
-services.factory('Address', ['$resource',
-  function ($resource) {
+services.factory('Address', ['$resource', 'Model',
+  function ($resource, Model) {
     var API = $resource('api/geo/geocode', { }, {
       search:   { method: 'GET', params: { address: '@address' }, isArray: true }
     });
@@ -125,8 +188,8 @@ services.factory('Address', ['$resource',
   }
 ]);
 
-services.factory('Parcel', ['$resource',
-  function ($resource) {
+services.factory('Parcel', ['$resource', 'Model',
+  function ($resource, Model) {
     var API = $resource('api/sessions/:id', { }, {
       find:   { method: 'GET', params: { id: '@id' } }
     });
@@ -141,8 +204,8 @@ services.factory('Parcel', ['$resource',
   }
 ]);
 
-services.factory('Neighborhood', ['$resource',
-  function ($resource) {
+services.factory('Neighborhood', ['$resource', 'Model',
+  function ($resource, Model) {
     var API = $resource('api/geo/neighborhoods', { }, {
       index: { method: 'GET', isArray: true }
     });
@@ -168,8 +231,8 @@ services.factory('Neighborhood', ['$resource',
   }
 ]);
 
-services.factory('City', ['$resource',
-  function ($resource) {
+services.factory('City', ['$resource', 'Model',
+  function ($resource, Model) {
     var API = $resource('api/geo/city', { }, {
       find: { method: 'GET' }
     });
@@ -194,8 +257,8 @@ services.factory('City', ['$resource',
 ]);
 
 
-services.factory('NAICSCategory', ['$resource',
-  function ($resource) {
+services.factory('NAICSCategory', ['$resource', 'Model',
+  function ($resource, Model) {
     var API = $resource('api/categories/naics', {}, {
       search: { method: 'GET', params: { keywords: null }, isArray: true }
     });
