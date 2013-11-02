@@ -160,6 +160,7 @@ directives.directive('externalLink', [
 
   function () {
     return {
+      restrict: 'A',
       link: function (scope, el, attrs) {
         var url = attrs.externalLink;
         element.bind('mouseup', function () {
