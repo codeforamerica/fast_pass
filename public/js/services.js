@@ -4,7 +4,9 @@
 //
 // ***********************************************************************/
 
-app.factory('WebStorage', [
+var services = angular.module(APPLICATION_NAME + '.services', []);
+
+services.factory('WebStorage', [
   function () {
 
     var driver = new Persist.Store(APPLICATION_NAME);
@@ -32,7 +34,7 @@ app.factory('WebStorage', [
   }
 ]);
 
-app.factory('Session', ['$resource', 'WebStorage',
+services.factory('Session', ['$resource', 'WebStorage',
   function ($resource, WebStorage) {
 
     var API = $resource('api/sessions/:id', { }, {
@@ -88,7 +90,7 @@ app.factory('Session', ['$resource', 'WebStorage',
   }
 ]);
 
-app.factory('Address', ['$resource',
+services.factory('Address', ['$resource',
   function ($resource) {
     var API = $resource('api/geo/geocode', { }, {
       search:   { method: 'GET', params: { address: '@address' }, isArray: true }
@@ -123,7 +125,7 @@ app.factory('Address', ['$resource',
   }
 ]);
 
-app.factory('Parcel', ['$resource',
+services.factory('Parcel', ['$resource',
   function ($resource) {
     var API = $resource('api/sessions/:id', { }, {
       find:   { method: 'GET', params: { id: '@id' } }
@@ -139,7 +141,7 @@ app.factory('Parcel', ['$resource',
   }
 ]);
 
-app.factory('Neighborhood', ['$resource',
+services.factory('Neighborhood', ['$resource',
   function ($resource) {
     var API = $resource('api/geo/neighborhoods', { }, {
       index: { method: 'GET', isArray: true }
@@ -166,7 +168,7 @@ app.factory('Neighborhood', ['$resource',
   }
 ]);
 
-app.factory('City', ['$resource',
+services.factory('City', ['$resource',
   function ($resource) {
     var API = $resource('api/geo/city', { }, {
       find: { method: 'GET' }
@@ -192,7 +194,7 @@ app.factory('City', ['$resource',
 ]);
 
 
-app.factory('NAICSCategory', ['$resource',
+services.factory('NAICSCategory', ['$resource',
   function ($resource) {
     var API = $resource('api/categories/naics', {}, {
       search: { method: 'GET', params: { keywords: null }, isArray: true }
@@ -221,7 +223,7 @@ app.factory('NAICSCategory', ['$resource',
   }
 ]);
 
-app.factory('Map', [ '$timeout',
+services.factory('Map', [ '$timeout',
   function ($timeout) {
 
     var getPosition = function (lat, lng) {

@@ -73,10 +73,17 @@ function _getSectionTemplate($routeParams) {
 }
 
 // Declare app level module which depends on filters, and services
-var app = angular.module(APPLICATION_NAME, [APPLICATION_NAME+'.controllers', APPLICATION_NAME + '.directives', 'ui.map', 'ngRoute', 'ngResource' ]);
+var FastPass = angular.module(APPLICATION_NAME, [
+    APPLICATION_NAME+'.controllers',
+    APPLICATION_NAME + '.services',
+    APPLICATION_NAME + '.directives',
+    'ui.map',
+    'ngRoute',
+    'ngResource'
+]);
 
 // Set up application routes
-app.config(['$routeProvider', function ($routeProvider) {
+FastPass.config(['$routeProvider', function ($routeProvider) {
 	$routeProvider.
 		when('/', {
 			templateUrl: '/partials/start',
