@@ -373,4 +373,34 @@
     }  
   ]);
 
+  services.factory('CategoryKeywords', [
+    function () {
+
+      var SAMPLE_INPUTS = [
+        'coffee shop',
+        'automotive detail',
+        'hairdresser',
+        'internet retail',
+        'women\'s clothing',
+        'shoes',
+        'interior designer',
+        'furniture store',
+        'lounge',
+        'legal aid',
+        'optometrist',
+        'graphic design',
+        'computer repair',
+        'marketing',
+        'bicycle shop' 
+      ];
+
+      return {
+        random: function () {
+          return utils.random(SAMPLE_INPUTS);
+        } 
+      }
+
+    }
+  ]);
+
 })(angular)
