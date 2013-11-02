@@ -62,10 +62,6 @@ app.get('/pages/:name', routes.pages)
 app.get('/api/parcels/search', api.parcels.search);
 app.get('/api/parcels', api.parcels.index);
 
-// Geocode Routes
-app.get('/api/geocode/address', api.geo.geocodeAddress);
-app.get('/api/geocode/position', api.geo.geocodePosition);
-
 // Category Routes
 app.get('/api/categories/naics', api.categories.naics_search);
 app.get('/api/categories/business_licensing', api.categories.business_licensing_search)
@@ -75,8 +71,12 @@ app.get('/api/sessions/:id', api.sessions.find);
 app.put('/api/sessions/:id', api.sessions.update);
 app.post('/api/sessions', api.sessions.create);
 
-// Neighborhood Routes
-app.get('/api/neighborhoods', api.neighborhoods.index);
+// Geod Routes
+
+app.get('/api/geo/geocode', api.geo.geocode);
+app.get('/api/geo/reverse_geocode', api.geo.reverse_geocode);
+app.get('/api/geo/neighborhoods', api.geo.neighborhoods);
+app.get('/api/geo/city', api.geo.city);
 
 //
 // INITIALIZE SERVER

@@ -20,7 +20,7 @@ var SAMPLE_INPUTS = [
   'bicycle shop' 
 ];
 
-var controllers = angular.module(APP_NAME + '.controllers', []);
+var controllers = angular.module(APPLICATION_NAME + '.controllers', []);
 
 //
 // Application Controller - Handles basic functionality of the app
@@ -192,8 +192,10 @@ controllers.controller('15Ctrl', ['$scope', 'Session',
     }
 
     $scope.$watch('description', function (description) {
-      Session.set({ description: description.trim() });
-    })
+      if (description) {
+        Session.set({ description: description.trim() });
+      }
+    });
 
     $scope.description = Session.get('description');
     $scope.save = save
@@ -204,8 +206,8 @@ controllers.controller('15Ctrl', ['$scope', 'Session',
 // Section 40 - Search for an address
 //
 
-controllers.controller('40Ctrl', ['$scope', 'Session', 'Address', 'Map',
-  function ($scope, Session, Address, Map) {
+controllers.controller('40Ctrl', ['$scope', 'Session', 'Address', 'Map', 'City',
+  function ($scope, Session, Address, Map, City) {
 
     //
     // Address Search
@@ -306,6 +308,26 @@ controllers.controller('40Ctrl', ['$scope', 'Session', 'Address', 'Map',
     });
 
     $scope.map = map;
+
+    //
+    // Display city limits overlay
+    //
+
+    var onCitySuccess = function (city) {
+      $scope.city = city; 
+    }
+
+    var onCityError = function () {
+      console.log('error') 
+    }
+
+    City.find({}, onCitySuccess, onCityError);
+
+    $scope.$watch('city', function (value) {
+      if (value) {
+        map.addOverlay(value.get('geojson')) 
+      }
+    });
 
   }
 ]);
