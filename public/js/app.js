@@ -70,11 +70,8 @@ Model.extend = function(protoProps, staticProps) {
 
 // Declare app level module which depends on filters, and services
 var FastPass = angular.module(APPLICATION_NAME, [
-    APPLICATION_NAME + '.routes',
     APPLICATION_NAME + '.controllers',
     APPLICATION_NAME + '.services',
     APPLICATION_NAME + '.directives',
-    'ui.map',
-    'ngRoute',
-    'ngResource'
+    APPLICATION_NAME + '.routes'
 ]);

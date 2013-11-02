@@ -4,7 +4,7 @@
 //
 // ***********************************************************************/
 
-var services = angular.module(APPLICATION_NAME + '.services', []);
+var services = angular.module(APPLICATION_NAME + '.services', ['ngResource']);
 
 services.factory('WebStorage', [
   function () {

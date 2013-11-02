@@ -4,7 +4,7 @@
 //
 // ***********************************************************************/
 
-var directives = angular.module(APPLICATION_NAME + '.directives', []);
+var directives = angular.module(APPLICATION_NAME + '.directives', [ 'ui.map' ]);
 
 directives.directive('disableButton', [
 
