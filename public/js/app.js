@@ -73,7 +73,7 @@ function _getSectionTemplate($routeParams) {
 }
 
 // Declare app level module which depends on filters, and services
-var app = angular.module(APPLICATION_NAME, [APPLICATION_NAME+'.controllers', 'ui.map', 'ngRoute', 'ngResource' ]);
+var app = angular.module(APPLICATION_NAME, [APPLICATION_NAME+'.controllers', APPLICATION_NAME + '.directives', 'ui.map', 'ngRoute', 'ngResource' ]);
 
 // Set up application routes
 app.config(['$routeProvider', function ($routeProvider) {

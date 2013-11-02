@@ -534,6 +534,14 @@ ul {
 	}
 }
 
+.progress-bar-highlight {
+  background-color: @color-lighter;
+  color: white;
+  .step {
+    background-color: @color-scheme;
+  }
+}
+
 ul.progress-bar {
 	padding: 0;
 	margin: 0;
@@ -541,7 +549,40 @@ ul.progress-bar {
 	white-space: nowrap;
 	margin-top: 10px;
 	color: #444;
+
+  &.step-1 {
+    li:nth-child(1) {
+      &:extend(.progress-bar-highlight);
+      &:after {
+			  border-left: 8px solid @color-lighter;
+      }
+    } 
+  }
+
+  &.step-2 {
+    li:nth-child(2) {
+      &:extend(.progress-bar-highlight);
+      &:after {
+			  border-left: 8px solid @color-lighter;
+      }
+    } 
+  }
+
+  &.step-3 {
+    li:nth-child(3) {
+      &:extend(.progress-bar-highlight);
+      &:after {
+			  border-left: 8px solid @color-lighter;
+      }
+    }
+  }
+
 	li {
+		position: relative;
+		width: 33%;
+		display: inline-block;
+		background-color: @color-gray;
+
 		.step {
 			display: inline-block;
 			width: 32px;
@@ -552,18 +593,7 @@ ul.progress-bar {
 			background-color: @lightgray;
 			color: white;
 		}
-		position: relative;
-		width: 33%;
-		display: inline-block;
-		background-color: @color-gray;
-//		line-height: 24px;
-		&.highlight {
-			.step {
-				background-color: @color-scheme;
-			}
-			background-color: @color-lighter;
-			color: white;
-		}
+
 		&::after {
 			content: '';
 			width: 0; 
@@ -576,9 +606,7 @@ ul.progress-bar {
 			margin-top: 0px;
 			right: -8px;
 		}
-		&.highlight::after {
-			border-left: 8px solid @color-lighter;
-		}
+
 		&:last-of-type::after {
 			border: 0;
 		}
