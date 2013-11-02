@@ -1,18 +1,21 @@
-extends ../layout/fullscreen
+.full-screen
+  .container
 
-block content
+    include ../layout/header
 
-  section(id='section-15', ng-controller='15Ctrl')
+    section(id='section-15', ng-controller='15Ctrl')
 
-    progressbar(step='1')
+      progressbar(step='1')
 
-    h2 Describe your business
+      h2 Describe your business
 
-    p.lede
-      | Please describe your business in complete detail by writing one or two paragraphs&period;
-    form
-      div(max-words=350, words='description')
-        textarea(autofocus='', ng-model='words')
-        .textarea-note(ng-class='warning') {{countdown}} words remaining.
+      p.lede
+        | Please describe your business in complete detail by writing one or two paragraphs&period;
+      form
+        div(max-words=350, words='description')
+          textarea(autofocus='', ng-model='words')
+          .textarea-note(ng-class='warning') {{countdown}} words remaining.
 
-    navigation(back='/#/section/10', next='/#/section/30')
+      navigation(back='/#/section/10', next='/#/section/30')
+
+    include ../layout/footer

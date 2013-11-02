@@ -204,8 +204,8 @@ controllers.controller('15Ctrl', ['$scope', 'Session',
 // Section 40 - Search for an address
 //
 
-controllers.controller('40Ctrl', ['$scope', 'Session', 'Address',
-  function ($scope, Session, Address) {
+controllers.controller('40Ctrl', ['$scope', 'Session', 'Address', 'Map',
+  function ($scope, Session, Address, Map) {
 
     //
     // Address Search
@@ -293,66 +293,66 @@ controllers.controller('40Ctrl', ['$scope', 'Session', 'Address',
     //
     // Maps
     //
-    $scope.map = null;
 
-    $scope.mapOptions = {
-      zoom: 13,
-      minZoom: 11,
-      maxZoom: 19,
-      center: new google.maps.LatLng(36.168, -115.144),
-      backgroundColor: '#f1f1f4',
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      zoomControlOptions: {
-        style: google.maps.ZoomControlStyle.LARGE
-      }
-    }
-
-    var getPosition = function (address) {
-      return new google.maps.LatLng( address.get('latitude'), address.get('longitude') );
-    }
-
-    var markers = [];
+    var map = new Map();
 
     $scope.$watch('selected', function (value) {
       if (value) {
-        $scope.map.setCenter( getPosition(value) );
-        $scope.map.setZoom(19);
-
-        utils.each(markers, function (marker) { marker.setMap(null) });
-
-        var marker = new google.maps.Marker({
-          position: getPosition(value),
-          map: $scope.map,
-          title: value.get('address')
-        });
-
-        markers.push(marker);
+        map.clearMarkers();
+        map.addMarker(value.get('latitude'), value.get('longitude'));
+        map.setCenter(value.get('latitude'), value.get('longitude'));
+        map.setZoom(19);
       }
     });
+
+    $scope.map = map;
+
   }
 ]);
 
-// SECTION 41 - NEIGHBORHOOD SELECTION VIEW
-controllers.controller('41Ctrl', function ($scope, $http, UserData, MapService) {
-  $scope.userdata   = UserData
-  $scope.mapService = MapService
+//
+// Section 41 - Neighborhood selection
+//
+controllers.controller('41Ctrl', ['$scope', 'Session', 'Neighborhood', 'Map',
+  function ($scope, Session, Neighborhood, Map) {
 
-  // Load up neighborhood GeoJSONs.
-  $scope.hoverDowntown = function () {
-    $scope.mapService.neighborhood = 'downtown'
-  }
-  $scope.hoverSummerlin = function () {
-    $scope.mapService.neighborhood = 'summerlin'
-  }
-  $scope.hoverCity = function () {
-    $scope.mapService.neighborhood = 'city'
-  }
+    var onSuccess = function (neighborhoods) {
+      $scope.neighborhoods = neighborhoods;
+    } 
 
-  // Reset to blank onmouseout
-  $scope.unhover = function () {
-    $scope.mapService.neighborhood = ''
+    var onError = function () {
+    
+    }
+
+    var addOverlay = function (neighborhood) {
+      map.addOverlay(neighborhood.get('geojson'));
+    }
+
+    var clearOverlays = function () {
+      map.clearOverlays();   
+    }
+    
+    var map = new Map();
+
+    var defaultOptions = {
+      clickable: false,
+      fillColor: '#ff0000',
+      fillOpacity: 0,
+      strokeWeight: 0
+    }
+
+    Neighborhood.all({}, onSuccess, onError)
+
+    $scope.map = map;
+    $scope.addOverlay = addOverlay;
+    $scope.clearOverlays = clearOverlays;
   }
-})
+]);
+
+//controllers.controller('41Ctrl', ['$scope', 'Neighborhood'
+//  function ($scope, Neighborhood) {
+//  }
+//]);
 
 // SECTION 45 - ZONING MAP VIEW
 controllers.controller('45Ctrl', function ($scope, UserData) {

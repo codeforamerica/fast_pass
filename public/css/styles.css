@@ -65,7 +65,8 @@ html,body{padding:0;margin:0;height:100%;background-color:#fafafa;font-family:'L
 .left-screen footer{width:500px}
 .left-screen #pi{right:0}
 .left-screen .container{width:100%}
-.right-screen{height:100%;position:fixed;top:0;left:560px;right:0;z-index:3000}.right-screen google-map{display:block;width:100%;height:100%}
+.right-screen{height:100%;position:fixed;top:0;left:560px;right:0;z-index:3000}.right-screen google-map{display:block}
+.right-screen #map{width:100%;height:800px}
 .container{position:relative;width:740px;margin:0 auto}
 header{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none}header #logo{height:150px;position:absolute;top:10px;left:-20px;opacity:.5;filter:alpha(opacity=50)}header #logo a{background:none;padding:0}
 header #logo img{position:absolute;right:0px;display:block;width:94px;height:94px}

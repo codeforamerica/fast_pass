@@ -1,51 +1,54 @@
-extends ../layout/fullscreen
+.full-screen
+  .container
 
-block content
+    include ../layout/header
 
-  section(id='section-10', ng-controller='10Ctrl')
+    section(id='section-10', ng-controller='10Ctrl')
 
-    progressbar(step='1')
+      progressbar(step='1')
 
-    h2 What is your activity or business?
-    p.lede
-      | Type in some keywords about your business, then press the Search button.
+      h2 What is your activity or business?
+      p.lede
+        | Type in some keywords about your business, then press the Search button.
 
-    search-form(action='search(terms)', terms='terms', placeholder='e.g. {{sampleInput}}')
+      search-form(action='search(terms)', terms='terms', placeholder='e.g. {{sampleInput}}')
 
-    div(class='search-results')
+      div(class='search-results')
 
-      div(ng-show='showLoading')
-        .loading-small
-          img(src='img/loading-lite.gif')
+        div(ng-show='showLoading')
+          .loading-small
+            img(src='img/loading-lite.gif')
 
-      div(ng-show='showError')
-        span.error An error occurred! Please try again later.
+        div(ng-show='showError')
+          span.error An error occurred! Please try again later.
 
-      div(ng-show='showInvalid')
-        span.error Invalid input! Search terms must not be blank. 
+        div(ng-show='showInvalid')
+          span.error Invalid input! Search terms must not be blank. 
 
-      div(ng-show='showResults')
+        div(ng-show='showResults')
 
-        div(ng-show='results.length <= 0')
-            span.error No results found for query '{{lastSearch}}'
+          div(ng-show='results.length <= 0')
+              span.error No results found for query '{{lastSearch}}'
 
-        div(ng-show='results.length > 0')
-          h3
-            | Please choose a business category from the list below.
-          search-result(ng-repeat='result in results', result='result', selected='selected', select='select(result)')
-            span {{ result.get('title') }}
-            button(ng-click='select(result)') Select
+          div(ng-show='results.length > 0')
+            h3
+              | Please choose a business category from the list below.
+            search-result(ng-repeat='result in results', result='result', selected='selected', select='select(result)')
+              span {{ result.get('title') }}
+              button(ng-click='select(result)') Select
 
+          p
+            | This search tool uses the &nbsp;
+            a(href='http://www.census.gov/eos/www/naics/', target='_blank') North American Industry Classification System (NAICS), 2012 edition.
+            | &nbsp; We'll use this to match your business to a City of Las Vegas business category.
+
+      div(class='search-selection scrollfix', ng-show='results.length > 0')
+        h3 Your selected business category
         p
-          | This search tool uses the &nbsp;
-          a(href='http://www.census.gov/eos/www/naics/', target='_blank') North American Industry Classification System (NAICS), 2012 edition.
-          | &nbsp; We'll use this to match your business to a City of Las Vegas business category.
+          span(ng-show='selected') {{ selected.get('title') }}
+          span(ng-show='!selected') Nothing is selected yet. Your chosen business type will appear here.
+        navigation(next='/#/section/15', next-disable='!selected')
 
-    div(class='search-selection scrollfix', ng-show='results.length > 0')
-      h3 Your selected business category
-      p
-        span(ng-show='selected') {{ selected.get('title') }}
-        span(ng-show='!selected') Nothing is selected yet. Your chosen business type will appear here.
-      navigation(next='/#/section/15', next-disable='!selected')
+      navigation(back='/', next='/#/section/15', next-disable='!selected')
 
-    navigation(back='/', next='/#/section/15', next-disable='!selected')
+    include ../layout/footer

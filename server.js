@@ -75,6 +75,9 @@ app.get('/api/sessions/:id', api.sessions.find);
 app.put('/api/sessions/:id', api.sessions.update);
 app.post('/api/sessions', api.sessions.create);
 
+// Neighborhood Routes
+app.get('/api/neighborhoods', api.neighborhoods.index);
+
 //
 // INITIALIZE SERVER
 //

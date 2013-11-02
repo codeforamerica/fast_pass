@@ -288,6 +288,34 @@ app.factory('Parcel', ['$resource',
   }
 ]);
 
+app.factory('Neighborhood', ['$resource',
+  function ($resource) {
+    var API = $resource('api/neighborhoods', { }, {
+      index: { method: 'GET', isArray: true }
+    });
+
+    var Neighborhood = Model.extend({
+      defaults: {
+        name: null,
+        geojson: null
+      } 
+    }, {
+      all: function (params, success, error) {
+        var onSuccess = function (results) {
+          success(utils.map(results, function (result) {
+            return new Neighborhood(result) 
+          }));
+        }
+
+        API.index(params, onSuccess, error) 
+      }
+    });
+
+    return Neighborhood;
+  }
+]);
+
+
 app.factory('NAICSCategory', ['$resource',
   function ($resource) {
     var API = $resource('api/categories/naics', {}, {
@@ -315,6 +343,89 @@ app.factory('NAICSCategory', ['$resource',
 
     return NAICSCategory;
   }
+]);
+
+app.factory('Map', [ '$timeout',
+  function ($timeout) {
+
+    var getPosition = function (lat, lng) {
+      return new google.maps.LatLng(lat, lng);
+    }
+
+    var Map = function (map) {
+      this.reset(map);
+    } 
+
+    Map.prototype = {
+      addMarker: function (lat, lng) {
+        var that = this;
+        $timeout(function () {
+          var marker = new google.maps.Marker({
+            position: getPosition(lat, lng),
+            map: that.map
+          })
+          that.markers.push(marker);
+        });
+      },
+      clearMarkers: function () {
+        var that = this;
+        $timeout(function () {
+          angular.forEach(that.markers, function (marker) {
+            marker.setMap(null);
+          }) 
+        });
+      },
+      addOverlay: function (geojson, options) {
+        var that = this;
+
+        $timeout(function () {
+          var geo  = new GeoJSON(geojson, options);
+
+          if (!geo.error) {
+            angular.forEach(geo, function (shape) {
+              if (Array.isArray(shape)) {
+                angular.forEach(shape, function (geom) {
+                  geom.setMap(that.map) 
+                  that.overlays.push(geom);
+                }) 
+              } else {
+                shape.setMap(that.map);
+                that.overlays.push(shape);
+              }
+            })
+          }
+        });
+      },
+      clearOverlays: function () {
+        var that = this;
+        $timeout(function () {
+          angular.forEach(that.overlays, function (overlay) {
+            overlay.setMap(null);
+          });
+          that.overlays = [];
+        });
+      },
+      setCenter: function (lat, lng) {
+        var that = this;
+        $timeout(function () {
+          that.map.setCenter( getPosition(lat, lng) );
+        });
+      },
+      setZoom: function (zoom) {
+        var that = this;
+        $timeout(function () {
+          that.map.setZoom( zoom ); 
+        });
+      },
+      reset: function (map) {
+        this.map = map; 
+        this.markers = [];
+        this.overlays = [];
+      }
+    }
+
+    return Map;
+  }  
 ]);
 
 // This sets up a 'UserData' service so that information collected by
@@ -379,6 +490,41 @@ directives.disableButton = function () {
         }
       });
     }
+  }
+}
+
+directives.googleMap = function () {
+  var defaultOptions = {
+    zoom: 11,
+    minZoom: 11,
+    maxZoom: 19,
+    center: new google.maps.LatLng(36.168, -115.144),
+    backgroundColor: '#f1f1f4',
+    draggable: false,
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    zoomControlOptions: {
+      style: google.maps.ZoomControlStyle.LARGE
+    }
+  }
+
+  return {
+    restrict: 'E',
+    scope: {
+      mapWrapper: '=map',
+      mapOptions: '=mapOptions',
+      mapId: '@mapId'
+    },
+    replace: true,
+    controller: function ($scope) {
+      $scope.options = utils.defaults(defaultOptions, ($scope.mapOptions || {}));
+      $scope.map = null;
+      $scope.$watch('map', function (map) {
+        if (map) {
+          $scope.mapWrapper.reset(map);
+        }
+      });
+    },
+    template: '<div id="{{mapId}}" ui-map="map" ui-options="options"></div>'
   }
 }
 
