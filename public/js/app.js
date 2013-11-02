@@ -68,36 +68,13 @@ Model.extend = function(protoProps, staticProps) {
 //
 // ***********************************************************************/
 
-function _getSectionTemplate($routeParams) {
-	return '/pages/' + $routeParams.sectionId
-}
-
 // Declare app level module which depends on filters, and services
 var FastPass = angular.module(APPLICATION_NAME, [
-    APPLICATION_NAME+'.controllers',
+    APPLICATION_NAME + '.routes',
+    APPLICATION_NAME + '.controllers',
     APPLICATION_NAME + '.services',
     APPLICATION_NAME + '.directives',
     'ui.map',
     'ngRoute',
     'ngResource'
 ]);
-
-// Set up application routes
-FastPass.config(['$routeProvider', function ($routeProvider) {
-	$routeProvider.
-		when('/', {
-			templateUrl: '/partials/start',
-			controller: 'ApplicationCtrl'
-		}).
-		when('/section/:sectionId', {
-			templateUrl: _getSectionTemplate,
-			controller: 'ApplicationCtrl'
-		}).
-		when('/print', {
-			templateUrl: '/partials/print'
-		}).
-		otherwise({
-			// redirectTo: '/'
-			templateUrl: '/partials/404'
-		});
-}]);
