@@ -15,8 +15,8 @@
   // Application Controller - Handles basic functionality of the app
   //
 
-  controllers.controller('ApplicationCtrl', ['$rootScope', '$location', 'Session',
-    function ($rootScope, $location, Session) {
+  controllers.controller('ApplicationCtrl', ['$rootScope', '$location', '$window', 'Session',
+    function ($rootScope, $location, $window, Session) {
       var lastStep = Session.get('last_step');
 
       var goToLastStep = function () {
@@ -29,7 +29,15 @@
 
       goToLastStep();
 
-      window.onbeforeunload = onBeforeUnload;
+      $window.onbeforeunload = onBeforeUnload;
+    }
+  ]);
+
+  controllers.controller('SectionCtrl', [ '$scope', 'Session',
+    function ($scope, Session) {
+      $scope.$on('$locationChangeSuccess', function () {
+        Session.save();
+      });
     }
   ]);
 
@@ -283,7 +291,7 @@
       $scope.select = select;
 
       //
-      // Maps
+      // Map
       //
 
       var map = new Map();
@@ -304,23 +312,23 @@
       // Display city limits overlay
       //
 
-      var onCitySuccess = function (city) {
-        $scope.city = city; 
+      var onCityLimitsSuccess = function (cityLimits) {
+        $scope.cityLimits = cityLimits;
       }
 
-      var onCityError = function () {
+      var onCityLimitsError = function () {
         console.log('error') 
       }
 
-      City.find({}, onCitySuccess, onCityError);
-
-      $scope.$watch('city', function (value) {
+      $scope.$watch('cityLimits', function (value) {
         if (value) {
           var overlay = Map.Overlay.fromGeoJSON(value.get('geojson'));
           overlay.setBorderWidth(0.25);
           map.addOverlay(overlay);
         }
       });
+
+      City.find({}, onCityLimitsSuccess, onCityLimitsError);
     }
   ]);
 

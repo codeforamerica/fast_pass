@@ -20,11 +20,11 @@
       $routeProvider.
       when('/', {
         templateUrl: '/partials/start',
-        controller: 'ApplicationCtrl'
+        controller: 'SectionCtrl'
       }).
       when('/section/:sectionId', {
         templateUrl: _getSectionTemplate,
-        controller: 'ApplicationCtrl'
+        controller: 'SectionCtrl'
       }).
       when('/print', {
         templateUrl: '/partials/print'

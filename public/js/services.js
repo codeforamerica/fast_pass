@@ -299,7 +299,8 @@
     function () {
       var MapMarker = function (lat, lng) {
         this.marker = new google.maps.Marker({
-          position: new google.maps.LatLng(lat, lng)
+          position: new google.maps.LatLng(lat, lng),
+          clickable: false
         });
       }
 
@@ -309,6 +310,12 @@
         },
         remove: function () {
           this.marker.setMap(null);
+        },
+        setPosition: function (lat, lng) {
+          this.marker.setOptions({ position: new google.maps.LatLng( lat, lng ) });
+        },
+        setClickable: function (clickable) {
+          this.marker.setOptions({ clickable: clickable });
         }
       }
 
