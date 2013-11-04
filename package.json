@@ -20,12 +20,11 @@
     "npm": "1.2.x"
   },
   "dependencies": {
+    "db-migrate": "0.6.x",
     "express": "3.2.6",
-    "pg": "2.2.0",
     "jade": "*",
     "less-middleware": "0.1.x",
-    "proj4": "1.5.x",
-    "db-migrate": "0.6.x"
+    "pg": "2.2.0"
   },
   "devDependencies": {
     "nodemon": "0.7.x"
