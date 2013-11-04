@@ -491,14 +491,14 @@
         reset: function (map) {
           if (map) {
             this.map = map;
-            this.clearOverlays().clearMarkers().onResize();
+            this.clearOverlays().clearMarkers().trigger('resize');
           }
         },
-        onResize: function () {
+        trigger: function (e) {
           var that = this;
 
           $timeout(function () {
-            google.maps.event.trigger(that.map, 'resize');
+            google.maps.event.trigger(that.map, e);
           });
 
           return this;
