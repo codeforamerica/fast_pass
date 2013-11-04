@@ -297,13 +297,23 @@
       var map = new Map();
 
       $scope.$watch('selected', function (value) {
+        var latitude, longitude, zoom;
+
+        map.clearMarkers();
+
         if (value) {
-          var marker = new Map.Marker(value.get('latitude'), value.get('longitude'));
-          map.clearMarkers();
-          map.addMarker(marker);
-          map.setCenter(value.get('latitude'), value.get('longitude'));
-          map.setZoom(19);
+          zoom = 19;
+          latitude  = value.get('latitude');
+          longitude = value.get('longitude');
+          map.addMarker(new Map.Marker(latitude, longitude));
+        } else {
+          zoom = 11;
+          latitude = 36.21205;
+          longitude = -115.19395;
         }
+
+        map.setZoom(zoom);
+        map.setCenter(latitude, longitude);
       });
 
       $scope.map = map;
