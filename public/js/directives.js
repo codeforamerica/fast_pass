@@ -36,9 +36,132 @@
         zoom: 11,
         minZoom: 11,
         maxZoom: 19,
-        center: new google.maps.LatLng(36.168, -115.144),
+        center: new google.maps.LatLng(36.21205, -115.19395),
         backgroundColor: '#f1f1f4',
         draggable: false,
+        styles: [
+          {
+            featureType: 'road',
+            elementType: 'labels',
+            stylers: [
+              { visibility: 'on' }
+            ]
+          },{
+            featureType: 'landscape.natural',
+            elementType: 'geometry.fill',
+            stylers: [
+              { hue: '#f1f1fb' },
+              { saturation: -50 },
+              { lightness: 40 }
+            ]
+          },{
+            featureType: 'landscape.man_made',
+            elementType: 'geometry.fill',
+            stylers: [
+              // saturation / lightness used instead of color because it retains transparency/shadows on 3D buildings
+              { hue: '#fbfbff' },
+              { saturation: -50 },
+              { lightness: 40 }
+            ]
+          },{
+            featureType: 'landscape.man_made',
+            elementType: 'geometry.stroke',
+            stylers: [
+              { visibility: 'on' },
+              { color: '#a1a1a1' }
+            ]
+          },{
+            featureType: 'road',
+            elementType: 'geometry.stroke',
+            stylers: [
+              { color: '#c1c1c1' },
+              { weight: 1 }
+            ]
+          },{
+            featureType: 'road.local',
+            elementType: 'geometry.fill',
+            // saturation / lightness used instead of color because it retains transparency on satellite layer
+            stylers: [
+              { saturation: -100 },
+              { lightness: 0 }
+            ]
+          },{
+            featureType: 'road.highway',
+            elementType: 'geometry.fill',
+            stylers: [
+              { saturation: -100 },
+              { lightness: 100 }
+              ]
+          },{
+            featureType: 'road.highway',
+            elementType: 'labels.text.fill',
+            stylers: [
+              { visibility: 'on' },
+              { color: '#606060' }
+            ]
+          },{
+            featureType: 'administrative.neighborhood',
+            elementType: 'labels.text.fill',
+            stylers: [
+              { visibility: 'on' },
+              { color: '#808080' }
+            ]
+          },{
+            featureType: 'poi',
+            elementType: 'labels',
+            stylers: [
+              { visibility: 'off' }
+            ]
+          },{
+            featureType: 'poi.business',
+            elementType: 'labels',
+            stylers: [
+              { visibility: 'off' }
+            ]
+          },{
+            featureType: 'poi.business',
+            elementType: 'geometry.fill',
+            stylers: [
+              { color: '#d8d8da' }
+            ]
+          },{
+            featureType: 'poi.government',
+            elementType: 'geometry.fill',
+            stylers: [
+              { color: '#d8d8da' }
+            ]
+          },{
+            featureType: 'poi.medical',
+            elementType: 'geometry.fill',
+            stylers: [
+              { color: '#d8d8da' }
+            ]
+          },{
+            featureType: 'poi.place_of_worship',
+            elementType: 'geometry.fill',
+            stylers: [
+              { color: '#d8d8da' }
+            ]
+          },{
+            featureType: 'poi.school',
+            elementType: 'geometry.fill',
+            stylers: [
+              { color: '#d8d8da' }
+            ]
+          },{
+            featureType: 'poi.sports_complex',
+            elementType: 'geometry.fill',
+            stylers: [
+              { color: '#d8d8da' }
+            ]
+          },{
+            featureType: '',
+            elementType: '',
+            stylers: [
+              { property: '' }
+            ]
+          }
+        ],
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         zoomControlOptions: {
           style: google.maps.ZoomControlStyle.LARGE
@@ -54,7 +177,7 @@
         },
         replace: true,
         controller: function ($scope) {
-          $scope.options = utils.defaults(defaultOptions, ($scope.mapOptions || {}));
+          $scope.options = utils.defaults(($scope.mapOptions || {}), defaultOptions);
           $scope.map = null;
           $scope.$watch('map', function (map) {
             if (map) {

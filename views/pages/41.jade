@@ -13,7 +13,7 @@ section(id='section-41', ng-controller='41Ctrl')
       div(class='neighborhoods')
         div(class='neighborhood', ng-repeat='neighborhood in neighborhoods')
           p
-            a.button(href='/#/section/45', ng-mouseover='addOverlay(neighborhood)', ng-mouseout='clearOverlays()') {{ neighborhood.get('name') }}
+            a.button(href='/#/section/45', ng-mouseover='showNeighborhood(neighborhood)', ng-mouseout='hideNeighborhood(neighborhood)') {{ neighborhood.get('name') }}
 
       navigation(back='/#/section/30')
 

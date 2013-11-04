@@ -1,43 +1,17 @@
-extends ../layout/splitscreen
+section(id='section-45', ng-controller='45Ctrl')
 
-block left
+  .left-screen
+    .container
 
-  section(id='section-45')
+      include ../layout/header
 
-    progressbar(step='2')
+      progressbar(step='2')
 
-    div(ng-show='loading')
-      h2 We're locating appropriate properties for you.
-      .loading
-        img(src='img/loading-lite.gif')
-
-    div(ng-show='errorMsg')
-      span.error {{ errorMsg }}
-
-    div(ng-show='loaded')
       h2 Zoning map
-      p.lede
-        | Zones in which you're qualified to be in will be shown on the map to the left. Select individual parcels to learn more.
-      p(ng-show='userdata.businessCategory.code')
-        span.pill {{ userdata.businessCategory.code }}
-        strong
-          a.modal-link.ng-binding(href='', data-title='{{userdata.businessCategory.name}}') {{ userdata.businessCategory.name }}
-      p
-        | Based on the information we've collected so far, these zones are most likely approved for your business.
-      ul.comfy.no-bullets
-        li
-          strong
-            span.clickable.green.pill DCP-0
-            a.modal-link(href='', data-title='#{zone_id} #{zone_name} Zone Definition', title='click to highlight zone on map') Downtown Centennial Plan
-      p These zones may require additional conditions for approval.
-      ul.comfy.no-bullets
-        li
-          strong
-            span.clickable.orange.pill CM-1
-            a.modal-link(href='', data-title='#{zone_id} #{zone_name} Zone Definition', title='click to highlight zone on map') Light Industrial
-        li
-          strong
-            span.clickable.yellow.pill CM-2
-            a.modal-link(href='', data-title='#{zone_id} #{zone_name} Zone Definition', title='click to highlight zone on map') Medium Industrial
 
-      navigation(back='/#/section/41', next='/#/section/50')
+      navigation(back='/#/section/40')
+
+      include ../layout/footer
+
+  .right-screen
+    google-map(map='map', map-id='map')

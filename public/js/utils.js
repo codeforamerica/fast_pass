@@ -56,6 +56,26 @@ var Utils = function () {
   var has = this.has = function(obj, key) {
     return hasOwnProperty.call(obj, key);
   };
+
+  var bind = this.bind = function(func, context) {
+    var ctor = function () {}
+    var nativeBind = Function.prototype.bind;
+    var args, bound;
+    if (nativeBind && func.bind === nativeBind) return nativeBind.apply(func, Array.prototype.slice.call(arguments, 1));
+    if (!_.isFunction(func)) throw new TypeError;
+    args = slice.call(arguments, 2);
+    return bound = function() {
+      if (!(this instanceof bound)) return func.apply(context, args.concat(Array.prototype.slice.call(arguments)));
+      ctor.prototype = func.prototype;
+      var self = new ctor;
+      ctor.prototype = null;
+      var result = func.apply(self, args.concat(Array.prototype.slice.call(arguments)));
+      if (Object(result) === result) return result;
+      return self;
+    };
+  };
+
 }
+ 
 
 var utils = new Utils();

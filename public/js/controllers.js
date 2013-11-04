@@ -195,8 +195,9 @@
   // Section 40 - Search for an address
   //
 
-  controllers.controller('40Ctrl', ['$scope', 'Session', 'Address', 'Map', 'City',
-    function ($scope, Session, Address, Map, City) {
+  controllers.controller('40Ctrl', [ '$scope', 'Session', 'Address', 'City', 'Map', 'MapMarker', 'MapOverlay',
+
+    function ($scope, Session, Address, City, Map, MapMarker, MapOverlay) {
 
       //
       // Address Search
@@ -289,8 +290,9 @@
 
       $scope.$watch('selected', function (value) {
         if (value) {
+          var marker = new MapMarker(value.get('latitude'), value.get('longitude'));
           map.clearMarkers();
-          map.addMarker(value.get('latitude'), value.get('longitude'));
+          map.addMarker(marker);
           map.setCenter(value.get('latitude'), value.get('longitude'));
           map.setZoom(19);
         }
@@ -314,18 +316,22 @@
 
       $scope.$watch('city', function (value) {
         if (value) {
-          map.addOverlay(value.get('geojson')) 
+          var overlay = MapOverlay.fromGeoJSON(value.get('geojson'));
+          overlay.setBorderWidth(0.25);
+          map.addOverlay(overlay);
         }
       });
-
     }
   ]);
 
   //
   // Section 41 - Neighborhood selection
   //
-  controllers.controller('41Ctrl', ['$scope', 'Session', 'Neighborhood', 'Map',
-    function ($scope, Session, Neighborhood, Map) {
+  controllers.controller('41Ctrl', ['$scope', 'Session', 'Neighborhood', 'Map', 'MapOverlay',
+    function ($scope, Session, Neighborhood, Map, MapOverlay) {
+
+      var map = new Map();
+      var overlays = {}
 
       var onSuccess = function (neighborhoods) {
         $scope.neighborhoods = neighborhoods;
@@ -335,29 +341,61 @@
       
       }
 
-      var addOverlay = function (neighborhood) {
-        map.addOverlay(neighborhood.get('geojson'));
+      var showNeighborhood = function (neighborhood) {
+        var overlay = overlays[neighborhood.get('name')];
+        if (overlay) {
+          overlay.setOpacity(0.15);
+        }
       }
 
-      var clearOverlays = function () {
-        map.clearOverlays();   
-      }
-      
-      var map = new Map();
-
-      var defaultOptions = {
-        clickable: false,
-        fillColor: '#ff0000',
-        fillOpacity: 0,
-        strokeWeight: 0
+      var hideNeighborhood = function (neighborhood) {
+        var overlay = overlays[neighborhood.get('name')];
+        if (overlay) {
+          overlay.setOpacity(0.0);
+        }
       }
 
-      Neighborhood.all({}, onSuccess, onError)
+      $scope.$watch('neighborhoods', function (neighborhoods) {
+        ng.forEach(neighborhoods, function (neighborhood) {
+          var overlay = MapOverlay.fromGeoJSON(neighborhood.get('geojson'));
+          $scope.map.addOverlay(overlay);
+          overlays[neighborhood.get('name')] = overlay;
+        });
+      });
 
       $scope.map = map;
-      $scope.addOverlay = addOverlay;
-      $scope.clearOverlays = clearOverlays;
+      $scope.showNeighborhood = showNeighborhood;
+      $scope.hideNeighborhood = hideNeighborhood;
+
+
+      Neighborhood.all({}, onSuccess, onError)
     }
+  ]);
+
+  //
+  // Section 45 - Select a parcel
+  //
+
+  controllers.controller('45Ctrl', [ '$scope', 'Map',
+
+    function ($scope, Map) {
+      var map = new Map();
+      $scope.map = map;
+    }
+
+  ]);
+
+  //
+  // Section 50 - Parcel confirmation
+  //
+
+  controllers.controller('50Ctrl', [ '$scope', 'Map',
+
+    function ($scope, Map) {
+      var map = new Map();
+      $scope.map = map;
+    }
+
   ]);
 
 })(angular);

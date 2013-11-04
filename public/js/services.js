@@ -236,6 +236,7 @@
   ]);
 
   services.factory('City', ['$resource', 'Model',
+
     function ($resource, Model) {
       var API = $resource('api/geo/city', { }, {
         find: { method: 'GET' }
@@ -258,10 +259,12 @@
 
       return City;
     }
+
   ]);
 
 
   services.factory('NAICSCategory', ['$resource', 'Model',
+
     function ($resource, Model) {
       var API = $resource('api/categories/naics', {}, {
         search: { method: 'GET', params: { keywords: null }, isArray: true }
@@ -288,6 +291,104 @@
 
       return NAICSCategory;
     }
+
+  ]);
+
+  services.factory('MapMarker', [
+
+    function () {
+      var MapMarker = function (lat, lng) {
+        this.marker = new google.maps.Marker({
+          position: new google.maps.LatLng(lat, lng)
+        });
+      }
+
+      MapMarker.prototype = {
+        add: function (map) {
+          this.marker.setMap(map);
+        },
+        remove: function () {
+          this.marker.setMap(null);
+        }
+      }
+
+      return MapMarker;
+    }
+
+  ]);
+
+  services.factory('MapOverlay', [
+
+    function () {
+      var _iter = function (obj, cb) {
+        if (ng.isArray(obj)) {
+          ng.forEach(obj, function (item) {
+            _iter(item, cb);
+          });
+        } else {
+          cb(obj);
+        }
+      }
+
+      var GeoJSONOverlay = function (geojson, options) {
+        options = options || {};
+        this.overlay = new GeoJSON(geojson, utils.defaults(options, this.defaults));
+        if (this.overlay.type === "Error") this.error = true
+      }
+
+      GeoJSONOverlay.prototype = {
+        error: false,
+        defaults: {
+          clickable: false,
+          fillColor: '#ff0000',
+          fillOpacity: 0,
+          strokeWeight: 0
+        },
+        add: function (map) {
+          _iter(this.overlay, function (obj) {
+            obj.setMap(map);
+          });
+          return this;
+        },
+        remove: function () {
+          _iter(this.overlay, function (obj) {
+            obj.setMap(null);
+          });
+          return this;
+        },
+        setOpacity: function (opacity) {
+          _iter(this.overlay, function (obj) {
+            obj.setOptions({ fillOpacity: opacity });
+          });
+          return this;
+        },
+        setClickable: function (clickable) {
+          _iter(this.overlay, function (obj) {
+            obj.setOptions({ clickable: clickable });
+          });
+          return this;
+        },
+        setBackgroundColor: function (color) {
+          _iter(this.overlay, function (obj) {
+            obj.setOptions({ fillColor: color });
+          });
+          return this;
+        },
+        setBorderWidth: function (width) {
+          _iter(this.overlay, function (obj) {
+            obj.setOptions({ strokeWeight: width });
+          });
+          return this;
+        }
+      }
+
+      return {
+        fromGeoJSON: function (geojson, options) {
+          return new GeoJSONOverlay(geojson, options);
+        }
+      }
+    }
+
   ]);
 
   services.factory('Map', [ '$timeout',
@@ -302,70 +403,98 @@
       } 
 
       Map.prototype = {
-        addMarker: function (lat, lng) {
+        markers: [],
+        overlays: [],
+        addMarker: function (marker) {
           var that = this;
+
           $timeout(function () {
-            var marker = new google.maps.Marker({
-              position: getPosition(lat, lng),
-              map: that.map
-            })
+            marker.add(that.map);
             that.markers.push(marker);
           });
+
+          return this;
+        },
+        removeMarker: function (marker) {
+          var position = this.markers.indexOf(marker);
+
+          if (~position) {
+            marker.remove();
+            this.markers.splice(position, 1);
+          }
+
+          return this;
         },
         clearMarkers: function () {
           var that = this;
+
           $timeout(function () {
-            ng.forEach(that.markers, function (marker) {
-              marker.setMap(null);
-            }) 
+            ng.forEach(that.markers, utils.bind(that.removeMarker, that));
           });
+
+          return this;
         },
-        addOverlay: function (geojson, options) {
+        addOverlay: function (overlay) {
           var that = this;
 
           $timeout(function () {
-            var geo  = new GeoJSON(geojson, options);
-
-            if (!geo.error) {
-              ng.forEach(geo, function (shape) {
-                if (Array.isArray(shape)) {
-                  ng.forEach(shape, function (geom) {
-                    geom.setMap(that.map) 
-                    that.overlays.push(geom);
-                  }) 
-                } else {
-                  shape.setMap(that.map);
-                  that.overlays.push(shape);
-                }
-              })
-            }
+            that.overlays.push(overlay);
+            overlay.add(that.map);
           });
+
+          return this;
+        },
+        removeOverlay: function (overlay) {
+          var position = this.overlays.indexOf(overlay);
+
+          if (~position) {
+            this.overlays.slice(position, 1);
+            overlay.remove();
+          }
+
+          return this;
         },
         clearOverlays: function () {
           var that = this;
+
           $timeout(function () {
-            ng.forEach(that.overlays, function (overlay) {
-              overlay.setMap(null);
-            });
-            that.overlays = [];
+            ng.forEach(that.overlays, utils.bind(that.removeOverlay, that));
           });
+
+          return this;
         },
         setCenter: function (lat, lng) {
           var that = this;
+
           $timeout(function () {
             that.map.setCenter( getPosition(lat, lng) );
           });
+
+          return this;
         },
         setZoom: function (zoom) {
           var that = this;
+
           $timeout(function () {
             that.map.setZoom( zoom ); 
           });
+
+          return this;
         },
         reset: function (map) {
-          this.map = map; 
-          this.markers = [];
-          this.overlays = [];
+          if (map) {
+            this.map = map;
+            this.clearOverlays().clearMarkers().onResize();
+          }
+        },
+        onResize: function () {
+          var that = this;
+
+          $timeout(function () {
+            google.maps.event.trigger(that.map, 'resize');
+          });
+
+          return this;
         }
       }
 
