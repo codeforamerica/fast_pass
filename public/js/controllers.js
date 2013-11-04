@@ -363,6 +363,7 @@
         var overlay = overlays[neighborhood.get('name')];
         if (overlay) {
           overlay.setOpacity(0.15);
+          overlay.setBorderWidth(0.25);
         }
       }
 
@@ -370,6 +371,7 @@
         var overlay = overlays[neighborhood.get('name')];
         if (overlay) {
           overlay.setOpacity(0.0);
+          overlay.setBorderWidth(0);
         }
       }
 
