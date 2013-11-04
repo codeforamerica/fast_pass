@@ -333,7 +333,7 @@
       $scope.$watch('cityLimits', function (value) {
         if (value) {
           var overlay = Map.Overlay.fromGeoJSON(value.get('geojson'));
-          overlay.setBorderWidth(0.25);
+          overlay.setStrokeWeight(0.25);
           map.addOverlay(overlay);
         }
       });
@@ -362,16 +362,16 @@
       var showNeighborhood = function (neighborhood) {
         var overlay = overlays[neighborhood.get('name')];
         if (overlay) {
-          overlay.setOpacity(0.15);
-          overlay.setBorderWidth(0.25);
+          overlay.setFillOpacity(0.15);
+          overlay.setStrokeWeight(0.25);
         }
       }
 
       var hideNeighborhood = function (neighborhood) {
         var overlay = overlays[neighborhood.get('name')];
         if (overlay) {
-          overlay.setOpacity(0.0);
-          overlay.setBorderWidth(0);
+          overlay.setFillOpacity(0.0);
+          overlay.setStrokeWeight(0);
         }
       }
 
@@ -405,7 +405,7 @@
       $scope.$watch('cityLimits', function (value) {
         if (value) {
           var overlay = Map.Overlay.fromGeoJSON(value.get('geojson'));
-          overlay.setBorderWidth(0.25);
+          overlay.setStrokeWeight(0.25);
           map.addOverlay(overlay);
         }
       });

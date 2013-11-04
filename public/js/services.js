@@ -349,6 +349,8 @@
           clickable: false,
           fillColor: '#ff0000',
           fillOpacity: 0,
+          strokeColor: '#ff0000',
+          strokeOpacity: 1,
           strokeWeight: 0
         },
         add: function (map) {
@@ -363,27 +365,39 @@
           });
           return this;
         },
-        setOpacity: function (opacity) {
-          _iter(this.overlay, function (obj) {
-            obj.setOptions({ fillOpacity: opacity });
-          });
-          return this;
-        },
         setClickable: function (clickable) {
           _iter(this.overlay, function (obj) {
             obj.setOptions({ clickable: clickable });
           });
           return this;
         },
-        setBackgroundColor: function (color) {
+        setFillOpacity: function (opacity) {
+          _iter(this.overlay, function (obj) {
+            obj.setOptions({ fillOpacity: opacity });
+          });
+          return this;
+        },
+        setFillColor: function (color) {
           _iter(this.overlay, function (obj) {
             obj.setOptions({ fillColor: color });
           });
           return this;
         },
-        setBorderWidth: function (width) {
+        setStrokeOpacity: function (opacity) {
           _iter(this.overlay, function (obj) {
-            obj.setOptions({ strokeWeight: width });
+            obj.setOptions({ strokeOpacity: opacity });
+          });
+          return this;
+        },
+        setStrokeColor: function (color) {
+          _iter(this.overlay, function (obj) {
+            obj.setOptions({ strokeColor: color });
+          });
+          return this;
+        },
+        setStrokeWeight: function (weight) {
+          _iter(this.overlay, function (obj) {
+            obj.setOptions({ strokeWeight: weight });
           });
           return this;
         }
