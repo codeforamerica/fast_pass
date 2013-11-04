@@ -195,9 +195,9 @@
   // Section 40 - Search for an address
   //
 
-  controllers.controller('40Ctrl', [ '$scope', 'Session', 'Address', 'City', 'Map', 'MapMarker', 'MapOverlay',
+  controllers.controller('40Ctrl', [ '$scope', 'Session', 'Address', 'City', 'Map',
 
-    function ($scope, Session, Address, City, Map, MapMarker, MapOverlay) {
+    function ($scope, Session, Address, City, Map) {
 
       //
       // Address Search
@@ -290,7 +290,7 @@
 
       $scope.$watch('selected', function (value) {
         if (value) {
-          var marker = new MapMarker(value.get('latitude'), value.get('longitude'));
+          var marker = new Map.Marker(value.get('latitude'), value.get('longitude'));
           map.clearMarkers();
           map.addMarker(marker);
           map.setCenter(value.get('latitude'), value.get('longitude'));
@@ -316,7 +316,7 @@
 
       $scope.$watch('city', function (value) {
         if (value) {
-          var overlay = MapOverlay.fromGeoJSON(value.get('geojson'));
+          var overlay = Map.Overlay.fromGeoJSON(value.get('geojson'));
           overlay.setBorderWidth(0.25);
           map.addOverlay(overlay);
         }
@@ -327,8 +327,8 @@
   //
   // Section 41 - Neighborhood selection
   //
-  controllers.controller('41Ctrl', ['$scope', 'Session', 'Neighborhood', 'Map', 'MapOverlay',
-    function ($scope, Session, Neighborhood, Map, MapOverlay) {
+  controllers.controller('41Ctrl', ['$scope', 'Session', 'Neighborhood', 'Map',
+    function ($scope, Session, Neighborhood, Map) {
 
       var map = new Map();
       var overlays = {}
@@ -357,7 +357,7 @@
 
       $scope.$watch('neighborhoods', function (neighborhoods) {
         ng.forEach(neighborhoods, function (neighborhood) {
-          var overlay = MapOverlay.fromGeoJSON(neighborhood.get('geojson'));
+          var overlay = Map.Overlay.fromGeoJSON(neighborhood.get('geojson'));
           $scope.map.addOverlay(overlay);
           overlays[neighborhood.get('name')] = overlay;
         });

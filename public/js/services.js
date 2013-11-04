@@ -391,16 +391,16 @@
 
   ]);
 
-  services.factory('Map', [ '$timeout',
-    function ($timeout) {
+  services.factory('Map', [ '$timeout', 'MapOverlay', 'MapMarker',
 
-      var getPosition = function (lat, lng) {
-        return new google.maps.LatLng(lat, lng);
-      }
+    function ($timeout, MapOverlay, MapMarker) {
 
       var Map = function (map) {
         this.reset(map);
       } 
+
+      Map.Marker = MapMarker;
+      Map.Overlay = MapOverlay;
 
       Map.prototype = {
         markers: [],
@@ -467,7 +467,7 @@
           var that = this;
 
           $timeout(function () {
-            that.map.setCenter( getPosition(lat, lng) );
+            that.map.setCenter( new google.maps.LatLng(lat, lng) );
           });
 
           return this;
