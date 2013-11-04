@@ -345,8 +345,8 @@
   //
   // Section 41 - Neighborhood selection
   //
-  controllers.controller('41Ctrl', ['$scope', 'Session', 'Neighborhood', 'Map',
-    function ($scope, Session, Neighborhood, Map) {
+  controllers.controller('41Ctrl', ['$scope', 'Session', 'Neighborhood', 'City', 'Map',
+    function ($scope, Session, Neighborhood, City, Map) {
 
       var map = new Map();
       var overlays = {}
@@ -387,6 +387,28 @@
 
 
       Neighborhood.all({}, onSuccess, onError)
+
+      //
+      // City Limits
+      //
+
+      var onCityLimitsSuccess = function (cityLimits) {
+        $scope.cityLimits = cityLimits;
+      }
+
+      var onCityLimitsError = function () {
+        console.log('error');
+      }
+
+      $scope.$watch('cityLimits', function (value) {
+        if (value) {
+          var overlay = Map.Overlay.fromGeoJSON(value.get('geojson'));
+          overlay.setBorderWidth(0.25);
+          map.addOverlay(overlay);
+        }
+      });
+
+      City.find({}, onCityLimitsSuccess, onCityLimitsError);
     }
   ]);
 

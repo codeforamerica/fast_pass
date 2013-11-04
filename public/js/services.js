@@ -502,6 +502,15 @@
           });
 
           return this;
+        },
+        on: function (e, cb) {
+          var that = this;
+
+          $timeout(function () {
+            google.maps.event.addListener(that.map, e, cb);
+          });
+
+          return this;
         }
       }
 
