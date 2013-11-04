@@ -363,7 +363,6 @@
         var overlay = overlays[neighborhood.get('name')];
         if (overlay) {
           overlay.setFillOpacity(0.15);
-          overlay.setStrokeWeight(0.25);
         }
       }
 
@@ -371,7 +370,6 @@
         var overlay = overlays[neighborhood.get('name')];
         if (overlay) {
           overlay.setFillOpacity(0.0);
-          overlay.setStrokeWeight(0);
         }
       }
 
@@ -405,7 +403,8 @@
       $scope.$watch('cityLimits', function (value) {
         if (value) {
           var overlay = Map.Overlay.fromGeoJSON(value.get('geojson'));
-          overlay.setStrokeWeight(0.25);
+          overlay.setStrokeWeight(4);
+          overlay.setStrokeOpacity(0.1)
           map.addOverlay(overlay);
         }
       });
