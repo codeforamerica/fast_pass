@@ -333,7 +333,8 @@
       $scope.$watch('cityLimits', function (value) {
         if (value) {
           var overlay = Map.Overlay.fromGeoJSON(value.get('geojson'));
-          overlay.setStrokeWeight(0.25);
+          overlay.setStrokeWeight(4);
+          overlay.setStrokeOpacity(0.1);
           map.addOverlay(overlay);
         }
       });
@@ -349,7 +350,7 @@
     function ($scope, Session, Neighborhood, City, Map) {
 
       var map = new Map();
-      var overlays = {}
+      var neighborhoodOverlays = {}
 
       var onSuccess = function (neighborhoods) {
         $scope.neighborhoods = neighborhoods;
@@ -360,14 +361,14 @@
       }
 
       var showNeighborhood = function (neighborhood) {
-        var overlay = overlays[neighborhood.get('name')];
+        var overlay = neighborhoodOverlays[neighborhood.get('name')];
         if (overlay) {
           overlay.setFillOpacity(0.15);
         }
       }
 
       var hideNeighborhood = function (neighborhood) {
-        var overlay = overlays[neighborhood.get('name')];
+        var overlay = neighborhoodOverlays[neighborhood.get('name')];
         if (overlay) {
           overlay.setFillOpacity(0.0);
         }
@@ -377,7 +378,7 @@
         ng.forEach(neighborhoods, function (neighborhood) {
           var overlay = Map.Overlay.fromGeoJSON(neighborhood.get('geojson'));
           $scope.map.addOverlay(overlay);
-          overlays[neighborhood.get('name')] = overlay;
+          neighborhoodOverlays[neighborhood.get('name')] = overlay;
         });
       });
 
@@ -385,12 +386,21 @@
       $scope.showNeighborhood = showNeighborhood;
       $scope.hideNeighborhood = hideNeighborhood;
 
-
       Neighborhood.all({}, onSuccess, onError)
 
       //
       // City Limits
       //
+
+      var cityLimitsOverlay;
+
+      var showCityLimits = function () {
+        if (cityLimitsOverlay) cityLimitsOverlay.setFillOpacity(0.15);
+      }
+
+      var hideCityLimits = function () {
+        if (cityLimitsOverlay) cityLimitsOverlay.setFillOpacity(0);
+      }
 
       var onCityLimitsSuccess = function (cityLimits) {
         $scope.cityLimits = cityLimits;
@@ -402,14 +412,19 @@
 
       $scope.$watch('cityLimits', function (value) {
         if (value) {
-          var overlay = Map.Overlay.fromGeoJSON(value.get('geojson'));
-          overlay.setStrokeWeight(4);
-          overlay.setStrokeOpacity(0.1)
-          map.addOverlay(overlay);
+          cityLimitsOverlay = Map.Overlay.fromGeoJSON(value.get('geojson'));
+          cityLimitsOverlay.setStrokeWeight(4);
+          cityLimitsOverlay.setStrokeOpacity(0.1);
+          map.addOverlay(cityLimitsOverlay);
+        } else {
+          if (cityLimitsOverlay) map.removeOverlay(cityLimitsOverlay);
         }
       });
 
       City.find({}, onCityLimitsSuccess, onCityLimitsError);
+
+      $scope.showCityLimits = showCityLimits;
+      $scope.hideCityLimits = hideCityLimits;
     }
   ]);
 
