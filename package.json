@@ -8,7 +8,7 @@
       "url": "https://github.com/rclosner/lv-dof"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon --ext '.js|.less' ./server.js",
     "db-setup": "./scripts/db/setup.js",
     "db-create": "./scripts/db/create.js",
     "db-migrate": "./scripts/db/migrate.js",
@@ -26,5 +26,8 @@
     "less-middleware": "0.1.x",
     "proj4": "1.5.x",
     "db-migrate": "0.6.x"
+  },
+  "devDependencies": {
+    "nodemon": "0.7.x"
   }
 }
