@@ -320,9 +320,7 @@
 
     function () {
       var count = function (str) {
-        str = str || '' 
-        var matches = str.match(/\S+/g) || [];
-        return matches.length;
+        return ( (str || '').match(/\S+/g) || [] ).length;
       }
 
       return {
@@ -335,11 +333,7 @@
           scope.countdown = scope.maxWords - count(scope.words); 
           scope.$watch('words', function () {
             scope.countdown = scope.maxWords - count(scope.words);
-            if (scope.countdown <= 0) {
-              scope.warning = 'warning' 
-            } else {
-              scope.warning = null; 
-            }
+            scope.warning = (scope.countdown <= 0) ? 'warning' : null;
           });
         }
       }
