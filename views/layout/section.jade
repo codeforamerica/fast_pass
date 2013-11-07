@@ -1,7 +1,8 @@
-div(class='left-column', ng-class='{ false: "full-screen", true: "part-screen" }[showRight]')
-  div(class='container')
-    include header
-    block left
-    include footer
-div(class='right-column')
-  block right
+section(id='section-{{section}}')
+  div(class='left-column', ng-class='{ false: "full-screen", true: "part-screen" }[showRight]')
+    div(class='container')
+      include header
+      block left
+      include footer
+  div(class='right-column')
+    block right

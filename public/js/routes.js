@@ -15,8 +15,8 @@
     function ($routeProvider) {
       $routeProvider.
       when('/', {
-        templateUrl: '/partials/start',
-        controller: 'SectionCtrl'
+        templateUrl: '/pages/0',
+        controller: '0Ctrl'
       }).
       when('/section/10', {
         templateUrl: '/pages/10',
@@ -42,8 +42,7 @@
         templateUrl: '/partials/print'
       }).
       otherwise({
-        // redirectTo: '/'
-        templateUrl: '/partials/404'
+        templateUrl: '/pages/404'
       });
     }
 

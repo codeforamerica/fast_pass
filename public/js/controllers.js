@@ -27,21 +27,13 @@
         Session.save(); 
       }
 
+      $rootScope.$on('$locationChangeSuccess', function () {
+        Session.save();
+      });
+
       goToLastStep();
 
       $window.onbeforeunload = onBeforeUnload;
-    }
-  ]);
-
-  //
-  // Section Controller - Handles session saving on section change
-  //
-
-  controllers.controller('SectionCtrl', [ '$scope', 'Session',
-    function ($scope, Session) {
-      $scope.$on('$locationChangeSuccess', function () {
-        Session.save();
-      });
     }
   ]);
 
@@ -92,11 +84,27 @@
   ]);
 
   //
+  // Section 0 - What is this?
+  //
+
+  controllers.controller('0Ctrl', [ '$scope',
+
+    function ($scope) {
+
+      $scope.section = 0;
+    
+    }  
+
+  ]);
+
+  //
   // Section 10 - What kind of business are you?
   //
 
   controllers.controller('10Ctrl', ['$scope', 'Session', 'NAICSCategory', 'CategoryKeywords',
     function ($scope, Session, NAICSCategory, CategoryKeywords) {
+
+      $scope.section = 10;
 
       //
       // NAICS Search
@@ -187,7 +195,11 @@
   //
 
   controllers.controller('15Ctrl', ['$scope', 'Session',
+
     function ($scope, Session) {
+
+      $scope.section = 15;
+
       var save = function () {
         Session.save(); 
       }
@@ -219,6 +231,7 @@
 
     function ($scope, Session, Address, City, Map) {
 
+      $scope.section = 40;
       $scope.showRight = true;
 
       //
@@ -365,6 +378,7 @@
   controllers.controller('41Ctrl', ['$scope', 'Session', 'Neighborhood', 'City', 'Map',
     function ($scope, Session, Neighborhood, City, Map) {
 
+      $scope.section = 41;
       $scope.showRight = true;
 
       var map = new Map();
