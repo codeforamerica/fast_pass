@@ -313,7 +313,7 @@
         }
 
         map.setZoom(zoom);
-        map.setCenter(latitude, longitude);
+        map.panTo(latitude, longitude);
       });
 
       $scope.map = map;
@@ -327,12 +327,12 @@
       }
 
       var onCityLimitsError = function () {
-        console.log('error') 
+        $scope.showError = true;
       }
 
       $scope.$watch('cityLimits', function (value) {
         if (value) {
-          var overlay = Map.Overlay.fromGeoJSON(value.get('geojson'));
+          var overlay = Map.Overlay.fromGeoJSON(value.get('geometry'));
           overlay.setStrokeWeight(4);
           overlay.setStrokeOpacity(0.1);
           map.addOverlay(overlay);
@@ -354,6 +354,7 @@
 
       var onSuccess = function (neighborhoods) {
         $scope.neighborhoods = neighborhoods;
+        $scope.showError = false;
       } 
 
       var onError = function () {
@@ -364,6 +365,7 @@
         var overlay = neighborhoodOverlays[neighborhood.get('name')];
         if (overlay) {
           overlay.setFillOpacity(0.15);
+          map.setBounds(overlay.getBounds());
         }
       }
 
@@ -375,11 +377,17 @@
       }
 
       $scope.$watch('neighborhoods', function (neighborhoods) {
-        ng.forEach(neighborhoods, function (neighborhood) {
-          var overlay = Map.Overlay.fromGeoJSON(neighborhood.get('geojson'));
-          $scope.map.addOverlay(overlay);
-          neighborhoodOverlays[neighborhood.get('name')] = overlay;
-        });
+        if (neighborhoods) {
+          ng.forEach(neighborhoods, function (neighborhood) {
+            var overlay = Map.Overlay.fromGeoJSON(neighborhood.get('geometry'));
+            $scope.map.addOverlay(overlay);
+            neighborhoodOverlays[neighborhood.get('name')] = overlay;
+          });
+
+          $scope.showNeighborhoods = true;
+        } else {
+          $scope.showNeighborhoods = false;
+        }
       });
 
       $scope.map = map;
@@ -395,11 +403,16 @@
       var cityLimitsOverlay;
 
       var showCityLimits = function () {
-        if (cityLimitsOverlay) cityLimitsOverlay.setFillOpacity(0.15);
+        if (cityLimitsOverlay) {
+          cityLimitsOverlay.setFillOpacity(0.15);
+          map.setBounds(cityLimitsOverlay.getBounds());
+        }
       }
 
       var hideCityLimits = function () {
-        if (cityLimitsOverlay) cityLimitsOverlay.setFillOpacity(0);
+        if (cityLimitsOverlay) {
+          cityLimitsOverlay.setFillOpacity(0);
+        }
       }
 
       var onCityLimitsSuccess = function (cityLimits) {
@@ -412,7 +425,7 @@
 
       $scope.$watch('cityLimits', function (value) {
         if (value) {
-          cityLimitsOverlay = Map.Overlay.fromGeoJSON(value.get('geojson'));
+          cityLimitsOverlay = Map.Overlay.fromGeoJSON(value.get('geometry'));
           cityLimitsOverlay.setStrokeWeight(4);
           cityLimitsOverlay.setStrokeOpacity(0.1);
           map.addOverlay(cityLimitsOverlay);

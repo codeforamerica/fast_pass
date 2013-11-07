@@ -10,6 +10,61 @@
 
   var services = ng.module(APPLICATION_NAME + '.services', [ 'ngResource' ]);
 
+  //
+  // utils - A service containing utility methods
+  //
+
+  services.factory('utils', [
+    
+      function () {
+
+        var Utils = function () {}
+
+        Utils.prototype = {
+          map: function (obj, iterator, context) {
+            var results = []; 
+
+            if ( ng.equals(obj, null) ) {
+              return results;
+            }
+
+            if ( Array.prototype.map && ng.equals(obj.map, Array.prototype.map) ) {
+              return obj.map(iterator, context);
+            }
+
+            ng.forEach(obj, function (value, index, list) {
+              results.push( iterator.call(context, value, list) );
+            });
+
+            return results;
+          },
+          defaults: function (obj) {
+            ng.forEach(Array.prototype.slice.call(arguments, 1), function (source) {
+              if (source) {
+                for (var prop in source) {
+                  if (ng.isUndefined(obj[prop])) obj[prop] = source[prop]
+                }
+              }
+            });
+            return obj;
+          },
+          random: function (obj) {
+            if (ng.isArray(obj)) {
+              return obj[Math.floor( Math.random(obj.length) )];
+            }
+          }
+        }
+      
+        return new Utils();
+      }
+  ]);
+
+  //
+  // Model - A base model to be extended by other
+  // models. Provides an interface for setting/retrieving
+  // attributes.
+  //
+
   services.factory('Model', [ 'utils',
 
     function (utils) {
@@ -73,7 +128,13 @@
       return Model;
     }
 
-  ])
+  ]);
+
+  //
+  // WebStorage - Browser-agnostic storage model for
+  // persisting application information locally. Supports
+  // LocalStorage, Google Gears, Cookies, Adobe Flash, etc.
+  //
 
   services.factory('WebStorage', [ 'Model',
     function (Model) {
@@ -102,6 +163,12 @@
       return WebStorage.load();
     }
   ]);
+
+  //
+  // Session - Model for managing application data
+  // created by users as they input information on
+  // their business.
+  //
 
   services.factory('Session', ['utils', '$resource', 'WebStorage', 'Model',
     function (utils, $resource, WebStorage, Model) {
@@ -159,10 +226,15 @@
     }
   ]);
 
+  //
+  // Address - Model for retrieving/managing address
+  // information.
+  //
+
   services.factory('Address', ['utils', '$resource', 'Model',
     function (utils, $resource, Model) {
       var API = $resource('api/geo/geocode', { }, {
-        search:   { method: 'GET', params: { address: '@address' }, isArray: true }
+        search: { method: 'GET', params: { address: '@address' }, isArray: true }
       });
 
       var Address = Model.extend({
@@ -194,6 +266,11 @@
     }
   ]);
 
+  //
+  // Parcel - Model for retrieving/managing parcel
+  // information.
+  //
+
   services.factory('Parcel', ['$resource', 'Model',
     function ($resource, Model) {
       var API = $resource('api/sessions/:id', { }, {
@@ -210,6 +287,11 @@
     }
   ]);
 
+  //
+  // Neighborhood - Model for retrieving/managing neighborhood
+  // information
+  //
+
   services.factory('Neighborhood', ['utils', '$resource', 'Model',
     function (utils, $resource, Model) {
       var API = $resource('api/geo/neighborhoods', { }, {
@@ -219,7 +301,7 @@
       var Neighborhood = Model.extend({
         defaults: {
           name: null,
-          geojson: null
+          geometry: null
         } 
       }, {
         all: function (params, success, error) {
@@ -237,6 +319,11 @@
     }
   ]);
 
+  //
+  // City - Model for retrieving/managing city limits
+  // information
+  //
+
   services.factory('City', ['$resource', 'Model',
 
     function ($resource, Model) {
@@ -247,7 +334,7 @@
       var City = Model.extend({
         defaults: {
           name: null,
-          geojson: null
+          geometry: null
         } 
       }, {
         find: function (params, success, error) {
@@ -264,6 +351,11 @@
 
   ]);
 
+
+  //
+  // NAICSCategory - Model for managing/retrieving NAICS
+  // category information.
+  //
 
   services.factory('NAICSCategory', ['utils', '$resource', 'Model',
 
@@ -296,6 +388,153 @@
 
   ]);
 
+  //
+  // Map - Wrapper model for managing a Google Map
+  //
+
+  services.factory('Map', [ '$timeout', 'MapOverlay', 'MapMarker',
+
+    function ($timeout, MapOverlay, MapMarker) {
+
+      var Map = function (map) {
+        this.reset(map);
+      } 
+
+      Map.Marker = MapMarker;
+      Map.Overlay = MapOverlay;
+
+      Map.prototype = {
+        markers: [],
+        overlays: [],
+        addMarker: function (marker) {
+          var that = this;
+
+          $timeout(function () {
+            marker.add(that.map);
+            that.markers.push(marker);
+          });
+
+          return this;
+        },
+        removeMarker: function (marker) {
+          var position = this.markers.indexOf(marker);
+
+          if (~position) {
+            marker.remove();
+            this.markers.splice(position, 1);
+          }
+
+          return this;
+        },
+        clearMarkers: function () {
+          var that = this;
+
+          $timeout(function () {
+            ng.forEach(that.markers, ng.bind(that, that.removeMarker));
+          });
+
+          return this;
+        },
+        addOverlay: function (overlay) {
+          var that = this;
+
+          $timeout(function () {
+            that.overlays.push(overlay);
+            overlay.add(that.map);
+          });
+
+          return this;
+        },
+        removeOverlay: function (overlay) {
+          var position = this.overlays.indexOf(overlay);
+
+          if (~position) {
+            this.overlays.slice(position, 1);
+            overlay.remove();
+          }
+
+          return this;
+        },
+        clearOverlays: function () {
+          var that = this;
+
+          $timeout(function () {
+            ng.forEach(that.overlays, ng.bind(that, that.removeOverlay));
+          });
+
+          return this;
+        },
+        panTo: function (lat, lng) {
+          var that = this;
+
+          $timeout(function () {
+            that.map.panTo( new google.maps.LatLng(lat, lng) );
+          });
+
+          return this;
+        },
+        setCenter: function (lat, lng) {
+          var that = this;
+
+          $timeout(function () {
+            that.map.setCenter( new google.maps.LatLng(lat, lng) );
+          });
+
+          return this;
+        },
+        setBounds: function (bounds) {
+          var that = this;
+
+          $timeout(function () {
+            that.map.fitBounds(bounds);
+          });
+
+          return this;
+        },
+        setZoom: function (zoom) {
+          var that = this;
+
+          $timeout(function () {
+            that.map.setZoom( zoom ); 
+          });
+
+          return this;
+        },
+        reset: function (map) {
+          if (map) {
+            this.map = map;
+            this.clearOverlays().clearMarkers().trigger('resize');
+          }
+        },
+        trigger: function (e) {
+          var that = this;
+
+          $timeout(function () {
+            google.maps.event.trigger(that.map, e);
+          });
+
+          return this;
+        },
+        on: function (e, cb) {
+          var that = this;
+
+          $timeout(function () {
+            google.maps.event.addListener(that.map, e, cb);
+          });
+
+          return this;
+        }
+      }
+
+      return Map;
+    }  
+  ]);
+
+  //
+  // MapMarker - Wrapper model for managing Google Maps
+  // Markers (used primarily with the Map service).
+  //
+
   services.factory('MapMarker', [
 
     function () {
@@ -325,6 +564,11 @@
     }
 
   ]);
+
+  //
+  // MapOverlay - Wrapper model for managing Google Maps
+  // overlays (used primarily with the Map service).
+  //
 
   services.factory('MapOverlay', [ 'utils',
 
@@ -402,6 +646,23 @@
             obj.setOptions({ strokeWeight: weight });
           });
           return this;
+        },
+        getBounds: function () {
+          var bounds = new google.maps.LatLngBounds();
+
+          _iter(this.overlay, function (obj) {
+            var paths = obj.getPaths();
+            var path;
+
+            for (var i = 0; i < paths.getLength(); i++) {
+              path = paths.getAt(i);
+              for (var j = 0; j < path.getLength(); j++) {
+                bounds.extend(path.getAt(j));
+              }
+            }
+          })
+
+          return bounds;
         }
       }
 
@@ -414,125 +675,11 @@
 
   ]);
 
-  services.factory('Map', [ '$timeout', 'MapOverlay', 'MapMarker',
 
-    function ($timeout, MapOverlay, MapMarker) {
-
-      var Map = function (map) {
-        this.reset(map);
-      } 
-
-      Map.Marker = MapMarker;
-      Map.Overlay = MapOverlay;
-
-      Map.prototype = {
-        markers: [],
-        overlays: [],
-        addMarker: function (marker) {
-          var that = this;
-
-          $timeout(function () {
-            marker.add(that.map);
-            that.markers.push(marker);
-          });
-
-          return this;
-        },
-        removeMarker: function (marker) {
-          var position = this.markers.indexOf(marker);
-
-          if (~position) {
-            marker.remove();
-            this.markers.splice(position, 1);
-          }
-
-          return this;
-        },
-        clearMarkers: function () {
-          var that = this;
-
-          $timeout(function () {
-            ng.forEach(that.markers, ng.bind(that.removeMarker, that));
-          });
-
-          return this;
-        },
-        addOverlay: function (overlay) {
-          var that = this;
-
-          $timeout(function () {
-            that.overlays.push(overlay);
-            overlay.add(that.map);
-          });
-
-          return this;
-        },
-        removeOverlay: function (overlay) {
-          var position = this.overlays.indexOf(overlay);
-
-          if (~position) {
-            this.overlays.slice(position, 1);
-            overlay.remove();
-          }
-
-          return this;
-        },
-        clearOverlays: function () {
-          var that = this;
-
-          $timeout(function () {
-            ng.forEach(that.overlays, ng.bind(that.removeOverlay, that));
-          });
-
-          return this;
-        },
-        setCenter: function (lat, lng) {
-          var that = this;
-
-          $timeout(function () {
-            that.map.setCenter( new google.maps.LatLng(lat, lng) );
-          });
-
-          return this;
-        },
-        setZoom: function (zoom) {
-          var that = this;
-
-          $timeout(function () {
-            that.map.setZoom( zoom ); 
-          });
-
-          return this;
-        },
-        reset: function (map) {
-          if (map) {
-            this.map = map;
-            this.clearOverlays().clearMarkers().trigger('resize');
-          }
-        },
-        trigger: function (e) {
-          var that = this;
-
-          $timeout(function () {
-            google.maps.event.trigger(that.map, e);
-          });
-
-          return this;
-        },
-        on: function (e, cb) {
-          var that = this;
-
-          $timeout(function () {
-            google.maps.event.addListener(that.map, e, cb);
-          });
-
-          return this;
-        }
-      }
-
-      return Map;
-    }  
-  ]);
+  //
+  // CategoryKeywords - A convenience wrapper for generating
+  // sample NAICS category keyword inputs
+  //
 
   services.factory('CategoryKeywords', ['utils',
 
@@ -562,51 +709,6 @@
       }
     }
 
-  ]);
-
-  services.factory('utils', [
-    
-      function () {
-
-        var Utils = function () {}
-
-        Utils.prototype = {
-          map: function (obj, iterator, context) {
-            var results = []; 
-
-            if ( ng.equals(obj, null) ) {
-              return results;
-            }
-
-            if ( Array.prototype.map && ng.equals(obj.map, Array.prototype.map) ) {
-              return obj.map(iterator, context);
-            }
-
-            ng.forEach(obj, function (value, index, list) {
-              results.push( iterator.call(context, value, list) );
-            });
-
-            return results;
-          },
-          defaults: function (obj) {
-            ng.forEach(Array.prototype.slice.call(arguments, 1), function (source) {
-              if (source) {
-                for (var prop in source) {
-                  if (ng.isUndefined(obj[prop])) obj[prop] = source[prop]
-                }
-              }
-            });
-            return obj;
-          },
-          random: function (obj) {
-            if (ng.isArray(obj)) {
-              return obj[Math.floor( Math.random(obj.length) )];
-            }
-          }
-        }
-      
-        return new Utils();
-      }
   ]);
 
 })(angular)

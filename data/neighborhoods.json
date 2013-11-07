@@ -1,7 +1,7 @@
 [
   {
     "name": "Downtown Las Vegas",
-    "geojson": {
+    "geometry": {
       "type": "FeatureCollection",
       "features": [
         {
@@ -156,7 +156,7 @@
   },
   {
     "name": "Summerlin",
-    "geojson": {
+    "geometry": {
       "type": "FeatureCollection",
       "features": [
         {

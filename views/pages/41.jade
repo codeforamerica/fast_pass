@@ -10,7 +10,10 @@ section(id='section-41', ng-controller='41Ctrl')
 
       p.lede Do you know what neighborhood you'd like to be in?
 
-      div(class='neighborhoods')
+      div(class='error', ng-show='showError')
+        span.warning An error occurred! Please try again later.
+
+      div(class='neighborhoods', ng-show='showNeighborhoods')
         div(class='neighborhood', ng-repeat='neighborhood in neighborhoods')
           p
             a.button(href='/#/section/45', ng-mouseover='showNeighborhood(neighborhood)', ng-mouseout='hideNeighborhood(neighborhood)') {{ neighborhood.get('name') }}
