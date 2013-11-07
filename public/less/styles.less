@@ -337,16 +337,17 @@ small {
 		height: 36px;
 		.user-select(none);
 	}
-	.loading-small {
-		width: 100%;
-		text-align: center;
-		color: gray;
-	}
-	.loading {
-    &:extend(.loading-small);
-		margin-top: 80px;
-		height: 160px;
-	}
+}
+
+.loading-small {
+  width: 100%;
+  text-align: center;
+  color: gray;
+}
+.loading {
+  &:extend(.loading-small);
+  margin-top: 80px;
+  height: 160px;
 }
 
 // FORMATTING
