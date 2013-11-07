@@ -125,7 +125,7 @@
       var search = function (keywords) {
         resetSearch();
 
-        if (typeof(keywords) === 'undefined') {
+        if ( ng.isUndefined(keywords) ) {
           onInvalidTerms();
           return false;
         }
@@ -154,7 +154,7 @@
       //
 
       var select = function (item) {
-        if (item !== $scope.selected) {
+        if ( !ng.equals(item, $scope.selected) ) {
           $scope.selected = item;
           Session.set({ naics_code: item.get('code') });
         } else {
@@ -168,8 +168,8 @@
       $scope.$watch('results', function () {
         var code = Session.get('naics_code');
         if (code) {
-          utils.each($scope.results, function (result) {
-            if (result.get('code') == code) $scope.selected = result;
+          ng.forEach($scope.results, function (result) {
+            if ( ng.equals(result.get('code'), code) ) $scope.selected = result;
           });
         }
       });
@@ -240,7 +240,7 @@
       var search = function (address) {
         resetSearch();
 
-        if (typeof(address) === 'undefined') {
+        if ( ng.isUndefined(address) ) {
           onInvalidTerms();
           return false;
         }
@@ -268,7 +268,7 @@
       //
 
       var select = function (item) {
-        if (item !== $scope.selected) {
+        if ( !ng.equals(item, $scope.selected) ) {
           $scope.selected = item;
           Session.set({ address: item.get('address') });
         } else {
@@ -282,8 +282,8 @@
       $scope.$watch('results', function () {
         var address = Session.get('address');
         if (address) {
-          utils.each($scope.results, function (result) {
-            if (result.get('address') == address) $scope.selected = result;
+          ng.forEach($scope.results, function (result) {
+            if ( ng.equals(result.get('address'), address) ) $scope.selected = result;
           });
         }
       });

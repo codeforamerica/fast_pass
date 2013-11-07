@@ -29,9 +29,9 @@
 
   ]);
 
-  directives.directive('googleMap', [
+  directives.directive('googleMap', [ 'utils',
 
-    function () {
+    function (utils) {
       var defaultOptions = {
         zoom: 11,
         minZoom: 11,
@@ -203,7 +203,7 @@
         },
         link: function (scope, el, attrs) { 
           scope.$watch('selected', function (value) {
-            if (value && value == scope.result) {
+            if ( ng.isDefined(value) && ng.equals(value, scope.result) ) {
               el.addClass('selected');
               el.find('button').text('Selected');
             } else {

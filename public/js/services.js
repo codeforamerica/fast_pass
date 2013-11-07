@@ -10,29 +10,31 @@
 
   var services = ng.module(APPLICATION_NAME + '.services', [ 'ngResource' ]);
 
-  services.factory('Model', [
+  services.factory('Model', [ 'utils',
 
-    function () {
+    function (utils) {
       var func = function () {}
 
       var Model = function (attributes) {
-        if (typeof(attributes) !== 'undefined' && typeof(attributes) !== 'object') {
-          throw("'attributes' must be an instance of 'object'") 
+        if ( !ng.isObject(attributes) && !ng.isUndefined(attributes) ) {
+          throw("'attributes' must be an instance of 'object'");
         }
+
         attributes = attributes || {}
-        this.attributes = {}
+        this.attributes = {};
         attributes = utils.defaults(attributes, this.defaults);
         this.set(attributes)
+
         this.initialize.apply(this, arguments);
       }
 
-      utils.extend(Model.prototype, {
+      ng.extend(Model.prototype, {
         initialize: func,
 
-        attributes: {},
+        defaults: {},
 
         set: function (attrs) {
-          utils.extend(this.attributes, attrs);
+          ng.extend(this.attributes, attrs);
           return attrs;
         },
 
@@ -41,7 +43,7 @@
         },
 
         toJSON: function () {
-          return this.attributes;
+          return ng.copy(this.attributes);
         }
       });
 
@@ -49,19 +51,19 @@
         var parent = this;
         var child;
 
-        if (protoProps && utils.has(protoProps, 'constructor')) {
+        if (protoProps && protoProps.hasOwnProperty('constructor')) {
           child = protoProps.constructor;
         } else {
           child = function(){ return parent.apply(this, arguments); };
         }
 
-        utils.extend(child, parent, staticProps);
+        ng.extend(child, parent, staticProps);
 
         var Surrogate = function(){ this.constructor = child; };
         Surrogate.prototype = parent.prototype;
         child.prototype = new Surrogate;
 
-        if (protoProps) utils.extend(child.prototype, protoProps);
+        if (protoProps) ng.extend(child.prototype, protoProps);
 
         child.__super__ = parent.prototype;
 
@@ -80,7 +82,7 @@
 
       var WebStorage = Model.extend({
         save: function () {
-          return driver.set('data', JSON.stringify(this.toJSON()));
+          return driver.set('data', ng.toJson( this.toJSON() ));
         },
         remove: function () {
           return driver.remove('data');
@@ -91,7 +93,7 @@
         var data = driver.get('data');
 
         if (data) {
-          data = JSON.parse(data);
+          data = ng.fromJson(data);
         }
 
         return new WebStorage(data || {});
@@ -101,8 +103,8 @@
     }
   ]);
 
-  services.factory('Session', ['$resource', 'WebStorage', 'Model',
-    function ($resource, WebStorage, Model) {
+  services.factory('Session', ['utils', '$resource', 'WebStorage', 'Model',
+    function (utils, $resource, WebStorage, Model) {
 
       var API = $resource('api/sessions/:id', { }, {
         find:   { method: 'GET', params: { id: '@id' } },
@@ -119,7 +121,7 @@
         },
 
         reset: function () {
-          this.set(utils.defaults(this.defaults, {}));
+          this.attributes = ng.copy(this.defaults);
           this.save();
         },
 
@@ -144,7 +146,7 @@
         },
 
         isPersisted: function () {
-          return typeof(this.get('id')) !== 'undefined';
+          return ng.isDefined(this.get('id'));
         }
 
       });
@@ -157,8 +159,8 @@
     }
   ]);
 
-  services.factory('Address', ['$resource', 'Model',
-    function ($resource, Model) {
+  services.factory('Address', ['utils', '$resource', 'Model',
+    function (utils, $resource, Model) {
       var API = $resource('api/geo/geocode', { }, {
         search:   { method: 'GET', params: { address: '@address' }, isArray: true }
       });
@@ -208,8 +210,8 @@
     }
   ]);
 
-  services.factory('Neighborhood', ['$resource', 'Model',
-    function ($resource, Model) {
+  services.factory('Neighborhood', ['utils', '$resource', 'Model',
+    function (utils, $resource, Model) {
       var API = $resource('api/geo/neighborhoods', { }, {
         index: { method: 'GET', isArray: true }
       });
@@ -263,9 +265,9 @@
   ]);
 
 
-  services.factory('NAICSCategory', ['$resource', 'Model',
+  services.factory('NAICSCategory', ['utils', '$resource', 'Model',
 
-    function ($resource, Model) {
+    function (utils, $resource, Model) {
       var API = $resource('api/categories/naics', {}, {
         search: { method: 'GET', params: { keywords: null }, isArray: true }
       });
@@ -324,9 +326,9 @@
 
   ]);
 
-  services.factory('MapOverlay', [
+  services.factory('MapOverlay', [ 'utils',
 
-    function () {
+    function (utils) {
       var _iter = function (obj, cb) {
         if (ng.isArray(obj)) {
           ng.forEach(obj, function (item) {
@@ -340,7 +342,7 @@
       var GeoJSONOverlay = function (geojson, options) {
         options = options || {};
         this.overlay = new GeoJSON(geojson, utils.defaults(options, this.defaults));
-        if (this.overlay.type === "Error") this.error = true
+        if (ng.equals(this.overlay.type, "Error")) this.error = true
       }
 
       GeoJSONOverlay.prototype = {
@@ -450,7 +452,7 @@
           var that = this;
 
           $timeout(function () {
-            ng.forEach(that.markers, utils.bind(that.removeMarker, that));
+            ng.forEach(that.markers, ng.bind(that.removeMarker, that));
           });
 
           return this;
@@ -479,7 +481,7 @@
           var that = this;
 
           $timeout(function () {
-            ng.forEach(that.overlays, utils.bind(that.removeOverlay, that));
+            ng.forEach(that.overlays, ng.bind(that.removeOverlay, that));
           });
 
           return this;
@@ -532,9 +534,9 @@
     }  
   ]);
 
-  services.factory('CategoryKeywords', [
-    function () {
+  services.factory('CategoryKeywords', ['utils',
 
+    function (utils) {
       var SAMPLE_INPUTS = [
         'coffee shop',
         'automotive detail',
@@ -558,8 +560,53 @@
           return utils.random(SAMPLE_INPUTS);
         } 
       }
-
     }
+
+  ]);
+
+  services.factory('utils', [
+    
+      function () {
+
+        var Utils = function () {}
+
+        Utils.prototype = {
+          map: function (obj, iterator, context) {
+            var results = []; 
+
+            if ( ng.equals(obj, null) ) {
+              return results;
+            }
+
+            if ( Array.prototype.map && ng.equals(obj.map, Array.prototype.map) ) {
+              return obj.map(iterator, context);
+            }
+
+            ng.forEach(obj, function (value, index, list) {
+              results.push( iterator.call(context, value, list) );
+            });
+
+            return results;
+          },
+          defaults: function (obj) {
+            ng.forEach(Array.prototype.slice.call(arguments, 1), function (source) {
+              if (source) {
+                for (var prop in source) {
+                  if (ng.isUndefined(obj[prop])) obj[prop] = source[prop]
+                }
+              }
+            });
+            return obj;
+          },
+          random: function (obj) {
+            if (ng.isArray(obj)) {
+              return obj[Math.floor( Math.random(obj.length) )];
+            }
+          }
+        }
+      
+        return new Utils();
+      }
   ]);
 
 })(angular)
