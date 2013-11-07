@@ -357,7 +357,7 @@
       } 
 
       var onError = function () {
-      
+        $scope.showError = true;
       }
 
       var showNeighborhood = function (neighborhood) {
@@ -407,7 +407,7 @@
       }
 
       var onCityLimitsError = function () {
-        console.log('error');
+        $scope.showError = true;
       }
 
       $scope.$watch('cityLimits', function (value) {
