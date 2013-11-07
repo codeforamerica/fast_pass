@@ -330,7 +330,6 @@
           maxWords: '@'
         },
         link: function (scope, el, attrs) {
-          scope.countdown = scope.maxWords - count(scope.words); 
           scope.$watch('words', function () {
             scope.countdown = scope.maxWords - count(scope.words);
             scope.warning = (scope.countdown <= 0) ? 'warning' : null;
