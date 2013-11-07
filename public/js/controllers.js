@@ -33,6 +33,10 @@
     }
   ]);
 
+  //
+  // Section Controller - Handles session saving on section change
+  //
+
   controllers.controller('SectionCtrl', [ '$scope', 'Session',
     function ($scope, Session) {
       $scope.$on('$locationChangeSuccess', function () {
@@ -199,6 +203,14 @@
     }
   ]);
 
+  controllers.controller('30Ctrl', [
+
+    function () {
+    
+    }  
+
+  ]);
+
   //
   // Section 40 - Search for an address
   //
@@ -206,6 +218,8 @@
   controllers.controller('40Ctrl', [ '$scope', 'Session', 'Address', 'City', 'Map',
 
     function ($scope, Session, Address, City, Map) {
+
+      $scope.showRight = true;
 
       //
       // Address Search
@@ -336,6 +350,7 @@
           overlay.setStrokeWeight(4);
           overlay.setStrokeOpacity(0.1);
           map.addOverlay(overlay);
+          map.setBounds(overlay.getBounds());
         }
       });
 
@@ -346,8 +361,11 @@
   //
   // Section 41 - Neighborhood selection
   //
+
   controllers.controller('41Ctrl', ['$scope', 'Session', 'Neighborhood', 'City', 'Map',
     function ($scope, Session, Neighborhood, City, Map) {
+
+      $scope.showRight = true;
 
       var map = new Map();
       var neighborhoodOverlays = {}
@@ -429,6 +447,7 @@
           cityLimitsOverlay.setStrokeWeight(4);
           cityLimitsOverlay.setStrokeOpacity(0.1);
           map.addOverlay(cityLimitsOverlay);
+          map.setBounds(cityLimitsOverlay.getBounds());
         } else {
           if (cityLimitsOverlay) map.removeOverlay(cityLimitsOverlay);
         }

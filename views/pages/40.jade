@@ -1,43 +1,37 @@
-section(id='section-40', ng-controller='40Ctrl')
+extends ../layout/section
 
-  .left-screen
-    .container
+block left
+  progressbar(step='2')
 
-      include ../layout/header
+  h2 Enter the address of your space
 
-      progressbar(step='2')
+  search-form(action='search(terms)', terms='terms', placeholder='e.g. 495 S. Main Street')
 
-      h2 Enter the address of your space
+  div(class='search-results')
 
-      search-form(action='search(terms)', terms='terms', placeholder='e.g. 495 S. Main Street')
+    div(ng-show='showLoading')
+      .loading-small
+        img(src='img/loading-lite.gif')
 
-      div(class='search-results')
+    div(ng-show='showError')
+      span.error An error occurred! Please try again later.
 
-        div(ng-show='showLoading')
-          .loading-small
-            img(src='img/loading-lite.gif')
+    div(ng-show='showInvalid')
+      span.error Invalid input! Address must not be blank. 
 
-        div(ng-show='showError')
-          span.error An error occurred! Please try again later.
+    div(ng-show='showResults')
 
-        div(ng-show='showInvalid')
-          span.error Invalid input! Address must not be blank. 
+      div(ng-if='results.length <= 0')
+          span.error No results found for query '{{lastSearch}}'
 
-        div(ng-show='showResults')
+      div(ng-if='results.length > 0')
+        h3
+          | Please choose an address from the list below.
+        search-result(ng-repeat='result in results', result='result', selected='selected', select='select(result)')
+          span {{ result.get('address') }}
+          button(ng-click='select(result)') Select
 
-          div(ng-if='results.length <= 0')
-              span.error No results found for query '{{lastSearch}}'
+    navigation(back='/#/section/30', next='/#/section/50', next-disable='!selected')
 
-          div(ng-if='results.length > 0')
-            h3
-              | Please choose an address from the list below.
-            search-result(ng-repeat='result in results', result='result', selected='selected', select='select(result)')
-              span {{ result.get('address') }}
-              button(ng-click='select(result)') Select
-
-        navigation(back='/#/section/30', next='/#/section/50', next-disable='!selected')
-
-      include ../layout/footer
-
-  .right-screen
-    google-map(map='map', map-id='map')
+block right
+  google-map(map='map', map-id='map')

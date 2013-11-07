@@ -8,10 +8,6 @@
 
 (function (ng) {
 
-  function _getSectionTemplate($routeParams) {
-    return '/pages/' + $routeParams.sectionId
-  }
-
   var routes = ng.module(APPLICATION_NAME + '.routes', ['ngRoute']);
 
   routes.config(['$routeProvider',
@@ -22,9 +18,25 @@
         templateUrl: '/partials/start',
         controller: 'SectionCtrl'
       }).
-      when('/section/:sectionId', {
-        templateUrl: _getSectionTemplate,
-        controller: 'SectionCtrl'
+      when('/section/10', {
+        templateUrl: '/pages/10',
+        controller: '10Ctrl'
+      }).
+      when('/section/15', {
+        templateUrl: '/pages/15',
+        controller: '15Ctrl'
+      }).
+      when('/section/30', {
+        templateUrl: '/pages/30',
+        controller: '30Ctrl'
+      }).
+      when('/section/40', {
+        templateUrl: '/pages/40',
+        controller: '40Ctrl'
+      }).
+      when('/section/41', {
+        templateUrl: '/pages/41',
+        controller: '41Ctrl'
       }).
       when('/print', {
         templateUrl: '/partials/print'

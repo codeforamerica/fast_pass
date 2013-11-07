@@ -58,7 +58,7 @@ html, body {
 	color: @black;
 }
 
-.full-screen {
+.left-column {
   .transition(width .8s);
   width: 100%;
   min-height: 100%;
@@ -70,8 +70,7 @@ html, body {
   overflow-y: auto;
 } 
 
-.left-screen {
-  &:extend(.full-screen);
+.part-screen {
   .box-shadow(3px 0 6px rgba(0,0,0,0.10));
   width: @section-part-width;
   border-right: 1px solid @lightgray;
@@ -96,7 +95,7 @@ html, body {
   }
 }
 
-.right-screen {
+.right-column {
   height: 100%;
 	position: fixed;
 	top: 0;

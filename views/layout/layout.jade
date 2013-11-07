@@ -9,14 +9,14 @@ doctype 5
 html(class='no-js', ng-app='#{application_name}')
   //<![endif]
   head
-    include layout/_head
+    include head
 
   body(ng-controller='ApplicationCtrl')
 
-    include layout/_chromeframe
-    include layout/_dialog
+    include chromeframe
+    include dialog
 
     #main(role='main', ng-view)
       block content
-
-    include layout/_javascripts
+    
+    include javascripts

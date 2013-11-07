@@ -1,29 +1,24 @@
-section(id='section-41', ng-controller='41Ctrl')
-  .left-screen
-    .container
-      include ../layout/header
+extends ../layout/section
 
+block left
+  progressbar(step='2')
 
-      progressbar(step='2')
+  h2 Select a neighborhood
 
-      h2 Select a neighborhood
+  p.lede Do you know what neighborhood you'd like to be in?
 
-      p.lede Do you know what neighborhood you'd like to be in?
+  div(class='error', ng-show='showError')
+    span.warning An error occurred! Please try again later.
 
-      div(class='error', ng-show='showError')
-        span.warning An error occurred! Please try again later.
+  div(class='neighborhoods', ng-show='showNeighborhoods')
+    div(class='neighborhood', ng-repeat='neighborhood in neighborhoods')
+      p
+        a.button(href='/#/section/45', ng-mouseover='showNeighborhood(neighborhood)', ng-mouseout='hideNeighborhood(neighborhood)') {{ neighborhood.get('name') }}
+    div(class='city-limits')
+      p
+        a.button(href='/#/section/45', ng-mouseover='showCityLimits()', ng-mouseout='hideCityLimits()') Any neighborhood
 
-      div(class='neighborhoods', ng-show='showNeighborhoods')
-        div(class='neighborhood', ng-repeat='neighborhood in neighborhoods')
-          p
-            a.button(href='/#/section/45', ng-mouseover='showNeighborhood(neighborhood)', ng-mouseout='hideNeighborhood(neighborhood)') {{ neighborhood.get('name') }}
-        div(class='city-limits')
-          p
-            a.button(href='/#/section/45', ng-mouseover='showCityLimits()', ng-mouseout='hideCityLimits()') Any neighborhood
+  navigation(back='/#/section/30')
 
-      navigation(back='/#/section/30')
-
-      include ../layout/footer
-
-  .right-screen
-    google-map(map='map', map-id='map')
+block right
+  google-map(map='map', map-id='map')
