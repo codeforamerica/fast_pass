@@ -385,11 +385,11 @@
       var overlays = {}
 
       var getOverlay = function (area) {
-        if ( ng.isDefined(area) ) return overlays[ area.get('name') ];
+        if ( ng.isDefined(area) ) return overlays[ area.get('id') ];
       }
 
       var setOverlay = function (area, overlay) {
-        if ( ng.isDefined(area) ) overlays[ area.get('name') ] = overlay;
+        if ( ng.isDefined(area) ) overlays[ area.get('id') ] = overlay;
       }
 
       var showOverlay = function (overlay) {
@@ -429,26 +429,28 @@
       }
 
       var onAreaMouseover = function (area) {
-        showArea(area); 
+        showArea(area);
       }
 
       var onAreaMouseout = function (area) {
         if ( !ng.equals($scope.selected, area) ) {
-          hideArea(area); 
+          hideArea(area);
         }
       }
 
       var select = function (area) {
         if ( !ng.equals($scope.selected, area) ) {
           hideArea($scope.selected);
-          $scope.selected = area;
           showArea(area);
           zoomToArea(area);
+          $scope.selected = area;
         } else {
           $scope.selected = undefined;
           hideArea(area);
           zoomToOverlay( getOverlay($scope.city) );
         }
+
+        Session.set({ area: $scope.selected });
       }
 
       //
@@ -483,7 +485,7 @@
       var onNeighborhoodSuccess = function (neighborhoods) {
         $scope.neighborhoods = neighborhoods;
         $scope.showError = false;
-      } 
+      }
 
       var onNeighborhoodError = function () {
         $scope.showError = true;
@@ -517,14 +519,12 @@
         }
       });
 
-      $scope.map = map;
+      Neighborhood.all({}, onNeighborhoodSuccess, onNeighborhoodError);
 
       $scope.onAreaMouseover = onAreaMouseover;
       $scope.onAreaMouseout = onAreaMouseout;
-
       $scope.select = select;
-
-      Neighborhood.all({}, onNeighborhoodSuccess, onNeighborhoodError)
+      $scope.map = map;
     }
   ]);
 

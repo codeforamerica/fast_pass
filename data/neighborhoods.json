@@ -1,6 +1,7 @@
 [
   {
     "name": "Downtown Las Vegas",
+    "id": "1",
     "geometry": {
       "type": "FeatureCollection",
       "features": [
@@ -156,6 +157,7 @@
   },
   {
     "name": "Summerlin",
+    "id": 2,
     "geometry": {
       "type": "FeatureCollection",
       "features": [
