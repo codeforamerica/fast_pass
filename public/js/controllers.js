@@ -382,68 +382,133 @@
       $scope.showRight = true;
 
       var map = new Map();
-      var neighborhoodOverlays = {}
+      var overlays = {}
 
-      var onSuccess = function (neighborhoods) {
+      var getOverlay = function (area) {
+        if ( ng.isDefined(area) ) return overlays[ area.get('name') ];
+      }
+
+      var setOverlay = function (area, overlay) {
+        if ( ng.isDefined(area) ) overlays[ area.get('name') ] = overlay;
+      }
+
+      var showOverlay = function (overlay) {
+        if ( ng.isUndefined(overlay) ) {
+          return false;
+        } else {
+          overlay.setFillOpacity(0.15);
+        }
+      }
+
+      var hideOverlay = function (overlay) {
+        if ( ng.isUndefined(overlay) ) {
+          return false;
+        } else {
+          overlay.setFillOpacity(0.0);
+        }
+      }
+
+      var zoomToOverlay = function (overlay) {
+        if ( ng.isUndefined(overlay) ) {
+          return false;
+        } else {
+          map.setBounds( overlay.getBounds() );
+        }
+      }
+
+      var showArea = function (area) {
+        showOverlay( getOverlay(area) );
+      }
+
+      var hideArea = function (area) {
+        hideOverlay( getOverlay(area) );
+      }
+
+      var zoomToArea = function (area) {
+        zoomToOverlay( getOverlay(area) );
+      }
+
+      var onAreaMouseover = function (area) {
+        showArea(area); 
+      }
+
+      var onAreaMouseout = function (area) {
+        if ( !ng.equals($scope.selected, area) ) {
+          hideArea(area); 
+        }
+      }
+
+      var select = function (area) {
+        if ( !ng.equals($scope.selected, area) ) {
+          hideArea($scope.selected);
+          $scope.selected = area;
+          showArea(area);
+          zoomToArea(area);
+        } else {
+          $scope.selected = undefined;
+          hideArea(area);
+          zoomToOverlay( getOverlay($scope.city) );
+        }
+      }
+
+      //
+      // City
+      //
+
+      var onCitySuccess = function (city) {
+        $scope.city = city;
+      }
+
+      var onCityError = function () {
+        $scope.showError = true;
+      }
+
+      $scope.$watch('city', function (area) {
+        if (area) {
+          var overlay = Map.Overlay.fromGeoJSON(area.get('geometry'));
+          setOverlay(area, overlay);
+          overlay.setStrokeWeight(4);
+          overlay.setStrokeOpacity(0.1);
+          map.addOverlay(overlay);
+          zoomToArea(area);
+        }
+      });
+
+      City.find({}, onCitySuccess, onCityError);
+
+      //
+      // Neighborhoods
+      //
+
+      var onNeighborhoodSuccess = function (neighborhoods) {
         $scope.neighborhoods = neighborhoods;
         $scope.showError = false;
       } 
 
-      var onError = function () {
+      var onNeighborhoodError = function () {
         $scope.showError = true;
       }
 
-      var showNeighborhood = function (neighborhood) {
-        var overlay = neighborhoodOverlays[neighborhood.get('name')];
-        if (overlay) {
-          overlay.setFillOpacity(0.15);
-        }
-      }
-
-      var hideNeighborhood = function (neighborhood) {
-        var overlay = neighborhoodOverlays[neighborhood.get('name')];
-        if (overlay) {
-          if ( !ng.equals($scope.selectedNeighborhood, neighborhood) ) {
-            overlay.setFillOpacity(0.0);
-          }
-        }
-      }
-
-      var selectNeighborhood = function (neighborhood) {
-        var overlay = neighborhoodOverlays[neighborhood.get('name')];
-
-        if ( !ng.equals($scope.selectedNeighborhood, neighborhood) ) {
-          $scope.selectedNeighborhood = neighborhood;
-          overlay.setFillOpacity(0.15);
-          map.setBounds(overlay.getBounds());
-        } else {
-          $scope.selectedNeighborhood = null; 
-          map.setBounds(cityLimitsOverlay.getBounds())
-        }
-      }
-
-      $scope.$watch('neighborhoods', function (neighborhoods) {
-        if (neighborhoods) {
-          ng.forEach(neighborhoods, function (neighborhood) {
-            var overlay = Map.Overlay.fromGeoJSON(neighborhood.get('geometry'));
-
-            $scope.map.addOverlay(overlay);
+      $scope.$watch('neighborhoods', function (areas) {
+        if (areas) {
+          ng.forEach(areas, function (area) {
+            var overlay = Map.Overlay.fromGeoJSON(area.get('geometry'));
+            setOverlay(area, overlay);
+            map.addOverlay(overlay);
 
             overlay.on('mouseover', function () {
-              showNeighborhood(neighborhood);
+              onAreaMouseover(area);
             });
 
             overlay.on('mouseout', function () {
-              hideNeighborhood(neighborhood);
+              onAreaMouseout(area);
             });
 
             overlay.on('click', function () {
-              selectNeighborhood(neighborhood);
+              select(area);
             });
 
             overlay.setClickable(true)
-
-            neighborhoodOverlays[neighborhood.get('name')] = overlay;
           });
 
           $scope.showNeighborhoods = true;
@@ -454,55 +519,12 @@
 
       $scope.map = map;
 
-      $scope.showNeighborhood = showNeighborhood;
-      $scope.hideNeighborhood = hideNeighborhood;
-      $scope.selectNeighborhood = selectNeighborhood;
+      $scope.onAreaMouseover = onAreaMouseover;
+      $scope.onAreaMouseout = onAreaMouseout;
 
-      Neighborhood.all({}, onSuccess, onError)
+      $scope.select = select;
 
-      //
-      // City Limits
-      //
-
-      var cityLimitsOverlay;
-
-      var showCityLimits = function () {
-        if (cityLimitsOverlay) {
-          cityLimitsOverlay.setFillOpacity(0.15);
-          map.setBounds(cityLimitsOverlay.getBounds());
-        }
-      }
-
-      var hideCityLimits = function () {
-        if (cityLimitsOverlay) {
-          cityLimitsOverlay.setFillOpacity(0);
-        }
-      }
-
-      var onCityLimitsSuccess = function (cityLimits) {
-        $scope.cityLimits = cityLimits;
-      }
-
-      var onCityLimitsError = function () {
-        $scope.showError = true;
-      }
-
-      $scope.$watch('cityLimits', function (value) {
-        if (value) {
-          cityLimitsOverlay = Map.Overlay.fromGeoJSON(value.get('geometry'));
-          cityLimitsOverlay.setStrokeWeight(4);
-          cityLimitsOverlay.setStrokeOpacity(0.1);
-          map.addOverlay(cityLimitsOverlay);
-          map.setBounds(cityLimitsOverlay.getBounds());
-        } else {
-          if (cityLimitsOverlay) map.removeOverlay(cityLimitsOverlay);
-        }
-      });
-
-      City.find({}, onCityLimitsSuccess, onCityLimitsError);
-
-      $scope.showCityLimits = showCityLimits;
-      $scope.hideCityLimits = hideCityLimits;
+      Neighborhood.all({}, onNeighborhoodSuccess, onNeighborhoodError)
     }
   ]);
 
