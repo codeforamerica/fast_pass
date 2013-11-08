@@ -397,14 +397,28 @@
         var overlay = neighborhoodOverlays[neighborhood.get('name')];
         if (overlay) {
           overlay.setFillOpacity(0.15);
-          map.setBounds(overlay.getBounds());
         }
       }
 
       var hideNeighborhood = function (neighborhood) {
         var overlay = neighborhoodOverlays[neighborhood.get('name')];
         if (overlay) {
-          overlay.setFillOpacity(0.0);
+          if ( !ng.equals($scope.selectedNeighborhood, neighborhood) ) {
+            overlay.setFillOpacity(0.0);
+          }
+        }
+      }
+
+      var selectNeighborhood = function (neighborhood) {
+        var overlay = neighborhoodOverlays[neighborhood.get('name')];
+
+        if ( !ng.equals($scope.selectedNeighborhood, neighborhood) ) {
+          $scope.selectedNeighborhood = neighborhood;
+          overlay.setFillOpacity(0.15);
+          map.setBounds(overlay.getBounds());
+        } else {
+          $scope.selectedNeighborhood = null; 
+          map.setBounds(cityLimitsOverlay.getBounds())
         }
       }
 
@@ -412,7 +426,23 @@
         if (neighborhoods) {
           ng.forEach(neighborhoods, function (neighborhood) {
             var overlay = Map.Overlay.fromGeoJSON(neighborhood.get('geometry'));
+
             $scope.map.addOverlay(overlay);
+
+            overlay.on('mouseover', function () {
+              showNeighborhood(neighborhood);
+            });
+
+            overlay.on('mouseout', function () {
+              hideNeighborhood(neighborhood);
+            });
+
+            overlay.on('click', function () {
+              selectNeighborhood(neighborhood);
+            });
+
+            overlay.setClickable(true)
+
             neighborhoodOverlays[neighborhood.get('name')] = overlay;
           });
 
@@ -423,8 +453,10 @@
       });
 
       $scope.map = map;
+
       $scope.showNeighborhood = showNeighborhood;
       $scope.hideNeighborhood = hideNeighborhood;
+      $scope.selectNeighborhood = selectNeighborhood;
 
       Neighborhood.all({}, onSuccess, onError)
 

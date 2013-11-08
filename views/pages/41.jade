@@ -13,7 +13,7 @@ block left
   div(class='neighborhoods', ng-show='showNeighborhoods')
     div(class='neighborhood', ng-repeat='neighborhood in neighborhoods')
       p
-        a.button(href='/#/section/45', ng-mouseover='showNeighborhood(neighborhood)', ng-mouseout='hideNeighborhood(neighborhood)') {{ neighborhood.get('name') }}
+        a.button(href='/#/section/45', ng-mouseover='showNeighborhood(neighborhood)', ng-mouseout='hideNeighborhood(neighborhood)', ng-click='selectNeighborhood(neighborhood)') {{ neighborhood.get('name') }}
     div(class='city-limits')
       p
         a.button(href='/#/section/45', ng-mouseover='showCityLimits()', ng-mouseout='hideCityLimits()') Any neighborhood

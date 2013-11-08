@@ -503,7 +503,7 @@
         reset: function (map) {
           if (map) {
             this.map = map;
-            this.clearOverlays().clearMarkers().trigger('resize');
+            this.clearOverlays().clearMarkers();
           }
         },
         trigger: function (e) {
@@ -647,6 +647,13 @@
           });
           return this;
         },
+        setVisibile: function (visible) {
+          _iter(this.overlay, function (obj) {
+            obj.setOptions({ visible: visible });
+          });
+          return this;
+        },
+
         getBounds: function () {
           var bounds = new google.maps.LatLngBounds();
 
@@ -663,6 +670,20 @@
           })
 
           return bounds;
+        },
+        trigger: function (e) {
+          _iter(this.overlay, function (obj) {
+            google.maps.event.trigger(obj, e);
+          });
+
+          return this;
+        },
+        on: function (e, cb) {
+          _iter(this.overlay, function (obj) {
+            google.maps.event.addListener(obj, e, cb);
+          });
+
+          return this;
         }
       }
 
