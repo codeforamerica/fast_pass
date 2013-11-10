@@ -1,13 +1,5 @@
 doctype 5
-//if lt IE 7
-  html(xmlns:ng='http://http://angularjs.org', id='ng-app', class='no-js lt-ie9 lt-ie8 lt-ie7', ng-app='#{application_name}')
-//if IE 7
-  html(xmlns:ng='http://http://angularjs.org', id='ng-app', class='no-js lt-ie9 lt-ie8', ng-app='#{application_name}')
-//if IE 8
-  html(xmlns:ng='http://http://angularjs.org', id='ng-app', class='no-js lt-ie9', ng-app='#{application_name}')
-//-if gt IE 8
-html(class='no-js', ng-app='#{application_name}')
-  //<![endif]
+html(class='no-js', xmlns:ng='http://http://angularjs.org', id='ng-app', ng-app='#{application_name}')
   head
     include head
 
