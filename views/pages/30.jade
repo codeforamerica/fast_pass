@@ -1,13 +1,15 @@
-section#section30(hide-map='')
+extends ../layout/section
+
+block left
   progressbar(step='2')
-  h2 Have you obtained a space for your business already&quest;
+
+  h2 Have you obtained a space for your business already?
   p.lede
-    | If you&apos;ve already bought or leased a space&comma; or have a particular space you&rsquor;d like to know more about&comma; click &OpenCurlyDoubleQuote;Yes&rdquor;&period;
-  .radio-select
-    p
-      a.button(href='/#/section/40') Yes&comma; I have an address in mind
-    // p><a class='button' href='/#/section/41'>No, but I know what neighborhood I want to be in</a></p
-    p
-      a.button(href='/#/section/41') No&comma; help me find a property
-  .section-navigation
-    a.back.button(href='/#/section/15') Back
+    | If you've already bought or leased a space, or have a particular space you'd like to know more about, click "Yes".
+
+  p
+    a.button(href='/#/section/40') Yes, I have an address in mind
+  p
+    a.button(href='/#/section/41') No, help me find a property
+
+  navigation(back='/#/section/15')

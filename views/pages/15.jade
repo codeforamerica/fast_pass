@@ -1,11 +1,15 @@
-section#section15(ng-controller='15Ctrl as app', hide-map='')
+extends ../layout/section
+
+block left
   progressbar(step='1')
+
   h2 Describe your business
+
   p.lede
     | Please describe your business in complete detail by writing one or two paragraphs&period;
-  #business-description-form.form
-    textarea#business-description(name='business-description', autofocus='', ng-model='userdata.businessDescription', max-words='350')
-    .textarea-note(ng-class='warning') &lcub;&lcub;countdown&rcub;&rcub; words remaining&period;
-  .section-navigation
-    a.back.button(href='/#/section/12') Back
-    a.next.button(href='/#/section/30') Next
+  form
+    div(max-words=350, words='description')
+      textarea(autofocus='', ng-model='words')
+      .textarea-note(ng-class='warning') {{countdown}} words remaining.
+
+  navigation(back='/#/section/10', next='/#/section/30')

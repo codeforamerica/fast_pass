@@ -1,108 +1,17 @@
-section#section50(ng-controller='50Ctrl as app', show-map='', ng-cloak='')
-  progressbar(step='3')
-  h2 &lcub;&lcub;title&rcub;&rcub;
-  .loading-small(style='margin: 30px 0', ng-show='searchLoading')
-    img(src='img/loading-lite.gif')
-  div(ng-show='errorMsg')
-    span.error &lcub;&lcub;errorMsg&rcub;&rcub;
-  div(ng-show='parcelLoaded')
-    table.no-style
-      tbody
-        tr
-          td(width='200px')
-            strong
-              a.no-color.help(href='', modal-link='') Parcel number
-          td &num;&lcub;&lcub;parcel&period;number&rcub;&rcub;
-        tr
-          td
-            strong
-              a.no-color.help(href='') Parcel master address
-          td &lcub;&lcub;parcel&period;master&UnderBar;address&rcub;&rcub;
-        tr
-          td
-            strong
-              a.no-color.help(href='') Other addresses on record
-          td
-            span(ng-repeat='address in parcel.record_address')
-              | &lcub;&lcub;address&rcub;&rcub;
-              br
-        tr
-          td
-            strong
-              a.no-color.help(href='') Ward
-          td &lcub;&lcub;parcel&period;ward&rcub;&rcub;
-        tr
-          td
-            strong
-              a.no-color.help(href='') Tax District
-          td &lcub;&lcub;parcel&period;tax&UnderBar;district&rcub;&rcub;
-        tr
-          td
-            strong
-              a.no-color.help(href='') Owner
-          td
-            | &lcub;&lcub;parcel&period;owner&rcub;&rcub;
-            br
-            span(ng-repeat='line in parcel.owner_address track by $index')
-              | &lcub;&lcub;line&rcub;&rcub;
-              br
-            // "track by $index": see here: http://www.anujgakhar.com/2013/06/15/duplicates-in-a-repeater-are-not-allowed-in-angularjs/
-    div(ng-controller='ModalDemoCtrl')
-      h3
-        a.help.no-color(href='', data-title='Zoning', data-content='Planning departments use zones to make sure that different uses are not conflicting with other uses.', ng-click='open()') Zoning
-    ul.comfy.no-bullets
-      li(ng-repeat='zone in parcel.zones')
-        strong
-          span.clickable.{{zone.color}}.pill &lcub;&lcub;zone&period;designation&rcub;&rcub;
-          a(href='', data-title='#{zone_id} #{zone_name} Zone Definition [note: this is old]', title='click to highlight zone on map') &lcub;&lcub;zone&period;name&rcub;&rcub;
-    h3 Buildings
-    table
-      thead
-        tr
-          td(width='30%') Unit Number
-          td(width='70%') Current Occupancy Type
-      tbody
-        tr(ng-repeat='building in parcel.buildings')
-          td &lcub;&lcub;building&period;unitNumber&rcub;&rcub;
-          td
-            span.{{building.color}}.pill &lcub;&lcub;building&period;occupancyType&rcub;&rcub;
-            | &lcub;&lcub;building&period;occupancyName&rcub;&rcub;
-    h3 Land use history
-    ul
-      li(ng-repeat='landuse in parcel.landuse')
-        | &lcub;&lcub;landuse&rcub;&rcub;
-    div(ng-show='homeOccupancy')
-      h3 Operating from a residential property
-      p
-        | This property is located in a residential zone&period; If you&apos;re operating your business from a residence&comma; you&apos;ll need to apply for
-        a(href='http://www.lasvegasnevada.gov/Apply/26524.htm', target='_blank') a home occupancy permit
-        | &period;
-    div(ng-show='downtownIncentives')
-      h3 Incentives you may qualify for
-      ul
-        li
-          a(href='http://lvrda.org/retail-assistance-program.php', target='_blank') Downtown Retail Assistance Program
-        li
-          a(href='http://lvrda.org/fast-track-program.php', target='_blank') Redevelopment Area Fast Track Program
-        li
-          a(href='http://lvrda.org/tif-program.php', target='_blank') Tax Increment Financing &lpar;TIF&rpar;
-        li
-          a(href='http://lvrda.org/quickstart-programs.php', target='_blank') Quick Start Program
-        li
-          a(href='http://lvrda.org/visual-improvement-program.php', target='_blank') Visual Improvement Program
-    div(ng-show='showOtherLinks')
-      h3 Other Links
-      ul
-        li
-          a(href='http://tigerweb.geo.census.gov/datamapper/map.html', target='_blank') Demographics from US Census
-        li
-          a(href='http://gisgate.co.clark.nv.us/openweb/', target='_blank') View on Clark County GISMO
-        li
-          a(href='http://clvplaces.appspot.com/apps/interactive/clvpi.htm', target='_blank') View on Las Vegas Interactive Map
-  .section-navigation
-    span(ng-show='previousIsAddressSearch')
-      a.back.button(href='/#/section/40') Return to address search
-    span(ng-show='previousIsZoningOverview')
-      a.back.button(href='/#/section/45') Return to zoning overview
-    span(ng-show='parcelLoaded')
-      a.next.button(href='/#/section/70') Proceed with this property
+section(id='section-50', ng-controller='50Ctrl')
+
+  .left-screen
+    .container
+
+    include ../layout/header
+
+    progressbar(step='3')
+
+    h2 Address Title
+
+    navigation(back='/#/section/40')
+
+    include ../layout/footer
+
+  .right-screen
+    google-map(map='map', map-id='map')

@@ -15,7 +15,7 @@ var express = require('express')
   , api = require('./routes/api')
   , http = require('http')
   , path = require('path')
-  , lessMiddleware = require('less-middleware');
+  , less = require('less-middleware');
 
 //
 // APPLICATION CONFIGURATION
@@ -30,12 +30,13 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(app.router);
-app.use(lessMiddleware({
+app.use(less({
     src: __dirname + '/public/less',
     dest: __dirname + '/public/css',
     prefix: '/css',
     once: true,
     compress: true,
+    optimization: 2,
     debug: true
 }));
 
@@ -61,13 +62,21 @@ app.get('/pages/:name', routes.pages)
 app.get('/api/parcels/search', api.parcels.search);
 app.get('/api/parcels', api.parcels.index);
 
-// Geocode Routes
-app.get('/api/geocode/address', api.geo.geocodeAddress);
-app.get('/api/geocode/position', api.geo.geocodePosition);
-
 // Category Routes
-app.get('/api/categories/naics_search', api.categories.naics_search);
-app.get('/api/categories/business_licensing', api.categories.business_licensing)
+app.get('/api/categories/naics', api.categories.naics_search);
+app.get('/api/categories/business_licensing', api.categories.business_licensing_search)
+
+// Session Routes
+app.get('/api/sessions/:id', api.sessions.find);
+app.put('/api/sessions/:id', api.sessions.update);
+app.post('/api/sessions', api.sessions.create);
+
+// Geod Routes
+
+app.get('/api/geo/geocode', api.geo.geocode);
+app.get('/api/geo/reverse_geocode', api.geo.reverse_geocode);
+app.get('/api/geo/neighborhoods', api.geo.neighborhoods);
+app.get('/api/geo/city', api.geo.city);
 
 //
 // INITIALIZE SERVER

@@ -1,0 +1,14 @@
+doctype 5
+html(class='no-js', xmlns:ng='http://http://angularjs.org', id='ng-app', ng-app='#{application_name}')
+  head
+    include head
+
+  body(ng-controller='ApplicationCtrl')
+
+    include chromeframe
+    include dialog
+
+    #main(role='main', ng-view)
+      block content
+    
+    include javascripts

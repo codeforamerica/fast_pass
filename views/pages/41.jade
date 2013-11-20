@@ -1,13 +1,30 @@
-section#section41(ng-controller='41Ctrl as app', show-map='')
+extends ../layout/section
+
+block left
   progressbar(step='2')
-  h2 Select a neighborhood
-  p.lede Do you know what neighborhood you&apos;d like to be in&quest;
-  .radio-select
-    p
-      a.button(href='/#/section/45', ng-mouseover='hoverDowntown()', ng-mouseout='unhover()', ng-click='userdata.neighborhood="downtown"') Downtown Las Vegas
-    p
-      a.button(href='/#/section/45', ng-mouseover='hoverSummerlin()', ng-mouseout='unhover()', ng-click='userdata.neighborhood="summerlin"') Summerlin
-    p
-      a.button(href='/#/section/45', ng-mouseover='hoverCity()', ng-mouseout='unhover()', ng-click='userdata.neighborhood="any"') Any neighborhood
-  .section-navigation
-    a.back.button(href='/#/section/30') Back
+
+  div(class='neighborhoods')
+
+    div(ng-show='showLoading')
+      .loading-small
+        img(src='img/loading-lite.gif')
+
+    div(ng-show='showError')
+      span.error An error occurred! Please try again later.
+
+    div(ng-show='showNeighborhoods')
+      div(ng-show='neighborhoods.length <= 0')
+          span.error No results found for query '{{lastSearch}}'
+      div(ng-show='neighborhoods.length > 0')
+        h2 Select a neighborhood
+        search-result(ng-repeat='neighborhood in neighborhoods', result='neighborhood', selected='selected', select='select(neighborhood)')
+          span {{ result.get('name') }}
+          button(ng-click='select(neighborhood)') Select
+        search-result(result='city', selected='selected', select='select(city)')
+          span Any neighborhood
+          button(ng-click='select(city)') Select
+
+  navigation(back='/#/section/30', next='/#/section/45')
+
+block right
+  google-map(map='map', map-id='map')

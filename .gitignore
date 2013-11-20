@@ -1,4 +1,4 @@
 node_modules
 *.log
 .DS_Store
-public/stylesheets/styles.css
+public/css/styles.css
