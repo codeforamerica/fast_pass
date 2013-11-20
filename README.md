@@ -1,4 +1,4 @@
-FastTrack
+Fast Pass
 ======
 
 ## Installation
