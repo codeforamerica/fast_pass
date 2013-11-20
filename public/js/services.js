@@ -62,7 +62,7 @@
   //
   // Model - A base model to be extended by other
   // models. Provides an interface for setting/retrieving
-  // attributes.
+  // data.
   //
 
   services.factory('Model', [ 'utils',
@@ -70,15 +70,15 @@
     function (utils) {
       var func = function () {}
 
-      var Model = function (attributes) {
-        if ( !ng.isObject(attributes) && !ng.isUndefined(attributes) ) {
-          throw("'attributes' must be an instance of 'object'");
+      var Model = function (data) {
+        if ( !ng.isObject(data) && !ng.isUndefined(data) ) {
+          throw("'data' must be an instance of 'object'");
         }
 
-        attributes = attributes || {}
-        this.attributes = {};
-        attributes = utils.defaults(attributes, this.defaults);
-        this.set(attributes)
+        data = data || {}
+        this.data = {};
+        data = utils.defaults(data, this.defaults);
+        this.set(data)
 
         this.initialize.apply(this, arguments);
       }
@@ -88,17 +88,17 @@
 
         defaults: {},
 
-        set: function (attrs) {
-          ng.extend(this.attributes, attrs);
-          return attrs;
+        set: function (data) {
+          ng.extend(this.data, data);
+          return data;
         },
 
-        get: function (attr) {
-          return this.attributes[attr]    
+        get: function (data) {
+          return this.data[data]    
         },
 
         toJSON: function () {
-          return ng.copy(this.attributes);
+          return ng.copy(this.data);
         }
       });
 
@@ -187,8 +187,10 @@
           description: null
         },
 
+        id: null,
+
         reset: function () {
-          this.attributes = ng.copy(this.defaults);
+          this.data = ng.copy(this.defaults);
           this.save();
         },
 
@@ -206,9 +208,9 @@
           }
 
           if (this.isPersisted()) {
-            API.update({ id: 1 }, onSuccess, onError); 
+            API.update(this.toJSON(), onSuccess, onError); 
           } else {
-            API.create({ id: 1 }, onSuccess, onError);
+            API.create(this.toJSON(), onSuccess, onError);
           }
         },
 
@@ -504,9 +506,7 @@
           if (map) {
 
             this.map = map;
-            this.clearOverlays().clearMarkers();
-            this.trigger('resize');
-
+            this.clearOverlays().clearMarkers().trigger('resize');
           }
         },
         trigger: function (e) {

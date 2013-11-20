@@ -1,92 +1,28 @@
-var utils  = require(process.cwd() + '/lib/utils');
-var DBDriver = require(process.cwd() + '/db/driver');
-var Model  = require('./model')
+var DBDriver = require( process.cwd() + '/db/driver' );
+var Model    = require( './model' );
+var sql = require('sql');
 
 var DBModel = Model.extend({
 
-  //
-  // Saves the model instance to the database
-  // Arguments:
-  //  * Function - Callback
-  // Returns:
-  //  * DBModel - instance
-  //  * Boolean - Success of save
-  //
-  save: function (cb) {
-    cb = cb || function () {}
-
-    if (!this.valid()) {
-      cb(this, false);
-    }
-
-    this.persisted() ? this._update(cb) : this._create(cb);
-  },
-
-  //
-  // Updates a persisted model instancs
-  // Arguments:
-  //  * Function - Callback
-  // Returns:
-  //  * DBModel - instance
-  //  * Boolean - success of update
-  //
-  _update: function (cb) {
-    var klass = this.constructor,
-        attrs = utils.defaults({}, this.attributes),
-        that  = this,
-        id    = attrs.id;
-
-    delete attrs.id;
-
-    var keys = utils.keys(attrs),
-        vals = utils.values(attrs),
-        tmp  = [];
-
-    for (var i = 0; i < keys.length; i++) {
-      tmp.push('' + keys[i] + ' = $' + (i + 1));
-    }
-
-    var query = 'UPDATE ' + klass.table + ' SET ' + tmp.join(', ') + ' WHERE id = ' + id + ' RETURNING *;';
-
-    klass.query(query, vals, function (rows) {
-      if (rows.length > 0) {
-        that.set(rows[0]);
-        cb(that, true);
-      } else {
-        cb(that, false);
-      }
-    });
-  },
-
-  //
-  // Saves a non-persisted model into the database
-  // Arguments:
-  //  * Function - Callback
-  // Returns:
-  //  * DBModel - instance
-  //  * Boolean - success of create
-  //
-  _create: function (cb) {
+  save: function (successCb, errorCb) {
+    var instance = this;
     var klass = this.constructor;
-        attrs = utils.defaults({}, this.attributes),
-        that  = this;
+    var data  = this.toJSON();
 
-    var cols = utils.keys(attrs),
-        vals = utils.values(attrs),
-        tmp  = [];
+    var onSuccess = function (rows) {
+      instance.set(rows[0]);
+      successCb(instance);
+    }
 
-    for (var i = 0; i < vals.length; i++) { tmp.push('$' + (i+1)) }
+    var onError = function (err) {
+      errorCb(err);
+    }
 
-    var query = 'INSERT INTO ' + klass.table + ' (' + cols.join(', ') + ') VALUES(' + tmp.join(', ') + ') RETURNING *;';
-
-    klass.query(query, vals, function (rows) {
-      if (rows.length > 0) {
-        that.set(rows[0]);
-        cb(that, true);
-      } else {
-        cb(that, false);
-      }
-    });
+    if (this.persisted()) {
+      DBDriver.update(klass.table, { "id": this.get('id') }, data, onSuccess, onError);
+    } else {
+      DBDriver.create(klass.table, data, onSuccess, onError);
+    }
   },
 
   //
@@ -96,13 +32,18 @@ var DBModel = Model.extend({
   // Returns:
   //  * Boolean - success of deletion
   //
-  destroy: function (cb) {
+  destroy: function (successCb, errorCb) {
     var klass = this.constructor;
-    if (this.persisted) {
-      DBDriver.query('DELETE FROM ' + klass.table + ' WHERE id = ' + this.get('id'), [], function (res) {
-        if (res) cb(true);
-      });
+
+    var onSuccess = function () {
+      successCb(true);
     }
+
+    var onError = function (err) {
+      errorCb(err) 
+    }
+
+    DBDriver.destroy(klass.table, { "id": this.get('id') }, onSuccess, onError);
   },
 
   //
@@ -130,11 +71,18 @@ var DBModel = Model.extend({
   // Returns:
   //  * Array - results
   //
-  query: function (q,v,cb) {
+  where: function (conditions, successCb, errorCb) {
     var klass = this;
-    DBDriver.query(q, v, function (results) {
-      cb( utils.map(results, function (result) { return new klass(result); }) );
-    });
+
+    var onSuccess = function (rows) {
+      successCb( utils.map(rows, klass.new )) 
+    }
+
+    var onError = function (err) {
+      errorCb(err) 
+    }
+
+    DBDriver.where(this.table, conditions, onSuccess, onError);
   },
 
   //
@@ -223,5 +171,16 @@ var DBModel = Model.extend({
   }
 
 })
+
+DBModel.define = function (childProto, parentProto) {
+  var model = DBModel.extend(childProto, parentProto);
+
+  model.extend(sql.define({
+    name: model.table, 
+    columns: model.columns
+  }));
+
+  return model;
+}
 
 module.exports = DBModel;

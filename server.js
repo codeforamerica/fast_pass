@@ -5,6 +5,8 @@ if (typeof(process.env.NODE_ENV) === 'undefined') {
   console.log('The application environment is set to: ' + process.env.NODE_ENV);
 }
 
+var MODELS = '/models/'
+
 //
 // DEPENDENCIES
 //

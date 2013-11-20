@@ -1,17 +1,11 @@
 var DBModel = require('./db_model');
 
-var Session = DBModel.extend({
-
-  defaults: {
-    'category_code': undefined,
-    'parcel_code': undefined,
-    'zone_code': undefined
-  }
-
+var Session = DBModel.define({
+   
 }, {
-
-  table: 'sessions'
-
+  table: 'sessions',
+  columns: [ 'id', 'data' ]
 });
+
 
 module.exports = Session;

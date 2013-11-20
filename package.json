@@ -24,7 +24,8 @@
     "express": "3.2.6",
     "jade": "*",
     "less-middleware": "0.1.x",
-    "pg": "2.2.0"
+    "pg": "2.2.0",
+    "sql": "0.32.0"
   },
   "devDependencies": {
     "nodemon": "0.7.x"
