@@ -1,6 +1,7 @@
-html
-  body
-    h2 Not found
-    p.lede
-      | That&rsquor;s not a valid URL&period;
-      a(href='/') Click here to start&period;
+extends ../layout/section
+
+block left
+  h2 Page not found.
+
+  p.lede
+    | That’s not a valid URL. <a href='/'>Click here to start.</a>
