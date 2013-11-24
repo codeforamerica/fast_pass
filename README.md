@@ -1,6 +1,10 @@
 Development FastPass
 ======
 
+## About
+
+Learn more about the Development FastPass, developed for the City of Vegas, at the [Code for America apps page](http://www.codeforamerica.org/?cfa_app=development-fastpass).
+
 ## Installation
 
 Install application dependencies:
