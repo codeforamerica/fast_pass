@@ -7,11 +7,20 @@ Learn more about the Development FastPass, developed for the City of Vegas, at t
 
 ## Installation
 
+Development FastPass requires [Node.js](http://nodejs.org/).
+
 Install application dependencies:
 
 ```
 $ npm install
 ```
+
+If updating your local repository from a previous version, make sure dependencies are updated.
+
+```
+$ npm update
+```
+
 
 ## Environment
 
@@ -44,13 +53,13 @@ $ npm run-script db-setup
 Start the server:
 
 ```
-$ node app.js
+$ npm start
 ```
 
 Start the server in a different application environment:
 
 ```
-$ (NODE_ENV=production node app.js)
+$ (NODE_ENV=production npm start)
 ```
 
 ## Development
