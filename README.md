@@ -1,4 +1,4 @@
-Fast Pass
+Development FastPass
 ======
 
 ## Installation
