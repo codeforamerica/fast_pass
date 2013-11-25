@@ -502,8 +502,11 @@
         },
         reset: function (map) {
           if (map) {
+
             this.map = map;
             this.clearOverlays().clearMarkers();
+            this.trigger('resize');
+
           }
         },
         trigger: function (e) {
