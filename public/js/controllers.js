@@ -47,12 +47,16 @@
 
       var showDialog = Session.isPersisted();
 
-      var $main   = document.getElementById('main');
       var $dialog = document.getElementById('dialog');
 
       var show = function () {
         showDialog = true;
         $dialog.style.marginTop = '0';
+
+        var $main   = document.getElementById('main');
+        ng.element($main).bind('click', function () {
+          dismissDialog()
+        });
       }
 
       var hide = function () {
@@ -68,11 +72,9 @@
 
       var dismissDialog = function () {
         if (showDialog) {
-          hide(); 
+          hide();
         }
       }
-
-      ng.element($main).bind('click', dismissDialog);
 
       $scope.reset   = resetSession;
       $scope.dismiss = dismissDialog;
