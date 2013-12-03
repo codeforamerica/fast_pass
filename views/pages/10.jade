@@ -9,11 +9,10 @@ block left
 
   search-form(action='search(terms)', terms='terms', placeholder='e.g. {{sampleInput}}')
 
-  div(class='search-results')
+  div(class='loading-small', ng-show='showLoading')
+    img(src='img/loading-lite.gif')
 
-    div(ng-show='showLoading')
-      .loading-small
-        img(src='img/loading-lite.gif')
+  div(class='search-results')
 
     div(ng-show='showError')
       span.error An error occurred! Please try again later.
@@ -28,21 +27,41 @@ block left
 
       div(ng-show='results.length > 0')
         h3
-          | Please choose a business category from the list below.
+          | Please choose an industry classification from the list below.
         search-result(ng-repeat='result in results', result='result', selected='selected', select='select(result)')
-          span {{ result.get('title') }}
+          span 
+            a(href='', class='help no-color') {{ result.get('title') }}
           button(ng-click='select(result)') Select
 
-      p
-        | This search tool uses the &nbsp;
-        a(href='http://www.census.gov/eos/www/naics/', target='_blank') North American Industry Classification System (NAICS), 2012 edition.
-        | &nbsp; We'll use this to match your business to a City of Las Vegas business category.
+      p.
+        This search tool uses the <a href='http://www.census.gov/eos/www/naics/' target='_blank'>North American Industry Classification System (NAICS), 2012 edition</a>. We'll use this to match your business to categories used by the City of Las Vegas.
 
   div(class='search-selection scrollfix', ng-show='results.length > 0')
-    h3 Your selected business category
+    h3 You selected
+
     p
-      span(ng-show='selected') {{ selected.get('title') }}
+      span(class='selection' ng-show='selected') 
+        a(href='', class='help no-color') {{ selected.get('title') }}
       span(ng-show='!selected') Nothing is selected yet. Your chosen business type will appear here.
+
+    div(ng-show='selected')
+      p.
+        In Las Vegas, the equivalent categories are:
+        
+      p
+        strong Business category
+        br
+        span.pill A0
+        a(href='', class='help') Bike Messenger
+
+      p
+        strong Planning use
+        br
+        a(href='', class='help') Foot Massage
+
+      p.
+        If this looks incorrect, please choose another industry classification.
+
     navigation(next='/#/section/15', next-disable='!selected')
 
   navigation(back='/', next='/#/section/15', next-disable='!selected')
