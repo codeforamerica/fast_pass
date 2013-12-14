@@ -1,53 +1,92 @@
 var Session = require( process.cwd() + '/models/session' );
 
 module.exports.find = function (req, res) {
-  res.send('{}');
-}
+  var id = req.params.id;
 
-module.exports.update = function (req, res) {
-  var attributes = req.body.session;
-  var id = attributes.id;
-
-  delete attributes.id;
-
-  try {
-    Session.find(id, function (session) {
-      if (session) {
-        session.set(attributes);
-        session.save(function () {
-        
-        });
-      }
-    });
-  } catch(error) {
-  
+  var onError = function (err) {
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.write(JSON.stringify({ "error": err }));
+    res.end();
   }
 
-  Session.find(req.id, function (session) {
+  var onSuccess = function (session) {
+    var data;
+
     if (session) {
       data = session.toJSON(); 
     } else {
-      data = {};
+      data = {}; 
     }
 
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.write(JSON.stringify({ "data": data }));
     res.end();
-  });
+  }
 
+  Session.find(id, onSuccess, onError);
+}
+
+module.exports.update = function (req, res) {
+  var id    = req.params.id;
+  var attrs = req.body.data;
+
+  console.log(attrs)
+
+  var onError = function (err) {
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.write(JSON.stringify({ "error": err }));
+    res.end();
+  }
+
+  var onSaveSuccess = function (session) {
+    var data;
+
+    if (session) {
+      data = session.toJSON(); 
+    } else {
+      data = {}; 
+    }
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.write(JSON.stringify({ "data": data }));
+    res.end();
+  }
+
+  var onFindSuccess = function (session) {
+    if (session) {
+      session.set({ "data": attrs });
+      session.save(onSaveSuccess, onError);
+    } else {
+      // do something here
+    }
+  }
+
+  Session.find(id, onFindSuccess, onError);
 }
 
 module.exports.create = function (req, res) {
 
-  Session.create(req.body, function (session) {
+  var attrs = req.body || {};
+
+  var onSuccess = function (session) {
+    var data;
+
     if (session) {
       data = session.toJSON(); 
     } else {
-      data = {};
+      data = {}; 
     }
 
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.write(JSON.stringify({ "data": data }));
     res.end();
-  });
+  }
+
+  var onError = function (err) {
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.write(JSON.stringify({ "error": err }));
+    res.end();
+  }
+
+  Session.create({ "data": attrs }, onSuccess, onError);
 }

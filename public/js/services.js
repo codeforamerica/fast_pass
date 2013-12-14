@@ -187,19 +187,36 @@
           description: null
         },
 
-        id: null,
+        isPersisted: function () {
+          return ng.isDefined(this.id);
+        },
 
         reset: function () {
           this.data = ng.copy(this.defaults);
           this.save();
         },
 
+        fetch: function () {
+          var session = this;
+
+          var onSuccess = function (res) {
+            session.set(res.data.data);
+          }
+
+          var onError = function (err) {
+            console.log('An error occurred when fetching the session');
+          }
+
+          API.find({ "id": this.id }, onSuccess, onError);
+        },
+
         save: function () {
           var session = this;
 
           var onSuccess = function (res) {
-            session.set(res.data);
-            WebStorage.set({ session: session.toJSON() });
+            session.set(res.data.data);
+            session.id = res.data.id
+            WebStorage.set({ "session_id": session.id });
             WebStorage.save();
           }
 
@@ -207,21 +224,35 @@
             console.log('An error occurred when saving the session.');
           }
 
-          if (this.isPersisted()) {
-            API.update(this.toJSON(), onSuccess, onError); 
+          if ( this.isPersisted() ) {
+            this._update(onSuccess, onError);
           } else {
-            API.create(this.toJSON(), onSuccess, onError);
+            this._create(onSuccess, onError);
           }
         },
 
-        isPersisted: function () {
-          return ng.isDefined(this.get('id'));
+        _update: function (onSuccess, onError) {
+          API.update({ "data": this.toJSON(), "id": this.id }, onSuccess, onError);
+        },
+
+        _create: function (onSuccess, onError) {
+          API.create({}, onSuccess, onError);  
         }
 
       });
 
       Session.findOrCreate = function () {
-        return new Session( WebStorage.get('session') || {} );
+        var session = new Session();
+
+        session.id = WebStorage.get('session_id');
+
+        if ( session.isPersisted() ) {
+          session.fetch();
+        } else {
+          session.save(); 
+        }
+
+        return session;
       }
 
       return Session.findOrCreate();

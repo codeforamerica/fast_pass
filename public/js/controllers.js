@@ -29,7 +29,9 @@
       }
 
       $rootScope.$on('$locationChangeSuccess', function () {
-        Session.save();
+        if (Session.isPersisted()) {
+          Session.save();
+        }
       });
 
       goToLastStep();
@@ -219,9 +221,9 @@
 
   ]);
 
-  controllers.controller('30Ctrl', [
+  controllers.controller('30Ctrl', ['$scope',
 
-    function () {
+    function ($scope) {
       $scope.section = 30;
     }  
 

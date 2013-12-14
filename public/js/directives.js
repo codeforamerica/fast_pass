@@ -331,6 +331,7 @@
         },
         link: function (scope, el, attrs) {
           scope.$watch('words', function () {
+            console.log('change')
             scope.countdown = scope.maxWords - count(scope.words);
             scope.warning = (scope.countdown <= 0) ? 'warning' : null;
           });

@@ -73,7 +73,7 @@ app.get('/api/sessions/:id', api.sessions.find);
 app.put('/api/sessions/:id', api.sessions.update);
 app.post('/api/sessions', api.sessions.create);
 
-// Geod Routes
+// Geo Routes
 
 app.get('/api/geo/geocode', api.geo.geocode);
 app.get('/api/geo/reverse_geocode', api.geo.reverse_geocode);
