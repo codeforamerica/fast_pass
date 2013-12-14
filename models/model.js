@@ -53,7 +53,7 @@ utils.extend(Model.prototype, {
   },
 
   toJSON: function () {
-    return this.attributes;
+    return utils.defaults({}, this.attributes);
   }
 });
 

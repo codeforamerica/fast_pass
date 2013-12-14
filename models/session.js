@@ -1,10 +1,12 @@
 var DBModel = require('./db_model');
 
-var Session = DBModel.define({
-   
+var Session = DBModel.extend({
+  attributes: {
+    id: null,
+    data: null
+  }
 }, {
   table: 'sessions',
-  columns: [ 'id', 'data' ]
 });
 
 

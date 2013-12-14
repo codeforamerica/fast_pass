@@ -1,186 +1,107 @@
+var utils = require( process.cwd() + '/lib/utils' );
+var Model = require('./model');
 var DBDriver = require( process.cwd() + '/db/driver' );
-var Model    = require( './model' );
-var sql = require('sql');
+var SQL = require('sql');
 
-var DBModel = Model.extend({
+var DBModel = function () {}
 
-  save: function (successCb, errorCb) {
+var dbChildMethods = {
+  save: function () {
+    if (this.persisted()) {
+      this._update.apply(this, arguments);
+    } else {
+      this._create.apply(this, arguments);
+    }
+  },
+  persisted: function () {
+    return !!this.get('id');
+  },
+  _update: function (successCb, errorCb) {
     var instance = this;
-    var klass = this.constructor;
-    var data  = this.toJSON();
+    var klass = this.constructor; 
+    var id    = this.get('id');
+    var attrs = this.toJSON();
 
-    var onSuccess = function (rows) {
-      instance.set(rows[0]);
+    delete attrs.id;
+
+    var query = klass.update(attrs).where(klass.id.equals(id)).returning('*').toQuery()
+
+    var onSuccess = function (results) {
+      if (results.length == 1) instance.set(results[0]);
       successCb(instance);
     }
 
-    var onError = function (err) {
-      errorCb(err);
-    }
+    var onError = errorCb;
 
-    if (this.persisted()) {
-      DBDriver.update(klass.table, { "id": this.get('id') }, data, onSuccess, onError);
-    } else {
-      DBDriver.create(klass.table, data, onSuccess, onError);
-    }
+    DBDriver.perform(query.text, query.values, onSuccess, onError);
   },
+  _create: function (successCb, errorCb) {
+    var instance = this;
+    var klass = this.constructor; 
+    var attrs = this.toJSON();
+    
+    delete attrs.id;
 
-  //
-  // Removes an items from the database
-  // Arguments:
-  //  * Function - Callback
-  // Returns:
-  //  * Boolean - success of deletion
-  //
-  destroy: function (successCb, errorCb) {
-    var klass = this.constructor;
+    var query = klass.insert(attrs).returning('*').toQuery();
 
-    var onSuccess = function () {
-      successCb(true);
+    var onSuccess = function (results) {
+      if (results.length == 1) instance.set(results[0]);
+      successCb(instance);
     }
 
-    var onError = function (err) {
-      errorCb(err) 
-    }
+    var onError = errorCb;
 
-    DBDriver.destroy(klass.table, { "id": this.get('id') }, onSuccess, onError);
-  },
-
-  //
-  // Whether an instance is persisted in the DB
-  // Arguments: None
-  // Returns:
-  //  * Boolean - whether an item is persisted in the DB
-  persisted: function () {
-    return !!(this.get('id'));
+    DBDriver.perform(query.text, query.values, onSuccess, onError);
   }
-
-}, {
-
-  //
-  // The table name of the DBModel
-  //
-  table: undefined,
-
-  //
-  // Base query function
-  // Arguments:
-  //  * String - query
-  //  * Array - values to insert in query string
-  //  * Function - callback
-  // Returns:
-  //  * Array - results
-  //
-  where: function (conditions, successCb, errorCb) {
-    var klass = this;
-
-    var onSuccess = function (rows) {
-      successCb( utils.map(rows, klass.new )) 
-    }
-
-    var onError = function (err) {
-      errorCb(err) 
-    }
-
-    DBDriver.where(this.table, conditions, onSuccess, onError);
-  },
-
-  //
-  // All query function
-  // Arguments:
-  //  * Function - callback
-  // Returns:
-  //  * Array - results
-  //
-  all: function (cb) {
-    this.query('SELECT * FROM ' + this.table, [], cb);
-  },
-
-  //
-  // Single query function
-  // Arguments:
-  //  * ID - row id
-  //  * Function - callback
-  // Returns:
-  //  * DBModel instance - instance or null
-  //
-  find: function (id,cb) {
-    this.query('SELECT * FROM ' + this.table + ' WHERE id = $1;', [id], function (results) {
-      if (results.length > 0) {
-        cb(results[0]);
-      } else {
-        cb();
-      }
-    });
-  },
-
-  //
-  // More intelligent query function - constructs string from query object
-  // Arguments:
-  //  * Object - query arguments
-  // Returns:
-  //  * Array - results
-  //
-  search: function (parameters, cb) {
-    var query = [];
-    var keys  = utils.keys(parameters);
-
-    for (var i = 0; i < keys.length; i++) {
-      var key = keys[i];
-      var str = '(' + [ key, '=', '$' + (i+1)].join(' ') + ')';
-      query.push(str);
-    }
-
-    query = 'SELECT * FROM ' + this.table + ' WHERE ' + query.join(' AND ');
-
-    this.query(query, utils.values(parameters), cb);
-  },
-
-
-  //
-  // Class level update function
-  // Arguments:
-  //  * ID - row id
-  //  * Object - item attributes
-  //  * Function - callback
-  // Returns:
-  //  * DBModel instance - results
-  //  * Boolean - whether the item was updated
-  //
-  update: function (id, attrs, cb) {
-    var klass = this;
-    this.find(id, function (row) {
-      var instance = new klass(row);
-      instance.set(attrs);
-      instance.save(cb);
-    });
-  },
-
-  //
-  // Class level create function
-  // Arguments:
-  //  * Object - item attributes
-  // Returns:
-  //  * DBModel instance - results
-  //  * Boolean - whether the item was updated
-  //
-  create: function (attrs, cb) {
-    var klass = this;
-    var record = new klass(attrs);
-    return record.save(cb);
-  }
-
-})
-
-DBModel.define = function (childProto, parentProto) {
-  var model = DBModel.extend(childProto, parentProto);
-
-  model.extend(sql.define({
-    name: model.table, 
-    columns: model.columns
-  }));
-
-  return model;
 }
+
+var dbParentMethods = {
+  table: null,
+  find: function (id, successCb, errorCb) {
+    var query = this.where(this.id.equals(id)).limit(1).toQuery();
+
+    var onSuccess = function (results) {
+      successCb((results.length > 0) ? results[0] : null);
+    }
+    var onError = errorCb;
+
+    this._perform(query, onSuccess, onError);
+  },
+  all: function (successCb, errorCb) {
+    var query = this.select('*').toQuery();
+    this._perform(query, successCb, errorCb);
+  },
+  _perform: function (query, successCb, errorCb) {
+    var klass = this;
+
+    var onSuccess = function (results) {
+      successCb(utils.map(results, function (attrs) { return new klass(attrs) })) 
+    }
+
+    var onError = errorCb;
+
+    DBDriver.perform(query.text, query.values, onSuccess, onError);
+  }
+}
+
+DBModel.extend = function (childMethods, parentMethods) {
+
+  childMethods  = childMethods  || {};
+  parentMethods = parentMethods || {};
+
+  childMethods  = utils.defaults(childMethods, dbChildMethods);
+  parentMethods = utils.defaults(parentMethods, dbParentMethods);
+
+  var table   = parentMethods.table;
+  var columns = utils.keys(childMethods.attributes);
+
+  parentMethods = utils.defaults(
+      parentMethods,
+      SQL.define({ name: table, columns: columns })
+  );
+
+  return Model.extend(childMethods, parentMethods);
+}
+
 
 module.exports = DBModel;
