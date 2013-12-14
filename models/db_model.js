@@ -67,9 +67,17 @@ var dbParentMethods = {
 
     this._perform(query, onSuccess, onError);
   },
-  all: function (successCb, errorCb) {
+  first: function (onSuccess, onError) {
+    var query = this.select('*').limit(1).order('id ASC').toQuery();
+    this._perform(query, onSuccess, onError);
+  },
+  last: function (onSuccess, onError) {
+    var query = this.select('*').limit(1).order('id DESC').toQuery();
+    this._perform(query, onSuccess, onError);
+  },
+  all: function (onSuccess, onError) {
     var query = this.select('*').toQuery();
-    this._perform(query, successCb, errorCb);
+    this._perform(query, onSuccess, onError);
   },
   _perform: function (query, successCb, errorCb) {
     var klass = this;
