@@ -1,6 +1,6 @@
 var Session = require( process.cwd() + '/models/session' );
 
-module.exports.find = function (req, res) {
+var find = module.exports.find = function (req, res) {
   var id = req.params.id;
 
   var onError = function (err) {
@@ -19,18 +19,17 @@ module.exports.find = function (req, res) {
     }
 
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.write(JSON.stringify({ "data": data }));
+    res.write(JSON.stringify(data));
     res.end();
   }
 
   Session.find(id, onSuccess, onError);
 }
 
-module.exports.update = function (req, res) {
-  var id    = req.params.id;
-  var attrs = req.body.data;
 
-  console.log(attrs)
+var update = module.exports.update = function (req, res) {
+  var id    = req.params.id || req.body.id;
+  var attrs = req.body.data;
 
   var onError = function (err) {
     res.writeHead(500, { 'Content-Type': 'application/json' });
@@ -48,7 +47,7 @@ module.exports.update = function (req, res) {
     }
 
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.write(JSON.stringify({ "data": data }));
+    res.write(JSON.stringify(data));
     res.end();
   }
 
@@ -64,7 +63,7 @@ module.exports.update = function (req, res) {
   Session.find(id, onFindSuccess, onError);
 }
 
-module.exports.create = function (req, res) {
+var create = module.exports.create = function (req, res) {
 
   var attrs = req.body || {};
 
@@ -78,7 +77,7 @@ module.exports.create = function (req, res) {
     }
 
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.write(JSON.stringify({ "data": data }));
+    res.write(JSON.stringify(data));
     res.end();
   }
 
@@ -89,4 +88,12 @@ module.exports.create = function (req, res) {
   }
 
   Session.create({ "data": attrs }, onSuccess, onError);
+}
+
+var save = module.exports.save = function (req, res) {
+  if (req.body.id) {
+    update(req, res);
+  } else {
+    create(req, res);
+  }
 }

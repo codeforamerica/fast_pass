@@ -8,35 +8,19 @@
 
 (function (ng) {
 
-
   var controllers = ng.module(APPLICATION_NAME + '.controllers', []);
 
   //
   // Application Controller - Handles basic functionality of the app
   //
 
-  controllers.controller('ApplicationCtrl', ['$rootScope', '$location', '$window', 'Session',
+  controllers.controller('ApplicationCtrl', ['$rootScope', '$location', '$window', 'session',
 
-    function ($rootScope, $location, $window, Session) {
-      var lastStep = Session.get('last_step');
-
-      var goToLastStep = function () {
-        if (lastStep) $location.path('section/' + lastStep);
-      }
-
-      var onBeforeUnload = function () {
-        Session.save(); 
-      }
-
+    function ($rootScope, $location, $window, session) {
+      window.session = session;
       $rootScope.$on('$locationChangeSuccess', function () {
-        if (Session.isPersisted()) {
-          Session.save();
-        }
+        if (session.isLoaded()) session.$save();
       });
-
-      goToLastStep();
-
-      $window.onbeforeunload = onBeforeUnload;
     }
 
   ]);
@@ -46,10 +30,10 @@
   //                     the page for a second time.
   //
 
-  controllers.controller('DialogCtrl', ['$scope', 'Session',
+  controllers.controller('DialogCtrl', ['$scope', 'session',
 
-    function ($scope, Session) {
-      var showDialog = Session.isPersisted();
+    function ($scope, session) {
+      var showDialog = session.isPersisted();
 
       var $dialog = document.getElementById('dialog');
 
@@ -68,9 +52,9 @@
         $dialog.style.marginTop = '-200px';
       }
 
-      var resetSession = function () {
-        Session.reset();
-        Session.save();
+      var resetsession = function () {
+        session.reset();
+        session.save();
         dismissDialog();
       }
 
@@ -80,7 +64,7 @@
         }
       }
 
-      $scope.reset   = resetSession;
+      $scope.reset   = resetsession;
       $scope.dismiss = dismissDialog;
 
       if (showDialog) {
@@ -94,7 +78,7 @@
   // Section 0 - What is this?
   //
 
-  controllers.controller('0Ctrl', [ '$scope',
+  controllers.controller('0Ctrl', [ '$scope', 'session',
 
     function ($scope) {
       $scope.section = 0;
@@ -106,9 +90,9 @@
   // Section 10 - What kind of business are you?
   //
 
-  controllers.controller('10Ctrl', ['$scope', 'Session', 'NAICSCategory', 'CategoryKeywords',
+  controllers.controller('10Ctrl', ['$scope', 'session', 'NAICSCategory', 'CategoryKeywords',
 
-    function ($scope, Session, NAICSCategory, CategoryKeywords) {
+    function ($scope, session, NAICSCategory, CategoryKeywords) {
       $scope.section = 10;
 
       //
@@ -150,13 +134,13 @@
         $scope.lastSearch  = keywords;
         $scope.showLoading = true;
 
-        Session.set({ naics_keywords: keywords });
-        Session.save();
+        session.set({ "naics_keywords": keywords });
+        session.$save();
 
         NAICSCategory.search({ keywords: keywords }, onSearchSuccess, onSearchError)
       }
 
-      var keywords = Session.get('naics_keywords');
+      var keywords = session.get('naics_keywords');
 
       if (keywords) {
         $scope.terms = keywords;
@@ -173,17 +157,17 @@
       var select = function (item) {
         if ( !ng.equals(item, $scope.selected) ) {
           $scope.selected = item;
-          Session.set({ naics_code: item.get('code') });
+          session.set({ "naics_code": item.get('code') });
         } else {
           $scope.selected = null; 
-          Session.set({ naics_code: null });
+          session.set({ "naics_code": null });
         }
 
-        Session.save();
+        session.$save();
       } 
 
       $scope.$watch('results', function () {
-        var code = Session.get('naics_code');
+        var code = session.get('naics_code');
         if (code) {
           ng.forEach($scope.results, function (result) {
             if ( ng.equals(result.get('code'), code) ) $scope.selected = result;
@@ -200,23 +184,16 @@
   // Section 15 - Describe your business.
   //
 
-  controllers.controller('15Ctrl', ['$scope', 'Session',
+  controllers.controller('15Ctrl', ['$scope', 'session',
 
-    function ($scope, Session) {
+    function ($scope, session) {
       $scope.section = 15;
-
-      var save = function () {
-        Session.save(); 
-      }
-
-      $scope.$watch('description', function (description) {
+      $scope.$watch('words', function (description) {
         if (description) {
-          Session.set({ description: description.trim() });
+          session.set({ description: description.trim() });
         }
       });
-
-      $scope.description = Session.get('description');
-      $scope.save = save
+      $scope.words = session.get('description');
     }
 
   ]);
@@ -233,9 +210,9 @@
   // Section 40 - Search for an address
   //
 
-  controllers.controller('40Ctrl', [ '$scope', 'Session', 'Address', 'City', 'Map',
+  controllers.controller('40Ctrl', [ '$scope', 'session', 'Address', 'City', 'Map',
 
-    function ($scope, Session, Address, City, Map) {
+    function ($scope, session, Address, City, Map) {
       $scope.section = 40;
       $scope.showRight = true;
 
@@ -280,13 +257,13 @@
         $scope.lastSearch  = address;
         $scope.showLoading = true;
 
-        Session.set({ address_keywords: address });
-        Session.save();
+        session.set({ address_keywords: address });
+        session.save();
 
         Address.search({ address: address }, onSearchSuccess, onSearchError) 
       }
 
-      var address = Session.get('address_keywords');
+      var address = session.get('address_keywords');
 
       if (address) {
         $scope.terms = address;
@@ -302,17 +279,17 @@
       var select = function (item) {
         if ( !ng.equals(item, $scope.selected) ) {
           $scope.selected = item;
-          Session.set({ address: item.get('address') });
+          session.set({ address: item.get('address') });
         } else {
           $scope.selected = null; 
-          Session.set({ address: null });
+          session.set({ address: null });
         }
 
-        Session.save();
+        session.save();
       }
 
       $scope.$watch('results', function () {
-        var address = Session.get('address');
+        var address = session.get('address');
         if (address) {
           ng.forEach($scope.results, function (result) {
             if ( ng.equals(result.get('address'), address) ) $scope.selected = result;
@@ -381,9 +358,9 @@
   // Section 41 - Neighborhood selection
   //
 
-  controllers.controller('41Ctrl', ['$scope', 'Session', 'Neighborhood', 'City', 'Map',
+  controllers.controller('41Ctrl', ['$scope', 'session', 'Neighborhood', 'City', 'Map',
 
-    function ($scope, Session, Neighborhood, City, Map) {
+    function ($scope, session, Neighborhood, City, Map) {
       $scope.section = 41;
       $scope.showRight = true;
 

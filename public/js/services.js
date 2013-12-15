@@ -170,95 +170,73 @@
   // their business.
   //
 
-  services.factory('Session', ['utils', '$resource', 'WebStorage', 'Model',
-    function (utils, $resource, WebStorage, Model) {
+  services.factory('session', ['$resource', 'WebStorage', 'utils',
+      function ($resource, WebStorage, utils) {
 
-      var API = $resource('api/sessions/:id', { }, {
-        find:   { method: 'GET', params: { id: '@id' } },
-        update: { method: 'PUT', params: { id: '@id' } },
-        create: { method: 'POST' }
-      });
+        var Session = $resource('api/sessions/:id', { id: '@id' }, {});
 
-      var Session = Model.extend({
+        var loaded = false;
 
-        defaults: {
-          naics_code: null,
-          naics_keywords: null,
-          description: null
-        },
+        ng.extend(Session.prototype, {
 
-        isPersisted: function () {
-          return ng.isDefined(this.id);
-        },
+          initialize: function () {
 
-        reset: function () {
-          this.data = ng.copy(this.defaults);
-          this.save();
-        },
+            this.id = WebStorage.get('session_id');
+                      
+            if ( this.isPersisted() ) {
 
-        fetch: function () {
-          var session = this;
+              this.$get(function (s) {
+                loaded = true;
+              })
+            
+            } else {
 
-          var onSuccess = function (res) {
-            session.set(res.data.data);
+              this.$save(function (s) {
+                loaded = false;
+                WebStorage.set({ "session_id": s.id });
+                WebStorage.save();
+              });
+
+            }
+
+          },
+
+          data: {},
+
+          reset: function () {
+            this.data = {};
+            return this;
+          },
+
+          get: function (attr) {
+            return this.data[attr];
+          },
+
+          set: function (attrs) {
+            ng.extend(this.data, attrs);
+            return attrs;
+          },
+
+          isPersisted: function () {
+            return ng.isDefined(this.id);
+          },
+
+          isLoaded: function () {
+            return loaded;           
           }
 
-          var onError = function (err) {
-            console.log('An error occurred when fetching the session');
-          }
+        });
 
-          API.find({ "id": this.id }, onSuccess, onError);
-        },
-
-        save: function () {
-          var session = this;
-
-          var onSuccess = function (res) {
-            session.set(res.data.data);
-            session.id = res.data.id
-            WebStorage.set({ "session_id": session.id });
-            WebStorage.save();
-          }
-
-          var onError = function (err) {
-            console.log('An error occurred when saving the session.');
-          }
-
-          if ( this.isPersisted() ) {
-            this._update(onSuccess, onError);
-          } else {
-            this._create(onSuccess, onError);
-          }
-        },
-
-        _update: function (onSuccess, onError) {
-          API.update({ "data": this.toJSON(), "id": this.id }, onSuccess, onError);
-        },
-
-        _create: function (onSuccess, onError) {
-          API.create({}, onSuccess, onError);  
+        Session.load = function () {
+          var session = new Session(); 
+          session.initialize();
+          return session;
         }
 
-      });
-
-      Session.findOrCreate = function () {
-        var session = new Session();
-
-        session.id = WebStorage.get('session_id');
-
-        if ( session.isPersisted() ) {
-          session.fetch();
-        } else {
-          session.save(); 
-        }
-
-        return session;
+      
+        return Session.load();
       }
-
-      return Session.findOrCreate();
-    }
   ]);
-
   //
   // Address - Model for retrieving/managing address
   // information.

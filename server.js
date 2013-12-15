@@ -70,8 +70,8 @@ app.get('/api/categories/business_licensing', api.categories.business_licensing_
 
 // Session Routes
 app.get('/api/sessions/:id', api.sessions.find);
-app.put('/api/sessions/:id', api.sessions.update);
-app.post('/api/sessions', api.sessions.create);
+app.post('/api/sessions/:id', api.sessions.save);
+app.post('/api/sessions', api.sessions.save);
 
 // Geo Routes
 
