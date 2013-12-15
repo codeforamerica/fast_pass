@@ -8,6 +8,18 @@
 
 (function (ng) {
 
+  //
+  // A wrapper function that waits until the session
+  // has been loaded from the server to perform an
+  // action.
+  //
+
+  var onLoad = function ($scope, method) {
+    $scope.$watch('loaded', function (loaded) {
+      if (loaded) method();
+    }) 
+  }
+
   var controllers = ng.module(APPLICATION_NAME + '.controllers', []);
 
   //
@@ -17,9 +29,21 @@
   controllers.controller('ApplicationCtrl', ['$rootScope', '$location', '$window', 'session',
 
     function ($rootScope, $location, $window, session) {
-      window.session = session;
+
+      $rootScope.loaded = false;
+
+      var onLoad = function () {
+        $rootScope.loaded = true; 
+      }
+
+      if ( session.isPersisted() ) {
+        session.fetch(onLoad);
+      } else {
+        session.save(onLoad);
+      }
+
       $rootScope.$on('$locationChangeSuccess', function () {
-        if (session.isLoaded()) session.$save();
+        //if (session.isLoaded()) session.save();
       });
     }
 
@@ -33,43 +57,48 @@
   controllers.controller('DialogCtrl', ['$scope', 'session',
 
     function ($scope, session) {
-      var showDialog = session.isPersisted();
 
-      var $dialog = document.getElementById('dialog');
+      onLoad($scope, function () {
 
-      var show = function () {
-        showDialog = true;
-        $dialog.style.marginTop = '0';
+        var showDialog = session.isPersisted();
 
-        var $main   = document.getElementById('main');
-        ng.element($main).bind('click', function () {
-          dismissDialog()
-        });
-      }
+        var $dialog = document.getElementById('dialog');
 
-      var hide = function () {
-        showDialog = false;
-        $dialog.style.marginTop = '-200px';
-      }
+        var show = function () {
+          showDialog = true;
+          $dialog.style.marginTop = '0';
 
-      var resetsession = function () {
-        session.reset();
-        session.save();
-        dismissDialog();
-      }
-
-      var dismissDialog = function () {
-        if (showDialog) {
-          hide();
+          var $main   = document.getElementById('main');
+          ng.element($main).bind('click', function () {
+            dismissDialog()
+          });
         }
-      }
 
-      $scope.reset   = resetsession;
-      $scope.dismiss = dismissDialog;
+        var hide = function () {
+          showDialog = false;
+          $dialog.style.marginTop = '-200px';
+        }
 
-      if (showDialog) {
-        setTimeout(show, 800);
-      }
+        var resetsession = function () {
+          session.reset();
+          session.save();
+          dismissDialog();
+        }
+
+        var dismissDialog = function () {
+          if (showDialog) {
+            hide();
+          }
+        }
+
+        $scope.reset   = resetsession;
+        $scope.dismiss = dismissDialog;
+
+        if (showDialog) {
+          setTimeout(show, 800);
+        }
+
+      });
     }
 
   ]);
@@ -78,10 +107,12 @@
   // Section 0 - What is this?
   //
 
-  controllers.controller('0Ctrl', [ '$scope', 'session',
+  controllers.controller('0Ctrl', [ '$scope',
 
     function ($scope) {
-      $scope.section = 0;
+      onLoad($scope, function () {
+        $scope.section = 0;
+      });
     }  
 
   ]);
@@ -93,89 +124,93 @@
   controllers.controller('10Ctrl', ['$scope', 'session', 'NAICSCategory', 'CategoryKeywords',
 
     function ($scope, session, NAICSCategory, CategoryKeywords) {
-      $scope.section = 10;
+      onLoad($scope, function () {
 
-      //
-      // NAICS Search
-      //
+        $scope.section = 10;
 
-      var resetSearch = function () {
-        $scope.results = [];
-        $scope.showResults = false;
-        $scope.showError = false;
-        $scope.showInvalid = false;
-        $scope.lastSearch = null;
-      } 
+        //
+        // NAICS Search
+        //
 
-      var onSearchSuccess = function (results) {
-        $scope.results = results;
-        $scope.showLoading = false;
-        $scope.showResults = true; 
-      }
+        var resetSearch = function () {
+          $scope.results = [];
+          $scope.showResults = false;
+          $scope.showError = false;
+          $scope.showInvalid = false;
+          $scope.lastSearch = null;
+        } 
 
-      var onSearchError = function () {
-        $scope.showLoading = false;
-        $scope.showError = true;
-      }
-
-      var onInvalidTerms = function () {
-        $scope.showLoading = false;
-        $scope.showInvalid = true; 
-      }
-
-      var search = function (keywords) {
-        resetSearch();
-
-        if ( ng.isUndefined(keywords) ) {
-          onInvalidTerms();
-          return false;
+        var onSearchSuccess = function (results) {
+          $scope.results = results;
+          $scope.showLoading = false;
+          $scope.showResults = true; 
         }
 
-        $scope.lastSearch  = keywords;
-        $scope.showLoading = true;
-
-        session.set({ "naics_keywords": keywords });
-        session.$save();
-
-        NAICSCategory.search({ keywords: keywords }, onSearchSuccess, onSearchError)
-      }
-
-      var keywords = session.get('naics_keywords');
-
-      if (keywords) {
-        $scope.terms = keywords;
-        search(keywords);
-      }
-
-      $scope.sampleInput = CategoryKeywords.random();
-      $scope.search = search;
-
-      //
-      // NAICS Select
-      //
-
-      var select = function (item) {
-        if ( !ng.equals(item, $scope.selected) ) {
-          $scope.selected = item;
-          session.set({ "naics_code": item.get('code') });
-        } else {
-          $scope.selected = null; 
-          session.set({ "naics_code": null });
+        var onSearchError = function () {
+          $scope.showLoading = false;
+          $scope.showError = true;
         }
 
-        session.$save();
-      } 
-
-      $scope.$watch('results', function () {
-        var code = session.get('naics_code');
-        if (code) {
-          ng.forEach($scope.results, function (result) {
-            if ( ng.equals(result.get('code'), code) ) $scope.selected = result;
-          });
+        var onInvalidTerms = function () {
+          $scope.showLoading = false;
+          $scope.showInvalid = true; 
         }
+
+        var search = function (keywords) {
+          resetSearch();
+
+          if ( ng.isUndefined(keywords) ) {
+            onInvalidTerms();
+            return false;
+          }
+
+          $scope.lastSearch  = keywords;
+          $scope.showLoading = true;
+
+          session.set({ "naics_keywords": keywords });
+          session.save();
+
+          NAICSCategory.search({ keywords: keywords }, onSearchSuccess, onSearchError)
+        }
+
+        var keywords = session.get('naics_keywords');
+
+        if (keywords) {
+          $scope.terms = keywords;
+          search(keywords);
+        }
+
+        $scope.sampleInput = CategoryKeywords.random();
+        $scope.search = search;
+
+        //
+        // NAICS Select
+        //
+
+        var select = function (item) {
+          if ( !ng.equals(item, $scope.selected) ) {
+            $scope.selected = item;
+            session.set({ "naics_code": item.get('code') });
+          } else {
+            $scope.selected = null; 
+            session.set({ "naics_code": null });
+          }
+
+          session.save();
+        } 
+
+        $scope.$watch('results', function () {
+          var code = session.get('naics_code');
+          if (code) {
+            ng.forEach($scope.results, function (result) {
+              if ( ng.equals(result.get('code'), code) ) $scope.selected = result;
+            });
+          }
+        });
+
+        $scope.select = select;
+  
       });
-
-      $scope.select = select;
     }
 
   ]);
@@ -187,13 +222,15 @@
   controllers.controller('15Ctrl', ['$scope', 'session',
 
     function ($scope, session) {
-      $scope.section = 15;
-      $scope.$watch('words', function (description) {
-        if (description) {
-          session.set({ description: description.trim() });
-        }
+      onLoad($scope, function () {
+        $scope.section = 15;
+        $scope.$watch('words', function (description) {
+          if (description) {
+            session.set({ description: description.trim() });
+          }
+        });
+        $scope.words = session.get('description');
       });
-      $scope.words = session.get('description');
     }
 
   ]);

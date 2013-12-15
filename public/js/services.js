@@ -147,6 +147,10 @@
         },
         remove: function () {
           return driver.remove('data');
+        },
+        reset: function () {
+          this.attributes = {};
+          this.save();
         }
       });
 
@@ -173,64 +177,61 @@
   services.factory('session', ['$resource', 'WebStorage', 'utils',
       function ($resource, WebStorage, utils) {
 
-        var Session = $resource('api/sessions/:id', { id: '@id' }, {});
+        var saveToLocalStorage = function (session) {
+          WebStorage.set({ "session_id": session.id });
+          WebStorage.save();
+        }
 
-        var loaded = false;
+        var SessionResource = $resource('api/sessions/:id', { "id": '@id' }, {
+          "update": { "method": 'PUT' },
+          "create": { "method": 'POST' }
+        });
+
+        ng.extend(SessionResource.prototype, {
+          id: null,
+          data: {} 
+        });
+
+        var Session = function (id) {
+          this.resource = new SessionResource({ "id": id });
+        }
 
         ng.extend(Session.prototype, {
 
-          initialize: function () {
-
-            this.id = WebStorage.get('session_id');
-                      
-            if ( this.isPersisted() ) {
-
-              this.$get(function (s) {
-                loaded = true;
-              })
-            
-            } else {
-
-              this.$save(function (s) {
-                loaded = false;
-                WebStorage.set({ "session_id": s.id });
-                WebStorage.save();
-              });
-
-            }
-
+          fetch: function (onSuccess, onError) {
+            this.resource.$get(onSuccess, onError);
           },
 
-          data: {},
-
-          reset: function () {
-            this.data = {};
-            return this;
+          save: function (onSuccess, onError) {
+            if ( this.isPersisted() ) {
+              this.resource.$update({}, onSuccess, onError);
+            } else {
+              this.resource.$create({}, onSuccess, onError);
+            }
           },
 
           get: function (attr) {
-            return this.data[attr];
+            return this.resource.data[attr];
           },
 
           set: function (attrs) {
-            ng.extend(this.data, attrs);
+            ng.extend(this.resource.data, attrs);
             return attrs;
           },
 
-          isPersisted: function () {
-            return ng.isDefined(this.id);
+          reset: function () {
+            this.resource = new SessionResource;
+            this.save(saveToLocalStorage);
           },
 
-          isLoaded: function () {
-            return loaded;           
+          isPersisted: function () {
+            return !!this.resource.id;
           }
 
         });
 
         Session.load = function () {
-          var session = new Session(); 
-          session.initialize();
-          return session;
+          return new Session( WebStorage.get('session_id') );
         }
 
       
