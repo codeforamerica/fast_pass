@@ -328,7 +328,8 @@
         scope: {
           words: '=',
           maxWords: '@',
-          countdown: '='
+          countdown: '=',
+          warning: '='
         },
         link: function (scope, el, attrs) {
           scope.$watch('words', function () {
@@ -337,7 +338,7 @@
           });
         }
       }
-    } 
+    }
 
   ]);
 
