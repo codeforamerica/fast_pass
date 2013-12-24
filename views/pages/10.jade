@@ -29,7 +29,7 @@ block left
         h3
           | Please choose an industry classification from the list below.
         search-result(ng-repeat='result in results', result='result', selected='selected', select='select(result)')
-          span 
+          span
             a(href='', class='help no-color') {{ result.get('title') }}
           button(ng-click='select(result)') Select
 
@@ -40,7 +40,7 @@ block left
     h3 You selected
 
     p
-      span(class='selection' ng-show='selected') 
+      span(class='selection' ng-show='selected')
         a(href='', class='help no-color') {{ selected.get('title') }}
       span(ng-show='!selected') Nothing is selected yet. Your chosen business type will appear here.
 

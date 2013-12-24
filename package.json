@@ -22,7 +22,7 @@
   "dependencies": {
     "db-migrate": "0.6.x",
     "express": "3.2.6",
-    "jade": "*",
+    "jade": "1.0.x",
     "less-middleware": "0.1.x",
     "pg": "2.2.0",
     "sql": "0.32.0"
