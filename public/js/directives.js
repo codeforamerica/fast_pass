@@ -332,9 +332,9 @@
           warning: '='
         },
         link: function (scope, el, attrs) {
-          scope.$watch('words', function () {
-            scope.countdown = scope.maxWords - count(scope.words);
-            scope.warning = (scope.countdown <= 0) ? 'warning' : null;
+          scope.$watch('words.text', function () {
+            scope.words.countdown = scope.maxWords - count(scope.words.text);
+            scope.words.warning = (scope.words.countdown <= 0) ? 'warning' : null;
           });
         }
       }
