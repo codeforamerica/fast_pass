@@ -327,9 +327,7 @@
         restrict: 'A',
         scope: {
           words: '=',
-          maxWords: '@',
-          countdown: '=',
-          warning: '='
+          maxWords: '@'
         },
         link: function (scope, el, attrs) {
           scope.$watch('words.text', function () {
