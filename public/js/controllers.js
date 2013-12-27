@@ -222,14 +222,15 @@
   controllers.controller('15Ctrl', ['$scope', 'session',
 
     function ($scope, session) {
+      $scope.words = {};
       onLoad($scope, function () {
         $scope.section = 15;
-        $scope.$watch('words', function (description) {
+        $scope.$watch('words.text', function (description) {
           if (description) {
             session.set({ description: description.trim() });
           }
         });
-        $scope.words = session.get('description');
+        $scope.words.text = session.get('description');
       });
     }
 
@@ -239,7 +240,7 @@
 
     function ($scope) {
       $scope.section = 30;
-    }  
+    }
 
   ]);
 

@@ -8,8 +8,8 @@ block left
   p.lede
     | Please describe your business in complete detail by writing one or two paragraphs.
   form
-    div(max-words=350, words='words', countdown='countdown', warning='warning')
-      textarea(autofocus='', ng-model='words')
-      .textarea-note(ng-class='warning') {{countdown}} words remaining.
+    div(max-words=350, words='words')
+      textarea(autofocus='', ng-model='words.text')
+      .textarea-note(ng-class='words.warning') {{words.countdown}} words remaining.
 
   navigation(back='/#/section/10', next='/#/section/30')
