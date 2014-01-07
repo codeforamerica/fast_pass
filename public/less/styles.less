@@ -203,7 +203,7 @@ h5 {
   width: 100%;
 }
 
-.col-1, .col-2, .col-3, .col-4, .col-5, .col-6 {
+.column {
   display: inline-block;
   position: relative;
   vertical-align: top;
@@ -213,21 +213,27 @@ h5 {
   }
 }
 .col-1 {
+  &:extend(.column);
   width: @container-width / 6 - 10px;
 }
 .col-2 {
+  &:extend(.column);
   width: @container-width / 3 - 10px;
 }
 .col-3 {
+  &:extend(.column);
   width: @container-width / 2 - 10px;
 }
 .col-4 {
+  &:extend(.column);
   width: (@container-width / 3) * 2 - 10px;
 }
 .col-5 {
+  &:extend(.column);
   width: (@container-width / 6) * 5 - 10px;
 }
 .col-6 {
+  &:extend(.column);
   width: @container-width;
 }
 
@@ -360,7 +366,9 @@ small {
 }
 .loading {
   &:extend(.loading-small);
-  margin-top: 80px;
+  position: absolute;
+  top: 50%;
+  margin-top: -80px;
   height: 160px;
 }
 
@@ -399,6 +407,7 @@ search-result {
     background-color: @color-gray;
     padding: 3px 10px;
     color: @color-scheme;
+    border: 0;
     &:active {
       // override typical button down behavior
       position: absolute !important;
@@ -441,16 +450,14 @@ input[type=text] + input[type=submit] {
 }
 
 button, a.button, input[type=button], input[type=submit] {
-  background-color: @color-scheme;
-  color: white;
-  border: 0;
+  display: inline-block;
   padding: 10px 20px;
   .user-select(none);
-//  text-align: left;
+  background-color: @color-scheme;
   text-align: center;
-//  margin-right: 5px;
-  display: inline-block;
-//  border-bottom: 2px solid darken(@color-scheme, 6%);
+  color: white;
+  border: 0;
+  margin-top: 0;
   &.back, &[value=back] {
     &:before {
       content: '« ';
@@ -464,9 +471,6 @@ button, a.button, input[type=button], input[type=submit] {
     left: 0;
     right: auto;
     background-color: @color-lighter;
-    &:hover {
-//      background-color: @color-scheme;
-    }
   }
   &.right {
     position: absolute;
@@ -500,8 +504,8 @@ button, a.button, input[type=button], input[type=submit] {
   }
   &:active {
     position: relative;
-    top: 2px;
-//    border-bottom: 0px;
+    margin-top: 2px;
+    margin-bottom: -2px;
   }
   &.disabled, &[disabled] {
     background-color: @lightgray;
@@ -591,7 +595,8 @@ ul.progress-bar {
 
   li {
     position: relative;
-    width: 33%;
+    width: 33.33%;       // Required for IE8 and Android browser
+    width: calc(100%/3); // This is well supported in all other browsers
     display: inline-block;
     background-color: @color-gray;
 
@@ -717,6 +722,7 @@ footer {
   font-size: 10px;
   color: #999;
   position: relative;
+
   .disclaimer {
     margin-right: 60px;
   }

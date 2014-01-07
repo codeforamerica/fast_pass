@@ -9,10 +9,10 @@ block left
 
   search-form(action='search(terms)', terms='terms', placeholder='e.g. {{sampleInput}}')
 
-  div(class='loading-small', ng-show='showLoading')
+  .loading-small(ng-show='showLoading')
     img(src='img/loading-lite.gif')
 
-  div(class='search-results')
+  .search-results
 
     div(ng-show='showError')
       span.error An error occurred! Please try again later.
@@ -36,7 +36,7 @@ block left
       p.
         This search tool uses the <a href='http://www.census.gov/eos/www/naics/' target='_blank'>North American Industry Classification System (NAICS), 2012 edition</a>. We'll use this to match your business to categories used by the City of Las Vegas.
 
-  div(class='search-selection scrollfix', ng-show='results.length > 0')
+  .search-selection.scrollfix(ng-show='results.length > 0')
     h3 You selected
 
     p
