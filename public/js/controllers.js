@@ -11,7 +11,10 @@
   var setLastStep = function (session, step) {
     var lastStep = session.get('step');
     lastStep = lastStep || null;
-    if (lastStep <= step) session.set({ 'step': step });
+    if (lastStep < step) {
+      session.set({ 'step': step });
+      session.save();
+    }
   }
 
   //
@@ -50,6 +53,9 @@
         session.save( onSessionLoad );
       }
 
+      $rootScope.$on('$locationChangeSuccess', function () {
+        if ($rootScope.loaded) session.save();
+      });
     }
 
   ]);
@@ -114,7 +120,6 @@
 
       onAppLoad($scope, function () {
         $scope.section = 0;
-        setLastStep(session, 0);
       });
 
     } 

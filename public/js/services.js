@@ -203,15 +203,16 @@
           },
 
           save: function (onSuccess, onError) {
+            var onCreate = function (session) {
+              onSuccess = onSuccess || ng.noop;
+              saveToLocalStorage(session);
+              onSuccess(session);
+            }
+
             if ( this.isPersisted() ) {
               this.resource.$update({}, onSuccess, onError);
             } else {
-              var successCb = function (session) {
-                saveToLocalStorage(session); 
-                onSuccess(session);
-              }
-
-              this.resource.$create({}, successCb, onError);
+              this.resource.$create({}, onCreate, onError);
             }
           },
 
