@@ -24,6 +24,9 @@
 @section-width:         740px;
 @section-part-width:    560px;
 
+@grid-gutter-width:     10px;
+@grid-column-width:     (@container-width - (5 * @grid-gutter-width)) / 6;
+
 // MEDIA QUERY WIDTHS
 // Not used at the moment.
 
@@ -198,6 +201,8 @@ h5 {
   line-height: 175%;
 }
 
+// GRID
+
 .row {
   position: relative;
   width: 100%;
@@ -207,34 +212,37 @@ h5 {
   display: inline-block;
   position: relative;
   vertical-align: top;
-  margin-right: 10px;
+}
+
+.col-1, .col-2, .col-3, .col-4, .col-5, .col-6 {
+  margin-right: @grid-gutter-width;
   &:last-child {
     margin-right: 0;
   }
 }
 .col-1 {
   &:extend(.column);
-  width: @container-width / 6 - 10px;
+  width: (@grid-column-width * 1) + (@grid-gutter-width * 0);
 }
 .col-2 {
   &:extend(.column);
-  width: @container-width / 3 - 10px;
+  width: (@grid-column-width * 2) + (@grid-gutter-width * 1);
 }
 .col-3 {
   &:extend(.column);
-  width: @container-width / 2 - 10px;
+  width: (@grid-column-width * 3) + (@grid-gutter-width * 2);
 }
 .col-4 {
   &:extend(.column);
-  width: (@container-width / 3) * 2 - 10px;
+  width: (@grid-column-width * 4) + (@grid-gutter-width * 3);
 }
 .col-5 {
   &:extend(.column);
-  width: (@container-width / 6) * 5 - 10px;
+  width: (@grid-column-width * 5) + (@grid-gutter-width * 4);
 }
 .col-6 {
   &:extend(.column);
-  width: @container-width;
+  width: (@grid-column-width * 6) + (@grid-gutter-width * 5);
 }
 
 // LINKS
@@ -301,12 +309,10 @@ small {
     }
   }
   .search-results {
-    &:extend(.col-4);
     margin-top: 20px; 
   }
   .search-selection {
     &:extend(.inset-box);
-    &:extend(.col-2);
     margin-top: 20px;
     .selection {
       font-size: 120%;
