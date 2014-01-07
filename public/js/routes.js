@@ -8,7 +8,7 @@
 
 (function (ng) {
 
-  var routes = ng.module(APPLICATION_NAME + '.routes', ['ngRoute']);
+  var routes = ng.module(APPLICATION_NAME + '.routes', [ 'ngRoute' ]);
 
   routes.config(['$routeProvider',
 

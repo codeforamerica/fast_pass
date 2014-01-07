@@ -206,7 +206,12 @@
             if ( this.isPersisted() ) {
               this.resource.$update({}, onSuccess, onError);
             } else {
-              this.resource.$create({}, onSuccess, onError);
+              var successCb = function (session) {
+                saveToLocalStorage(session); 
+                onSuccess(session);
+              }
+
+              this.resource.$create({}, successCb, onError);
             }
           },
 

@@ -8,13 +8,19 @@
 
 (function (ng) {
 
+  var setLastStep = function (session, step) {
+    var lastStep = session.get('step');
+    lastStep = lastStep || null;
+    if (lastStep <= step) session.set({ 'step': step });
+  }
+
   //
   // A wrapper function that waits until the session
   // has been loaded from the server to perform an
   // action.
   //
 
-  var onLoad = function ($scope, method) {
+  var onAppLoad = function ($scope, method) {
     $scope.$watch('loaded', function (loaded) {
       if (loaded) method();
     }) 
@@ -32,19 +38,18 @@
 
       $rootScope.loaded = false;
 
-      var onLoad = function () {
+      var onSessionLoad = function () {
+        var lastStep = session.get('step');
+        if ( ng.isDefined(lastStep) ) $location.path('/section/' + lastStep);
         $rootScope.loaded = true; 
       }
 
       if ( session.isPersisted() ) {
-        session.fetch(onLoad);
+        session.fetch( onSessionLoad );
       } else {
-        session.save(onLoad);
+        session.save( onSessionLoad );
       }
 
-      $rootScope.$on('$locationChangeSuccess', function () {
-        //if (session.isLoaded()) session.save();
-      });
     }
 
   ]);
@@ -58,17 +63,18 @@
 
     function ($scope, session) {
 
-      onLoad($scope, function () {
+      onAppLoad($scope, function () {
 
         var showDialog = session.isPersisted();
 
         var $dialog = document.getElementById('dialog');
 
         var show = function () {
+          var $main = document.getElementById('main');
+
           showDialog = true;
           $dialog.style.marginTop = '0';
 
-          var $main   = document.getElementById('main');
           ng.element($main).bind('click', function () {
             dismissDialog()
           });
@@ -86,18 +92,13 @@
         }
 
         var dismissDialog = function () {
-          if (showDialog) {
-            hide();
-          }
+          if (showDialog) hide();
         }
 
         $scope.reset   = resetsession;
         $scope.dismiss = dismissDialog;
 
-        if (showDialog) {
-          setTimeout(show, 800);
-        }
-
+        if (showDialog) setTimeout(show, 800);
       });
     }
 
@@ -107,13 +108,16 @@
   // Section 0 - What is this?
   //
 
-  controllers.controller('0Ctrl', [ '$scope',
+  controllers.controller('0Ctrl', [ '$scope', 'session',
 
-    function ($scope) {
-      onLoad($scope, function () {
+    function ($scope, session) {
+
+      onAppLoad($scope, function () {
         $scope.section = 0;
+        setLastStep(session, 0);
       });
-    }  
+
+    } 
 
   ]);
 
@@ -124,7 +128,8 @@
   controllers.controller('10Ctrl', ['$scope', 'session', 'NAICSCategory', 'CategoryKeywords',
 
     function ($scope, session, NAICSCategory, CategoryKeywords) {
-      onLoad($scope, function () {
+
+      onAppLoad($scope, function () {
 
         $scope.section = 10;
 
@@ -210,7 +215,10 @@
 
         $scope.select = select;
   
+        setLastStep(session, 10);
+
       });
+
     }
 
   ]);
@@ -222,23 +230,28 @@
   controllers.controller('15Ctrl', ['$scope', 'session',
 
     function ($scope, session) {
-      onLoad($scope, function () {
+      onAppLoad($scope, function () {
         $scope.section = 15;
+
         $scope.$watch('words', function (description) {
-          if (description) {
-            session.set({ description: description.trim() });
-          }
+          if (description) session.set({ description: description.trim() });
         });
+
         $scope.words = session.get('description');
       });
+
+      setLastStep(session, 15);
     }
 
   ]);
 
-  controllers.controller('30Ctrl', ['$scope',
+  controllers.controller('30Ctrl', ['$scope', 'session',
 
-    function ($scope) {
-      $scope.section = 30;
+    function ($scope, session) {
+      onAppLoad($scope, function () {
+        $scope.section = 30;
+        setLastStep(session, 30);
+      })
     }  
 
   ]);
@@ -387,6 +400,8 @@
       });
 
       City.find({}, onCityLimitsSuccess, onCityLimitsError);
+
+      setLastStep(session, 40);
     }
 
   ]);
@@ -398,144 +413,148 @@
   controllers.controller('41Ctrl', ['$scope', 'session', 'Neighborhood', 'City', 'Map',
 
     function ($scope, session, Neighborhood, City, Map) {
-      $scope.section = 41;
-      $scope.showRight = true;
+      onAppLoad($scope, function () {
+        $scope.section = 41;
+        $scope.showRight = true;
 
-      var map = new Map();
-      var overlays = {}
+        var map = new Map();
+        var overlays = {}
 
-      var getOverlay = function (area) {
-        if ( ng.isDefined(area) ) return overlays[ area.get('id') ];
-      }
-
-      var setOverlay = function (area, overlay) {
-        if ( ng.isDefined(area) ) overlays[ area.get('id') ] = overlay;
-      }
-
-      var showOverlay = function (overlay) {
-        if ( ng.isDefined(overlay) ) {
-          overlay.setFillOpacity(0.15);
+        var getOverlay = function (area) {
+          if ( ng.isDefined(area) ) return overlays[ area.get('id') ];
         }
-      }
 
-      var hideOverlay = function (overlay) {
-        if ( ng.isDefined(overlay) ) {
-          overlay.setFillOpacity(0.0);
+        var setOverlay = function (area, overlay) {
+          if ( ng.isDefined(area) ) overlays[ area.get('id') ] = overlay;
         }
-      }
 
-      var zoomToOverlay = function (overlay) {
-        if ( ng.isDefined(overlay) ) {
-          map.setBounds( overlay.getBounds() );
+        var showOverlay = function (overlay) {
+          if ( ng.isDefined(overlay) ) {
+            overlay.setFillOpacity(0.15);
+          }
         }
-      }
 
-      var showArea = function (area) {
-        showOverlay( getOverlay(area) );
-      }
-
-      var hideArea = function (area) {
-        hideOverlay( getOverlay(area) );
-      }
-
-      var zoomToArea = function (area) {
-        zoomToOverlay( getOverlay(area) );
-      }
-
-      var onAreaMouseover = function (area) {
-        showArea(area);
-      }
-
-      var onAreaMouseout = function (area) {
-        if ( !ng.equals($scope.selected, area) ) {
-          hideArea(area);
+        var hideOverlay = function (overlay) {
+          if ( ng.isDefined(overlay) ) {
+            overlay.setFillOpacity(0.0);
+          }
         }
-      }
 
-      var select = function (area) {
-        if ( !ng.equals($scope.selected, area) ) {
-          hideArea($scope.selected);
+        var zoomToOverlay = function (overlay) {
+          if ( ng.isDefined(overlay) ) {
+            map.setBounds( overlay.getBounds() );
+          }
+        }
+
+        var showArea = function (area) {
+          showOverlay( getOverlay(area) );
+        }
+
+        var hideArea = function (area) {
+          hideOverlay( getOverlay(area) );
+        }
+
+        var zoomToArea = function (area) {
+          zoomToOverlay( getOverlay(area) );
+        }
+
+        var onAreaMouseover = function (area) {
           showArea(area);
-          zoomToArea(area);
-        } else {
-          hideArea(area);
-          zoomToOverlay( getOverlay($scope.city) );
-          area = undefined;
         }
 
-        $scope.selected = area;
-      }
-
-      //
-      // City
-      //
-
-      var onCitySuccess = function (city) {
-        $scope.city = city;
-      }
-
-      var onCityError = function () {
-        $scope.showError = true;
-      }
-
-      $scope.$watch('city', function (area) {
-        if (area) {
-          var overlay = Map.Overlay.fromGeoJSON(area.get('geometry'));
-          setOverlay(area, overlay);
-          overlay.setStrokeWeight(4);
-          overlay.setStrokeOpacity(0.1);
-          map.addOverlay(overlay);
-          zoomToArea(area);
+        var onAreaMouseout = function (area) {
+          if ( !ng.equals($scope.selected, area) ) {
+            hideArea(area);
+          }
         }
-      });
 
-      City.find({}, onCitySuccess, onCityError);
+        var select = function (area) {
+          if ( !ng.equals($scope.selected, area) ) {
+            hideArea($scope.selected);
+            showArea(area);
+            zoomToArea(area);
+          } else {
+            hideArea(area);
+            zoomToOverlay( getOverlay($scope.city) );
+            area = undefined;
+          }
 
-      //
-      // Neighborhoods
-      //
+          $scope.selected = area;
+        }
 
-      var onNeighborhoodSuccess = function (neighborhoods) {
-        $scope.neighborhoods = neighborhoods;
-        $scope.showError = false;
-      }
+        //
+        // City
+        //
 
-      var onNeighborhoodError = function () {
-        $scope.showError = true;
-      }
+        var onCitySuccess = function (city) {
+          $scope.city = city;
+        }
 
-      $scope.$watch('neighborhoods', function (areas) {
-        if (areas) {
-          ng.forEach(areas, function (area) {
+        var onCityError = function () {
+          $scope.showError = true;
+        }
+
+        $scope.$watch('city', function (area) {
+          if (area) {
             var overlay = Map.Overlay.fromGeoJSON(area.get('geometry'));
             setOverlay(area, overlay);
+            overlay.setStrokeWeight(4);
+            overlay.setStrokeOpacity(0.1);
             map.addOverlay(overlay);
+            zoomToArea(area);
+          }
+        });
 
-            overlay.on('mouseover', function () {
-              onAreaMouseover(area);
-            });
+        City.find({}, onCitySuccess, onCityError);
 
-            overlay.on('mouseout', function () {
-              onAreaMouseout(area);
-            });
+        //
+        // Neighborhoods
+        //
 
-            overlay.on('click', function () {
-              select(area);
-            });
-
-            overlay.setClickable(true)
-          });
-
-          $scope.showNeighborhoods = true;
-        } else {
-          $scope.showNeighborhoods = false;
+        var onNeighborhoodSuccess = function (neighborhoods) {
+          $scope.neighborhoods = neighborhoods;
+          $scope.showError = false;
         }
-      });
 
-      Neighborhood.all({}, onNeighborhoodSuccess, onNeighborhoodError);
+        var onNeighborhoodError = function () {
+          $scope.showError = true;
+        }
 
-      $scope.map = map;
-      $scope.select = select;
+        $scope.$watch('neighborhoods', function (areas) {
+          if (areas) {
+            ng.forEach(areas, function (area) {
+              var overlay = Map.Overlay.fromGeoJSON(area.get('geometry'));
+              setOverlay(area, overlay);
+              map.addOverlay(overlay);
+
+              overlay.on('mouseover', function () {
+                onAreaMouseover(area);
+              });
+
+              overlay.on('mouseout', function () {
+                onAreaMouseout(area);
+              });
+
+              overlay.on('click', function () {
+                select(area);
+              });
+
+              overlay.setClickable(true)
+            });
+
+            $scope.showNeighborhoods = true;
+          } else {
+            $scope.showNeighborhoods = false;
+          }
+        });
+
+        Neighborhood.all({}, onNeighborhoodSuccess, onNeighborhoodError);
+
+        $scope.map = map;
+        $scope.select = select;
+
+        setLastStep(session, 41);
+      })
     }
 
   ]);
@@ -544,12 +563,17 @@
   // Section 45 - Select a parcel
   //
 
-  controllers.controller('45Ctrl', [ '$scope', 'Map',
+  controllers.controller('45Ctrl', [ '$scope', 'Map', 'session',
 
-    function ($scope, Map) {
-      $scope.section = 45;
-      var map = new Map();
-      $scope.map = map;
+    function ($scope, Map, session) {
+      onAppLoad($scope, function () {
+        $scope.section = 45;
+
+        var map = new Map();
+        $scope.map = map;
+
+        setLastStep(session, 45);
+      })
     }
 
   ]);
@@ -558,12 +582,17 @@
   // Section 50 - Parcel confirmation
   //
 
-  controllers.controller('50Ctrl', [ '$scope', 'Map',
+  controllers.controller('50Ctrl', [ '$scope', 'Map', 'session',
 
-    function ($scope, Map) {
-      $scope.section = 50;
-      var map = new Map();
-      $scope.map = map;
+    function ($scope, Map, session) {
+      onAppLoad($scope, function () {
+        $scope.section = 50;
+
+        var map = new Map();
+        $scope.map = map;
+
+        setLastStep(session, 50);
+      })
     }
 
   ]);
