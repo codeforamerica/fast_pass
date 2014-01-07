@@ -5,11 +5,10 @@
 // CONSTANTS
 
 @color-scheme:          #21687f;
-//@color-scheme:          #4a8bc9;
-@color-lighter:         desaturate(lighten(@color-scheme, 20%),30%);
+@color-lighter:         desaturate(lighten(@color-scheme, 20%), 30%);
 @color-gray:            desaturate(lighten(@color-scheme, 60%), 50%);
 @lightgray:             #c1c1c1;
-@black:                 #222;     // This allows the text to show even if 
+@black:                 #222;     // This allows the text to show if user overrides background to black (an accessibility feature).
 
 @background:            #fafafa;
 @clv-type:              #3f3f3f;
@@ -26,6 +25,7 @@
 @section-part-width:    560px;
 
 // MEDIA QUERY WIDTHS
+// Not used at the moment.
 
 @mobile:                ~'screen and (max-width: 529px)';
 @tablet:                ~'screen and (min-width: 530px) and (max-width: 767px)';
