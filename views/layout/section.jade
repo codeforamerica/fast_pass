@@ -1,8 +1,9 @@
 section(id='section-{{section}}')
-  div(class='left-column', ng-class='{ false: "full-screen", true: "part-screen" }[showRight]')
-    div(class='container')
-      include header
-      block left
+  .left-column(ng-class='{ false: "full-screen", true: "part-screen" }[showRight]')
+    .container
+      .content
+        include header
+        block left
       include footer
-  div(class='right-column')
+  .right-column
     block right

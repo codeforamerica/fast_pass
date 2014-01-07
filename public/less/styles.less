@@ -9,7 +9,7 @@
 @color-lighter:         desaturate(lighten(@color-scheme, 20%),30%);
 @color-gray:            desaturate(lighten(@color-scheme, 60%), 50%);
 @lightgray:             #c1c1c1;
-@black:                 black;    // Boilerplate sets it to #222
+@black:                 #222;     // This allows the text to show even if 
 
 @background:            #fafafa;
 @clv-type:              #3f3f3f;
@@ -104,6 +104,25 @@ html, body {
   position: relative;
   width: @container-width;
   margin: 0 auto;
+
+  // Flexbox for making footer sticky at the bottom of the screen
+  // -webkit- prefix required for Safari 7
+  display: -webkit-flex;
+  display: flex;
+  min-height: 90vh;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+
+  .content {
+    // Sticky footer
+    // -webkit- prefix required for Safari 7
+    -webkit-flex: 1;
+    flex: 1;
+    // Hack to make flex not completely broken on IE11
+    // It doesn't actually make it work, but prevents it from floating on the content.
+    // See discussion here: https://github.com/philipwalton/solved-by-flexbox/pull/8
+    -ms-flex-preferred-size: auto;
+  }
 }
 
 header {
@@ -692,7 +711,7 @@ table:not(.no-style) {
 
 footer {
   width: @section-width;
-  margin: 40px auto 20px 0;
+  margin: 40px auto 0;
   border-top: 1px solid @lightgray;
   font-size: 10px;
   color: #999;
