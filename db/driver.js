@@ -11,11 +11,11 @@ var Driver = function () {};
 //
 Driver.connect = function (onConnect, onError) {
 
-  pg.connect(config.database, function (err, client) {
+  pg.connect(config.database, function (err, client, done) {
     if (err) {
       onError(err);
     } else {
-      onConnect(client);
+      onConnect(err, client, done);
     }
   });
 
@@ -30,14 +30,14 @@ Driver.perform = function (query, values, onSuccess, onError) {
   onSuccess = onSuccess || function () {};
   onError   = onError   || function () {};
 
-  var onConnect = function (client) {
+  var onConnect = function (err, client, done) {
     client.query(query, values, function (err, res) {
+      done();
       if (err) {
         onError(err);
       } else {
         onSuccess(res.rows);
       }
-      client.end();
     }); 
   }
 

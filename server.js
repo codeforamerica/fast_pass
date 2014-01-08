@@ -29,7 +29,8 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(express.favicon());
 app.use(express.logger('dev'));
-app.use(express.bodyParser());
+app.use(express.json());
+app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(less({
@@ -70,8 +71,8 @@ app.get('/api/categories/business_licensing', api.categories.business_licensing_
 
 // Session Routes
 app.get('/api/sessions/:id', api.sessions.find);
-app.put('/api/sessions/:id', api.sessions.save);
-app.post('/api/sessions', api.sessions.save);
+app.put('/api/sessions/:id', api.sessions.update);
+app.post('/api/sessions', api.sessions.create);
 
 // Geo Routes
 

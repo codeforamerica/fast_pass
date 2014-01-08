@@ -28,8 +28,10 @@ var find = module.exports.find = function (req, res) {
 
 
 var update = module.exports.update = function (req, res) {
-  var id    = req.params.id || req.body.id;
+  var id    = req.params.id;
   var attrs = req.body.data;
+
+  var session = new Session({ id: id, data: attrs });
 
   var onError = function (err) {
     res.writeHead(500, { 'Content-Type': 'application/json' });
@@ -37,7 +39,7 @@ var update = module.exports.update = function (req, res) {
     res.end();
   }
 
-  var onSaveSuccess = function (session) {
+  var onSuccess = function (session) {
     var data;
 
     if (session) {
@@ -53,14 +55,16 @@ var update = module.exports.update = function (req, res) {
 
   var onFindSuccess = function (session) {
     if (session) {
-      session.set({ "data": attrs });
+      session.set({ 'data': attrs });
       session.save(onSaveSuccess, onError);
     } else {
-      // do something here
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.write(JSON.stringify({ 'error': 'Session could not be found' }));
+      res.end();
     }
   }
 
-  Session.find(id, onFindSuccess, onError);
+  session.save(onSuccess, onError);
 }
 
 var create = module.exports.create = function (req, res) {
@@ -88,12 +92,4 @@ var create = module.exports.create = function (req, res) {
   }
 
   Session.create({ "data": attrs }, onSuccess, onError);
-}
-
-var save = module.exports.save = function (req, res) {
-  if (req.body.id) {
-    update(req, res);
-  } else {
-    create(req, res);
-  }
 }

@@ -6,113 +6,61 @@ var Model = require('./model');
 var DBModel = function () {}
 
 var dbChildMethods = {
+
   persisted: function () {
     return !!this.get('id');
   },
 
   save: function () {
     if (this.persisted()) {
-      this._update.apply(this, arguments);
+      this.__update.apply(this, arguments);
     } else {
-      this._create.apply(this, arguments);
+      this.__create.apply(this, arguments);
     }
   },
 
-  destroy: function (onSuccess, onError) {
-    var klass = this.constructor;
-    var query = klass.delete().where(klass.id.equals(this.get('id')));
-    DBDriver.perform(query.text, query.value, onSuccess, onError);
+  delete: function (onSuccess, onError) {
+    this.constructor.delete(this.get('id'), onSuccess, onError);
   },
 
-  _update: function (successCb, errorCb) {
+  __update: function (successCb, errorCb) {
     var instance = this;
-    var klass = this.constructor; 
     var id    = this.get('id');
     var attrs = this.toJSON();
 
     delete attrs.id;
 
-    var query = klass.update(attrs).where(klass.id.equals(id)).returning('*').toQuery()
+    var onError = errorCb;
 
-    var onSuccess = function (results) {
-      if (results.length == 1) instance.set(results[0]);
+    var onSuccess = function (result) {
+      instance.set(result.toJSON());
       successCb(instance);
     }
 
-    var onError = errorCb;
-
-    DBDriver.perform(query.text, query.values, onSuccess, onError);
+    this.constructor.update(id, attrs, onSuccess, onError);
   },
 
-  _create: function (successCb, errorCb) {
+  __create: function (successCb, errorCb) {
     var instance = this;
-    var klass = this.constructor; 
+    var id    = this.get('id');
     var attrs = this.toJSON();
-    
+
     delete attrs.id;
-
-    var query = klass.insert(attrs).returning('*').toQuery();
-
-    var onSuccess = function (results) {
-      if (results.length == 1) instance.set(results[0]);
-      successCb(instance);
-    }
 
     var onError = errorCb;
 
-    DBDriver.perform(query.text, query.values, onSuccess, onError);
+    var onSuccess = function (result) {
+      instance.set(result.toJSON());
+      successCb(instance);
+    }
+
+    this.constructor.create(attrs, onSuccess, onError);
   }
 
 }
 
 var dbParentMethods = {
-  table: null,
-
-  find: function (id, successCb, errorCb) {
-    var query = this.where(this.id.equals(id)).limit(1).toQuery();
-
-    var onSuccess = function (results) {
-      successCb((results.length > 0) ? results[0] : null);
-    }
-
-    var onError = errorCb;
-
-    this._performQuery(query, onSuccess, onError);
-  },
-
-  first: function (onSuccess, onError) {
-    var query = this.select('*').limit(1).order('id ASC').toQuery();
-    this._performQuery(query, onSuccess, onError);
-  },
-
-  last: function (onSuccess, onError) {
-    var query = this.select('*').limit(1).order('id DESC').toQuery();
-    this._performQuery(query, onSuccess, onError);
-  },
-
-  all: function (onSuccess, onError) {
-    var query = this.select('*').toQuery();
-    this._performQuery(query, onSuccess, onError);
-  },
-
-  create: function (attrs, onSuccess, onError) {
-    var instance = new this(attrs);
-    instance.set(attrs);
-    instance.save(onSuccess, onError);
-  },
-
-  _performQuery: function (query, successCb, errorCb) {
-    var klass = this;
-
-    var onSuccess = function (results) {
-      successCb(utils.map(results, function (attrs) { return new klass(attrs) })) 
-    }
-
-    var onError = errorCb;
-
-    DBDriver.perform(query.text, query.values, onSuccess, onError);
-  }
-
+  table: null
 }
 
 DBModel.extend = function (childMethods, parentMethods) {
@@ -123,15 +71,59 @@ DBModel.extend = function (childMethods, parentMethods) {
   childMethods  = utils.defaults(childMethods, dbChildMethods);
   parentMethods = utils.defaults(parentMethods, dbParentMethods);
 
+  var klass;
+
   var table   = parentMethods.table;
   var columns = utils.keys(childMethods.attributes);
+  var sql     = SQL.define({ name: table, columns: columns });
 
-  parentMethods = utils.defaults(
-    parentMethods,
-    SQL.define({ name: table, columns: columns })
-  );
+  var perform = function (query, successCb, errorCb) {
+    var onError = errorCb;
+    var onSuccess = function (results) {
+      successCb(utils.map(results, function (result) { return new klass(result) })) 
+    }
+    DBDriver.perform(query.text, query.values, onSuccess, onError);
+  }
 
-  return Model.extend(childMethods, parentMethods);
+  parentMethods.find = function (id, successCb, errorCb) {
+    var onError = errorCb;
+    var query = sql.where(sql.id.equals(id)).limit(1).toQuery();
+    var onSuccess = function (results) {
+      successCb((results.length > 0) ? results[0] : null);
+    }
+    perform(query, onSuccess, onError);
+  }
+
+  parentMethods.create = function (attrs, successCb, errorCb) {
+    var onError = errorCb;
+    var query = sql.insert(attrs).returning('*').toQuery();
+    var onSuccess = function (results) {
+      successCb((results.length > 0) ? results[0] : null);
+    }
+    perform(query, onSuccess, onError);
+  }
+
+  parentMethods.update = function (id, attrs, successCb, errorCb) {
+    var onError = errorCb;
+    var query = sql.update(attrs).where(sql.id.equals(id)).returning('*').toQuery();
+    var onSuccess = function (results) {
+      successCb((results.length > 0) ? results[0] : null);
+    }
+    perform(query, onSuccess, onError);
+  }
+
+  parentMethods.delete = function (id, successCb, errorCb) {
+    var onError = errorCb;
+    var query = sql.delete().where(sql.id.equals(id)).returning('*').toQuery();
+    var onSuccess = function (results) {
+      successCb((results.length > 0) ? results[0] : null);
+    }
+    perform(query, onSuccess, onError);
+  }
+
+  var klass = Model.extend(childMethods, parentMethods);
+
+  return klass;
 }
 
 
