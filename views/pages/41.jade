@@ -18,7 +18,7 @@ block left
       div(ng-show='neighborhoods.length > 0')
         h2 Select a neighborhood
         search-result(ng-repeat='neighborhood in neighborhoods', result='neighborhood', selected='selected', select='select(neighborhood)')
-          span {{ result.get('name') }}
+          span {{ neighborhood.get('name') }}
           button(ng-click='select(neighborhood)') Select
         search-result(result='city', selected='selected', select='select(city)')
           span Any neighborhood
