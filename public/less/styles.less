@@ -22,10 +22,13 @@
 @max-container-width:   800px;
 
 @section-width:         740px;
-@section-part-width:    560px;
 
 @grid-gutter-width:     10px;
-@grid-column-width:     (@container-width - (5 * @grid-gutter-width)) / 6;
+@grid-column-width:     (@container-width - (@grid-gutter-width * 5)) / 6;
+
+//@section-part-width:    560px;
+@section-part-width:    (@grid-column-width * 4) + (@grid-gutter-width * 3) + 60px;
+
 
 // MEDIA QUERY WIDTHS
 // Not used at the moment.
@@ -67,7 +70,7 @@ html, body {
   width: 100%;
   min-height: 100%;
   z-index: @ui-index;
-  padding: 30px;
+  padding: 30px 30px 0;
   background-color: @background;
   position: relative;
   overflow-x: hidden;
@@ -113,7 +116,7 @@ html, body {
   // -webkit- prefix required for Safari 7
   display: -webkit-flex;
   display: flex;
-  min-height: 90vh;
+  min-height: 94vh;
   -webkit-flex-direction: column;
           flex-direction: column;
 
@@ -325,9 +328,10 @@ small {
   .search-form {
     .search-input {
       &:extend(.col-3);
-    } 
+    }
     .search-submit {
       &:extend(.col-1);
+      margin-right: 0;
     }
   }
   .search-results {
