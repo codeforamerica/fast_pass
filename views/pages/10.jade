@@ -31,7 +31,7 @@ block left
             | Please choose an industry classification from the list below.
           search-result(ng-repeat='result in results', result='result', selected='selected', select='select(result)')
             span
-              a(href='', class='help no-color') {{ result.get('title') }}
+              a(href='http://louhuang.com/naics-viewer/?year=2012&code={{ result.get("code") }}', class='help no-color', target='_blank') {{ result.get('title') }}
             button(ng-click='select(result)') Select
 
         p.
@@ -42,7 +42,7 @@ block left
 
       p
         span(class='selection' ng-show='selected')
-          a(href='', class='help no-color') {{ selected.get('title') }}
+          a(href='http://louhuang.com/naics-viewer/?year=2012&code={{ selected.get("code") }}', class='help no-color', target='_blank') {{ selected.get('title') }}
         span(ng-show='!selected') Nothing is selected yet. Your chosen business type will appear here.
 
       div(ng-show='selected')
