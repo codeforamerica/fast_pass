@@ -268,147 +268,149 @@
   controllers.controller('40Ctrl', [ '$scope', 'session', 'Address', 'City', 'Map',
 
     function ($scope, session, Address, City, Map) {
-      $scope.section = 40;
-      $scope.showRight = true;
+      onAppLoad($scope, function () {
+        $scope.section = 40;
+        $scope.showRight = true;
 
-      //
-      // Address Search
-      //
+        //
+        // Address Search
+        //
 
-      var perPage = 20;
+        var perPage = 20;
 
-      var resetSearch = function () {
-        $scope.results = []; 
-        $scope.showResults = false;
-        $scope.showError = false;
-        $scope.showInvalid = false;
-        $scope.lastSearch = null;
-      }
-
-      var onSearchSuccess = function (results) {
-        $scope.results = results.slice(0,perPage);
-        $scope.showLoading = false;
-        $scope.showResults = true;
-      }
-
-      var onSearchError = function () {
-        $scope.showLoading = false; 
-        $scope.showError = true;
-      }
-
-      var onInvalidTerms = function () {
-        $scope.showLoading = false;
-        $scope.showInvalid = true; 
-      }
-
-      var search = function (address) {
-        resetSearch();
-
-        if ( ng.isUndefined(address) ) {
-          onInvalidTerms();
-          return false;
+        var resetSearch = function () {
+          $scope.results = []; 
+          $scope.showResults = false;
+          $scope.showError = false;
+          $scope.showInvalid = false;
+          $scope.lastSearch = null;
         }
 
-        $scope.lastSearch  = address;
-        $scope.showLoading = true;
-
-        session.set({ address_keywords: address });
-        session.save();
-
-        Address.search({ address: address }, onSearchSuccess, onSearchError) 
-      }
-
-      var address = session.get('address_keywords');
-
-      if (address) {
-        $scope.terms = address;
-        search(address);
-      }
-
-      $scope.search = search;
-
-      //
-      // Address Select
-      //
-
-      var select = function (item) {
-        if ( !ng.equals(item, $scope.selected) ) {
-          $scope.selected = item;
-          session.set({ address: item.get('address') });
-        } else {
-          $scope.selected = null; 
-          session.set({ address: null });
+        var onSearchSuccess = function (results) {
+          $scope.results = results.slice(0,perPage);
+          $scope.showLoading = false;
+          $scope.showResults = true;
         }
 
-        session.save();
-      }
+        var onSearchError = function () {
+          $scope.showLoading = false; 
+          $scope.showError = true;
+        }
 
-      $scope.$watch('results', function () {
-        var address = session.get('address');
+        var onInvalidTerms = function () {
+          $scope.showLoading = false;
+          $scope.showInvalid = true; 
+        }
+
+        var search = function (address) {
+          resetSearch();
+
+          if ( ng.isUndefined(address) ) {
+            onInvalidTerms();
+            return false;
+          }
+
+          $scope.lastSearch  = address;
+          $scope.showLoading = true;
+
+          session.set({ address_keywords: address });
+          session.save();
+
+          Address.search({ address: address }, onSearchSuccess, onSearchError) 
+        }
+
+        var address = session.get('address_keywords');
+
         if (address) {
-          ng.forEach($scope.results, function (result) {
-            if ( ng.equals(result.get('address'), address) ) $scope.selected = result;
-          });
-        }
-      });
-
-      $scope.select = select;
-
-      //
-      // Map
-      //
-
-      var map = new Map();
-
-      $scope.$watch('selected', function (value) {
-        var latitude, longitude, zoom;
-
-        map.clearMarkers();
-
-        if (value) {
-          zoom = 19;
-          latitude  = value.get('latitude');
-          longitude = value.get('longitude');
-          map.addMarker(new Map.Marker(latitude, longitude));
-        } else {
-          zoom = DEFAULT_ZOOM;
-          latitude = DEFAULT_LAT;
-          longitude = DEFAULT_LNG;
+          $scope.terms = address;
+          search(address);
         }
 
-        map.setZoom(zoom);
-        map.panTo(latitude, longitude);
-      });
+        $scope.search = search;
 
-      $scope.map = map;
+        //
+        // Address Select
+        //
 
-      //
-      // Display city limits overlay
-      //
+        var select = function (item) {
+          if ( !ng.equals(item, $scope.selected) ) {
+            $scope.selected = item;
+            session.set({ address: item.get('address') });
+          } else {
+            $scope.selected = null; 
+            session.set({ address: null });
+          }
 
-      var onCityLimitsSuccess = function (cityLimits) {
-        $scope.cityLimits = cityLimits;
-      }
-
-      var onCityLimitsError = function () {
-        $scope.showError = true;
-      }
-
-      $scope.$watch('cityLimits', function (value) {
-        if (value) {
-          var overlay = Map.Overlay.fromGeoJSON(value.get('geometry'));
-          overlay.setStrokeWeight(4);
-          overlay.setStrokeOpacity(0.1);
-          map.addOverlay(overlay);
-          map.setBounds(overlay.getBounds());
+          session.save();
         }
-      });
 
-      City.find({}, onCityLimitsSuccess, onCityLimitsError);
+        $scope.$watch('results', function () {
+          var address = session.get('address');
+          if (address) {
+            ng.forEach($scope.results, function (result) {
+              if ( ng.equals(result.get('address'), address) ) $scope.selected = result;
+            });
+          }
+        });
 
-      setLastStep(session, 40);
+        $scope.select = select;
+
+        //
+        // Map
+        //
+
+        var map = new Map();
+
+        $scope.$watch('selected', function (value) {
+          var latitude, longitude, zoom;
+
+          map.clearMarkers();
+
+          if (value) {
+            zoom = 19;
+            latitude  = value.get('latitude');
+            longitude = value.get('longitude');
+            map.addMarker(new Map.Marker(latitude, longitude));
+          } else {
+            zoom = DEFAULT_ZOOM;
+            latitude = DEFAULT_LAT;
+            longitude = DEFAULT_LNG;
+          }
+
+          map.setZoom(zoom);
+          map.panTo(latitude, longitude);
+        });
+
+        $scope.map = map;
+
+        //
+        // Display city limits overlay
+        //
+
+        var onCityLimitsSuccess = function (cityLimits) {
+          $scope.cityLimits = cityLimits;
+        }
+
+        var onCityLimitsError = function () {
+          $scope.showError = true;
+        }
+
+        $scope.$watch('cityLimits', function (value) {
+          if (value) {
+            var overlay = Map.Overlay.fromGeoJSON(value.get('geometry'));
+            overlay.setStrokeWeight(4);
+            overlay.setStrokeOpacity(0.1);
+            map.addOverlay(overlay);
+            map.setBounds(overlay.getBounds());
+          }
+        });
+
+        City.find({}, onCityLimitsSuccess, onCityLimitsError);
+
+        setLastStep(session, 40);
+      })
     }
-
+      
   ]);
 
   //
@@ -573,6 +575,7 @@
     function ($scope, Map, session) {
       onAppLoad($scope, function () {
         $scope.section = 45;
+        $scope.showRight = true;
 
         var map = new Map();
         $scope.map = map;

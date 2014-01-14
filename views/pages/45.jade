@@ -1,17 +1,12 @@
-section(id='section-45', ng-controller='45Ctrl')
+extends ../layout/section
 
-  .left-screen
-    .container
+block left
 
-      include ../layout/header
+  progressbar(step='2')
 
-      progressbar(step='2')
+  h2 Compatibility with your business
 
-      h2 Compatibility with your business
+  navigation(back='/#/section/40')
 
-      navigation(back='/#/section/40')
-
-      include ../layout/footer
-
-  .right-screen
+block right
     google-map(map='map', map-id='map')
