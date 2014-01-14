@@ -1,7 +1,7 @@
 var DBModel = require('./db_model');
 
 var Session = DBModel.extend({
-  attributes: {
+  defaults: {
     id: null,
     data: null
   }

@@ -74,7 +74,7 @@ DBModel.extend = function (childMethods, parentMethods) {
   var klass;
 
   var table   = parentMethods.table;
-  var columns = utils.keys(childMethods.attributes);
+  var columns = utils.keys(childMethods.defaults);
   var sql     = SQL.define({ name: table, columns: columns });
 
   var perform = function (query, successCb, errorCb) {

@@ -10,4 +10,8 @@ link(rel='apple-touch-icon-precomposed', href='apple-touch-icon-precomposed.png'
 include stylesheets
 
 script(src='js/vendor/modernizr-2.6.2.min.js')
-script window.APPLICATION_NAME = '#{ application_name }';
+script
+  | window.APPLICATION_NAME = '#{ application_name }';
+  | window.DEFAULT_ZOOM = 11;
+  | window.DEFAULT_LAT  = 36.21209;
+  | window.DEFAULT_LNG  = -115.19320;

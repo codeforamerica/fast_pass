@@ -371,9 +371,9 @@
           longitude = value.get('longitude');
           map.addMarker(new Map.Marker(latitude, longitude));
         } else {
-          zoom = 11;
-          latitude = 36.21205;
-          longitude = -115.19395;
+          zoom = DEFAULT_ZOOM;
+          latitude = DEFAULT_LAT;
+          longitude = DEFAULT_LNG;
         }
 
         map.setZoom(zoom);
