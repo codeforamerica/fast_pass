@@ -38,6 +38,7 @@
         maxZoom: 19,
         center: new google.maps.LatLng(36.21205, -115.19395),
         backgroundColor: '#f1f1f4',
+        streetViewControl: false,
         draggable: false,
         styles: [
           {
